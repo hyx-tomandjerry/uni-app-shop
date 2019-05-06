@@ -21,7 +21,7 @@
 			</view>
 		</view>
 		
-		<view class="talk-content">
+		<view class="purple">
 			111
 		</view>
 		

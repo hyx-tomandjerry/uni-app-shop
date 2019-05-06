@@ -16,7 +16,6 @@
 		 :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in shopList" :key="index">
 				<image :src="item.url" mode="aspectFill" style="height:120px;width:100%;"></image>
-				
 			</swiper-item>
 		</swiper>
 			
