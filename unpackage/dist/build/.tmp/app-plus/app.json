@@ -1,0 +1,73 @@
+{
+  "pages": [
+    "pages/login-design/login/login",
+    "pages/tab-item-content/shop-center/shop-list/shop-list",
+    "pages/tab-item-content/shop-center/near-shop-list/near-shop-list",
+    "pages/tab-item-content/shop-center/shop-center",
+    "pages/tab-item/index/index",
+    "pages/tab-item-content/mine-center/basic-setting/basic-setting",
+    "pages/tab-item/mine/mine",
+    "pages/tab-item-content/shop-center/record-shop/record-shop",
+    "pages/tab-item-content/shop-center/create-order/create-order",
+    "pages/tab-item-content/work-center/work-index/work-index",
+    "pages/tab-item-content/work-center/create-log/create-log",
+    "pages/tab-item-content/shop-center/repair-item/repair-item",
+    "pages/login-design/design/design",
+    "pages/login-design/find-password/find-password",
+    "pages/login-design/reset-password/reset-password",
+    "pages/tab-item/message/message",
+    "pages/tab-item-content/notice-center/notice-center",
+    "pages/tab-item-content/shop-center/clerk-list/clerk-list",
+    "pages/tab-item-content/shop-center/create-comment/create-comment",
+    "pages/tab-item-content/shop-center/invite-join/invite-join",
+    "pages/tab-item-content/shop-center/join-shop/join-shop",
+    "pages/all-item-content/detail-content/detail-content",
+    "pages/all-item-content/index-more/index-more",
+    "pages/tab-item-content/shop-center/repair-order-item/repair-order-item",
+    "pages/tab-item-content/shop-center/search-shop/search-shop",
+    "pages/tab-item-content/work-center/log-detail/log-detail",
+    "pages/tab-item-content/work-center/chose-copy/chose-copy",
+    "pages/tab-item-content/shop-center/category-item/category-item",
+    "pages/tab-item-content/mine-center/edit-password/edit-password",
+    "pages/tab-item-content/shop-center/create-order2/create-order2"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "black",
+    "selectedColor": "aqua",
+    "list": [
+      {
+        "pagePath": "pages/tab-item/index/index",
+        "iconPath": "static/img/tab_img/yemian-copy.png",
+        "selectedIconPath": "static/img/tab_img/yemian-copy_color.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/tab-item/message/message",
+        "iconPath": "static/img/tab_img/message.png",
+        "selectedIconPath": "static/img/tab_img/message_color.png",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/tab-item/mine/mine",
+        "iconPath": "static/img/tab_img/mine.png",
+        "selectedIconPath": "static/img/tab_img/mine_color.png",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "myapps",
+  "compilerVersion": "1.9.4",
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  }
+}

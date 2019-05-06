@@ -1,0 +1,383 @@
+<template>
+	<view>
+		<view class="repairInfo bg-white">
+			<view class="title">维修前</view>
+			<view class="imgInfo">
+				<view class="grid col-4 grid-square">
+					<view class="bg-img" v-for="(item,index) in avatar" :key="index" :style="[{ backgroundImage:'url(' + avatar[index] + ')' }]"></view>
+				</view>
+			</view>
+			<view class="repair-desc" style="background:rgba(247,247,247,1);">
+				<textarea  placeholder="报修前的样子....." 
+				maxlength="200" 
+				v-model="repaitItem.summary"/>
+			</view>
+			<view class="title">维修后</view>
+			<view class="imgInfo">
+				<view class="cu-form-group">
+					<view class="grid col-4 grid-square flex-sub">
+						<view class="padding-xs bg-img" :style="[{backgroundImage:'url(' + imgList[index] +')'}]" v-for="(item,index) in imgList"
+							  :key="index" @tap="ViewImage(item)" :data-url="imgList[index]">
+							<view class="cu-tag bg-red" @tap.stop="DelImg(index)" :data-index="index">
+								<text class='cuIcon-close'></text>
+							</view>
+						</view>
+						<view class="padding-xs solids" @tap="ChooseImage($event)" v-if="imgList.length<4">
+							<text class='cuIcon-cameraadd'></text>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="repair-desc" style="background:rgba(247,247,247,1);">
+				<textarea  placeholder="请输入服务评价" maxlength="200" v-model="summary"/>
+			</view>
+		</view>
+		
+		<view class="comment-content">
+			<view class="comment-title">感谢您的评价</view>
+			<view class="comment-title-desc">我们会根据您的评价持续优化服务</view>
+		</view>
+		<view >
+			<view class="startInfo bg-white flex justify-start">
+				<view class="start-title">服务态度：</view>
+				<view class="starts-wrapper">
+					<view v-for="n in 5" :key="n" @click="selected(n,'service')" :class="{'on':cur1>=n}"></view>
+				</view>
+				<text class="detail">{{detail1}}</text>
+			</view>
+			
+			<view class="startInfo bg-white flex justify-start">
+				<view class="start-title">准时到达：</view>
+				<view class="starts-wrapper">
+					<view v-for="n in 5" :key="n" @click="selected(n,'timely')" :class="{'on':cur2>=n}"></view>
+				</view>
+				<text class="detail">{{detail2}}</text>
+			</view>
+			<view class="startInfo bg-white flex justify-start">
+				<view class="start-title">施工质量：</view>
+				<view class="starts-wrapper">
+					<view v-for="n in 5" :key="n" @click="selected(n,'quantity')" :class="{'on':cur3>=n}"></view>
+				</view>
+				<text class="detail">{{detail3}}</text>
+			</view>
+		</view>
+		<view class="btn-area">
+			<button 
+			@click="createComment()"
+			style="background:rgba(66,176,237,1); 
+border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	var qiniu=require('qiniu-js');
+	import myIssue  from '../../../../components/start/App.vue'
+	export default{
+		data(){
+			return{
+								avatar:['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'],
+								imgList: [],
+								cur1:5,
+								cur2:5,
+								cur3:5,
+								flag:false,
+								repaitItem:'',
+								files:[],
+								summary:'',//报修内容
+								detail1:'非常满意',
+								detail2:'非常满意',
+								detail3:'非常满意',
+								orderID:''
+
+			}
+		},
+		components:{
+			myIssue
+		},
+		methods:{
+			//获得订单信息
+			getOrderInfo(id){
+				uni.request({
+					url:this.$store.state.url+'ServiceOrder',
+					data:{
+						id:id
+					},
+					success: (res) => {
+						if(!res.data.data.summary){
+							res.data.data.summary=''
+						}
+						this.repaitItem=res.data.data;
+					}
+				})
+			},
+		ChooseImage(event) {
+			uni.chooseImage({
+				count: 9, //默认9
+				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album'], //从相册选择
+				success: (res) => {
+					console.log(res)
+					if (this.imgList.length != 0) {
+						this.imgList = this.imgList.concat(res.tempFilePaths)
+					} else {
+						this.imgList = res.tempFilePaths
+					}
+		
+					var putExtra={
+						params:{
+							// 'x:owner': this.$store.state.userInfo.owner,
+							// 'x:creator': this.$store.state.userInfo.id,
+							// 'x:type':this.$store.state.serviceorder_file,
+							'x:owner': 18,
+							'x:creator': 49,
+							'x:type':18,
+						}
+					}
+		
+					var config={
+						 useCdnDomain: false
+					}
+					for(var i=0;i<res.tempFilePaths.length;i++){
+						var observer=qiniu.upload(res.tempFilePaths[i], res.tempFilePaths[i].split('/')[3]+'.jpg', this.token, putExtra, config);
+						var subscription = observer.subscribe(
+						  ()=>{
+		
+						  },
+						  ()=>{
+		
+						  },
+						  (res)=>{
+								this.files.push(res.data)
+								if(this.files.length===this.imgList.length){
+									uni.showToast({
+										title:'上传成功',
+										icon:'success'
+									})
+								}
+						  }
+						);
+					}
+		
+				},
+			})
+		},
+			ViewImage(e) {
+				uni.previewImage({
+					urls: this.imgList,
+					current: e
+				});
+			},
+			DelImg(event) {
+				uni.showModal({
+					content: '确定删除？',
+					cancelText: '取消',
+					confirmText: '确定',
+					success: res => {
+						if (res.confirm) {
+							this.imgList.splice(event, 1);
+							uni.request({
+								url:this.$store.state.url+'RemoveFiles',
+								data:{
+									id:this.files[event],
+									owner:18
+								},
+								success: (res) => {
+									this.files.splice(event,1)
+									uni.showToast({
+										title:'删除成功',
+										icon:'none'
+									})
+								}
+							})
+						}
+					}
+				})
+			},
+			//获得上传token
+			getUploadToken(){
+			
+				uni.request({
+					url:this.$store.state.url+'UploadToken',
+					success: (res) => {
+						this.token=res.data.data
+			
+					}
+				})
+			},
+			selected(n,type){
+				
+				this.flag=true;
+				if(type=='service'){
+					this.cur1=n;
+					if(n>=5){
+						this.detail1='非常满意';
+					}else if(n>=3){
+						this.detail1='满意';
+					}else if(n>=1){
+						this.detail1='一般';
+					}else {
+						this.detail1='不满意';
+					}
+				}
+				if(type=='timely'){
+					this.cur2=n;
+					if(n>=5){
+						this.detail2='非常满意';
+					}else if(n>=3){
+						this.detail3='满意';
+					}else if(n>=1){
+						this.detail2='一般';
+					}else {
+						this.detail2='不满意';
+					}
+				}
+				if(type=='quantity'){
+					this.cur3=n;
+					if(n>=5){
+						this.detail3='非常满意';
+					}else if(n>=3){
+						this.detail3='满意';
+					}else if(n>=1){
+						this.detail3='一般';
+					}else {
+						this.detail3='不满意';
+					}
+				}
+				
+			},
+			createComment(){
+				console.log(this.files.join(','))
+				console.log(this.summary);
+				console.log(this.cur1)
+				console.log(this.cur2)
+				console.log(this.cur3)
+				uni.request({
+					url:this.$store.state.url+'NewServiceOrderComments',
+					data:{
+						owner:18,
+						userId:43,
+						comment:this.summary,
+						id:this.orderID,
+						service:this.cur1,
+						timely:this.cur2,
+						quality:this.cur3,
+						files:this.files?this.files.join(','):''
+						
+					},
+					success: (res) => {
+						uni.showToast({
+							title:'验收评价成功',
+							icon:'none'
+						});
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta: 1
+							});
+						},500)
+					}
+				})
+			}
+		},
+		onLoad(option){
+			
+			this.getUploadToken();
+			if(option){
+				this.orderID=option.orderID;
+				this.getOrderInfo(option.orderID);
+			}
+		}
+		
+	}
+</script>
+
+<style lang="less">
+	.repairInfo{
+		padding:13px 13px 23px;
+		.title{
+			font-size:16px;
+			font-family:PingFangSC-Semibold;
+			font-weight:600;
+			color:rgba(42,42,42,1);
+			margin-bottom:11px;
+		}
+		.imgInfo{
+			margin-bottom:17px;
+		}
+		.repair-desc{
+			margin-bottom:16px;
+			min-height:30px;
+			padding:8px 6px;
+		}
+	}
+	.cu-form-group{
+		padding:0;
+	}
+	uni-textarea{
+		max-height:71px;
+		padding:8px 6px;
+	}
+	.comment-content{
+		background: #fff;
+		width:100%;
+		text-align: center;
+		padding-bottom:10px;
+		.comment-title{
+			font-size:15px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(42,42,42,1);
+		}
+		.comment-title-desc{
+			font-size:13px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(137,136,136,1);
+			margin-top:2px;
+		}
+	}
+	.startInfo{
+		padding-left:22px;
+		padding-top:19px;
+		.start-title{
+			line-height:29px;
+			font-size:15px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(42,42,42,1);
+			margin-right:10px;
+		}
+		.detail{
+			padding-top:8px;
+			font-size:13px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(137,136,136,1);
+		}
+	}
+	.starts-wrapper view{
+		width:30px;
+		height:30px;
+		background-image: url('../../../../static/icon/start/pingjia.png');
+		background-repeat:no-repeat;
+		background-size:100% 100%;
+		margin-right: 10px;
+		display: inline-block;
+	}
+	.starts-wrapper .on{
+		background-image: url('../../../../static/icon/start/pingjia_color.png');
+	}
+	.btn-area{
+		
+		padding:39px 13px 23px 14px;
+		background:#fff;
+	}
+	.submit-btn{
+		font-size:16px;
+		font-family:PingFangSC-Regular;
+		font-weight:400;
+		color:rgba(255,255,255,1);
+	}
+</style>

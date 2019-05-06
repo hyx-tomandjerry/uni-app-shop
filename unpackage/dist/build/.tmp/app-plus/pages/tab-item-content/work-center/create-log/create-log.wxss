@@ -1,0 +1,26 @@
+.cu-form-group uni-input {
+  text-align: right;
+}
+.num {
+  font-size: 13px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #898888;
+  position: absolute;
+  bottom: 13px;
+  right: 12px;
+}
+.log-title {
+  font-size: 15px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #2A2A2A;
+}
+.img-content {
+  background: #fff;
+}
+.grid.grid-square > uni-view {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #EEEEED;
+}
+

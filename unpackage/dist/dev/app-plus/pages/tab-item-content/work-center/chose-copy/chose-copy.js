@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"box { margin: ",[0,20]," 0; }\n.",[1],"box wx-view.",[1],"cu-bar { margin-top: ",[0,20],"; }\n.",[1],"all { font-size: 15px; font-family: PingFangSC-Regular; font-weight: 400; color: #2a2a2a; }\n.",[1],"btn { font-size: 12px; font-family: PingFangSC-Regular; font-weight: 400; color: #ffffff; }\n",],undefined,{path:"./pages/tab-item-content/work-center/chose-copy/chose-copy.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/work-center/chose-copy/chose-copy.wxml') } }));

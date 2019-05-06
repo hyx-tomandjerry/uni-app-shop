@@ -1,0 +1,52 @@
+uni-page {
+  background: #fff;
+}
+.shop-list-item {
+  padding: 16px 9px 17px 14px;
+  margin: 3px 4px;
+  border: 1px solid #EEEEED;
+  border-radius: 5px;
+}
+.shop-list-item .shop-item-name {
+  font-size: 15px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #2a2a2a;
+  margin-bottom: 7px;
+}
+.shop-list-item .shop-item-address {
+  font-size: 13px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #898888;
+  margin-bottom: 8px;
+}
+.shopImg {
+  width: 103px;
+  height: 79px;
+  margin-right: 17px;
+}
+.shop-name {
+  font-size: 16px;
+  font-family: 'PingFangSC-Regular';
+  font-weight: 400;
+  color: #2a2a2a;
+  margin-bottom: 10px;
+}
+.shop-desc {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #898888;
+  margin-bottom: 10px;
+}
+.img15 {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+.noManager {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+

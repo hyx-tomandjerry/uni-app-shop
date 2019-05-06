@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uni-icon": "/components/uni/uni-icon/uni-icon",
+    "mx-date-picker": "/components/uni/mx-datepicker/mx-datepicker"
+  }
+}

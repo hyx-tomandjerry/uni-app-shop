@@ -1,0 +1,5 @@
+
+.cu-custom .cu-bar{
+	min-height: 40px;
+}
+

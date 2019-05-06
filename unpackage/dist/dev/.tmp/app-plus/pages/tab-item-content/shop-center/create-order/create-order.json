@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "新增报修",
+  "usingComponents": {
+    "mx-date-picker": "/components/uni/mx-datepicker/mx-datepicker"
+  }
+}

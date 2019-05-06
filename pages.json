@@ -1,0 +1,295 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	     {
+	     	"path": "pages/tab-item/index/index",
+	     	"style": {
+	     		"navigationBarTitleText": "首页"
+	     	}
+	     },
+		 {
+	          "path" : "pages/tab-item-content/mine-center/suggestion-list/suggestion-list",
+	          "style" : {
+				  "navigationStyle":"custom",
+				  "app-plus":{
+				  	"titleNView":false
+				  }
+			  }
+	      },
+		  {
+	          "path" : "pages/tab-item-content/mine-center/create-suggestion/create-suggestion",
+	          "style" : {
+	      		"navigationStyle":"custom",
+	      		"app-plus":{
+	      			"titleNView":false
+	      		}
+	      	}
+	      },
+		  
+		 {
+	          "path" : "pages/tab-item-content/shop-center/create-order/create-order",
+	          "style" : {
+	      					"navigationBarTitleText": "新增报修"
+	      				}
+	      },
+		  {
+	         "path" : "pages/tab-item-content/shop-center/record-shop/record-shop",
+	         "style" : {
+	     		"navigationBarTitleText": "录入门店"
+	     	}
+	     },
+		 
+		 {
+	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
+	          "style" : {
+	      		"navigationBarTitleText": "新增报修"
+	      	}
+	      },
+		
+		  {
+	          "path" : "pages/tab-item-content/mine-center/input-code/input-code",
+	          "style" : {
+				   "navigationBarTitleText": "输入验证码"
+			  }
+	      },
+		   {
+		      "path" : "pages/tab-item-content/mine-center/change-telephone/change-telephone",
+		      "style" : {
+		      		  				  "navigationBarTitleText": "绑定手机号码"
+		      		  			  }
+		  },
+		  {
+		      "path" : "pages/tab-item-content/mine-center/account-manager/account-manager",
+		      "style" : {
+		  				  "navigationBarTitleText": "手机号码"
+		  			  }
+		  },
+		 
+		  
+		  {
+	          "path" : "pages/tab-item-content/work-center/work-index/work-index",
+	          "style" : {
+	      			"navigationBarTitleText": "工作日志"
+	      	}
+	      },
+		  {
+	          "path" : "pages/tab-item-content/notice-center/notice-center",
+	          "style" : {
+	      		"navigationBarTitleText": "通知公告"
+	      	}
+	      },
+		  
+		  {
+	       "path" : "pages/login-design/login/login",
+	       "style": {
+	         "navigationBarTitleText": "门店助手"
+	       }
+	     },
+		 {
+	         "path" : "pages/tab-item-content/shop-center/shop-list/shop-list",
+	         "style" : {
+	     		"navigationStyle":"custom",
+	     		"app-plus":{
+	     			"titleNView":false
+	     		}
+	     	}
+	     },
+		 {
+	          "path" : "pages/tab-item-content/shop-center/near-shop-list/near-shop-list",
+	           "style": {
+	             "navigationBarTitleText": "选择门店"
+	          }
+	      },
+		   {
+		      "path" : "pages/tab-item-content/shop-center/shop-center",
+		      "style": {
+		  		"navigationBarTitleText": "报修记录"
+		  	}
+		  },
+		 
+		
+		
+	    {
+	        "path" : "pages/tab-item-content/mine-center/basic-setting/basic-setting",
+	        "style" : {
+	    		"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+	    	}
+	    },
+		
+	  {
+	      "path" : "pages/tab-item/mine/mine",
+	      "style" : {
+	  		"navigationBarTitleText": "个人中心"
+	  	}
+	  },
+	{
+	    "path" : "pages/tab-item-content/work-center/create-log/create-log",
+	    "style" : {
+			"navigationBarTitleText": "新增日志"
+		}
+	},
+	{
+	    "path" : "pages/login-design/design/design",
+		 "style": {
+			"navigationBarTitleText": "门店助手"
+		}
+
+	},
+
+	{
+	    "path" : "pages/login-design/find-password/find-password",
+		 "style": {
+			"navigationBarTitleText": "门店助手"
+		}
+
+	},
+	{
+	    "path" : "pages/login-design/reset-password/reset-password",
+		 "style": {
+			"navigationBarTitleText": "门店助手"
+		}
+
+	}
+		,
+        {
+            "path" : "pages/tab-item/message/message",
+            "style" : {
+				"navigationBarTitleText": "消息"
+			}
+        }
+
+       
+
+        ,{
+            "path" : "pages/tab-item-content/shop-center/clerk-list/clerk-list",
+            "style" : {
+				"navigationBarTitleText": "店员列表"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/create-comment/create-comment",
+            "style" : {
+				"navigationBarTitleText": "发表评价"
+			}
+        }
+
+        ,{
+            "path" : "pages/tab-item-content/shop-center/invite-join/invite-join",
+            "style" : {
+				"navigationBarTitleText": "录入店员"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/join-shop/join-shop",
+           "style":{
+				"navigationBarTitleText": "加入门店"
+			}
+        }
+
+        
+        ,{
+            "path" : "pages/all-item-content/detail-content/detail-content",
+            "style" : {
+				"navigationBarTitleText": "详情内容"
+			}
+        }
+        ,{
+            "path" : "pages/all-item-content/index-more/index-more",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/repair-order-item/repair-order-item",
+           "style" : {
+           	"navigationBarTitleText": "报修详情"
+           }
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/search-shop/search-shop",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        
+
+        ,{
+            "path" : "pages/tab-item-content/work-center/log-detail/log-detail",
+            "style" : {
+				 "app-plus": {
+				        "titleNView": false
+
+				    }
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/chose-copy/chose-copy",
+            "style" : {
+				"navigationBarTitleText": "选择抄送人"
+			}
+        }
+       
+        ,{
+            "path" : "pages/tab-item-content/shop-center/category-item/category-item",
+            "style" : {
+				"navigationBarTitleText": "选择类别"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/mine-center/edit-password/edit-password",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/create-order2/create-order2",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+// 	"tabBar":{
+// 		"color":"black",
+// 		"selectedColor":"aqua",
+// 		"list":[
+// 			{
+// 				"pagePath":"pages/tab-item/index/index",
+// 				"iconPath":"static/img/tab_img/shouye.png",
+// 				"selectedIconPath":"static/img/tab_img/shouye_color.png",
+// 				"text":"首页"
+// 			},
+// 			{
+// 
+// 					"pagePath":"pages/tab-item/message/message",
+// 					"iconPath":"static/img/tab_img/message.png",
+// 					"selectedIconPath":"static/img/tab_img/message_color.png",
+// 					"text":"消息"
+// 			},
+// 			{
+// 				"pagePath":"pages/tab-item/mine/mine",
+// 				"iconPath":"static/img/tab_img/mine.png",
+// 				"selectedIconPath":"static/img/tab_img/mine_color.png",
+// 				"text":"个人中心"
+// 			}
+// 		]
+// 	}
+}

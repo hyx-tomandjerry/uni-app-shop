@@ -1,0 +1,70 @@
+.header-content {
+  padding: 15px 14px;
+  border-bottom: 1px solid #EEEEED;
+}
+.header-content .header-title {
+  font-size: 16px;
+  font-family: PingFangSC-Semibold;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+.header-content .headers-submit {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #42b0ed;
+}
+.cu-bar .search-form {
+  margin-right: 15px;
+  margin-left: 10px;
+}
+.shopImg {
+  width: 103px;
+  height: 79px;
+  margin-right: 17px;
+}
+.noManagePic {
+  width: 95px !important;
+  height: 71px !important;
+  margin-right: 17px;
+}
+.shop-name {
+  font-size: 16px;
+  font-family: 'PingFangSC-Regular';
+  font-weight: 400;
+  color: #2a2a2a;
+  margin-bottom: 20px;
+}
+.shop-desc {
+  font-size: 14px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-weight: 400;
+  color: #898888;
+  margin-bottom: 10px;
+}
+.img15 {
+  width: 15px;
+  height: 19px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.record-shop {
+  font-size: 17px;
+  font-family: 'PingFangSC-Regular';
+  font-weight: 400;
+  color: #ffffff;
+}
+.noManager {
+  margin-bottom: 10px !important;
+}
+.ellipse {
+  width: 80%;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

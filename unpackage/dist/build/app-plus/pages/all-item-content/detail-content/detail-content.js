@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"title { font-size: 16px; font-weight: bold; color: #2a2a2a; margin-bottom: 18px; }\n.",[1],"content { font-size: 14px; font-weight: 400; color: #666666; margin-bottom: 33px; }\n",],undefined,{path:"./pages/all-item-content/detail-content/detail-content.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/all-item-content/detail-content/detail-content.wxml') } }));

@@ -1,0 +1,25 @@
+page {
+  background: #fff;
+}
+.telephone-content {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.telephone-content .title {
+  font-size: 14px;
+  font-family: PingFangSC-Semibold;
+  font-weight: 400;
+  margin-bottom: 20px;
+  color: #898888;
+}
+.telephone-content .telephone-title {
+  font-size: 26px;
+  font-family: PingFangSC-Semibold;
+  font-weight: 400;
+  color: #2a2a2a;
+}
+.telephone-content .change {
+  margin-top: 20px;
+}
+

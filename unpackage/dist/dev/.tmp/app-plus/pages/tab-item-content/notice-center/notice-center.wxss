@@ -1,0 +1,76 @@
+.cu-card.dynamic {
+  background: #e7ebed;
+}
+.nav {
+  white-space: normal !important;
+}
+.cu-list.menu-avatar.comment > .cu-item {
+  padding: 16px;
+}
+.unSign {
+  background: #8c8c8c;
+}
+.distributeWork {
+  background: #5cdbd3;
+}
+.agressWork {
+  background: #096dd9;
+}
+.refuseWork {
+  background: #ff7a45;
+}
+.applyCheck {
+  background: #9254de;
+}
+.passCheck {
+  background: #52c41a;
+}
+.unpassCheck {
+  background: #f5222d;
+}
+.applyDelay {
+  background: #d46b08;
+}
+.applyEnd {
+  background: #ffa940;
+}
+.agressDelay {
+  background: #614700;
+}
+.unagressDelay {
+  background: #612500;
+}
+.endWork {
+  background: #002329;
+}
+.unagreeEndWork {
+  background: #ad8b00;
+}
+.deleteWork {
+  background: #cf1322;
+}
+.resignWork {
+  background: #69c0ff;
+}
+.editWork {
+  background: #14B4F2;
+}
+.shenpiPass {
+  background: #14B4F2;
+}
+.applyRefuse {
+  background: #14B4F2;
+}
+.unagreeEndWork {
+  background: #14B4F2;
+}
+.newApplyCopy {
+  background: #14B4F2;
+}
+.checkFinish {
+  background: #7cb305;
+}
+.myRed {
+  background-color: #5cdbd3;
+}
+

@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"search-content { padding-top: 41px; }\n",],undefined,{path:"./pages/tab-item-content/shop-center/search-shop/search-shop.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/shop-center/search-shop/search-shop.wxml') } }));
