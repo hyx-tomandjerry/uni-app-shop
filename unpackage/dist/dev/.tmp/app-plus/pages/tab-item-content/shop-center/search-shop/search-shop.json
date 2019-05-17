@@ -2,8 +2,6 @@
   "navigationStyle": "custom",
   "titleNView": false,
   "usingComponents": {
-    "cu-custom": "/colorui/components/cu-custom",
-    "mpvue-picker": "/components/city/mpvue-picker/mpvuePicker",
-    "mpvue-city-picker": "/components/city/mpvue-citypicker/mpvueCityPicker"
+    "cu-custom": "/colorui/components/cu-custom"
   }
 }

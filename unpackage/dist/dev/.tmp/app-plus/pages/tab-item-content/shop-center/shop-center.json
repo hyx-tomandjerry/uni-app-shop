@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "报修记录",
-  "usingComponents": {
-    "axb-check-box": "/components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox"
-  }
+  "usingComponents": {}
 }

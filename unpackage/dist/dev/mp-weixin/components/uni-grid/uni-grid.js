@@ -138,7 +138,7 @@ var _default =
     return {};
   },
   created: function created() {
-    this.columnNumber = this.gridGroup[0].length;
+    this.columnNumber = this.gridGroup[0] ? this.gridGroup[0].length : '';
   },
   computed: {
     gridGroup: function gridGroup() {var _this = this;

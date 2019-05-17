@@ -21,8 +21,11 @@
 					<view class="text-gray">
 						<text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text>
 					</view>
-					<input placeholder="密码长度6-12位,英文和数字组成" v-model="designr.token" type="password" @blur='checkPwdEvent(designr.token)'/>
-					<text class="cuIcon-roundclose position_absolute" style="right:44rpx;" v-show="designr.token" @click="clearPwd()"></text>
+					<input placeholder="密码长度6-12位,英文和数字组成" v-model="designr.token" type="text"
+					 @blur='checkPwdEvent(designr.token)'/>
+					<text 
+					class="cuIcon-roundclose position_absolute" 
+					style="right:44rpx;color:gray" v-show="designr.token" @click="clearPwd()"></text>
 				</view>
 
 				<view class="cu-form-group position_relative">
@@ -90,7 +93,7 @@
 			},
 			//注册
 			design(){
-				_this=this;
+				var _this=this;
 				if(this.checkPwd && this.checkTel){
 					uni.request({
 						url:this.$store.state.url,
@@ -105,21 +108,24 @@
 						},
 						success:(res)=>{
 							if(res.data.data==-2){
-								_this.isShow=true;
-								_this.modalName='exit'
+								this.isShow=true;
+								this.modalName='exit'
 								setTimeout(function(){
-									_this.isShow=false;
-									_this.modalName=''
+									this.isShow=false;
+									this.modalName=''
 								},2000)
 							}else{
-								_this.isShow=true;
-								_this.modalName='success'
-								setTimeout(function(){
-									_this.isShow=false;
-									_this.modalName='',
+								console.log(res)
+								console.log(this.designr)
+								this.isShow=true;
+								this.modalName='success'
+								setTimeout(()=>{
+									this.isShow=false;
+									this.modalName='',
 									console.log('1111')
+									console.log(this.designr.mobile)
 									uni.navigateTo({
-										url:'../login/login?account='+_this.designr.mobile+'&token='+_this.designr.token
+										url:'../login/login?account='+this.designr.mobile+'&token='+this.designr.token
 									})
 								},500)
 							}

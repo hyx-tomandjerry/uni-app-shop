@@ -139,6 +139,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 var _default =
 {
   data: function data() {
@@ -147,7 +149,9 @@ var _default =
       isSame: true,
       designer: {
         pwd: '',
-        confirmPwd: '' },
+        confirmPwd: '',
+        mobile: '',
+        vcode: '' },
 
       sameStyle: {
         color: 'red' } };
@@ -157,10 +161,35 @@ var _default =
   components: {},
 
 
-  onLoad: function onLoad() {
-
+  onLoad: function onLoad(options) {
+    this.designer.mobile = options.mobile;
+    this.designer.vcode = options.vcode;
   },
   methods: {
+    resetPassword: function resetPassword() {
+      if (!this.designer.pwd || !this.designer.confirmPwd) {
+        uni.showToast({
+          title: '请输入密码',
+          icon: 'none' });
+
+      } else {
+        this.$ajax('InitPwd', {
+          vcode: this.designer.vcode,
+          token: this.designer.confirmPwd,
+          mobile: this.designer.mobile },
+        function (res) {
+          uni.showToast({
+            title: '设置密码成功',
+            icon: 'none' });
+
+          setTimeout(function () {
+            uni.navigateTo({
+              url: '../../login-design/login/login' });
+
+          }, 800);
+        }, false);
+      }
+    },
     //验证密码
     checkPwdEvent: function checkPwdEvent(event) {
       if (event) {
@@ -177,9 +206,11 @@ var _default =
       }
     },
     checkConfirmEvent: function checkConfirmEvent(event) {
-      var _this = this;
+      if (!this.isSame) {
+        this.isSame = true;
+      }
       if (this.designer.pwd != event) {
-        _this.isSame = false;
+        this.isSame = false;
         uni.showToast({
           title: '两次输入的密码不一致',
           icon: 'none' });

@@ -170,15 +170,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
-var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modules/qiniu-js/dist/qiniu.min.js");var myIssue = function myIssue() {return __webpack_require__.e(/*! import() | components/start/App */ "components/start/App").then(__webpack_require__.bind(null, /*! ../../../../components/start/App.vue */ "../../../../../myapps/components/start/App.vue"));};var _default =
+var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modules/qiniu-js/dist/qiniu.min.js");var uniGrid = function uniGrid() {return __webpack_require__.e(/*! import() | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then(__webpack_require__.bind(null, /*! ../../../../components/uni-grid/uni-grid.vue */ "../../../../../myapps/components/uni-grid/uni-grid.vue"));};var myIssue = function myIssue() {return __webpack_require__.e(/*! import() | components/start/App */ "components/start/App").then(__webpack_require__.bind(null, /*! ../../../../components/start/App.vue */ "../../../../../myapps/components/start/App.vue"));};var _default =
+
 
 {
   data: function data() {
     return {
-      avatar: ['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg', 'https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg', 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg', 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'],
+      filesList: [],
       imgList: [],
       cur1: 5,
       cur2: 5,
@@ -195,71 +194,109 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
 
   },
   components: {
-    myIssue: myIssue },
+    myIssue: myIssue,
+    uniGrid: uniGrid },
 
   methods: {
-    //获得订单信息
-    getOrderInfo: function getOrderInfo(id) {var _this = this;
-      uni.request({
-        url: this.$store.state.url + 'ServiceOrder',
-        data: {
-          id: id },
+    viewImg: function viewImg() {
+      var array = [];
+      this.repaitItem.files.forEach(function (item) {
+        if (item.postfix) {
+          array.push(item.url);
+        }
+      });
+      console.log(array, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:108");
+      uni.previewImage({
+        urls: array });
 
-        success: function success(res) {
-          if (!res.data.data.summary) {
-            res.data.data.summary = '';
-          }
-          _this.repaitItem = res.data.data;
-        } });
 
     },
+    //获得订单信息
+    getOrderInfo: function getOrderInfo(id) {var _this = this;
+
+      this.$ajax('ServiceOrder', { id: id }, function (res) {
+
+        _this.repaitItem = res;
+        console.log(_this.repaitItem, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:120");
+        if (res.files) {
+          res.files.forEach(function (item) {
+            if (item.postfix) {
+              _this.filesList.push({
+
+                image: item.url,
+                text: '' });
+
+            }
+
+
+          });
+        }
+
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'ServiceOrder',
+      // 	data:{
+      // 		id:id
+      // 	},
+      // 	success: (res) => {
+      // 		if(!res.data.data.summary){
+      // 			res.data.data.summary=''
+      // 		}
+      // 		this.repaitItem=res.data.data;
+      // 	}
+      // })
+    },
     ChooseImage: function ChooseImage(event) {var _this2 = this;
+
       uni.chooseImage({
-        count: 9, //默认9
+        count: 9,
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
         success: function success(res) {
-          console.log(res, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:122");
+          var tempFilePaths = res.tempFilePaths;
           if (_this2.imgList.length != 0) {
             _this2.imgList = _this2.imgList.concat(res.tempFilePaths);
           } else {
             _this2.imgList = res.tempFilePaths;
           }
+          uni.getStorage({
+            key: 'userInfo',
+            success: function success(info) {
 
-          var putExtra = {
-            params: {
-              // 'x:owner': this.$store.state.userInfo.owner,
-              // 'x:creator': this.$store.state.userInfo.id,
-              // 'x:type':this.$store.state.serviceorder_file,
-              'x:owner': 18,
-              'x:creator': 49,
-              'x:type': 18 } };
+              for (var i = 0; i < res.tempFilePaths.length; i++) {
+                var uploadTask = uni.uploadFile({
+                  url: _this2.$store.state.uploadHostUrl + _this2.token,
+                  filePath: tempFilePaths[i],
+                  name: 'file',
+                  formData: {
+                    'x:type': _this2.$store.state.constants.serviceorder_file,
+                    'x:owner': info.data.owner,
+                    'x:creator': info.data.id },
 
+                  success: function success(uploadFileRes) {
+                    var res = JSON.parse(uploadFileRes.data);
+                    _this2.files.push(res.data);
+                  } });
 
+                uploadTask.onProgressUpdate(function (res) {
+                  if (res.progress == 100) {
+                    uni.showToast({
+                      title: '上传成功',
+                      icon: 'none' });
 
-          var config = {
-            useCdnDomain: false };
+                  }
+                }, function (error) {
+                  uni.showToast({
+                    title: '上传失败',
+                    icon: 'none' });
 
-          for (var i = 0; i < res.tempFilePaths.length; i++) {
-            var observer = qiniu.upload(res.tempFilePaths[i], res.tempFilePaths[i].split('/')[3] + '.jpg', _this2.token, putExtra, config);
-            var subscription = observer.subscribe(
-            function () {
-
-            },
-            function () {
-
-            },
-            function (res) {
-              _this2.files.push(res.data);
-              if (_this2.files.length === _this2.imgList.length) {
-                uni.showToast({
-                  title: '上传成功',
-                  icon: 'success' });
-
+                });
               }
-            });
+            } });
 
-          }
+
+
+
 
         } });
 
@@ -278,27 +315,35 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
         success: function success(res) {
           if (res.confirm) {
             _this3.imgList.splice(event, 1);
-            uni.request({
-              url: _this3.$store.state.url + 'RemoveFiles',
-              data: {
-                id: _this3.files[event],
-                owner: 18 },
+            _this3.$ajax('RemoveFiles', {
+              id: _this3.files[event] },
+            function (res) {
+              _this3.files.splice(event, 1);
+              uni.showToast({
+                title: '删除成功',
+                icon: 'none' });
 
-              success: function success(res) {
-                _this3.files.splice(event, 1);
-                uni.showToast({
-                  title: '删除成功',
-                  icon: 'none' });
-
-              } });
-
+            });
+            // uni.request({
+            // 	url:this.$store.state.url+'RemoveFiles',
+            // 	data:{
+            // 		id:this.files[event],
+            // 		owner:18
+            // 	},
+            // 	success: (res) => {
+            // 		this.files.splice(event,1)
+            // 		uni.showToast({
+            // 			title:'删除成功',
+            // 			icon:'none'
+            // 		})
+            // 	}
+            // })
           }
         } });
 
     },
     //获得上传token
     getUploadToken: function getUploadToken() {var _this4 = this;
-
       uni.request({
         url: this.$store.state.url + 'UploadToken',
         success: function success(res) {
@@ -327,7 +372,7 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
         if (n >= 5) {
           this.detail2 = '非常满意';
         } else if (n >= 3) {
-          this.detail3 = '满意';
+          this.detail2 = '满意';
         } else if (n >= 1) {
           this.detail2 = '一般';
         } else {
@@ -349,45 +394,57 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
 
     },
     createComment: function createComment() {
-      console.log(this.files.join(','), " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:252");
-      console.log(this.summary, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:253");
-      console.log(this.cur1, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:254");
-      console.log(this.cur2, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:255");
-      console.log(this.cur3, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:256");
-      uni.request({
-        url: this.$store.state.url + 'NewServiceOrderComments',
-        data: {
-          owner: 18,
-          userId: 43,
-          comment: this.summary,
-          id: this.orderID,
-          service: this.cur1,
-          timely: this.cur2,
-          quality: this.cur3,
-          files: this.files ? this.files.join(',') : '' },
+      this.$ajax('NewServiceOrderComments', {
+        comment: this.summary,
+        id: this.orderID,
+        service: this.cur1,
+        timely: this.cur2,
+        quality: this.cur3,
+        files: this.files ? this.files.join(',') : '' },
+      function (res) {
+        uni.showToast({
+          title: '验收评价成功',
+          icon: 'none' });
 
+        setTimeout(function () {
+          uni.navigateBack({
+            delta: 1 });
 
-        success: function success(res) {
-          uni.showToast({
-            title: '验收评价成功',
-            icon: 'none' });
-
-          setTimeout(function () {
-            uni.navigateBack({
-              delta: 1 });
-
-          }, 500);
-        } });
-
+        }, 500);
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'NewServiceOrderComments',
+      // 	data:{
+      // 		owner:18,
+      // 		userId:43,
+      // 		comment:this.summary,
+      // 		id:this.orderID,
+      // 		service:this.cur1,
+      // 		timely:this.cur2,
+      // 		quality:this.cur3,
+      // 		files:this.files?this.files.join(','):''
+      // 		
+      // 	},
+      // 	success: (res) => {
+      // 		uni.showToast({
+      // 			title:'验收评价成功',
+      // 			icon:'none'
+      // 		});
+      // 		setTimeout(()=>{
+      // 			uni.navigateBack({
+      // 				delta: 1
+      // 			});
+      // 		},500)
+      // 	}
+      // })
     } },
 
   onLoad: function onLoad(option) {
-
+    console.log(option, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:343");
     this.getUploadToken();
-    if (option) {
-      this.orderID = option.orderID;
-      this.getOrderInfo(option.orderID);
-    }
+    this.orderID = option.orderID;
+    this.getOrderInfo(option.orderID);
+    console.log(this.repaitItem, " at pages\\tab-item-content\\shop-center\\create-comment\\create-comment.vue:347");
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 

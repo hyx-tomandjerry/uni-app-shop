@@ -1,13 +1,25 @@
-.title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #2a2a2a;
-  margin-bottom: 18px;
+
+page.data-v-a73cfbd2{
+		background:#fff;
 }
-.content {
-  font-size: 14px;
-  font-weight: 400;
-  color: #666666;
-  margin-bottom: 33px;
+.container.data-v-a73cfbd2{
+		padding:10px 13px 10px 14px;
+}
+.desc.data-v-a73cfbd2{
+		padding:10px 0;
+}
+.title.data-v-a73cfbd2{
+		font-size:20px;
+		font-weight: 600;
+		padding:10px 0;
+}
+.content.data-v-a73cfbd2{
+		width:100%
+}
+.content.data-v-a73cfbd2 ._img{
+        max-width: 100%;
+}
+.content.data-v-a73cfbd2 ._pre {
+		white-space: pre-wrap;
 }
 

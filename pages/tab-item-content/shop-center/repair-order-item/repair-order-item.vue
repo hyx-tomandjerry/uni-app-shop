@@ -49,8 +49,8 @@
 							<view class="text-grey">大象漆</view>
 						</view>
 						
-						<view class="repair-detail-list-item flex justify-between">
-							<view>门店地址</view>
+						<view class="repair-detail-list-item flex justify-between text-right">
+							<view style="width:26%;">门店地址</view>
 							<view class="text-grey">{{repaitItem.provinceName}}{{repaitItem.cityName}}{{repaitItem.districtName}}{{repaitItem.address}}</view>
 						</view>
 						
@@ -132,11 +132,13 @@
 						<text>报修附件</text>
 					</view>
 					<view  style="padding-top:13px;padding-bottom:12px;">
-						<view class="bg-white padding">
-							<view class="grid col-4 grid-square">
-								<view class="bg-img" v-for="(item,index) in avatar" :key="index" :style="[{ backgroundImage:'url(' + avatar[index] + ')' }]"></view>
-							</view>
-						</view>
+						<uni-grid :options="avatar" @click="viewImg()"></uni-grid>
+							<!-- <view class=" flex justify-start">
+								<image v-for="(item,index) in repaitItem.files" :key="index" :src="item.url" style="width:78px;height:78px;margin-right:12px;" @click="viewImg(item)"></image> -->
+								<!-- <view class="bg-img" v-for="(item,index) in repaitItem.files" :key="index"
+								 :style="[{ backgroundImage:'url(' + item.url + ')' }]"></view> -->
+							<!-- </view> -->
+						
 			
 					</view>
 				</view>
@@ -218,13 +220,17 @@
 </template>
 
 <script>
+	import uniGrid from '../../../../components/uni-grid/uni-grid.vue'
 	export default{
 		data(){
 			return{
-				avatar:['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'],
+				avatar:[],
 				modalName:null,
 				repaitItem:''
 			};
+		},
+		components: {
+			uniGrid
 		},
 		methods: {
 			tabSelect(e) {
@@ -238,20 +244,44 @@
 			hideModal(){
 				this.modalName=''
 			},
-			//获得详情
-			getRepairItem(id){
-				uni.request({
-					url:this.$store.state.url+'ServiceOrder',
-					data:{
-						id:id,
-						userId:49,
-						owner:18
-					},
-					success: (res) => {
-						
-						this.repaitItem=res.data.data;
+			viewImg(){
+				let imgList=[];
+				this.repaitItem.files.forEach(item=>{
+					if(item.postfix){
+						imgList.push(item.url)
 					}
 				})
+				uni.previewImage({
+					urls: imgList
+				})
+				
+			},
+			//获得详情
+			getRepairItem(id){
+				this.$ajax('ServiceOrder',{
+					id:id
+				},res=>{
+					this.repaitItem=res
+					res.files.forEach(item=>{
+						this.avatar.push({
+							image:item.url,
+							text:''
+						})
+					})
+					console.log(this.avatar)
+				})
+				// uni.request({
+				// 	url:this.$store.state.url+'ServiceOrder',
+				// 	data:{
+				// 		id:id,
+				// 		userId:49,
+				// 		owner:18
+				// 	},
+				// 	success: (res) => {
+				// 		
+				// 		this.repaitItem=res.data.data;
+				// 	}
+				// })
 			}
 		},
 		onLoad(option){
@@ -265,6 +295,7 @@
 
 
 <style lang="less">
+	
 	.cu-timeline>.cu-item>.content{
 		padding:0;
 	}

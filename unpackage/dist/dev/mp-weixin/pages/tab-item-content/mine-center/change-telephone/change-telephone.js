@@ -183,6 +183,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     inputCheckCard: function inputCheckCard() {
       //输入验证码
+      uni.navigateTo({
+        url: '../input-code/input-code' });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

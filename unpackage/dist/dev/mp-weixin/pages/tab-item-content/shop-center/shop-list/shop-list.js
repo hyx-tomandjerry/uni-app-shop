@@ -159,10 +159,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 var _this;var _default =
+
 {
   data: function data() {
     return {
@@ -173,8 +172,8 @@ var _this;var _default =
   },
   methods: {
     goBack: function goBack() {
-      uni.switchTab({
-        url: '../../../tab-item/index/index' });
+      uni.navigateBack({
+        delta: 1 });
 
     },
     InputFocus: function InputFocus(e) {
@@ -197,11 +196,10 @@ var _this;var _default =
       }
       this.icon = list;
     },
-    systemInfo: function systemInfo() {
-      _this = this;
+    systemInfo: function systemInfo() {var _this2 = this;
       uni.getSystemInfo({
         success: function success(res) {
-          _this.CustomBar = res.windowTop;
+          _this2.CustomBar = res.windowTop;
         } });
 
     },
@@ -218,20 +216,10 @@ var _this;var _default =
 
     },
     //获得门店列表
-    getShopList: function getShopList() {var _this2 = this;
-      uni.request({
-        url: this.$store.state.url + 'ProprietorShops',
-        data: {
-          //    owner:this.$store.state.userInfo.owner,
-          // userId:this.$store.state.userInfo.id
-          owner: 18,
-          userId: 49,
-          catalog: -1 },
-
-        success: function success(res) {
-          _this2.shopList = res.data.data;
-        } });
-
+    getShopList: function getShopList() {var _this3 = this;
+      this.$ajax('MyShops', { address: '' }, function (res) {
+        _this3.shopList = res;
+      });
     } },
 
   onLoad: function onLoad() {

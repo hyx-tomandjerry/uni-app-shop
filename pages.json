@@ -1,29 +1,164 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	     {
-	     	"path": "pages/tab-item/index/index",
-	     	"style": {
-	     		"navigationBarTitleText": "首页"
+	 {
+	      "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
+	      "style" : {
+	  		"navigationBarTitleText": "快递包裹"
+	  	}
+	  },
+	 
+	 {
+	     "path" : "pages/tab-item-content/shop-center/search-more-shop/search-more-shop",
+	     "style" : {
+	 		"navigationBarTitleText": "选择门店"
+	 	}
+	 },
+	 {
+	    "path" : "pages/login-design/login/login",
+	    "style": {
+	      "navigationBarTitleText": "门店助手"
+	    }
+	  },
+	 {
+	      "path" : "pages/tab-item/mine/mine",
+	      "style" : {
+	  		"navigationBarTitleText": "我的"
+	  	}
+	  },
+	  
+	  
+	 
+	   {
+	      "path" : "pages/tab-item-content/work-center/express-center/create-address/create-address",
+	      "style" : {
+	  		"navigationBarTitleText": "新增地址"
+	  	}
+	  },
+	  
+	 
+	  {
+	      "path" : "pages/tab-item-content/work-center/express-center/create-express/create-express",
+	      "style" : {
+	     	"navigationStyle":"custom",
+	     	"app-plus":{
+	     		"titleNView":false
 	     	}
-	     },
-		 {
-	          "path" : "pages/tab-item-content/mine-center/suggestion-list/suggestion-list",
-	          "style" : {
-				  "navigationStyle":"custom",
-				  "app-plus":{
-				  	"titleNView":false
+	     }
+	  },
+	  
+	  
+	   {
+	       "path" : "pages/tab-item-content/mine-center/basic-setting/basic-setting",
+	       "style" : {
+	   		"navigationStyle":"custom",
+	   		"app-plus":{
+	   			"titleNView":false
+	   		}
+	   	}
+	   },
+	   
+	  
+	
+	
+	{
+	      "path" : "pages/tab-item-content/mine-center/suggestion-list/suggestion-list",
+	      "style" : {
+	 				  "navigationStyle":"custom",
+	 				  "app-plus":{
+	 				  	"titleNView":false
+	 				  }
+	 			  }
+	  },
+	{
+	     "path" : "pages/tab-item-content/mine-center/edit-password/edit-password",
+	     "style" : {
+	 		"navigationStyle":"custom",
+	 		"app-plus":{
+	 			"titleNView":false
+	 		}
+	 	}
+	 }
+	 
+	 
+	 ,
+	
+	
+	
+	 
+	 
+	{
+	     "path" : "pages/tab-item/index/index",
+	     "style" : {
+					 "navigationBarTitleText": "首页"
+					  
 				  }
-			  }
-	      },
-		  {
-	          "path" : "pages/tab-item-content/mine-center/create-suggestion/create-suggestion",
-	          "style" : {
-	      		"navigationStyle":"custom",
-	      		"app-plus":{
-	      			"titleNView":false
-	      		}
-	      	}
-	      },
+	 },
+	{
+	    "path" : "pages/all-item-content/index-more/index-more",
+	    "style" : {
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
+			}
+		}
+	}
+	,
+	{
+	    "path" : "pages/tab-item-content/shop-center/shop-list/shop-list",
+	    "style" : {
+			"navigationBarTitleText": "我的门店"
+		}
+	},
+	
+		
+	
+	 
+	
+	{
+	    "path" : "pages/tab-item-content/mine-center/create-suggestion/create-suggestion",
+	    "style" : {
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
+			}
+		}
+	},
+	
+	
+	
+	
+	{
+	    "path" : "pages/tab-item-content/shop-center/create-comment/create-comment",
+	    "style" : {
+			"navigationBarTitleText": "发表评价"
+		}
+	},
+	
+	{
+	 "path" : "pages/tab-item/message/message",
+	 "style" : {
+		"navigationBarTitleText": "消息"
+	}
+	},
+	{
+	    "path" : "pages/tab-item-content/message-center/chat/chat",
+	    "style" : {
+	    	"navigationStyle":"custom",
+	    	"app-plus":{
+	    		"titleNView":false
+	    	}
+	    }
+	},
+	
+	  {
+	       "path" : "pages/login-design/design/design",
+	   	 "style": {
+	   		"navigationBarTitleText": "门店助手"
+	   	}
+	   },
+	  
+		
+		  
 		  
 		 {
 	          "path" : "pages/tab-item-content/shop-center/create-order/create-order",
@@ -78,21 +213,8 @@
 	      	}
 	      },
 		  
-		  {
-	       "path" : "pages/login-design/login/login",
-	       "style": {
-	         "navigationBarTitleText": "门店助手"
-	       }
-	     },
-		 {
-	         "path" : "pages/tab-item-content/shop-center/shop-list/shop-list",
-	         "style" : {
-	     		"navigationStyle":"custom",
-	     		"app-plus":{
-	     			"titleNView":false
-	     		}
-	     	}
-	     },
+		  
+		
 		 {
 	          "path" : "pages/tab-item-content/shop-center/near-shop-list/near-shop-list",
 	           "style": {
@@ -108,35 +230,16 @@
 		 
 		
 		
-	    {
-	        "path" : "pages/tab-item-content/mine-center/basic-setting/basic-setting",
-	        "style" : {
-	    		"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
-	    	}
-	    },
+	   
 		
-	  {
-	      "path" : "pages/tab-item/mine/mine",
-	      "style" : {
-	  		"navigationBarTitleText": "个人中心"
-	  	}
-	  },
+	
 	{
 	    "path" : "pages/tab-item-content/work-center/create-log/create-log",
 	    "style" : {
 			"navigationBarTitleText": "新增日志"
 		}
 	},
-	{
-	    "path" : "pages/login-design/design/design",
-		 "style": {
-			"navigationBarTitleText": "门店助手"
-		}
-
-	},
+	
 
 	{
 	    "path" : "pages/login-design/find-password/find-password",
@@ -152,13 +255,7 @@
 		}
 
 	}
-		,
-        {
-            "path" : "pages/tab-item/message/message",
-            "style" : {
-				"navigationBarTitleText": "消息"
-			}
-        }
+
 
        
 
@@ -168,12 +265,7 @@
 				"navigationBarTitleText": "店员列表"
 			}
         }
-        ,{
-            "path" : "pages/tab-item-content/shop-center/create-comment/create-comment",
-            "style" : {
-				"navigationBarTitleText": "发表评价"
-			}
-        }
+        
 
         ,{
             "path" : "pages/tab-item-content/shop-center/invite-join/invite-join",
@@ -193,15 +285,6 @@
             "path" : "pages/all-item-content/detail-content/detail-content",
             "style" : {
 				"navigationBarTitleText": "详情内容"
-			}
-        }
-        ,{
-            "path" : "pages/all-item-content/index-more/index-more",
-            "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
 			}
         }
         ,{
@@ -244,16 +327,42 @@
 			}
         }
         ,{
-            "path" : "pages/tab-item-content/mine-center/edit-password/edit-password",
+            "path" : "pages/tab-item-content/message-center/group-list/group-list",
             "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
+				"navigationBarTitleText": "群组列表"
+			}
+        }
+        
+        ,{
+            "path" : "pages/tab-item/work/work",
+            "style" : {
+				"navigationBarTitleText": "工作"
 			}
         }
         ,{
-            "path" : "pages/tab-item-content/shop-center/create-order2/create-order2",
+            "path" : "pages/tab-item-content/work-center/work-log/work-log",
+            "style" : {
+				"navigationBarTitleText": "工作日志"
+			}
+        }
+
+        ,{
+            "path" : "pages/tab-item-content/mine-center/change-name/change-name",
+             "style" : {
+            	"navigationStyle":"custom",
+            	"app-plus":{
+            		"titleNView":false
+            	}
+            }
+        }
+        ,{
+            "path" : "pages/tab-item-content/mine-center/cut-image/cut-image",
+            "style" : {
+				"navigationBarTitleText": "图片裁剪"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/mine-center/write-motto/write-motto",
             "style" : {
 				"navigationStyle":"custom",
 				"app-plus":{
@@ -261,35 +370,43 @@
 				}
 			}
         }
+
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar":{
+		"color":"black",
+		"selectedColor":"aqua",
+		"list":[
+			{
+				"pagePath":"pages/tab-item/index/index",
+				"iconPath":"static/img/tab_img/shouye.png",
+				"selectedIconPath":"static/img/tab_img/shouye_color.png",
+				"text":"首页"
+			},
+			{
+
+					"pagePath":"pages/tab-item/message/message",
+					"iconPath":"static/img/tab_img/xiaoxi.png",
+					"selectedIconPath":"static/img/tab_img/xiaoxi_color.png",
+					"text":"消息"
+			},
+			{
+			
+					"pagePath":"pages/tab-item/work/work",
+					"iconPath":"static/img/tab_img/gongzuo.png",
+					"selectedIconPath":"static/img/tab_img/gongzuo_color.png",
+					"text":"工作"
+			},
+			{
+				"pagePath":"pages/tab-item/mine/mine",
+				"iconPath":"static/img/tab_img/mine.png",
+				"selectedIconPath":"static/img/tab_img/mine_color.png",
+				"text":"个人中心"
+			}
+		]
 	}
-// 	"tabBar":{
-// 		"color":"black",
-// 		"selectedColor":"aqua",
-// 		"list":[
-// 			{
-// 				"pagePath":"pages/tab-item/index/index",
-// 				"iconPath":"static/img/tab_img/shouye.png",
-// 				"selectedIconPath":"static/img/tab_img/shouye_color.png",
-// 				"text":"首页"
-// 			},
-// 			{
-// 
-// 					"pagePath":"pages/tab-item/message/message",
-// 					"iconPath":"static/img/tab_img/message.png",
-// 					"selectedIconPath":"static/img/tab_img/message_color.png",
-// 					"text":"消息"
-// 			},
-// 			{
-// 				"pagePath":"pages/tab-item/mine/mine",
-// 				"iconPath":"static/img/tab_img/mine.png",
-// 				"selectedIconPath":"static/img/tab_img/mine_color.png",
-// 				"text":"个人中心"
-// 			}
-// 		]
-// 	}
 }

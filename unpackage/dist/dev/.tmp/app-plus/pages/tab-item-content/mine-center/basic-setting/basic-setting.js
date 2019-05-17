@@ -98,103 +98,181 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var MxDatePicker = function MxDatePicker() {return __webpack_require__.e(/*! import() | components/uni/mx-datepicker/mx-datepicker */ "components/uni/mx-datepicker/mx-datepicker").then(__webpack_require__.bind(null, /*! ../../../../components/uni/mx-datepicker/mx-datepicker.vue */ "../../../../../myapps/components/uni/mx-datepicker/mx-datepicker.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
-      userInfo: {} };
+      value: '',
+      type: 'rangetime',
+      radio: 'radio1',
+      sexList: ['男', '女'],
+      isChangeSex: false,
+      userInfo: {},
+      token: '', //上传头像的token
+      avatar: '',
+      birthday: '',
+      showPicker: false };
 
   },
   methods: {
+    writeMotto: function writeMotto() {
+      uni.navigateTo({
+        url: '../write-motto/write-motto' });
+
+    },
+    onSelected: function onSelected(e) {//选择
+      this.showPicker = false;
+      if (e) {
+        this[this.type] = e.value;
+        this.birthday = e.value.replace('/\//g', '-');
+      }
+
+    },
+    RadioChange: function RadioChange(e) {
+      this.radio = e.detail.value.substr(5, 1);
+      this.userInfo.gender = this.radio == 1 ? '男' : '女';
+    },
+    hideModal: function hideModal() {
+      this.isChangeSex = false;
+    },
+    tochangeMobile: function tochangeMobile() {
+      // 账号管理
+      uni.navigateTo({
+        url: '../account-manager/account-manager' });
+
+    },
+    changeName: function changeName() {
+      uni.navigateTo({
+        url: '../change-name/change-name' });
+
+    },
     goBack: function goBack() {
       uni.navigateBack({
         delta: 1 });
@@ -202,24 +280,118 @@ var _default =
     },
     getUserInfo: function getUserInfo() {var _this = this;
       uni.getStorage({
-        key: 'usrInfo',
+        key: 'userInfo',
         success: function success(res) {
           _this.userInfo = res.data;
+          console.log(_this.userInfo, " at pages\\tab-item-content\\mine-center\\basic-setting\\basic-setting.vue:186");
         } });
 
     },
+    //获得头像
+    getUserInfoAvatar: function getUserInfoAvatar() {var _this2 = this;
+      uni.getStorage({
+        key: 'logo',
+        success: function success(res) {
+          // console.log(res)
+          _this2.avatar = res.data;
+        } });
 
+    },
+    changeGender: function changeGender() {
+      this.isChangeSex = true;
+    },
+    //上㢟头像
+    uploadAvatar: function uploadAvatar() {
+      uni.chooseImage({
+        count: 1,
+        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function success(res) {
+          var src = res.tempFilePaths[0];
+          uni.navigateTo({
+            url: '../cut-image/cut-image?src=' + src });
+
+        } });
+
+    },
+    //获得头像图片
+    getAvater: function getAvater(id) {var _this3 = this;
+      this.$ajax('File', { id: id }, function (res) {
+        _this3.avatar = res;
+        uni.setStorage({
+          key: 'logo',
+          data: _this3.avatar });
+
+      });
+    },
+    //获得上传图片的token
+    getUploadToken: function getUploadToken() {var _this4 = this;
+      this.$ajax('UploadToken', {}, function (res) {
+        _this4.token = res;
+
+      });
+    },
     //退出登录
     quitEvent: function quitEvent() {
-      uni.clearStorage();
-      uni.navigateTo({
-        url: '../../../login-design/login/login' });
+      uni.removeStorage({
+        key: 'userInfo',
+        success: function success(res) {
+          uni.navigateTo({
+            url: '../../../login-design/login/login' });
 
+        } });
+
+
+    },
+    onShowDatePicker: function onShowDatePicker(type) {//显示
+      this.type = type;
+      this.showPicker = true;
+      this.value = this[type];
+    },
+    setUserInfo: function setUserInfo() {
+      console.log(this.userInfo.name, this.userInfo.mobile, this.radio, this.birthday, this.userInfo.motto, " at pages\\tab-item-content\\mine-center\\basic-setting\\basic-setting.vue:252");
+      this.$ajax('SetProfile', {
+        gender: this.radio,
+        mobile: this.userInfo.mobile,
+        name: this.userInfo.name,
+        motto: this.userInfo.motto,
+        birthday: this.birthday ? this.birthday : this.userInfo.birthday },
+      function (res) {
+        uni.showToast({
+          title: '编辑基本信息成功',
+          icon: 'none' });
+
+        setTimeout(function () {
+          uni.navigateBack({
+            delta: 1 });
+
+        }, 500);
+      });
     } },
 
-  onLoad: function onLoad() {
+  components: {
+    MxDatePicker: MxDatePicker },
+
+  onLoad: function onLoad() {var _this5 = this;
     this.getUserInfo();
-    console.log(this.userInfo, " at pages\\tab-item-content\\mine-center\\basic-setting\\basic-setting.vue:122");
+    this.getUserInfoAvatar();
+    this.$fire.on('image', function (res) {
+      // console.log(res)
+      if (res) {
+        _this5.getAvater(res);
+      }
+    });
+    this.$fire.on('name', function (res) {
+      if (res) {
+        _this5.userInfo.name = res;
+      }
+    });
+    this.$fire.on('motto', function (res) {
+      if (res) {
+        _this5.userInfo.motto = res;
+      }
+    });
+
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 
@@ -251,7 +423,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var f0 = _vm._f("formatTime")(_vm.userInfo.birthday, "YDM")
+  var f0 = _vm._f("formatTime")(_vm.userInfo.birthday, "YMD")
 
   _vm.$mp.data = Object.assign(
     {},

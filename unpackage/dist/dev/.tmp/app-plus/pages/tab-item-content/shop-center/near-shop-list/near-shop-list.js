@@ -132,65 +132,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default =
 {
   data: function data() {
     return {
       shopList: [],
-      shopAddress: '' };
+      shopAddress: '',
+      type: '' };
 
   },
   components: {},
 
 
-  onLoad: function onLoad(option) {
-    var _this = this;
-    uni.request({
-      url: this.$store.state.url + 'NearestShops',
-      data: {
-        // owner:_this.$store.state.userInfo.owner,
-        owner: 18,
-        userId: 49,
-        address: option.shopAddress,
-        size: 8 },
+  onLoad: function onLoad(options) {
 
-      success: function success(res) {
-        _this.shopList = res.data.data;
-      } });
-
+    this.type = options.type;
+    console.log(this.type, " at pages\\tab-item-content\\shop-center\\near-shop-list\\near-shop-list.vue:50");
+    this.getNearShopList();
   },
   methods: {
-    goBack: function goBack() {
-      uni.reLaunch({
-        url: '../create-order/create-order' });
+
+    //搜索更多
+    searchMore: function searchMore() {},
+    //新建地址
+    createAddress: function createAddress() {
+      uni.navigateTo({
+        url: "../../work-center/express-center/create-address/create-address" });
 
     },
-    choseShop: function choseShop(item) {
-      console.log(item, " at pages\\tab-item-content\\shop-center\\near-shop-list\\near-shop-list.vue:86");
-      uni.navigateTo({
-        url: '../create-order2/create-order2?shopID=' + item.id + "&shopName=" + item.name + "&shopAddress=" + item.provinceName + item.cityName + item.districtName + (item.address || '') });
-
+    getNearShopList: function getNearShopList() {var _this = this;
+      this.$ajax('MyShops', {
+        address: '' },
+      function (res) {
+        _this.shopList = res;
+        console.log(_this.shopList, " at pages\\tab-item-content\\shop-center\\near-shop-list\\near-shop-list.vue:68");
+      });
     },
-    toSearchShop: function toSearchShop() {
-      uni.navigateTo({
-        url: '../search-shop/search-shop' });
+    choseShop: function choseShop(item) {var _this2 = this;
+      uni.navigateBack({
+        delta: 1,
+        success: function success(res) {
+          _this2.$fire.fire('shop', item);
+        } });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))

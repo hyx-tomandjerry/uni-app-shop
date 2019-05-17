@@ -98,37 +98,40 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni/uni-tag/uni-tag */ "components/uni/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../../../components/uni/uni-tag/uni-tag.vue */ "../../../../../myapps/components/uni/uni-tag/uni-tag.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
@@ -136,7 +139,7 @@ var _default =
       subCategoryList: [],
       height: 0,
       categoryActive: 0,
-      categorySubActive: 0,
+      categorySubActive: 1000,
       scrollTop: 0,
       scrollHeight: 0,
       repairObj: {
@@ -149,43 +152,45 @@ var _default =
 
 
   },
+  components: {
+    uniTag: uniTag },
+
   methods: {
-    scroll: function scroll(e) {
-      this.scrollHeight = e.detail.scrollHeight;
-    },
-    categoryClickMain: function categoryClickMain(categroy, index) {
-      this.categoryActive = index;
-      this.categorySubActive = 0; //右边默认为第一个
-      this.subCategoryList = categroy.subCategoryList;
-      this.scrollTop = -this.scrollHeight * index;
-      if (this.subCategoryList.length > 0) {
-        this.repairObj.subID = this.subCategoryList[0].obj.id;
-      }
-
-
-
-    },
-    categoryClickSub: function categoryClickSub(categroy, index) {var _this2 = this;
-      this.categorySubActive = index;
-      this.scrollTop = -this.scrollHeight * index;
-      this.repairObj.subID = this.subCategoryList[index].obj.id;
-      this.list.forEach(function (item) {
-        if (_this2.repairObj.subID == item.id) {
-          _this2.repairObj.subName = item.val;
-        }
-        if (_this2.subCategoryList[index].obj.parent == item.id) {
-          _this2.repairObj.bigName = item.val;
-        }
-      });
-      // uni.reLaunch({
-      // 	url:'../create-order/create-order?subID='+this.repairObj.subID+"&subName="+this.repairObj.subName+"&bigName="+this.repairObj.bigName
-      // })
+    choseRepair: function choseRepair() {var _this2 = this;
       uni.navigateBack({
         delta: 1,
         success: function success(res) {
           _this2.$fire.fire('repair', _this2.repairObj);
         } });
 
+    },
+    scroll: function scroll(e) {
+      this.scrollHeight = e.detail.scrollHeight;
+    },
+    categoryClickMain: function categoryClickMain(categroy, index) {
+      this.categoryActive = index;
+      this.categorySubActive = 1000; //右边默认为第一个
+      this.subCategoryList = categroy.subCategoryList;
+      this.scrollTop = -this.scrollHeight * index;
+      this.repairObj = {
+        bigName: categroy.obj.val,
+        bigID: categroy.obj.id,
+        subID: '',
+        subName: ''
+
+        // console.log(this.repairObj)
+      };
+
+
+    },
+    categoryClickSub: function categoryClickSub(categroy, index) {
+      this.categorySubActive = index;
+      this.scrollTop = -this.scrollHeight * index;
+      this.repairObj = {
+        bigName: this.repairObj.bigName,
+        bigID: this.repairObj.bigID,
+        subID: categroy.obj.id,
+        subName: categroy.obj.val };
 
     },
     getCategory: function getCategory() {var _this3 = this;
@@ -213,13 +218,20 @@ var _default =
             var subList = [];
             for (var j = 0; j < subArray.length; j++) {
               if (subArray[j].parent == bigArray[i].id) {
-                subList.push({ "NAME": subArray[j].val, obj: subArray[j] });
+                subList.push({ "name": subArray[j].val, obj: subArray[j] });
               }
             }
-            _this3.categoryList.push({ "NAME": bigArray[i].val, "subCategoryList": subList, obj: bigArray[i] });
+            _this3.categoryList.push({ "name": bigArray[i].val, "subCategoryList": subList, obj: bigArray[i] });
           }
-          _this3.categoryList[0].subCategoryList.unshift({ "NAME": '维修明细类别选择', obj: {} });
           _this3.subCategoryList = _this3.categoryList[0].subCategoryList;
+
+          _this3.repairObj = {
+            bigName: _this3.categoryList[0].obj.val,
+            bigID: _this3.categoryList[0].obj.id,
+            subID: '',
+            subName: '' };
+
+
         } });
 
 

@@ -265,7 +265,7 @@
 		data() {
 			return {
 				TabCur:0,
-				tabList:['工作日志','叫快递','我的报修'],
+				tabList:['工作日志','快递包裹','我的报修'],
 			}
 		},
 		methods: {

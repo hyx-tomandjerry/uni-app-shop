@@ -98,7 +98,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var addressed = function addressed() {return __webpack_require__.e(/*! import() | components/jm-address/jm-address */ "components/jm-address/jm-address").then(__webpack_require__.bind(null, /*! ../../../../components/jm-address/jm-address.vue */ "../../../../../myapps/components/jm-address/jm-address.vue"));};
 
 
 
@@ -214,140 +214,324 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _cityData = _interopRequireDefault(__webpack_require__(/*! ../../../../static/js/city.data.js */ "../../../../../myapps/static/js/city.data.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modules/qiniu-js/dist/qiniu.min.js");var mpvuePicker = function mpvuePicker() {return __webpack_require__.e(/*! import() | components/city/mpvue-picker/mpvuePicker */ "components/city/mpvue-picker/mpvuePicker").then(__webpack_require__.bind(null, /*! ../../../../components/city/mpvue-picker/mpvuePicker.vue */ "../../../../../myapps/components/city/mpvue-picker/mpvuePicker.vue"));};var mpvueCityPicker = function mpvueCityPicker() {return Promise.all(/*! import() | components/city/mpvue-citypicker/mpvueCityPicker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/city/mpvue-citypicker/mpvueCityPicker")]).then(__webpack_require__.bind(null, /*! ../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue */ "../../../../../myapps/components/city/mpvue-citypicker/mpvueCityPicker.vue"));};var MxDatePicker = function MxDatePicker() {return __webpack_require__.e(/*! import() | components/uni/mx-datepicker/mx-datepicker */ "components/uni/mx-datepicker/mx-datepicker").then(__webpack_require__.bind(null, /*! ../../../../components/uni/mx-datepicker/mx-datepicker.vue */ "../../../../../myapps/components/uni/mx-datepicker/mx-datepicker.vue"));};var _default = { components: { mpvuePicker: mpvuePicker, mpvueCityPicker: mpvueCityPicker, MxDatePicker: MxDatePicker }, data: function data() {return { shop: { name: '', address: '', openDate: '', area: '', summary: '', province: '', city: 0, district: 0, contractor: '', //门店联系人
+
+
+
+
+
+
+
+
+
+
+
+
+
+var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modules/qiniu-js/dist/qiniu.min.js");var MxDatePicker = function MxDatePicker() {return __webpack_require__.e(/*! import() | components/uni/mx-datepicker/mx-datepicker */ "components/uni/mx-datepicker/mx-datepicker").then(__webpack_require__.bind(null, /*! ../../../../components/uni/mx-datepicker/mx-datepicker.vue */ "../../../../../myapps/components/uni/mx-datepicker/mx-datepicker.vue"));};var _default =
+
+{
+  components: {
+    addressed: addressed,
+    MxDatePicker: MxDatePicker },
+
+  data: function data() {
+    return {
+      isShow: false,
+      provinceDataList: [],
+      cityDataList: [],
+      areaDataList: [],
+
+      shop: {
+        province: '',
+        city: '',
+        area: '',
+        name: '',
+        address: '',
+        openDate: '',
+        summary: '',
+        contractor: '', //门店联系人
         telephone: '', //联系电话
-        coverID: '' }, category: { id: '', name: '' }, index: -1, imgList: [], coverList: [], mulLinkageTwoPicker: _cityData.default, cityPickerValueDefault: [0, 0, 1], cityLobal: '', themeColor: '#007AFF', mode: '', deepLength: 1, pickerValueDefault: [0], pickerValueArray: [], shoplist: ['喵喵喵', '汪汪汪', '哼唧哼唧'], titleValue: '', catalogList: [], provinceDate: [], cityData: [], districtData: [], type: 'rangetime', showPicker: false, value: '', openType: '', //日期类型
-      token: '', files: [] };}, computed: { getOpenDate: function getOpenDate() {var date = new Date();return this.format(date, 'YMD');} }, onLoad: function onLoad(option) {this.getProvince();this.getUploadToken();if (option && option.subID) {this.category = { id: option.subID, name: option.subName };} else if (option && option.bigID && !option.subID) {this.category = { id: option.bigID, name: option.bigName };}}, methods: { uploadCover: function uploadCover() {var _this2 = this;uni.chooseImage({ count: 1, //默认9
+        coverID: '' },
+
+
+      category: {
+        id: '',
+        name: '' },
+
+      index: -1,
+      imgList: [],
+      coverList: [],
+
+      cityLobal: '',
+      titleValue: '',
+      catalogList: [],
+      type: 'rangetime',
+      showPicker: false,
+      value: '',
+      openType: '', //日期类型
+      token: '',
+      files: [] };
+
+
+  },
+  computed: {
+    getOpenDate: function getOpenDate() {
+      var date = new Date();
+      return this.format(date, 'YMD');
+    } },
+
+  onLoad: function onLoad(option) {var _this = this;
+    this.getProvinceData();
+    this.getUploadToken();
+    uni.getStorage({
+      key: 'userInfo',
+      success: function success(res) {
+        console.log(res.data, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:189");
+        _this.shop.contractor = res.data.name;
+        _this.shop.telephone = res.data.account;
+      } });
+
+    // this.shop.contractor=this.$store.state.userInfo.name;
+    // this.shop.telephone=this.$store.state.userInfo.mobile;
+    // console.log(this.$store.state.userInfo)
+    if (option && option.subID) {
+      this.category = {
+        id: option.subID,
+        name: option.subName };
+
+    } else if (option && option.bigID && !option.subID) {
+      this.category = {
+        id: option.bigID,
+        name: option.bigName };
+
+    }
+    this.$fire.on('category', function (result) {
+      _this.category.name = result.name;
+      _this.category.id = result.id;
+    });
+
+  },
+  methods: {
+    //上传头像
+    uploadCover: function uploadCover() {var _this2 = this;
+      uni.chooseImage({
+        count: 1,
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
-        success: function success(res) {if (_this2.coverList.length != 0) {_this2.coverList = _this2.coverList.concat(res.tempFilePaths);} else {_this2.coverList = res.tempFilePaths;}var putExtra = { params: { 'x:owner': _this2.$store.state.userInfo.owner, 'x:creator': _this2.$store.state.userInfo.id, 'x:type': 26 // 'x:owner': 18,
-              // 'x:creator': 43,
-              // 'x:type':26,
-            } };var config = { useCdnDomain: false };var observer = qiniu.upload(res.tempFilePaths[0], 'oaks-1' + res.tempFilePaths[0].split('/')[3] + Math.random() * 100000 + '.jpg', _this2.token, putExtra, config);var subscription = observer.subscribe(function () {}, function () {}, function (res) {if (res.data != -1) {uni.showToast({ title: '上传成功', icon: 'none' });}_this2.shop.coverID = res.data;console.log(res.data, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:239");
-          });
+        success: function success(res) {
+          var tempFilePaths = res.tempFilePaths;
+          _this2.coverList = res.tempFilePaths;
+          uni.getStorage({
+            key: 'userInfo',
+            success: function success(res) {
+              var uploadTask = uni.uploadFile({
+                url: _this2.$store.state.uploadHostUrl + _this2.token,
+                filePath: tempFilePaths[0],
+                name: 'file',
+                formData: {
+                  'x:type': 26,
+                  'x:owner': res.data.owner,
+                  'x:creator': res.data.id },
+
+                success: function success(uploadFileRes) {
+
+                  var res = JSON.parse(uploadFileRes.data);
+                  _this2.shop.coverID = res.data;
+                  console.log(_this2.shop.coverID, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:240");
+                } });
+
+              uploadTask.onProgressUpdate(function (res) {
+                if (res.progress == 100) {
+                  uni.showToast({
+                    title: '上传成功',
+                    icon: 'none' });
+
+                }
+
+              }, function (error) {
+                uni.showToast({
+                  title: '上传失败',
+                  icon: 'none' });
+
+              });
+            } });
+
+
 
         } });
 
     },
+
+    childClick: function childClick(e) {
+      console.log(e, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:266");
+      this.shop.province = e.provinceID;
+      this.shop.city = e.cityID;
+      this.shop.district = e.districtID;
+    },
+    hideModal: function hideModal() {
+      this.isShow = false;
+      this.cityLobal = this.province.name + '-' + this.city.name + '-' + this.area.name;
+    },
+    areaChange: function areaChange() {var _this3 = this;
+      var index = document.getElementById("city").value;
+      this.areaDataList.forEach(function (item) {
+        if (item.id == index) {
+          _this3.area = item;
+        }
+      });
+    },
+    cityChange: function cityChange() {var _this4 = this;
+      var index = document.getElementById("city").value;
+      this.$ajax('Districts', {
+        parent: index },
+      function (res) {
+        _this4.areaDataList = res;
+        _this4.area = _this4.areaDataList[0];
+        _this4.cityDataList.forEach(function (item) {
+          if (item.id == index) {
+            _this4.city = item;
+            console.log(item.name, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:293");
+          }
+        });
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'Districts',
+      // 	data:{
+      // 		userId:this.$store.state.userInfo.id,
+      // 		owner:this.$store.state.userInfo.owner,
+      // 	    // owner:18,
+      // 	    // userId:49,
+      // 		parent:index
+      // 	},
+      // 	success:(res)=>{
+      // 		this.areaDataList=res.data.data;
+      // 		this.area=this.areaDataList[0];
+      // 		this.cityDataList.forEach(item=>{
+      // 			if(item.id==index){
+      // 				this.city=item;
+      // 				console.log(item.name)
+      // 			}
+      // 		})
+      // 	}
+      // })
+    },
+    provinceChange: function provinceChange() {var _this5 = this;
+      var index = document.getElementById("province").value;
+      this.$ajax('Districts', { parent: index }, function (res) {
+        _this5.cityDataList = res.data.data;
+        _this5.city = _this5.cityDataList[0];
+        _this5.provinceDataList.forEach(function (item) {
+          if (item.id == index) {
+            _this5.province = item;
+          }
+        });
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'Districts',
+      // 	data:{
+      // 		userId:this.$store.state.userInfo.id,
+      // 		owner:this.$store.state.userInfo.owner,
+      // 	    // owner:18,
+      // 	    // userId:49,
+      // 		parent:index
+      // 	},
+      // 	success:(res)=>{
+      // 		this.cityDataList=res.data.data;
+      // 		this.city=this.cityDataList[0];
+      // 		this.provinceDataList.forEach(item=>{
+      // 			if(item.id==index){
+      // 				this.province=item
+      // 			}
+      // 		})
+      // 	}
+      // })
+    },
+    // 			uploadCover(){
+    //
+    // 				uni.chooseImage({
+    // 					count: 1, //默认9
+    // 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+    // 					sourceType: ['album'], //从相册选择
+    // 					success: (res) => {
+    // 					if (this.coverList.length != 0) {
+    // 						this.coverList = this.coverList.concat(res.tempFilePaths)
+    // 					} else {
+    // 						this.coverList = res.tempFilePaths
+    // 					}
+    //
+    //
+    // 					var formData = new FormData();
+    // 					formData.append("x:type", 26);
+    // 					formData.append("x:owner", 18);
+    // 					formData.append("x:creator", 43);
+    // 					formData.append("file", res.tempFiles[0]);
+    // 					console.log(formData)
+    //
+    // 					uni.uploadFile({
+    // 						url:this.$store.state.uploadHostUrl+this.token,
+    // 						filePath :res.tempFilePaths[0],
+    // 						name :'oaks-1'+res.tempFilePaths[0].split('/')[3]+Math.random()*100000,
+    // 						formData:formData,
+    // 						success:(res)=> {
+    // 							console.log(res)
+    // 						},
+    // 						fail:(res)=>{
+    // 							console.log(res)
+    // 						}
+    // 					})
+    //
+    //
+    // 						var putExtra={
+    // 							params:{
+    // 								// 'x:owner': this.$store.state.userInfo.owner,
+    // 								// 'x:creator': this.$store.state.userInfo.id,
+    // 								'x:type':26,
+    // 								'x:owner': 18,
+    // 								'x:creator': 43,
+    // 								// 'x:type':26,
+    // 							}
+    // 						}
+    // 						var config={
+    // 							useCdnDomain: false
+    // 						}
+    // 						console.log(res.tempFiles[0])
+    //
+    //
+    // // 						var imgFile = new window.File([res.tempFiles[0]], 'oaks-1'+res.tempFilePaths[0].split('/')[3]+Math.random()*100000, {type: "text/plain"});
+    // // 						console.log(imgFile)
+    // //
+    // //
+    // // 						var observer=qiniu.upload(imgFile, 'oaks-1'+res.tempFilePaths[0].split('/')[3]+Math.random()*100000+'.png', this.token, putExtra, config);
+    // // 						 var subscription = observer.subscribe(
+    // // 						   ()=>{
+    // //
+    // // 						   },
+    // // 						   ()=>{
+    // //
+    // // 						   },
+    // // 						   (res)=>{
+    // // 							  if(res.data!=-1){
+    // // 								  uni.showToast({
+    // // 									title:'上传成功',
+    // // 									icon:'none'
+    // // 								  })
+    // // 							  }
+    // // 							 this.shop.coverID=res.data
+    // // 							 console.log(res.data)
+    // //
+    // // 						   }
+    // // 						 );
+    //
+    //
+    //
+    // 					}
+    // 				})
+    // 			},
     //验证电话号码
     checkTelEvent: function checkTelEvent(event) {
-      console.log(event, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:248");
+      console.log(event, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:432");
       if (event) {
-        if (/^1[34578]\d{9}$/.test(event)) {
+        if (/^[1][3,4,5,7,8][0-9]{9}$/.test(event)) {
 
           uni.showToast({
             title: '电话号码不存在',
@@ -363,241 +547,262 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
 
     },
     //获得品牌类别
-    getCatalog: function getCatalog() {var _this3 = this;
-      uni.request({
-        url: this.$store.state.url + 'Constants',
-        data: {
-          userId: this.$store.state.userInfo.id,
-          owner: this.$store.state.userInfo.owner,
-          // owner:18,
-          // userId:49,
-          type: 39,
-          // type: this.$store.state.constants.repair_type,
-          parent: -1,
-          objects: 1 },
-
-        success: function success(res) {
-          _this3.catalogList = res.data.data;
-        } });
-
+    getCatalog: function getCatalog() {var _this6 = this;
+      this.$ajax('Constants', {
+        type: this.$store.state.constants.repair_type,
+        parent: -1,
+        objects: 1 },
+      function (res) {
+        _this6.catalogList = res;
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'Constants',
+      // 	data:{
+      // 	    userId:this.$store.state.userInfo.id,
+      // 		owner: this.$store.state.userInfo.owner,
+      // 		// owner:18,
+      // 		// userId:49,
+      // 		type:39,
+      // 		// type: this.$store.state.constants.repair_type,
+      // 		parent: -1,
+      // 		objects: 1
+      // 	},
+      // 	success:(res) => {
+      // 		this.catalogList=res.data.data;
+      // 	}
+      // })
     },
     onSelected: function onSelected(e) {//选择
       this.showPicker = false;
       if (e) {
         this[this.type] = e.value;
-        if (this.openType == 'enter') {
-          this.shop.enterData = e.value;
-        } else if (this.openType == 'open') {
-          this.shop.openDate = e.value;
-        }
+        this.shop.openDate = e.value.replace(/\//g, '-');
 
       }
 
     },
-    onShowDatePicker: function onShowDatePicker(type, sys) {//显示
-      this.openType = sys;
+    onShowDatePicker: function onShowDatePicker(type) {//显示
       this.type = type;
       this.showPicker = true;
       this.value = this[type];
     },
     // 三级联动选择
     showMulLinkageThreePicker: function showMulLinkageThreePicker() {
-      this.$refs.mpvueCityPicker.show();
+
+      this.isShow = true;
     },
-    onConfirm: function onConfirm(e) {var _this4 = this;
-      var _this = this;
-      this.cityLobal = e.label;
-      this.pickerText = JSON.stringify(e);
-      var array = this.cityLobal.split('-');
-      var provinceItem = array[0];
-      var cityItem = array[1];
-      var districtItem = array[2];
-      this.provinceDate.forEach(function (item) {
-        if (item.name == provinceItem) {
-          _this4.shop.province = item.id;
-          uni.request({
-            url: _this4.$store.state.url + 'Districts',
-            data: {
-              userId: _this4.$store.state.userInfo.id,
-              owner: _this4.$store.state.userInfo.owner,
-              // owner:18,
-              // userId:49,
-              parent: item.id },
-
-
-            success: function success(cityData) {
-              cityData.data.data.forEach(function (citys) {
-                if (citys.name == cityItem) {
-                  _this.shop.city = citys.id;
-                  uni.request({
-                    url: _this4.$store.state.url + 'Districts',
-                    data: {
-                      userId: _this4.$store.state.userInfo.id,
-                      owner: _this4.$store.state.userInfo.owner,
-                      // owner:18,
-                      // userId:49,
-                      parent: citys.id },
-
-
-                    success: function success(districtData) {
-                      districtData.data.data.forEach(function (districts) {
-                        if (districts.name == districtItem) {
-                          _this.shop.district = districts.id;
-
-                        }
-                      });
-                    } });
-
-                }
-              });
-            } });
-
-        }
-      });
-    },
-    onCancel: function onCancel(e) {
-
-    },
-    recordShop: function recordShop() {
-      if (!this.category.id || !this.shop.name || !this.shop.province || !this.shop.address) {
-        uni.showToast({
-          title: '请填写完整信息',
-          icon: 'none' });
-
-      } else {
-
-        uni.request({
-          url: this.$store.state.url + 'NewProprietorShop',
-          data: {
-            userId: this.$store.state.userInfo.id,
-            owner: this.$store.state.userInfo.owner,
-            // owner:18,
-            // userId:49,
-            catalog: this.category.id,
-            name: this.shop.name,
-            area: this.shop.area,
-            address: this.shop.address,
-            duedate: this.shop.openDate ? this.shop.openDate : this.getOpenDate,
-            summary: this.shop.summary ? this.shop.summary : '',
-            province: this.shop.province,
-            city: this.shop.city,
-            district: this.shop.district,
-            telephone: this.shop.telephone,
-            contactor: this.shop.contractor,
-            files: this.files ? this.files.join(',') : '',
-            coverurl: this.shop.coverID,
-            status: 3,
-            type: 2 },
-
-          success: function success(res) {
+    recordShop: function recordShop() {var _this7 = this;
+      uni.getStorage({
+        key: 'userInfo',
+        success: function success(info) {
+          if (!_this7.category.id || !_this7.shop.name || !_this7.shop.province || !_this7.shop.address) {
             uni.showToast({
-              title: '录入门店成功',
+              title: '请填写完整信息',
               icon: 'none' });
 
-            setTimeout(function () {
-              uni.navigateTo({
-                url: '../shop-list/shop-list' });
+          } else {
+            _this7.$ajax('NewProprietorShop', {
+              manager: info.data.id,
+              brand: _this7.category.id,
+              name: _this7.shop.name,
+              area: _this7.shop.area,
+              address: _this7.shop.address,
+              duedate: _this7.shop.openDate ? _this7.shop.openDate : _this7.getOpenDate,
+              summary: _this7.shop.summary ? _this7.shop.summary : '',
+              province: _this7.shop.province,
+              city: _this7.shop.city,
+              district: _this7.shop.district,
+              coverurl: _this7.shop.coverID,
+              status: 3,
+              type: 2 },
+            function (res) {
+              uni.showToast({
+                title: '录入门店成功',
+                icon: 'none' });
 
-            }, 500);
-          } });
+              setTimeout(function () {
+                uni.navigateBack({
+                  delta: 1,
+                  success: function success(res) {
+                    _this7.$fire.fire('record-shop');
+                  } });
 
-      }
-    },
-    onBackPress: function onBackPress() {
-      if (this.$refs.mpvuePicker.showPicker) {
-        this.$refs.mpvuePicker.pickerCancel();
-        return true;
-      }
-      if (this.$refs.mpvueCityPicker.showPicker) {
-        this.$refs.mpvueCityPicker.pickerCancel();
-        return true;
-      }
-    },
-    onUnload: function onUnload() {
-      if (this.$refs.mpvuePicker.showPicker) {
-        this.$refs.mpvuePicker.pickerCancel();
-      }
-      if (this.$refs.mpvueCityPicker.showPicker) {
-        this.$refs.mpvueCityPicker.pickerCancel();
-      }
-    },
-
-    //获得省市区
-    getProvince: function getProvince() {var _this5 = this;
-      uni.request({
-        url: this.$store.state.url + 'Districts',
-        data: {
-          userId: this.$store.state.userInfo.id,
-          owner: this.$store.state.userInfo.owner,
-          // owner:18,
-          // userId:49,
-          parent: 0 },
-
-        success: function success(res) {
-          _this5.provinceDate = res.data.data;
-
+              }, 500);
+            });
+            // uni.request({
+            // 	url:this.$store.state.url+'NewProprietorShop',
+            // 	data:{
+            // 		userId:this.$store.state.userInfo.id,
+            // 		owner:this.$store.state.userInfo.owner,
+            //                        // owner:18,
+            //                        // userId:49,
+            // 		manager:this.$store.state.userInfo.id,
+            // 		brand:this.category.id,
+            // 		name:this.shop.name,
+            // 		area:this.shop.area,
+            // 		address:this.shop.address,
+            // 		duedate:this.shop.openDate?this.shop.openDate:this.getOpenDate,
+            // 		summary:this.shop.summary?this.shop.summary:'',
+            // 		province:this.shop.province,
+            // 		city:this.shop.city,
+            // 		district:this.shop.district,
+            // 		// telephone:this.shop.telephone,
+            // 		// contactor:this.shop.contractor,
+            // 		files:this.files?this.files.join(','):'',
+            // 		coverurl:this.shop.coverID,
+            // 		status:3,
+            // 		type:2
+            // 	},
+            // 	success: (res) => {
+            // 		uni.showToast({
+            // 			title:'录入门店成功',
+            // 			icon:'none'
+            // 		})
+            // 		setTimeout(()=>{
+            // 			uni.navigateTo({
+            // 				url:'../shop-list/shop-list'
+            // 			})
+            // 		},500)
+            // 	}
+            // })
+          }
         } });
 
+
+    },
+    //获得省市区
+    getProvinceData: function getProvinceData() {var _this8 = this;
+      this.$ajax('Districts', { parent: 0 }, function (res) {
+        _this8.provinceDataList = res;
+        _this8.province = _this8.provinceDataList[0];
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'Districts',
+      // 	data:{
+      // 		userId:this.$store.state.userInfo.id,
+      // 		owner:this.$store.state.userInfo.owner,
+      // 	    // owner:18,
+      // 	    // userId:49,
+      // 		parent:0
+      // 	},
+      // 	success:(res)=>{
+      // 		this.provinceDataList=res.data.data;
+      // 		this.province=this.provinceDataList[0];
+      // 	}
+      // })
     },
     goBack: function goBack() {
       uni.navigateBack({
         delta: 1 });
 
     },
-    ChooseImageEvent: function ChooseImageEvent() {var _this6 = this;
+    chooseImageEvent: function chooseImageEvent() {var _this9 = this;
       uni.chooseImage({
-        count: 9, //默认9
+        count: 9,
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
         success: function success(res) {
-          console.log(res, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:453");
-          if (_this6.imgList.length != 0) {
-            _this6.imgList = _this6.imgList.concat(res.tempFilePaths);
+          var tempFilePaths = res.tempFilePaths;
+          if (_this9.imgList.length != 0) {
+            _this9.imgList = _this9.imgList.concat(res.tempFilePaths);
           } else {
-            _this6.imgList = res.tempFilePaths;
+            _this9.imgList = res.tempFilePaths;
           }
+          uni.getStorage({
+            key: 'userInfo',
+            success: function success(info) {
+              for (var i = 0; i < res.tempFilePaths.length; i++) {
+                var uploadTask = uni.uploadFile({
+                  url: _this9.$store.state.uploadHostUrl + _this9.token,
+                  filePath: tempFilePaths[i],
+                  name: 'file',
+                  formData: {
+                    'x:type': 26,
+                    'x:owner': info.data.owner,
+                    'x:creator': info.data.id },
 
-          var putExtra = {
-            params: {
-              'x:owner': _this6.$store.state.userInfo.owner,
-              'x:creator': _this6.$store.state.userInfo.id,
-              // 'x:type':this.$store.state.constants.shop_file,
-              // 'x:owner':18,
-              // 'x:creator':49,
-              'x:type': 26 } };
+                  success: function success(uploadFileRes) {
+                    var res = JSON.parse(uploadFileRes.data);
+                    _this9.files.push(res.data);
+                  } });
 
+                uploadTask.onProgressUpdate(function (res) {
+                  if (res.progress == 100) {
+                    uni.showToast({
+                      title: '上传成功',
+                      icon: 'none' });
 
+                  }
+                }, function (error) {
+                  uni.showToast({
+                    title: '上传失败',
+                    icon: 'none' });
 
-          var config = {
-            useCdnDomain: false };
-
-          for (var i = 0; i < res.tempFilePaths.length; i++) {
-            // res.tempFilePaths[i].split('/')[3]+'.jpg'
-
-            var observer = qiniu.upload(res.tempFilePaths[i], 'oaks-1' + res.tempFilePaths[i].split('/')[3] + Math.random() * 100000 + '.jpg', _this6.token, putExtra, config);
-            var subscription = observer.subscribe(
-            function () {
-
-            },
-            function () {
-
-            },
-            function (res) {
-              _this6.files.push(res.data);
-              console.log(res, " at pages\\tab-item-content\\shop-center\\record-shop\\record-shop.vue:487");
-              if (_this6.files.length === _this6.imgList.length) {
-                uni.showToast({
-                  title: '上传成功',
-                  icon: 'success' });
-
+                });
               }
-            });
+            } });
 
-          }
+
+
 
         } });
 
+
     },
+    // 			ChooseImageEvent() {
+    // 				uni.chooseImage({
+    // 					count: 9, //默认9
+    // 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+    // 					sourceType: ['album'], //从相册选择
+    // 					success: (res) => {
+    // 						console.log(res)
+    // 						if (this.imgList.length != 0) {
+    // 							this.imgList = this.imgList.concat(res.tempFilePaths)
+    // 						} else {
+    // 							this.imgList = res.tempFilePaths
+    // 						}
+    //
+    // 						var putExtra={
+    // 							params:{
+    // 								// 'x:owner': this.$store.state.userInfo.owner,
+    // 								// 'x:creator': this.$store.state.userInfo.id,
+    // 								// 'x:type':this.$store.state.constants.shop_file,
+    //                                 'x:owner':18,
+    //                                 'x:creator':49,
+    //                                 'x:type':26,
+    // 							}
+    // 						}
+    //
+    // 						var config={
+    // 							 useCdnDomain: false
+    // 						}
+    // 						for(var i=0;i<res.tempFilePaths.length;i++){
+    // 							// res.tempFilePaths[i].split('/')[3]+'.jpg'
+    //
+    // 							var observer=qiniu.upload(res.tempFilePaths[i],'oaks-1'+res.tempFilePaths[i].split('/')[3]+Math.random()*100000+'.jpg' , this.token, putExtra, config);
+    // 							var subscription = observer.subscribe(
+    // 							  ()=>{
+    //
+    // 							  },
+    // 							  ()=>{
+    //
+    // 							  },
+    // 							  (res)=>{
+    // 									this.files.push(res.data)
+    // 									console.log(res)
+    // 									if(this.files.length===this.imgList.length){
+    // 										uni.showToast({
+    // 											title:'上传成功',
+    // 											icon:'success'
+    // 										})
+    // 									}
+    // 							  }
+    // 							);
+    // 						}
+    //
+    // 					},
+    // 				})
+    // 			},
     ViewImage: function ViewImage(e, type) {
       if (type == 'cover') {
         uni.previewImage({
@@ -612,7 +817,7 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
       }
 
     },
-    DelImg: function DelImg(event, type) {var _this7 = this;
+    DelImg: function DelImg(event, type) {var _this10 = this;
       uni.showModal({
         content: '确定删除？',
         cancelText: '取消',
@@ -620,43 +825,61 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
         success: function success(res) {
           if (res.confirm) {
             if (type == 'cover') {
-              _this7.coverList.splice(event, 1);
-              uni.request({
-                url: _this7.$store.state.url + 'RemoveFiles',
-                data: {
-                  id: _this7.files[event],
-                  // owner:18,
-                  // userId:49,
-                  userId: _this7.$store.state.userInfo.id,
-                  owner: _this7.$store.state.userInfo.owner },
+              _this10.coverList.splice(event, 1);
+              _this10.$ajax('RemoveFiles', {
+                id: _this10.files[event] },
+              function (res) {
+                _this10.files.splice(event, 1);
+                uni.showToast({
+                  title: '删除成功',
+                  icon: 'none' });
 
-                success: function success(res) {
-                  _this7.files.splice(event, 1);
-                  uni.showToast({
-                    title: '删除成功',
-                    icon: 'none' });
-
-                } });
-
+              });
+              // uni.request({
+              // 	url:this.$store.state.url+'RemoveFiles',
+              // 	data:{
+              // 		id:this.files[event],
+              // 		// owner:18,
+              // 		// userId:49,
+              // 		userId:this.$store.state.userInfo.id,
+              // 		owner:this.$store.state.userInfo.owner,
+              // 	},
+              // 	success: (res) => {
+              // 		this.files.splice(event,1)
+              // 		uni.showToast({
+              // 			title:'删除成功',
+              // 			icon:'none'
+              // 		})
+              // 	}
+              // })
             } else if (type == 'file') {
-              _this7.imgList.splice(event, 1);
-              uni.request({
-                url: _this7.$store.state.url + 'RemoveFiles',
-                data: {
-                  id: _this7.files[event],
-                  userId: _this7.$store.state.userInfo.id,
-                  owner: _this7.$store.state.userInfo.owner
-                  // owner:18,
-                  // userId:49,
-                },
-                success: function success(res) {
-                  _this7.files.splice(event, 1);
-                  uni.showToast({
-                    title: '删除成功',
-                    icon: 'none' });
+              _this10.imgList.splice(event, 1);
+              _this10.$ajax('RemoveFiles', {
+                id: _this10.files[event] },
+              function (res) {
+                _this10.files.splice(event, 1);
+                uni.showToast({
+                  title: '删除成功',
+                  icon: 'none' });
 
-                } });
-
+              });
+              // uni.request({
+              // 	url:this.$store.state.url+'RemoveFiles',
+              // 	data:{
+              // 		id:this.files[event],
+              // 		userId:this.$store.state.userInfo.id,
+              // 		owner:this.$store.state.userInfo.owner,
+              //                                 // owner:18,
+              //                                 // userId:49,
+              // 	},
+              // 	success: (res) => {
+              // 		this.files.splice(event,1)
+              // 		uni.showToast({
+              // 			title:'删除成功',
+              // 			icon:'none'
+              // 		})
+              // 	}
+              // })
             }
 
           }
@@ -665,13 +888,16 @@ var qiniu = __webpack_require__(/*! qiniu-js */ "../../../../../myapps/node_modu
     },
 
     //获得上传图片的token
-    getUploadToken: function getUploadToken() {var _this8 = this;
-      uni.request({
-        url: this.$store.state.url + 'UploadToken',
-        success: function success(res) {
-          _this8.token = res.data.data;
-        } });
-
+    getUploadToken: function getUploadToken() {var _this11 = this;
+      this.$ajax('UploadToken', {}, function (res) {
+        _this11.token = res;
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'UploadToken',
+      // 	success: (res) => {
+      // 		this.token=res.data.data
+      // 	}
+      // })
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 

@@ -140,12 +140,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
       isInput: false, //是否输入账号,
       checkTel: false,
+      isSend: false, //是否发送验证码
+      num: 60,
       designer: {
         mobile: '',
         vcode: '' } };
@@ -159,26 +173,68 @@ var _default =
 
   },
   methods: {
-    //重置密码
-    toResetPassword: function toResetPassword() {
-      if (this.checkTel) {
-        uni.navigateTo({
-          url: '../reset-password/reset-password' });
+    sendMessage: function sendMessage() {var _this = this;
+      //发送验证码
 
-      } else {
+
+      console.log('kkkk', " at pages\\login-design\\find-password\\find-password.vue:80");
+      if (!this.designer.mobile) {
         uni.showToast({
-          title: '号码不存在',
+          title: '请输入电话号码',
           icon: 'none' });
 
-        return;
+      } else {
+        this.isSend = true;
+        this.$ajax('SendVerCode', { mobile: this.designer.mobile }, function (res) {
+          console.log(res, " at pages\\login-design\\find-password\\find-password.vue:89");
+          uni.showToast({
+            title: '短信已发送，请注意接受',
+            icon: 'none' });
+
+        }, false);
+        setInterval(function () {
+          if (_this.num >= 0) {
+            _this.num--;
+            if (_this.num == 0) {
+              _this.isSend = false;
+            }
+          }
+
+        }, 1000);
+
       }
+
+
+
+
+
+    },
+    //重置密码
+    toResetPassword: function toResetPassword() {
+      if (!this.designer.vcode) {
+        uni.showToast({
+          title: '请输入验证码',
+          icon: 'none' });
+
+      } else {
+        uni.navigateTo({
+          url: '../reset-password/reset-password?mobile=' + this.designer.mobile + '&vcode=' + this.designer.vcode });
+
+      }
+
 
     },
     checkTelEvent: function checkTelEvent(event) {
       if (event) {
-        if (/^1[34578]\d{9}$/.test(event)) {
-          this.checkTel = true;
+        if (!/^1[34578]\d{9}$/.test(event)) {
+          uni.showToast({
+            title: '电话号码不存在',
+            icon: 'none' });
 
+          this.checkTel = true;
+          return;
+        } else {
+          this.checkTel = false;
         }
       }
     } } };exports.default = _default;

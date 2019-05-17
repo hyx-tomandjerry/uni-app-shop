@@ -1,3 +1,6 @@
+page {
+  background: #fff;
+}
 .header-content {
   padding: 15px 14px;
   border-bottom: 1px solid #EEEEED;

@@ -1,0 +1,7 @@
+page {
+  background: #fff;
+}
+.group-content .group-content-list {
+  padding: 10px 20px;
+}
+

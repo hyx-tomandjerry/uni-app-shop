@@ -1,0 +1,19 @@
+page {
+  background: #fff;
+}
+.inputactive {
+  color: #42b0ed;
+}
+.suggestion-content {
+  padding-top: 18px;
+  padding-right: 11px;
+  padding-left: 14px;
+}
+.suggestion-content .suggestion-content-title {
+  font-size: 18px;
+  font-family: PingFangSC-Semibold;
+  font-weight: 600;
+  color: #2a2a2a;
+  margin-bottom: 12px;
+}
+

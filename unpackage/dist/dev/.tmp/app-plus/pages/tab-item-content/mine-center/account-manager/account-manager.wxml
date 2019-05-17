@@ -1,1 +1,1 @@
-<view style="border-top:1px solid #EEEEED;" bind:__l="__l"><view class="telephone-content"><view class="title">您已经绑定手机号码</view><view class="telephone-title">188****488</view><view class="change cu-btn round"><view>更换手机号码</view></view></view></view>
+<view style="border-top:1px solid #EEEEED;" bind:__l="__l"><view class="telephone-content"><view class="title">您已经绑定手机号码</view><view class="telephone-title">188****488</view><view data-event-opts="{{[['tap',[['changeTel']]]]}}" class="change cu-btn round" bindtap="__e"><view>更换手机号码</view></view></view></view>

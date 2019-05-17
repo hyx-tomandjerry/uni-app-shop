@@ -8,8 +8,9 @@
 				<view class="cu-form-group position_relative">
 					<view class="text-gray"><text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text></view>
 
-					<input type="text" placeholder="请输入手机号" v-model="designer.mobile" @blur="checkTelEvent(designer.mobile)">
-					<text class="cuIcon-roundclose position_absolute" style="right:44rpx;" v-show="isInput"></text>
+					<input type="text" placeholder="请输入手机号" v-model="designer.mobile" 
+					@blur="checkTelEvent(designer.mobile)">
+					<!-- <text class="cuIcon-roundclose position_absolute" style="right:44rpx;" v-show="isInput"></text> -->
 				</view>
 
 				<view class="cu-form-group position_relative">
@@ -17,10 +18,21 @@
 
 					<input type="text" placeholder="请输入验证码" v-model="designer.vcode">
 					<view class="position_absolute">
-						<button class="cu-btn block bg-blue margin-tb-sm"
-						style="background:rgba(66,176,237,1);border-radius:4px;height:28px;line-height:28px;">
-						<text class="code">获取验证码</text>
+						
+						<button class="cu-btn block bg-gray margin-tb-sm" 
+							disabled="true"
+							v-if="isSend"
+							style="background:#EEEEED;border-radius:4px;height:28px;line-height:28px;">
+							<text style="color:gray">重新发送({{num}})</text>
 						</button>
+						<button class="cu-btn block bg-blue margin-tb-sm"
+							@click="sendMessage()"
+							v-else
+							:disabled="checkTel"
+							style="background:rgba(66,176,237,1);border-radius:4px;height:28px;line-height:28px;">
+							<text class="code" style="color:#fff;">发送验证码</text>
+						</button>
+						
 					</view>
 				</view>
 
@@ -46,6 +58,8 @@
 			return{
 				isInput:false,//是否输入账号,
 				checkTel:false,
+				isSend:false,//是否发送验证码
+				num:60,
 				designer:{
 					mobile:'',
 					vcode:''
@@ -59,27 +73,69 @@
 
 		},
 		methods:{
-			//重置密码
-			toResetPassword(){
-				if(this.checkTel){
-					uni.navigateTo({
-						url:'../reset-password/reset-password'
-					})
-				}else{
+			sendMessage(){
+				//发送验证码
+				
+				
+				console.log('kkkk')
+				if(!this.designer.mobile){
 					uni.showToast({
-						title:'号码不存在',
+						title:'请输入电话号码',
 						icon:'none'
 					})
-					return;
+				}else{
+					this.isSend=true;
+					this.$ajax('SendVerCode',{mobile:this.designer.mobile},res=>{
+						console.log(res)
+						uni.showToast({
+							title:'短信已发送，请注意接受',
+							icon:'none'
+						})
+					},false)
+					setInterval(()=>{
+						if(this.num>=0){
+							this.num--;
+							if(this.num==0){
+								this.isSend=false;
+							}
+						}
+						
+					},1000)
+					
 				}
+				
+				
+				
+				
+				
+			},
+			//重置密码
+			toResetPassword(){
+				if(!this.designer.vcode){
+					uni.showToast({
+						title:'请输入验证码',
+						icon:'none'
+					})
+				}else{
+					uni.navigateTo({
+						url:'../reset-password/reset-password?mobile='+this.designer.mobile+'&vcode='+this.designer.vcode
+					})
+				}
+				
 				
 			},
 			checkTelEvent(event){
 				if(event){
-					if((/^1[34578]\d{9}$/.test(event))){ 
+					if(!(/^1[34578]\d{9}$/.test(event))){ 
+						uni.showToast({
+							title:'电话号码不存在',
+							icon:'none'
+						})
 						this.checkTel=true;
-			
-					} 
+						return
+					} else{
+						this.checkTel=false;
+					}
 				}
 			},
 		}

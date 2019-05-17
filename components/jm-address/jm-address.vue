@@ -7,8 +7,8 @@
 	<view>
 		<!-- 选择地址展示 -->
 		<view @tap="showAddress">
-			<text v-if="coname">{{coname}} - {{ctname}} - {{csname}}</text>
-			<text v-else class="cuIcon-right" style="font-size:20px;"></text>
+			<text v-if="coname" style="font-size:13px;">{{coname}} - {{ctname}} - {{csname}}</text>
+			<text v-else class="cuIcon-right" style="font-size:20px;color:#898888"></text>
 		</view>
 		<!-- 选择地址模态框 -->
 		<view class="jm-modal" :class="showFlag==true?'show1':''">
@@ -56,19 +56,19 @@
 				// 地区列表
 				addressd3: [],
 				//省份id 默认为64，可根据想要默认展示的id自行更改
-				co: '65',
+				co: '2672',
 				//默认省份名称
-				coname: '',
+				coname: '四川省',
 				coObj:{},
 				//城市id 默认为64，可根据想要默认展示的id自行更改
-				ct: '64',
+				ct: '2683',
 				//默认城市名称
-				ctname: '',
+				ctname: '广元市',
 				ctObj:{},
 				//地区id 默认为575，可根据想要默认展示的id自行更改
-				cs: '575',
+				cs: '2689',
 				//默认地区名称
-				csname: '',
+				csname: '青川县',
 				csObj:{}
 			};
 		},
@@ -161,13 +161,13 @@
 										case 2:
 											_self.addressd2 = res.data.data;
 											_self.ctname =res.data.data[0]?res.data.data[0].name:'';
-											_self.ct =res.data.data[0].id;
+											_self.ct =res.data.data[0]?res.data.data[0].id:1208;
 											_self.getadd(3, _self.ct);
 											break;
 										case 3:
 											_self.addressd3 =res.data.data;
 											_self.csname = res.data.data[0]?res.data.data[0].name:'';
-											_self.cs = res.data.data[0].id;
+											_self.cs = res.data.data[0]?res.data.data[0].id:1220;
 											break;
 										default:
 											return;

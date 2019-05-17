@@ -2,10 +2,8 @@
 	<view>
 		<view class="repairInfo bg-white">
 			<view class="title">维修前</view>
-			<view class="imgInfo">
-				<view class="grid col-4 grid-square">
-					<view class="bg-img" v-for="(item,index) in avatar" :key="index" :style="[{ backgroundImage:'url(' + avatar[index] + ')' }]"></view>
-				</view>
+			<view  style="padding-top:13px;padding-bottom:12px;">
+				<uni-grid :options="filesList" v-if="filesList" @click="viewImg()"></uni-grid>
 			</view>
 			<view class="repair-desc" style="background:rgba(247,247,247,1);">
 				<textarea  placeholder="报修前的样子....." 
@@ -74,94 +72,133 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 
 <script>
 	var qiniu=require('qiniu-js');
+	import uniGrid from '../../../../components/uni-grid/uni-grid.vue'
 	import myIssue  from '../../../../components/start/App.vue'
 	export default{
 		data(){
 			return{
-								avatar:['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg','https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'],
-								imgList: [],
-								cur1:5,
-								cur2:5,
-								cur3:5,
-								flag:false,
-								repaitItem:'',
-								files:[],
-								summary:'',//报修内容
-								detail1:'非常满意',
-								detail2:'非常满意',
-								detail3:'非常满意',
-								orderID:''
+					filesList:[],
+					imgList: [],
+					cur1:5,
+					cur2:5,
+					cur3:5,
+					flag:false,
+					repaitItem:'',
+					files:[],
+					summary:'',//报修内容
+					detail1:'非常满意',
+					detail2:'非常满意',
+					detail3:'非常满意',
+					orderID:''
 
 			}
 		},
 		components:{
-			myIssue
+			myIssue,
+			uniGrid
 		},
 		methods:{
-			//获得订单信息
-			getOrderInfo(id){
-				uni.request({
-					url:this.$store.state.url+'ServiceOrder',
-					data:{
-						id:id
-					},
-					success: (res) => {
-						if(!res.data.data.summary){
-							res.data.data.summary=''
-						}
-						this.repaitItem=res.data.data;
+			viewImg(){
+				let array=[];
+				this.repaitItem.files.forEach(item=>{
+					if(item.postfix){
+						array.push(item.url)
 					}
 				})
+				console.log(array)
+				uni.previewImage({
+					urls: array
+				})
+				
+			},
+			//获得订单信息
+			getOrderInfo(id){
+				
+				this.$ajax('ServiceOrder',{id:id},res=>{
+					
+					this.repaitItem=res
+					console.log(this.repaitItem)
+					if(res.files){
+						res.files.forEach(item=>{
+							if(item.postfix){
+								this.filesList.push({
+									
+									image:item.url,
+									text:''
+								})
+							}
+							
+							
+						})
+					}
+					
+				})
+				// uni.request({
+				// 	url:this.$store.state.url+'ServiceOrder',
+				// 	data:{
+				// 		id:id
+				// 	},
+				// 	success: (res) => {
+				// 		if(!res.data.data.summary){
+				// 			res.data.data.summary=''
+				// 		}
+				// 		this.repaitItem=res.data.data;
+				// 	}
+				// })
 			},
 		ChooseImage(event) {
+			
 			uni.chooseImage({
-				count: 9, //默认9
+				count:9,
 				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 				sourceType: ['album'], //从相册选择
 				success: (res) => {
-					console.log(res)
+					const tempFilePaths=res.tempFilePaths;
 					if (this.imgList.length != 0) {
 						this.imgList = this.imgList.concat(res.tempFilePaths)
 					} else {
-						this.imgList = res.tempFilePaths
+							this.imgList = res.tempFilePaths
 					}
-		
-					var putExtra={
-						params:{
-							// 'x:owner': this.$store.state.userInfo.owner,
-							// 'x:creator': this.$store.state.userInfo.id,
-							// 'x:type':this.$store.state.serviceorder_file,
-							'x:owner': 18,
-							'x:creator': 49,
-							'x:type':18,
-						}
-					}
-		
-					var config={
-						 useCdnDomain: false
-					}
-					for(var i=0;i<res.tempFilePaths.length;i++){
-						var observer=qiniu.upload(res.tempFilePaths[i], res.tempFilePaths[i].split('/')[3]+'.jpg', this.token, putExtra, config);
-						var subscription = observer.subscribe(
-						  ()=>{
-		
-						  },
-						  ()=>{
-		
-						  },
-						  (res)=>{
-								this.files.push(res.data)
-								if(this.files.length===this.imgList.length){
+					uni.getStorage({
+						key:'userInfo',
+						success: (info) => {
+						
+							for(var i=0;i<res.tempFilePaths.length;i++){
+								var  uploadTask=uni.uploadFile({
+									url:this.$store.state.uploadHostUrl+this.token,
+									filePath:tempFilePaths[i],
+									name:'file',
+									formData:{
+										'x:type':this.$store.state.constants.serviceorder_file,
+										'x:owner': info.data.owner,
+										'x:creator': info.data.id,
+									},
+									success: (uploadFileRes) => {
+										let res=JSON.parse(uploadFileRes.data);
+										this.files.push(res.data);
+									}
+								});
+								uploadTask.onProgressUpdate((res)=>{
+									if(res.progress==100){
+										uni.showToast({
+											title:'上传成功',
+											icon:'none'
+										})
+									}
+								},(error)=>{
 									uni.showToast({
-										title:'上传成功',
-										icon:'success'
+										title:'上传失败',
+										icon:'none'
 									})
-								}
-						  }
-						);
-					}
-		
-				},
+								})
+							}
+						}
+					})
+					
+					
+			
+			
+				}
 			})
 		},
 			ViewImage(e) {
@@ -178,27 +215,35 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 					success: res => {
 						if (res.confirm) {
 							this.imgList.splice(event, 1);
-							uni.request({
-								url:this.$store.state.url+'RemoveFiles',
-								data:{
-									id:this.files[event],
-									owner:18
-								},
-								success: (res) => {
-									this.files.splice(event,1)
-									uni.showToast({
-										title:'删除成功',
-										icon:'none'
-									})
-								}
+							this.$ajax('RemoveFiles',{
+								id:this.files[event]
+							},res=>{
+								this.files.splice(event,1)
+								uni.showToast({
+									title:'删除成功',
+									icon:'none'
+								})
 							})
+							// uni.request({
+							// 	url:this.$store.state.url+'RemoveFiles',
+							// 	data:{
+							// 		id:this.files[event],
+							// 		owner:18
+							// 	},
+							// 	success: (res) => {
+							// 		this.files.splice(event,1)
+							// 		uni.showToast({
+							// 			title:'删除成功',
+							// 			icon:'none'
+							// 		})
+							// 	}
+							// })
 						}
 					}
 				})
 			},
 			//获得上传token
 			getUploadToken(){
-			
 				uni.request({
 					url:this.$store.state.url+'UploadToken',
 					success: (res) => {
@@ -227,7 +272,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 					if(n>=5){
 						this.detail2='非常满意';
 					}else if(n>=3){
-						this.detail3='满意';
+						this.detail2='满意';
 					}else if(n>=1){
 						this.detail2='一般';
 					}else {
@@ -249,45 +294,57 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 				
 			},
 			createComment(){
-				console.log(this.files.join(','))
-				console.log(this.summary);
-				console.log(this.cur1)
-				console.log(this.cur2)
-				console.log(this.cur3)
-				uni.request({
-					url:this.$store.state.url+'NewServiceOrderComments',
-					data:{
-						owner:18,
-						userId:43,
-						comment:this.summary,
-						id:this.orderID,
-						service:this.cur1,
-						timely:this.cur2,
-						quality:this.cur3,
-						files:this.files?this.files.join(','):''
-						
-					},
-					success: (res) => {
-						uni.showToast({
-							title:'验收评价成功',
-							icon:'none'
+				this.$ajax('NewServiceOrderComments',{
+					comment:this.summary,
+					id:this.orderID,
+					service:this.cur1,
+					timely:this.cur2,
+					quality:this.cur3,
+					files:this.files?this.files.join(','):''
+				},res=>{
+					uni.showToast({
+						title:'验收评价成功',
+						icon:'none'
+					});
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta: 1
 						});
-						setTimeout(()=>{
-							uni.navigateBack({
-								delta: 1
-							});
-						},500)
-					}
+					},500)
 				})
+				// uni.request({
+				// 	url:this.$store.state.url+'NewServiceOrderComments',
+				// 	data:{
+				// 		owner:18,
+				// 		userId:43,
+				// 		comment:this.summary,
+				// 		id:this.orderID,
+				// 		service:this.cur1,
+				// 		timely:this.cur2,
+				// 		quality:this.cur3,
+				// 		files:this.files?this.files.join(','):''
+				// 		
+				// 	},
+				// 	success: (res) => {
+				// 		uni.showToast({
+				// 			title:'验收评价成功',
+				// 			icon:'none'
+				// 		});
+				// 		setTimeout(()=>{
+				// 			uni.navigateBack({
+				// 				delta: 1
+				// 			});
+				// 		},500)
+				// 	}
+				// })
 			}
 		},
 		onLoad(option){
-			
+			console.log(option)
 			this.getUploadToken();
-			if(option){
-				this.orderID=option.orderID;
-				this.getOrderInfo(option.orderID);
-			}
+			this.orderID=option.orderID;
+			this.getOrderInfo(option.orderID);
+			console.log(this.repaitItem)
 		}
 		
 	}

@@ -1,0 +1,1 @@
+<view bind:__l="__l"><view class="flex justify-between" style="padding:0 15px;height:44px;line-height:44px;border-bottom:1px solid #EEEEED;width:100%;"><text class="cuIcon-back " style="float:left;"></text><text>{{chatObj.name}}</text><text></text></view></view>

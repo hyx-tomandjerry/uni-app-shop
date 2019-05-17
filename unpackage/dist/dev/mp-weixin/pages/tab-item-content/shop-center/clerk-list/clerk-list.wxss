@@ -1,68 +1,66 @@
-
-.cu-list.menu-avatar>.cu-item .content{
-	width:70%;
+.cu-list.menu-avatar > .cu-item .content {
+  width: 70%;
 }
-.cu-list.menu-avatar>.cu-item .action{
-	width:25%;
+.cu-list.menu-avatar > .cu-item .action {
+  width: 25%;
 }
-.cu-list.menu-avatar>.cu-item{
-	border-bottom:1px solid lightgray;
+.cu-list.menu-avatar > .cu-item {
+  border-bottom: 1px solid lightgray;
 }
-.shopImg{
-	width:103px;
-	height:79px;
-	margin-right:17px;
+.shopImg {
+  width: 103px;
+  height: 79px;
+  margin-right: 17px;
 }
-.noManagePic{
-	width:95px !important;
-	height:71px !important;
-	margin-right:17px;
+.noManagePic {
+  width: 95px !important;
+  height: 71px !important;
+  margin-right: 17px;
 }
-.shop-name{
-	font-size:16px;
-	font-family:PingFangSC-Regular;
-	font-weight:400;
-	color:rgba(42,42,42,1);
-	margin-bottom:20px;
+.shop-name {
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #2a2a2a;
+  margin-bottom: 6px;
 }
-.hasManager{
-	margin-bottom:10px !important
+.hasManager {
+  margin-bottom: 10px !important;
 }
-.shop-desc{
-	font-size:14px;
-
-	font-weight:400;
-	color:rgba(137,136,136,1);
-	margin-bottom:10px;
+.shop-desc {
+  font-size: 14px;
+  font-weight: 400;
+  color: #898888;
+  margin-bottom: 10px;
 }
-.img15{
-	width:15px;
-	height:19px;
-	margin-right:5px;
-	vertical-align: middle;
+.img15 {
+  width: 15px;
+  height: 19px;
+  margin-right: 5px;
+  vertical-align: middle;
 }
-.clerk-desc{
-	font-size:14px;
-	font-family:PingFangSC-Regular;
-	font-weight:400;
-	color:rgba(137,136,136,1);
+.clerk-desc {
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #898888;
 }
-.clerk-name{
-	font-size:15px;
-	font-family:PingFangSC-Regular;
-	font-weight:400;
-	color:rgba(42,42,42,1);
+.clerk-name {
+  font-size: 15px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #2a2a2a;
 }
-.ellipse{
-	width:80%;
-	overflow: hidden;
-	-o-text-overflow: ellipsis;
-	   text-overflow: ellipsis;
-	white-space: nowrap;
+.ellipse {
+  width: 80%;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.padding-xl{
-	border-top:1px solid #EEEEED;
-	border-bottom:1px solid #EEEEED;
-	padding:0;
+.padding-xl {
+  border-top: 1px solid #EEEEED;
+  border-bottom: 1px solid #EEEEED;
+  padding: 0;
 }
 

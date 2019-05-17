@@ -145,12 +145,22 @@ var _default =
 
   },
   methods: {
+    goBack: function goBack() {
+      uni.navigateBack({
+        delta: 1 });
+
+    },
     getUserInfo: function getUserInfo() {var _this = this;
       uni.getStorage({
         key: 'userInfo',
         success: function success(res) {
           _this.userInfo = res.data;
         } });
+
+    },
+    forgetPwd: function forgetPwd() {
+      uni.navigateTo({
+        url: '../../../login-design/find-password/find-password' });
 
     } },
 

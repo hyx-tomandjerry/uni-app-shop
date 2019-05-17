@@ -158,6 +158,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _this;var _default =
 {
   data: function data() {
@@ -189,8 +192,7 @@ var _this;var _default =
 
     },
     //注册
-    design: function design() {
-      _this = this;
+    design: function design() {var _this2 = this;
       if (this.checkPwd && this.checkTel) {
         uni.request({
           url: this.$store.state.url,
@@ -205,21 +207,21 @@ var _this;var _default =
 
           success: function success(res) {
             if (res.data.data == -2) {
-              _this.isShow = true;
-              _this.modalName = 'exit';
+              _this2.isShow = true;
+              _this2.modalName = 'exit';
               setTimeout(function () {
-                _this.isShow = false;
-                _this.modalName = '';
+                this.isShow = false;
+                this.modalName = '';
               }, 2000);
             } else {
-              _this.isShow = true;
-              _this.modalName = 'success';
+              _this2.isShow = true;
+              _this2.modalName = 'success';
               setTimeout(function () {
-                _this.isShow = false;
-                _this.modalName = '',
+                this.isShow = false;
+                this.modalName = '',
                 console.log('1111');
                 uni.navigateTo({
-                  url: '../login/login?account=' + _this.designr.mobile + '&token=' + _this.designr.token });
+                  url: '../login/login?account=' + this.designr.mobile + '&token=' + this.designr.token });
 
               }, 500);
             }

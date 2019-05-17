@@ -87,7 +87,7 @@
 				TabCur: 0,
 				scrollLeft: 0,
 				isCard: false,
-				titleList:[{name:'待办通知'},{name:'动态通知'}],
+				titleList:[{name:'待办通知'},{name:'动态通知'},{name:'公司公告'}],
 				noticeType:{}
 
 			};
@@ -108,41 +108,58 @@
 			switchTabCur(index){
 				if(index==0){
 					//我的通知
-					uni.request({
-						url:this.$store.state.url+'EventFlows',
-						data:{
-							owner:0,
-							userId:1,
-							// userId:this.$store.state.userInfo.id,
-							// account:this.$store.state.userInfo.id,
-							account:1,
-							contract:0,
-							status:1,
-							catalog:this.$store.state.notice.todo,
-							psize:-1
-						},
-						success: (res) => {
-							this.todoList=res.data.data
-						}
+					this.$ajax('EventFlows',{
+						account:1,
+						contract:0,
+						status:1,
+						catalog:this.$store.state.notice.todo,
+						psize:-1
+					},res=>{
+						this.todoList=res
 					})
+					// uni.request({
+					// 	url:this.$store.state.url+'EventFlows',
+					// 	data:{
+					// 		owner:0,
+					// 		userId:1,
+					// 		// userId:this.$store.state.userInfo.id,
+					// 		// account:this.$store.state.userInfo.id,
+					// 		account:1,
+					// 		contract:0,
+					// 		status:1,
+					// 		catalog:this.$store.state.notice.todo,
+					// 		psize:-1
+					// 	},
+					// 	success: (res) => {
+					// 		this.todoList=res.data.data
+					// 	}
+					// })
 				}else if(index==1){
 					//我的待办
-					uni.request({
-						url:this.$store.state.url+'EventFlows',
-						data:{
-							owner:0,
-							userId:1,
-							// userId:this.$store.state.userInfo.id,
-							// account:this.$store.state.userInfo.id,
-							account:1,
-							contract:0,
-							status:0,
-							catalog:this.$store.state.notice.info,
-						},
-						success: (res) => {
-							this.todoList=res.data.data
-						}
+					this.$ajax('EventFlows',{
+						account:1,
+						contract:0,
+						status:0,
+						catalog:this.$store.state.notice.info,
+					},res=>{
+						this.todoList=res;
 					})
+					// uni.request({
+					// 	url:this.$store.state.url+'EventFlows',
+					// 	data:{
+					// 		owner:0,
+					// 		userId:1,
+					// 		// userId:this.$store.state.userInfo.id,
+					// 		// account:this.$store.state.userInfo.id,
+					// 		account:1,
+					// 		contract:0,
+					// 		status:0,
+					// 		catalog:this.$store.state.notice.info,
+					// 	},
+					// 	success: (res) => {
+					// 		this.todoList=res.data.data
+					// 	}
+					// })
 				}
 			}
 		}

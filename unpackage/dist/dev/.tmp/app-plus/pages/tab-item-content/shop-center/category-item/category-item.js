@@ -98,41 +98,42 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni/uni-tag/uni-tag */ "components/uni/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../../../components/uni/uni-tag/uni-tag.vue */ "../../../../../myapps/components/uni/uni-tag/uni-tag.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
@@ -140,19 +141,20 @@ var _default =
       subCategoryList: [],
       height: 0,
       categoryActive: 0,
-      categorySubActive: 0,
+      categorySubActive: 10000,
       scrollTop: 0,
       scrollHeight: 0,
-      repairObj: {
-        bigID: '', //第一级的id
-        subID: '', //第二季的id
-        bigName: '',
-        subName: '' },
+      categoryObj: {
+        id: '',
+        name: '' },
 
       list: [] };
 
 
   },
+  components: {
+    uniTag: uniTag },
+
   methods: {
     goBack: function goBack() {
       uni.reLaunch({
@@ -164,21 +166,24 @@ var _default =
     },
     categoryClickMain: function categoryClickMain(categroy, index) {
       this.categoryActive = index;
-      this.categorySubActive = 0; //右边默认为第一个
+      this.categorySubActive = 1000; //右边默认为第一个
       this.subCategoryList = categroy.subCategoryList;
       this.scrollTop = -this.scrollHeight * index;
-      if (this.subCategoryList.length) {
-        this.repairObj.subID = this.subCategoryList[0].obj.id;
-        this.repairObj.subName = this.subCategoryList[0].obj.val;
-      }
+      this.categoryObj = {
+        id: categroy.obj.id,
+        name: categroy.name };
+
+
 
 
     },
     categoryClickSub: function categoryClickSub(categroy, index) {
       this.categorySubActive = index;
       this.scrollTop = -this.scrollHeight * index;
-      this.repairObj.subID = this.subCategoryList[index].obj.id;
-      this.repairObj.subName = this.subCategoryList[index].obj.val;
+      this.categoryObj = {
+        id: categroy.obj.id,
+        name: categroy.name };
+
 
     },
     getCategory: function getCategory() {var _this2 = this;
@@ -205,26 +210,34 @@ var _default =
             var subList = [];
             for (var j = 0; j < subArray.length; j++) {
               if (subArray[j].parent == bigArray[i].id) {
-                subList.push({ "NAME": subArray[j].val, obj: subArray[j] });
+                subList.push({ "name": subArray[j].val, obj: subArray[j] });
               }
             }
-            _this2.categoryList.push({ "NAME": bigArray[i].val, "subCategoryList": subList, obj: bigArray[i] });
+            _this2.categoryList.push({ "name": bigArray[i].val, "subCategoryList": subList, obj: bigArray[i] });
           }
-
-          _this2.categoryList[0].subCategoryList.unshift({ "NAME": '选择品牌类别', obj: {} });
           _this2.subCategoryList = _this2.categoryList[0].subCategoryList;
-          _this2.repairObj.bigID = _this2.categoryList[0].obj.id;
-          _this2.repairObj.bigName = _this2.categoryList[0].obj.val;
+          _this2.categoryObj.id = _this2.categoryList[0].obj.id;
+          _this2.categoryObj.name = _this2.categoryList[0].name;
+
         } });
 
 
+    },
+    choseCategory: function choseCategory() {var _this3 = this;
+      console.log(this.categoryObj, " at pages\\tab-item-content\\shop-center\\category-item\\category-item.vue:127");
+      uni.navigateBack({
+        delta: 1,
+        success: function success(res) {
+          _this3.$fire.fire('category', _this3.categoryObj);
+        } });
+
     } },
 
-  onLoad: function onLoad() {var _this3 = this;
+  onLoad: function onLoad() {var _this4 = this;
     this.getCategory();
     uni.getSystemInfo({
       success: function success(res) {
-        _this3.height = res.screenHeight;
+        _this4.height = res.screenHeight;
       } });
 
   } };exports.default = _default;

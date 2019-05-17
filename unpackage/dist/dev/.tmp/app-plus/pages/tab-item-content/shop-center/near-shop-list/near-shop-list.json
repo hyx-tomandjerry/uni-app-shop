@@ -1,5 +1,4 @@
 {
-  "navigationStyle": "custom",
-  "titleNView": false,
+  "navigationBarTitleText": "选择门店",
   "usingComponents": {}
 }

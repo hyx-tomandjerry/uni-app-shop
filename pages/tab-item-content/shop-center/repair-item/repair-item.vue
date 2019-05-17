@@ -17,7 +17,7 @@
 						@click="categoryClickSub(item,index)"
 						:text="item.name"
 						 class="nav-right-item "
-						 style="border:1px solid #EEEEED;border-radius:14px;text-align:center;width:42%;line-height:17px;"
+						 style="text-align:center;width:55%;line-height:17px;"
 						:class="index==categorySubActive?'subActive':''"
 						 v-for="(item,index) in subCategoryList" :key="index">
 							{{item.name}}
@@ -78,7 +78,7 @@
 					subID:'',
 					subName:''
 				}
-				console.log(this.repairObj)
+				// console.log(this.repairObj)
 
 
 

@@ -199,20 +199,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _amapWx = _interopRequireDefault(__webpack_require__(/*! ../../../../common/amap-wx.js */ "../../../../../myapps/common/amap-wx.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -312,29 +298,206 @@ var _amapWx = _interopRequireDefault(__webpack_require__(/*! ../../../../common/
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var MxDatePicker = function MxDatePicker() {return __webpack_require__.e(/*! import() | components/uni/mx-datepicker/mx-datepicker */ "components/uni/mx-datepicker/mx-datepicker").then(__webpack_require__.bind(null, /*! ../../../../components/uni/mx-datepicker/mx-datepicker.vue */ "../../../../../myapps/components/uni/mx-datepicker/mx-datepicker.vue"));};var _default = { data: function data() {return { showPicker: false, isShow: false, modalName: null, value: '', CustomBar: this.CustomBar, shop: '', amapPlugin: null, //地图组件
+var MxDatePicker = function MxDatePicker() {return __webpack_require__.e(/*! import() | components/uni/mx-datepicker/mx-datepicker */ "components/uni/mx-datepicker/mx-datepicker").then(__webpack_require__.bind(null, /*! ../../../../components/uni/mx-datepicker/mx-datepicker.vue */ "../../../../../myapps/components/uni/mx-datepicker/mx-datepicker.vue"));};var _default = { data: function data() {return { showPicker: false, isShow: false, modalName: null, value: '', CustomBar: this.CustomBar, shop: { id: '', name: '' }, amapPlugin: null, //地图组件
       key: '4c523fb1857f99ba7f2d683d9e88ec1e', //地图key
-      shopList: [], designer: { name: '', telephone: '', date: '' }, repair: { bigName: '', subName: '', summary: '' }, type: 'rangetime', imgList: [] };}, components: { MxDatePicker: MxDatePicker }, getOpenDate: function getOpenDate() {var date = new Date();return this.format(date, 'YMD');}, onLoad: function onLoad() {//进行定位
-    this.amapPlugin = new _amapWx.default.AMapWX({ key: this.key }); // this.getLocationInfo();
-  }, methods: { toRepairItem: function toRepairItem() {uni.navigateTo({ url: '../repair-item/repair-item' });}, ChooseImageEvent: function ChooseImageEvent() {}, DelImg: function DelImg(event) {}, ViewImage: function ViewImage(event) {}, onSelected: function onSelected(e) {//选择
-      this.showPicker = false;if (e) {this[this.type] = e.value;this.designer.date = e.value;uni.setStorage({ key: 'time', data: e.value });}}, onShowDatePicker: function onShowDatePicker(type) {//显示
-      this.type = type;this.showPicker = true;this.value = this[type];}, //获得位置
-    getLocationInfo: function getLocationInfo() {var _this = this;uni.showLoading({ title: '获取位置中..' });this.amapPlugin.getRegeo({ success: function success(data) {uni.request({ url: _this.$store.state.url + 'MyShops', data: { owner: 18, userId: 49, address: "".concat(data[0].regeocodeData.addressComponent.province).concat(data[0].regeocodeData.formatted_address) }, success: function success(res) {_this.shopList = res.data.data;uni.hideLoading();} });} });}, showModal: function showModal(e) {console.log(e, " at pages\\tab-item-content\\shop-center\\create-order\\create-order.vue:209");this.modalName = e.currentTarget.dataset.target;}, hideModal: function hideModal() {this.modalName = '';}, //验证电话号码
-    checkTelEvent: function checkTelEvent(event) {if (!/^1(3|4|5|6|7|8)\d{9}$/.test(event)) {uni.showToast({ title: '输入电话号码有误', icon: 'none' });return;}} } };exports.default = _default;
+      shopList: [], designer: { name: '', telephone: '', date: '' }, repairObj: { bigName: '', bigID: '', subName: '', subID: '', summary: '' }, type: 'rangetime', files: [], imgList: [], address: '', token: '' };}, components: { MxDatePicker: MxDatePicker }, getOpenDate: function getOpenDate() {var date = new Date();return this.format(date, 'YMD');}, onLoad: function onLoad() {var _this = this; // //进行定位
+    // this.amapPlugin=new amap.AMapWX({
+    // 	key:this.key
+    // })
+    // this.getLocationInfo();
+    this.getUploadToken();this.$fire.on('shop', function (result) {_this.shop.id = result.id;_this.shop.name = result.name;});this.$fire.on('repair', function (result) {_this.repairObj = { bigID: result.bigID, bigName: result.bigName, subID: result.subID, subName: result.subName };});uni.getStorage({ key: 'userInfo', success: function success(res) {_this.designer.name = res.data.name;_this.designer.telephone = res.data.account;} });}, methods: { //提交报修
+    createOrder: function createOrder() {var _this2 = this;if (!this.repairObj.bigID) {uni.showToast({ title: '请选择报修类别', icon: 'none' });} else if (!this.repairObj.summary) {uni.showToast({ title: '请输入报修描述', icon: 'none' });} else {uni.getStorage({ key: 'userInfo', success: function success(res) {_this2.$ajax('NewServiceOrder', { catalog: _this2.repairObj.subID ? _this2.repairObj.subID : _this2.repairObj.bigID, creator: res.data.id, shop: _this2.shop.id, appointdate: _this2.designer.date ? _this2.designer.date : _this2.getOpenDate, summary: _this2.repairObj.summary, files: _this2.files ? _this2.files.join(',') : '', contractor: _this2.designer.name ? _this2.designer.name : res.data.name, telephone: _this2.designer.telephone ? _this2.designer.telephone : res.data.account }, function (res) {uni.showToast({ title: '新增报修成功', icon: 'success' });setTimeout(function () {
+                uni.navigateBack({
+                  delta: 1 });
+
+              }, 500);
+            });
+
+          } });
+
+
+        //         uni.request({
+        //             url:this.$store.state.url+'NewServiceOrder',
+        //             data:{
+        //                 // owner:this.$store.state.userInfo.owner,
+        // 				owner:18,
+        // 				userId:49,
+        //                 catalog:this.repairObj.subID,
+        //                 // creator:this.$store.state.userInfo.id,
+        // 				creator:49,
+        // 				// creator:49,
+        //                 shop:65,
+        //                 // shop:65,
+        //                 appointdate:this.designer.date?this.designer.date:this.getOpenDate,
+        //                 summary:this.repairObj.summary,
+        //                 files:this.files?this.files.join(','):'',
+        //                 contractor:this.designer.name?this.designer.name:this.$store.state.userInfo.name,
+        //                 telephone:this.designer.telephone?this.designer.telephone:this.$store.state.userInfo.mobile
+        //
+        //             },success: (res) => {
+        //                 uni.showToast({
+        //                     title:'新增报修成功',
+        //                     icon:'success'
+        //                 });
+        //                 setTimeout(()=>{
+        //                     uni.navigateTo({
+        //                         url:'../shop-center'
+        //                     })
+        // 					uni.clearStorage()
+        //                 },500)
+        //             }
+        //         })
+      }
+    },
+    toRepairItem: function toRepairItem() {
+      uni.navigateTo({
+        url: '../repair-item/repair-item' });
+
+    },
+    //获得上传图片的token
+    getUploadToken: function getUploadToken() {var _this3 = this;
+      uni.request({
+        url: this.$store.state.url + 'UploadToken',
+        success: function success(res) {
+          _this3.token = res.data.data;
+        } });
+
+    },
+    ChooseImageEvent: function ChooseImageEvent() {var _this4 = this;
+      uni.chooseImage({
+        count: 9,
+        sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album'], //从相册选择
+        success: function success(res) {
+          var tempFilePaths = res.tempFilePaths;
+          if (_this4.imgList.length != 0) {
+            _this4.imgList = _this4.imgList.concat(res.tempFilePaths);
+          } else {
+            _this4.imgList = res.tempFilePaths;
+          }
+          for (var i = 0; i < res.tempFilePaths.length; i++) {
+            var uploadTask = uni.uploadFile({
+              url: _this4.$store.state.uploadHostUrl + _this4.token,
+              filePath: tempFilePaths[i],
+              name: 'file',
+              formData: {
+                'x:type': 18,
+                'x:owner': 18,
+                'x:creator': 49 },
+
+              success: function success(uploadFileRes) {
+                var res = JSON.parse(uploadFileRes.data);
+                _this4.files.push(res.data);
+              } });
+
+            uploadTask.onProgressUpdate(function (res) {
+              if (res.progress == 100) {
+                uni.showToast({
+                  title: '上传成功',
+                  icon: 'none' });
+
+              }
+            }, function (error) {
+              uni.showToast({
+                title: '上传失败',
+                icon: 'none' });
+
+            });
+          }
+
+
+        } });
+
+
+    },
+    DelImg: function DelImg(event) {
+      uni.previewImage({
+        urls: this.imgList,
+        current: event });
+
+    },
+    ViewImage: function ViewImage(event) {var _this5 = this;
+      uni.showModal({
+        content: '确定删除？',
+        cancelText: '取消',
+        confirmText: '确定',
+        success: function success(res) {
+          if (res.confirm) {
+            _this5.imgList.splice(event, 1);
+            _this5.$ajax('RemoveFiles', {
+              id: _this5.files[event] },
+            function (res) {
+              _this5.files.splice(event, 1);
+              uni.showToast({
+                title: '删除成功',
+                icon: 'none' });
+
+            });
+
+          }
+        } });
+
+    },
+    onSelected: function onSelected(e) {//选择
+      this.showPicker = false;
+      if (e) {
+        this[this.type] = e.value;
+        this.designer.date = e.value.replace(/\//g, '-');
+        console.log(this.designer.date, " at pages\\tab-item-content\\shop-center\\create-order\\create-order.vue:346");
+        // uni.setStorage({
+        // 	key:'time',
+        // 	data:e.value
+        // })
+      }
+    },
+    onShowDatePicker: function onShowDatePicker(type) {//显示
+      this.type = type;
+      this.showPicker = true;
+      this.value = this[type];
+    },
+    //显示最近的门店
+    toNearShopList: function toNearShopList() {
+      uni.navigateTo({
+        url: '../near-shop-list/near-shop-list' });
+
+    },
+    // //获得位置
+    // getLocationInfo(){
+    // 	uni.showLoading({
+    // 		title:'获取位置中..',
+    // 	})
+    // 	this.amapPlugin.getRegeo({
+    // 			success:(data)=>{
+    // 				this.address=`${data[0].regeocodeData.addressComponent.province}${data[0].regeocodeData.formatted_address}`
+    // 				uni.hideLoading();
+    // 				uni.showToast({
+    // 					title:'获取位置成功',
+    // 					icon:'none'
+    // 				})
+    //
+    // 			},
+    // 			fail:(res)=>{
+    // 				// console.log(res)
+    // 			}
+    // 	})
+    // },
+    showModal: function showModal(e) {
+      console.log(e, " at pages\\tab-item-content\\shop-center\\create-order\\create-order.vue:385");
+      this.modalName = e.currentTarget.dataset.target;
+    },
+    hideModal: function hideModal() {
+      this.modalName = '';
+    },
+    //验证电话号码
+    checkTelEvent: function checkTelEvent(event) {
+      if (!/^1[3|5|7|8][0-9]\d{4,8}$/.test(event)) {
+        uni.showToast({
+          title: '手机号码不存在',
+          icon: 'none' });
+
+        return false;
+      }
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 
 /***/ }),

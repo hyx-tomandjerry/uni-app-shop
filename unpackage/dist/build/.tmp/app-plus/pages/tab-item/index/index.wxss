@@ -1,3 +1,24 @@
+page {
+  background: #fff;
+}
+.notice-tag {
+  position: absolute;
+  top: 1px;
+  font-size: 10px;
+  right: -5px;
+  color: #fff;
+  background: #f43f3b;
+  border-radius: 10px;
+  padding: 0px 8px;
+}
+.header-content {
+  height: 44px;
+  line-height: 44px;
+}
+.cu-btn {
+  height: 28px;
+  font-size: 13px;
+}
 .screen-swiper {
   min-height: 120px;
   margin-top: 10px;
@@ -23,7 +44,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 0 20rpx;
+  padding: 0 10rpx;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
@@ -31,6 +52,9 @@
   font-size: 30rpx;
   line-height: 34px;
   border-bottom: 1px solid #eee;
+}
+.notice_container .cu-bar .action:first-child {
+  margin-left: 0;
 }
 .operateItem {
   display: -webkit-box;
@@ -104,7 +128,6 @@
 }
 .cu-dialog {
   background: #fff;
-  padding-top: 34px;
 }
 .padding-xl {
   font-size: 15px;
@@ -112,9 +135,6 @@
   font-weight: 400;
   color: #2a2a2a;
   border-bottom: 1px solid #EEEEED;
-}
-.cu-dialog {
-  width: 264px;
 }
 .btn {
   font-size: 15px;

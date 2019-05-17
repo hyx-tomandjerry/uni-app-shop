@@ -1,5 +1,6 @@
 .work-item {
-  margin-bottom: 13px;
+  margin: 13px 10px 0;
+  border-radius: 10px;
   padding: 18px 12px 13px 17px;
   background: #fff;
 }
@@ -43,7 +44,8 @@
 .list-item {
   padding: 18px 16px 17px 20px;
   background: #fff;
-  margin-bottom: 13px;
+  margin: 13px 10px 0;
+  border-radius: 10px;
 }
 .list-item .list-item-title {
   font-size: 16px;

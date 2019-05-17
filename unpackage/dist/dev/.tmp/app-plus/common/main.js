@@ -79,8 +79,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
 {
   data: function data() {
     return {};
@@ -99,7 +99,34 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     },
     repairStatusColor: function repairStatusColor(value) {
       return this.$store.state.repairStatusColor[value];
-    } } };exports.default = _default;
+    } },
+
+  onLaunch: function onLaunch() {
+    // console.log('kkkk')
+    uni.getSystemInfo({
+      success: function success(e) {
+
+        _vue.default.prototype.StatusBar = e.statusBarHeight;
+        if (e.platform == 'android') {
+          _vue.default.prototype.CustomBar = e.statusBarHeight + 50;
+        } else {
+          _vue.default.prototype.CustomBar = e.statusBarHeight + 45;
+        };
+
+
+
+
+
+
+
+
+
+
+
+      } });
+
+  } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 
 /***/ }),
 

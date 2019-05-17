@@ -1,6 +1,9 @@
+page {
+  background: #fff;
+}
 .header-content {
   padding: 15px 14px;
-  border-bottom: 1px solid #EEEEED;
+  border-bottom: 0.5px solid #EEEEED;
 }
 .header-content .header-title {
   font-size: 16px;

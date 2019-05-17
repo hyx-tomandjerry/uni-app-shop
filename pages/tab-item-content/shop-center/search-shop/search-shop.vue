@@ -32,9 +32,9 @@
 </template>
 
 <script>
-	import cityData from '../../../../static/js/city.data.js'
-	import mpvuePicker from '../../../../components/city/mpvue-picker/mpvuePicker.vue'
-	import mpvueCityPicker from '../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue'
+	// import cityData from '../../../../static/js/city.data.js'
+	// import mpvuePicker from '../../../../components/city/mpvue-picker/mpvuePicker.vue'
+	// import mpvueCityPicker from '../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue'
 	export default {
 		data() {
 			return {
@@ -57,8 +57,8 @@
 			}
 		},
 		components:{
-			mpvuePicker,
-			mpvueCityPicker
+			// mpvuePicker,
+			// mpvueCityPicker
 		},
 		methods: {
 			provinceChange(event){

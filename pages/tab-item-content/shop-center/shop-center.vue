@@ -12,17 +12,17 @@
 		</view>
 		<view class="order_content position_relative" >
 			<scroll-view scroll-y="true" class="page show" >
-				<view class="list-item"  v-for="(item,index) in repairList" :key="index">
+				<view class="list-item"  v-for="(item,index) in repairList" :key="index"  @click="orderDetail(item)">
 					<view class=" flex justify-between">
 						<view class="list-item-title">{{item.catalogName}}</view>
 						<view>
 							
 							<view class='cu-tag radius bg-red' 
 							:class="{
-							'orange':item.status==1,
-							'green':item.status==2,
-							'red':item.status==3,
-							'black':item.status==4}"
+							'bg-gradual-orange':item.status==repairStatus.untreated,
+							'green':item.status==repairStatus.treating,
+							'red':item.status==repairStatus.refuse,
+							'finishBlue':item.status==repairStatus.finish}"
 							>{{item.status|repairStatus}}</view>
 						</view>
 					</view>
@@ -44,10 +44,14 @@
 						</view>
 						<view class="list-content-item"
 						 style="border-top:1px solid #EEEEED;padding-top:10px;text-align:right;margin-bottom:7px;" >
-						 <text class="cu-tag line-blue" @click="orderDetail(item)" style="margin-right:20px;">查看详情</text>
+						 <!-- <text class="cu-tag line-blue" @click="orderDetail(item)" style="margin-right:20px;">查看详情</text> -->
 						 
-							<text v-if="item.status==$store.state.repairStatus.finish"
-							 class="cu-tag line-blue" @click="createComment(item)">进行评价</text>
+							<text v-if="item.status==repairStatus.treating"
+							 class="cu-tag line-blue" @click.stop.prevent="createComment(item)">进行评价</text>
+							 <text v-if="item.status==repairStatus.refuse"
+							  class="cu-tag line-red" @click.stop.prevent="delOrder(item)">删除订单</text>
+							   <text v-if="item.status==repairStatus.finish"
+							   class="cu-tag line-blue" @click.stop.prevent="checkComment(item)">查看评价</text>
 						</view>
 					</view>
 				</view>
@@ -62,32 +66,45 @@
 </template>
 
 <script>
-	import axbCheckBox from '../../../components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue'
+	
 	export default{
 		data(){
 			return{
+				repairStatus:this.$store.state.repairStatus,
 				statusList:[
-					{id:0,name:"全部",value:'orders',status:this.$store.state.repairStatus[this.$store.state.repairStatusZn[0]]},
-					{id:1,name:"未处理",value:'unfinish',status:this.$store.state.repairStatus[this.$store.state.repairStatusZn[1]]},
-					{id:2,name:"处理中",value:'during',status:this.$store.state.repairStatus[this.$store.state.repairStatusZn[2]]},
-					{id:3,name:"已完成",value:'finish',status:this.$store.state.repairStatus[this.$store.state.repairStatusZn[4]]}
+					{id:0,
+					name:"未处理",
+					value:'orders',
+					status:this.$store.state.repairStatus.untreated},
+					{id:1,name:"处理中",value:'unfinish',status:this.$store.state.repairStatus.treating},
+					{id:2,name:"无效",value:'during',status:this.$store.state.repairStatus.refuse},
+					{id:3,name:"已完成",value:'refuse',status:this.$store.state.repairStatus.finish},
+					
 				],
 				TabCur:0,
 				scrollLeft:0,
 				repairList:[],
-				userInfo:{}
+				userInfo:{},
+				type:'',//用于区分来自门店报修还是我的报修
 				
 			}
 		},
 		components:{
-			axbCheckBox
+			
 		},
 		computed:{
-			finish(){
-				return this.$store.state.repairStatus['finish']
-			}
+			
 		},
 		methods:{
+			//查看评价
+			checkComment(item){
+				uni.navigateTo({
+					url:'./create-comment/create-comment?orderID='+item.id+'&type=check'
+				})
+			},
+			delOrder(item){
+				
+			},
 			radioChangeType(e){
 				console.log(e)
 			},
@@ -105,9 +122,10 @@
 				})
 			},
 			tabSelect(e) {
+				
 				this.TabCur = e.id;
-				console.log(this.TabCur)
-				this.getRepairList(this.TabCur)
+				
+				this.getRepairList(e.status)
 			},
 			goBack(){
 				uni.navigateBack({
@@ -118,47 +136,29 @@
 			createComment(item){
 				console.log(item)
 				uni.navigateTo({
-					url:'./create-comment/create-comment?orderID='+item.id
+					url:'./create-comment/create-comment?orderID='+item.id+'&type=create'
 				})
 			},
 				
 			//报修列表
 			getRepairList(status){
-				uni.request({
-					url:this.$store.state.url+'ServiceOrders',
-					data:{
-						status:status,
-						catalog:-1,
-						// owner:18,
-						// userId:49,
-						owner:this.$store.state.userInfo.owner,
-						userId:this.$store.state.userInfo.id
-					},
-					success: (res) => {
-						this.repairList=res.data.data
-					}
+				this.$ajax('ServiceOrders',{
+					catalog:-1,
+					status:status,
+					stored:this.type=='all'?1:0,
+					},res=>{
+					this.repairList=res
 				})
+				
 			
 			},
-			getList(){
-				uni.request({
-					url:this.$store.state.url+'ServiceOrders',
-					data:{
-						
-						catalog:-1,
-						// owner:18,
-						// userId:49,
-						owner:this.$store.state.userInfo.owner,
-						userId:this.$store.state.userInfo.id
-					},
-					success: (res) => {
-						this.repairList=res.data.data
-					}
-				})
-			}
+			
 		},
-		onLoad(){
-			this.getList();
+		onLoad(options){
+			if(options){
+				this.type=options.type
+			}
+			this.getRepairList(this.$store.state.repairStatus.untreated);
 		}
 	}
 </script>
@@ -219,6 +219,8 @@
 				color:rgba(137,136,136,1);
 				margin-bottom:12px;
 			}
-
+			.finishBlue{
+				background:#42B0ED;
+			}
 </style>
 

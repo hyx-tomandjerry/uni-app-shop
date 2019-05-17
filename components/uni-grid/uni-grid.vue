@@ -38,7 +38,7 @@
 			return {}
 		},
 		created() {
-			this.columnNumber = this.gridGroup[0].length
+			this.columnNumber = this.gridGroup[0]?this.gridGroup[0].length:''
 		},
 		computed: {
 			gridGroup() {
@@ -142,8 +142,8 @@
 	}
 
 	.uni-grid-item-image {
-		width: 80upx;
-		height: 80upx
+		width: 80%;
+		height: 80%
 	}
 
 	.uni-grid .uni-grid__flex:first-child .uni-grid-item:after {

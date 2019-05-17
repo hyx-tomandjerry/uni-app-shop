@@ -98,41 +98,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _cityData = _interopRequireDefault(__webpack_require__(/*! ../../../../static/js/city.data.js */ "../../../../../myapps/static/js/city.data.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -165,7 +131,41 @@ var _cityData = _interopRequireDefault(__webpack_require__(/*! ../../../../stati
 //
 //
 //
-var mpvuePicker = function mpvuePicker() {return __webpack_require__.e(/*! import() | components/city/mpvue-picker/mpvuePicker */ "components/city/mpvue-picker/mpvuePicker").then(__webpack_require__.bind(null, /*! ../../../../components/city/mpvue-picker/mpvuePicker.vue */ "../../../../../myapps/components/city/mpvue-picker/mpvuePicker.vue"));};var mpvueCityPicker = function mpvueCityPicker() {return Promise.all(/*! import() | components/city/mpvue-citypicker/mpvueCityPicker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/city/mpvue-citypicker/mpvueCityPicker")]).then(__webpack_require__.bind(null, /*! ../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue */ "../../../../../myapps/components/city/mpvue-citypicker/mpvueCityPicker.vue"));};var _default = { data: function data() {return { index: -1, mulLinkageTwoPicker: _cityData.default, cityPickerValueDefault: [0, 0, 1], cityLobal: '', themeColor: '#007AFF', mode: '', deepLength: 1, pickerValueDefault: [0], pickerValueArray: [], provinceID: 0, cityID: 0, districtID: 0, brandList: [], brandNameList: [], brandID: 0 };}, components: { mpvuePicker: mpvuePicker, mpvueCityPicker: mpvueCityPicker }, methods: { provinceChange: function provinceChange(event) {conosle.log('111');console.log(event);}, //获得省份
+
+// import cityData from '../../../../static/js/city.data.js'
+// import mpvuePicker from '../../../../components/city/mpvue-picker/mpvuePicker.vue'
+// import mpvueCityPicker from '../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue'
+var _default = {
+  data: function data() {
+    return {
+      index: -1,
+      mulLinkageTwoPicker: cityData,
+      cityPickerValueDefault: [0, 0, 1],
+      cityLobal: '',
+      themeColor: '#007AFF',
+      mode: '',
+      deepLength: 1,
+      pickerValueDefault: [0],
+      pickerValueArray: [],
+      provinceID: 0,
+      cityID: 0,
+      districtID: 0,
+      brandList: [],
+      brandNameList: [],
+      brandID: 0 };
+
+
+  },
+  components: {
+    // mpvuePicker,
+    // mpvueCityPicker
+  },
+  methods: {
+    provinceChange: function provinceChange(event) {
+      conosle.log('111');
+      console.log(event);
+    },
+    //获得省份
     getProvince: function getProvince() {var _this2 = this;
       var _this = this;
       uni.request({

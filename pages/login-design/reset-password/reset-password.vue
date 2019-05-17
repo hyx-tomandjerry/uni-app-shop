@@ -1,7 +1,7 @@
 <template>
 	<view class="login_container">
 		<view class="title">
-			<view class="login_title">重置密码</view>
+			<view class="login_title">设置密码</view>
 		</view>
 		<view class="login_form">
 			<form>
@@ -27,7 +27,9 @@
 			</form>
 
 			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;">
-				<button class="cu-btn block  margin-tb-sm lg" :class="designer.pwd || designer.confirmPwd ?'inputStyle':'noInputStyle'">
+				<button 
+					@click="resetPassword()"
+				class="cu-btn block  margin-tb-sm lg" :class="designer.pwd || designer.confirmPwd ?'inputStyle':'noInputStyle'">
 					<text>确定</text>
 				</button>
 			</view>
@@ -47,7 +49,9 @@
 				isSame:true,
 				designer:{
 					pwd:'',
-					confirmPwd:''
+					confirmPwd:'',
+					mobile:'',
+					vcode:''
 				},
 				sameStyle:{
 					color:'red'
@@ -57,10 +61,35 @@
         components:{
 
         },
-        onLoad(){
-
+        onLoad(options){
+			this.designer.mobile=options.mobile;
+			this.designer.vcode=options.vcode
         },
 		methods:{
+			resetPassword(){
+				if(!this.designer.pwd || !this.designer.confirmPwd){
+					uni.showToast({
+						title:'请输入密码',
+						icon:'none'
+					})
+				}else{
+					this.$ajax('InitPwd',{
+						vcode:this.designer.vcode,
+						token:this.designer.confirmPwd,
+						mobile:this.designer.mobile
+					},res=>{
+						uni.showToast({
+							title:'设置密码成功',
+							icon:'none'
+						})
+						setTimeout(()=>{
+							uni.navigateTo({
+								url:'../../login-design/login/login'
+							})
+						},800)
+					},false)
+				}
+			},
 			//验证密码
 			checkPwdEvent(event){
 				if(event){
@@ -77,9 +106,11 @@
 				}
 			},
 			checkConfirmEvent(event){
-				var _this=this;
+				if(!this.isSame){
+					this.isSame=true;
+				}
 				if(this.designer.pwd!=event){
-					_this.isSame=false;
+					this.isSame=false;
 					uni.showToast({
 						title:'两次输入的密码不一致',
 						icon:'none'

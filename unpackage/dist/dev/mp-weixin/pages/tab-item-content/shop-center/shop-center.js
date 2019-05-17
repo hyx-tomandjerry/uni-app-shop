@@ -98,79 +98,88 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var axbCheckBox = function axbCheckBox() {return __webpack_require__.e(/*! import() | components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox */ "components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox").then(__webpack_require__.bind(null, /*! ../../../components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue */ "../../../../../myapps/components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue"));};var _default =
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default =
 
 {
   data: function data() {
     return {
+      repairStatus: this.$store.state.repairStatus,
       statusList: [
-      { id: 0, name: "全部", value: 'orders', status: this.$store.state.repairStatus[this.$store.state.repairStatusZn[0]] },
-      { id: 1, name: "未处理", value: 'unfinish', status: this.$store.state.repairStatus[this.$store.state.repairStatusZn[1]] },
-      { id: 2, name: "处理中", value: 'during', status: this.$store.state.repairStatus[this.$store.state.repairStatusZn[2]] },
-      { id: 3, name: "已完成", value: 'finish', status: this.$store.state.repairStatus[this.$store.state.repairStatusZn[4]] }],
+      { id: 0,
+        name: "未处理",
+        value: 'orders',
+        status: this.$store.state.repairStatus.untreated },
+      { id: 1, name: "处理中", value: 'unfinish', status: this.$store.state.repairStatus.treating },
+      { id: 2, name: "无效", value: 'during', status: this.$store.state.repairStatus.refuse },
+      { id: 3, name: "已完成", value: 'refuse', status: this.$store.state.repairStatus.finish }],
+
 
       TabCur: 0,
       scrollLeft: 0,
@@ -179,15 +188,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
   },
-  components: {
-    axbCheckBox: axbCheckBox },
+  components: {},
 
-  computed: {
-    finish: function finish() {
-      return this.$store.state.repairStatus['finish'];
-    } },
+
+  computed: {},
+
 
   methods: {
+    //查看评价
+    checkComment: function checkComment(item) {
+      uni.navigateTo({
+        url: './create-comment/create-comment?orderID=' + item.id + '&type=check' });
+
+    },
+    delOrder: function delOrder(item) {
+
+    },
     radioChangeType: function radioChangeType(e) {
       console.log(e);
     },
@@ -205,9 +221,10 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     tabSelect: function tabSelect(e) {
+
       this.TabCur = e.id;
-      console.log(this.TabCur);
-      this.getRepairList(this.TabCur);
+
+      this.getRepairList(e.status);
     },
     goBack: function goBack() {
       uni.navigateBack({
@@ -218,47 +235,23 @@ __webpack_require__.r(__webpack_exports__);
     createComment: function createComment(item) {
       console.log(item);
       uni.navigateTo({
-        url: './create-comment/create-comment?orderID=' + item.id });
+        url: './create-comment/create-comment?orderID=' + item.id + '&type=create' });
 
     },
 
     //报修列表
     getRepairList: function getRepairList(status) {var _this = this;
-      uni.request({
-        url: this.$store.state.url + 'ServiceOrders',
-        data: {
-          status: status,
-          catalog: -1,
-          // owner:18,
-          // userId:49,
-          owner: this.$store.state.userInfo.owner,
-          userId: this.$store.state.userInfo.id },
+      this.$ajax('ServiceOrders', { catalog: -1, status: status }, function (res) {
+        _this.repairList = res;
+      });
 
-        success: function success(res) {
-          _this.repairList = res.data.data;
-        } });
-
-
-    },
-    getList: function getList() {var _this2 = this;
-      uni.request({
-        url: this.$store.state.url + 'ServiceOrders',
-        data: {
-
-          catalog: -1,
-          // owner:18,
-          // userId:49,
-          owner: this.$store.state.userInfo.owner,
-          userId: this.$store.state.userInfo.id },
-
-        success: function success(res) {
-          _this2.repairList = res.data.data;
-        } });
 
     } },
 
+
   onLoad: function onLoad() {
-    this.getList();
+
+    this.getRepairList(this.$store.state.repairStatus.untreated);
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

@@ -52,13 +52,13 @@ border-radius:5px;color:#fff;left:15px;">确定</button>
 </template>
 
 <script>
-	import cityData from '../../../../static/js/city.data.js'
-	import mpvuePicker from '../../../../components/city/mpvue-picker/mpvuePicker.vue'
-	import mpvueCityPicker from '../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue'
+	// import cityData from '../../../../static/js/city.data.js'
+	// import mpvuePicker from '../../../../components/city/mpvue-picker/mpvuePicker.vue'
+	// import mpvueCityPicker from '../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue'
 	export default{
 		components:{
-			mpvuePicker,
-			mpvueCityPicker
+			// mpvuePicker,
+			// mpvueCityPicker
 		},
 		data(){
 			return{

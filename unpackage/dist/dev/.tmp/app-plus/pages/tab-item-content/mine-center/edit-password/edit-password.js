@@ -98,44 +98,49 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var headTab = function headTab() {return __webpack_require__.e(/*! import() | components/head-tab */ "components/head-tab").then(__webpack_require__.bind(null, /*! ../../../../components/head-tab.vue */ "../../../../../myapps/components/head-tab.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
+      title: '设置登录密码',
       userInfo: {},
       user: {
         pwd: '',
@@ -144,13 +149,43 @@ var _default =
 
 
   },
+  components: {
+    headTab: headTab },
+
   methods: {
+    changePassword: function changePassword() {
+      this.$ajax('ResetPwd', {
+        token: this.user.confirmPwd,
+        original: this.user.pwd },
+      function (res) {
+        console.log(res, " at pages\\tab-item-content\\mine-center\\edit-password\\edit-password.vue:61");
+      });
+    },
+    checkConfirmpwdEvent: function checkConfirmpwdEvent(event) {
+      if (event.detail.value != this.user.newPwd) {
+        uni.showToast({
+          title: '两次输入的密码不相同',
+          icon: 'none' });
+
+        return;
+      }
+    },
+    goBack: function goBack() {
+      uni.navigateBack({
+        delta: 1 });
+
+    },
     getUserInfo: function getUserInfo() {var _this = this;
       uni.getStorage({
         key: 'userInfo',
         success: function success(res) {
           _this.userInfo = res.data;
         } });
+
+    },
+    forgetPwd: function forgetPwd() {
+      uni.navigateTo({
+        url: '../../../login-design/find-password/find-password' });
 
     } },
 

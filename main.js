@@ -9,8 +9,9 @@ import store from './store/index.js'
 Vue.prototype.$store=store;
 import onfire from 'onfire.js';
 Vue.prototype.$fire=new onfire();
-
-
+import webim from './static/js/webim.js'
+import {ajax} from './common/http.js'
+Vue.prototype.$ajax=ajax;
 //管道
 Vue.filter('repairStatus',function(value){
 	if(!value) return ''
@@ -20,11 +21,22 @@ Vue.filter('repairStatusColor',function(value){
 	if(!value) return ''
 	return store.state.repairStatusColor[value]
 })
-Vue.filter('color',function(value){
-	return 'bg-gray'
+
+//门店
+Vue.filter('shopStatus',(value)=>{
+	if(!value) return ''
+	return store.state.shopStatus[value];
+})
+Vue.filter('shopStatusZn',(value)=>{
+	if(!value) return ''
+	return store.state.shopStatusZn[value];
+})
+Vue.filter('shopStatusColor',(value)=>{
+	if(!value) return ''
+	return store.state.shopStatusColor[value];
 })
 Vue.prototype.format=function(value,type){
-	var dataTime="";
+				var dataTime="";
 				var data = new Date();  
 				data.setTime(value)
 	     		var year   =  data.getFullYear();  

@@ -54,4 +54,7 @@
   color: #898888;
   margin-bottom: 12px;
 }
+.finishBlue {
+  background: #42B0ED;
+}
 

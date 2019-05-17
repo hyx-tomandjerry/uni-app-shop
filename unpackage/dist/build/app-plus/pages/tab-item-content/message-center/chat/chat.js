@@ -1,0 +1,2 @@
+setCssToHead(["body { background: #fff; }\n",],undefined,{path:"./pages/tab-item-content/message-center/chat/chat.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/message-center/chat/chat.wxml') } }));

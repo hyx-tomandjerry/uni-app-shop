@@ -98,56 +98,147 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var popModal = function popModal() {return __webpack_require__.e(/*! import() | components/popmodal */ "components/popmodal").then(__webpack_require__.bind(null, /*! ../../../components/popmodal.vue */ "../../../../../myapps/components/popmodal.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
-      userInfo: {},
+      isQuit: false,
+      avatar: '',
+      userInfo: '',
       operateList: [
-      { image: '../../../static/img/mine/icon-shezhi@2x.png', index: 1, text: '基本设置' },
+      { image: '../../../static/img/mine/icon-shezhi@2x.png', index: 0, text: '基本设置' },
       { image: '../../../static/img/mine/icon-xiugaimima@2x.png', index: 1, text: '修改密码' },
-      { image: '../../../static/img/mine/icon-fankui@2x.png', index: 1, text: '意见反馈' }] };
+      { image: '../../../static/img/mine/icon-fankui@2x.png', index: 2, text: '意见反馈' },
+      { image: '../../../static/img/mine/tuichu.png', index: 3, text: '退出登录' }] };
 
 
   },
+  components: {
+    popModal: popModal },
+
   methods: {
+    hideModal: function hideModal(type) {
+      this.isQuit = false;
+      console.log('11111', " at pages\\tab-item\\mine\\mine.vue:105");
+      if (type == 'agree') {
+
+        uni.clearStorage();
+        setTimeout(function () {
+          uni.navigateTo({
+            url: '../../login-design/login/login' });
+
+        }, 500);
+      }
+
+    },
+    showWorkClick: function showWorkClick() {
+      uni.navigateTo({
+        url: '../work/work' });
+
+    },
+    showMessageClick: function showMessageClick() {
+      uni.navigateTo({
+        url: '../message/message' });
+
+    },
+    showIndexClick: function showIndexClick() {
+      uni.navigateTo({
+        url: '../index/index' });
+
+    },
     getUserInfo: function getUserInfo() {var _this = this;
       uni.getStorage({
         key: 'userInfo',
         success: function success(res) {
           _this.userInfo = res.data;
+
         } });
 
     },
+
     operateItem: function operateItem(index) {
 
       switch (index) {
@@ -159,15 +250,50 @@ var _default =
           break;
         case 1:
           //修改密码
+          uni.navigateTo({
+            url: '../../tab-item-content/mine-center/edit-password/edit-password' });
+
           break;
         case 2:
-          //意见返回
-          break;}
+          //意见反馈
+          uni.navigateTo({
+            url: '../../tab-item-content/mine-center/suggestion-list/suggestion-list' });
 
+          break;
+        case 3:
+          this.isQuit = true;
+        //退出登录
+        // uni.clearStorage();
+      }
+
+    },
+
+    //获得头像图片
+    getAvater: function getAvater(id) {var _this2 = this;
+      this.$ajax('File', { id: id }, function (res) {
+        _this2.avatar = res;
+        uni.setStorage({
+          key: 'logo',
+          data: _this2.avatar });
+
+      });
     } },
 
-  onLoad: function onLoad() {
+  onLoad: function onLoad() {var _this3 = this;
     this.getUserInfo();
+    uni.getStorage({
+      key: 'logo',
+      success: function success(res) {
+
+        _this3.avatar = res.data;
+        console.log(_this3.avatar, " at pages\\tab-item\\mine\\mine.vue:189");
+      } });
+
+    this.$fire.on('image', function (res) {
+      if (res) {
+        _this3.getAvater(res);
+      }
+    });
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 

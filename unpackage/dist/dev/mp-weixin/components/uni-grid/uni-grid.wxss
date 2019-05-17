@@ -99,8 +99,8 @@
 	background-color: #f1f1f1
 }
 .uni-grid-item-image {
-	width: 80rpx;
-	height: 80rpx
+	width: 80%;
+	height: 80%
 }
 .uni-grid .uni-grid__flex:first-child .uni-grid-item:after {
 	border-top-width: 1px

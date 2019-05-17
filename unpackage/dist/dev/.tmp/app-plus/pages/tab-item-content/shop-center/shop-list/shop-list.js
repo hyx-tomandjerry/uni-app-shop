@@ -154,27 +154,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
-var _this;var _default =
+var _this;var headTab = function headTab() {return __webpack_require__.e(/*! import() | components/head-tab */ "components/head-tab").then(__webpack_require__.bind(null, /*! ../../../../components/head-tab.vue */ "../../../../../myapps/components/head-tab.vue"));};var _default =
+
 {
   data: function data() {
     return {
+      title: '门店列表',
       CustomBar: 0,
       inputValue: 0,
-      shopList: [] };
-
+      shopList: [],
+      fromType: '' //判断从快递还是从我的门店
+    };
   },
+  components: {
+    headTab: headTab },
+
   methods: {
     goBack: function goBack() {
-      uni.switchTab({
-        url: '../../../tab-item/index/index' });
+      uni.navigateBack({
+        delta: 1 });
 
     },
     InputFocus: function InputFocus(e) {
@@ -197,11 +196,10 @@ var _this;var _default =
       }
       this.icon = list;
     },
-    systemInfo: function systemInfo() {
-      _this = this;
+    systemInfo: function systemInfo() {var _this2 = this;
       uni.getSystemInfo({
         success: function success(res) {
-          _this.CustomBar = res.windowTop;
+          _this2.CustomBar = res.windowTop;
         } });
 
     },
@@ -218,25 +216,19 @@ var _this;var _default =
 
     },
     //获得门店列表
-    getShopList: function getShopList() {var _this2 = this;
-      uni.request({
-        url: this.$store.state.url + 'ProprietorShops',
-        data: {
-          //    owner:this.$store.state.userInfo.owner,
-          // userId:this.$store.state.userInfo.id
-          owner: 18,
-          userId: 49,
-          catalog: -1 },
-
-        success: function success(res) {
-          _this2.shopList = res.data.data;
-        } });
-
+    getShopList: function getShopList() {var _this3 = this;
+      this.$ajax('MyShops', { address: '' }, function (res) {
+        _this3.shopList = res;
+      });
     } },
 
-  onLoad: function onLoad() {
+  onLoad: function onLoad(options) {var _this4 = this;
+
     this.systemInfo();
     this.getShopList();
+    this.$fire.on('record-shop', function (res) {
+      _this4.getShopList();
+    });
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 

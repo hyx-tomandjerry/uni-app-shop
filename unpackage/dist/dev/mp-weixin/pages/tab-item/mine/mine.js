@@ -127,24 +127,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
-      userInfo: {},
+      userInfo: '',
       operateList: [
-      { image: '../../../static/img/mine/icon-shezhi@2x.png', index: 1, text: '基本设置' },
+      { image: '../../../static/img/mine/icon-shezhi@2x.png', index: 0, text: '基本设置' },
       { image: '../../../static/img/mine/icon-xiugaimima@2x.png', index: 1, text: '修改密码' },
-      { image: '../../../static/img/mine/icon-fankui@2x.png', index: 1, text: '意见反馈' }] };
+      { image: '../../../static/img/mine/icon-fankui@2x.png', index: 2, text: '意见反馈' }] };
 
 
   },
   methods: {
+    showWorkClick: function showWorkClick() {
+      uni.navigateTo({
+        url: '../work/work' });
+
+    },
+    showMessageClick: function showMessageClick() {
+      uni.navigateTo({
+        url: '../message/message' });
+
+    },
+    showIndexClick: function showIndexClick() {
+      uni.navigateTo({
+        url: '../index/index' });
+
+    },
     getUserInfo: function getUserInfo() {var _this = this;
       uni.getStorage({
         key: 'userInfo',
         success: function success(res) {
           _this.userInfo = res.data;
+          console.log(_this.userInfo, '个人也买你');
         } });
 
     },
@@ -159,15 +209,22 @@ var _default =
           break;
         case 1:
           //修改密码
+          uni.navigateTo({
+            url: '../../tab-item-content/mine-center/edit-password/edit-password' });
+
           break;
         case 2:
-          //意见返回
+          //意见反馈
+          uni.navigateTo({
+            url: '../../tab-item-content/mine-center/suggestion-list/suggestion-list' });
+
           break;}
 
     } },
 
   onLoad: function onLoad() {
     this.getUserInfo();
+
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 

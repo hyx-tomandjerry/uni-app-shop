@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "个人中心",
-  "usingComponents": {}
+  "navigationBarTitleText": "我的",
+  "usingComponents": {
+    "pop-modal": "/components/popmodal"
+  }
 }

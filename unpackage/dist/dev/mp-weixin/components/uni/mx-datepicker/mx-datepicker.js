@@ -643,12 +643,12 @@ var DateTools = {
   computed: {
     BeginTitle: function BeginTitle() {
       var value = '未选择';
-      if (this.checkeds.length) value = DateTools.format(this.checkeds[0], 'yy/mm/dd');
+      if (this.checkeds.length) value = DateTools.format(this.checkeds[0], 'yy-mm-dd');
       return value;
     },
     EndTitle: function EndTitle() {
       var value = '未选择';
-      if (this.checkeds.length == 2) value = DateTools.format(this.checkeds[1], 'yy/mm/dd');
+      if (this.checkeds.length == 2) value = DateTools.format(this.checkeds[1], 'yy-mm-dd');
       return value;
     },
     PickerTimeTitle: function PickerTimeTitle() {

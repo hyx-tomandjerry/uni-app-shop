@@ -230,6 +230,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _this;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! import() | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then(__webpack_require__.bind(null, /*! ../../../components/uni-grid/uni-grid.vue */ "../../../../../myapps/components/uni-grid/uni-grid.vue"));};var NAUIcard = function NAUIcard() {return __webpack_require__.e(/*! import() | components/NAUI-card/NAUI-card */ "components/NAUI-card/NAUI-card").then(__webpack_require__.bind(null, /*! ../../../components/NAUI-card/NAUI-card.vue */ "../../../../../myapps/components/NAUI-card/NAUI-card.vue"));};var axbCheckBox = function axbCheckBox() {return __webpack_require__.e(/*! import() | components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox */ "components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox").then(__webpack_require__.bind(null, /*! ../../../components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue */ "../../../../../myapps/components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue"));};var _default =
 
@@ -238,6 +283,9 @@ var _this;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! imp
 {
   data: function data() {
     return {
+      userInfo: '',
+      eid: '',
+      companyObj: '',
       dotStyle: false,
       cardCur: 0,
       shopList: [
@@ -253,65 +301,127 @@ var _this;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! imp
         cover: '' },
       //公司名称
       isShowJoinModal: false, //是否加入门店
+      isShowJoinCompany: false, //是否加入公司
       current: 1,
-      noticeList1: [
-      {
-        value: 'skill',
-        head: '销售技巧',
-        content: [
-        {
-          title: '无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。',
-          text: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-          date: '2019/03/20',
-          time: '20:00' },
-
-        {
-          title: '无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。',
-          text: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-          date: '2019/03/20',
-          time: '20:00' },
-
-        {
-          title: '无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。',
-          text: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-          date: '2019/03/20',
-          time: '20:00' },
-        {
-          title: '无意者 烈火焚身;以正义的烈火拔出黑暗。我有自己的正义，见证至高的烈火吧。',
-          text: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-          date: '2019/03/20',
-          time: '20:00' }] }],
-
-
-
-
-      noticeList2: [
-      {
-        value: 'example',
-        head: '陈列案例',
-        content: [
-        {
-          secondHead: '京东最近发生了什么了，为什么裁员降薪？',
-          image: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-          date: '2019/3/21',
-          time: '20:59' }] }],
-
-
-
-
-
-
+      noticeList1: [],
+      noticeList2: [],
       options: [{ image: '../../../static/img/index-tab/tab1.png', text: '通知公告' },
       { image: '../../../static/img/index-tab/tab2.png', text: '门店报修' },
-      { image: '../../../static/img/index-tab/tab3.png', text: '我的门店' },
-      { image: '../../../static/img/index-tab/tab4.png', text: '我的工作' }],
-      noticeID: 0 };
+      { image: '../../../static/img/index-tab/tab4.png', text: '快递包裹' },
+      { image: '../../../static/img/index-tab/tab3.png', text: '我的门店' }],
+
+
+      noticeID: 0,
+      shop: {
+        shopID: '',
+        shopName: '' } };
+
 
   },
   computed: {},
 
 
   methods: {
+    joinCompanyEvent: function joinCompanyEvent() {
+      this.isShowJoinCompany = true;
+    },
+    showArticles: function showArticles() {var _this2 = this;
+      this.$ajax('Articles', {
+        zone: -1 },
+      function (res) {
+        var array1 = [],array2 = [];
+        res.forEach(function (item) {
+          if (item.type == 1) {
+            array1.push(item);
+          } else if (item.type == 2) {
+            array2.push(item);
+          }
+        });
+        if (array1.length <= 3) {
+          _this2.noticeList1 = array1;
+        } else {
+          _this2.noticeList1 = array1.splice(0, 3);
+        }
+        if (array2.length <= 3) {
+          _this2.noticeList2 = array2;
+        } else {
+          _this2.noticeList1 = array2.splice(0, 3);
+        }
+        console.log(_this2.noticeList1, " at pages\\tab-item\\index\\index.vue:250");
+        console.log(_this2.noticeList2, " at pages\\tab-item\\index\\index.vue:251");
+      });
+    },
+    //加入公司
+    joinCompany: function joinCompany() {var _this3 = this;
+      uni.getStorage({
+        key: 'userInfo',
+        success: function success(res) {
+          _this3.$ajax('ApplyOrInvite2Join', {
+            user: res.data.id,
+            org: _this3.companyObj.id },
+          function (res) {
+            uni.showToast({
+              title: '申请结果将会发您手机，请注意查收',
+              icon: 'none' });
+
+            _this3.hideModal('company');
+          });
+        } });
+
+
+      // uni.request({
+      // 	url:this.$store.state.url+'ApplyOrInvite2Join',
+      // 	data:{
+      // 		user:this.$store.state.userInfo.id,
+      // 		org:this.companyObj.id
+      // 	},
+      // 	success: (res) => {
+      // 		uni.showToast({
+      // 			title:'申请结果将会发您手机，请注意查收',
+      // 			icon:'none'
+      // 		});
+      // 		this.hideModal('company');
+      // 		
+      // 	}
+      // })
+    },
+    //搜素公司
+    searchCompany: function searchCompany() {var _this4 = this;
+
+      this.$ajax('Customer', {
+        eid: this.eid },
+      function (res) {
+        _this4.companyObj = res;
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'Customer',
+      // 	data:{
+      // 		owner:this.$store.state.userInfo.owner,
+      // 		userId:this.$store.state.userInfo.id,
+      // 		eid:this.eid
+      // 	},
+      // 	success: (res) => {
+      // 		this.companyObj=res.data.data
+      // 		console.log(this.companyObj)
+      // 		
+      // 	}
+      // })
+    },
+    showWorkClick: function showWorkClick() {
+      uni.navigateTo({
+        url: '../work/work' });
+
+    },
+    showMessageClick: function showMessageClick() {
+      uni.navigateTo({
+        url: '../message/message' });
+
+    },
+    showMineClick: function showMineClick() {
+      uni.navigateTo({
+        url: '../mine/mine' });
+
+    },
     DotStyle: function DotStyle(e) {
       this.dotStyle = e.detail.value;
     },
@@ -319,24 +429,47 @@ var _this;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! imp
       this.current = e.detail.current;
     },
     radioChangeType: function radioChangeType(e) {
-      console.log(e, " at pages\\tab-item\\index\\index.vue:222");
+      // console.log(e)
     },
     //同意加入门店
-    aggressJoin: function aggressJoin() {
-      uni.request({
-        url: this.$store.state.url + 'ApplyOrInvite2Join',
-        data: {
-          owner: this.$store.state.userInfo.owner, //假数据
-          user: this.$store.state.userInfo.id,
-          shop: 20 },
-
+    aggressJoin: function aggressJoin() {var _this5 = this;
+      uni.getStorage({
+        key: 'userInfo',
         success: function success(res) {
-          uni.showToast({
-            title: '您已成功加入独白伊利门店',
-            icon: 'none' });
+          _this5.$ajax('JoinOrg', {
+            user: res.data.id },
+          function (res) {
+            uni.showToast({
+              title: '您已成功加入该门店',
+              icon: 'none' });
 
+            _this5.isShowJoinModal = false;
+          });
+          // this.$ajax('ApplyOrInvite2Join',{
+          // 	shop:this.shop.shopID,
+          // 	user:res.data.id
+          // 	},res=>{
+          // 	uni.showToast({
+          // 		title:'您已成功加入该门店',
+          // 		icon:'none'
+          // 	})
+          // })
         } });
 
+      // uni.request({
+      // 	url:this.$store.state.url+'ApplyOrInvite2Join',
+      // 	data:{
+      // 		owner:this.$store.state.userInfo.owner,//假数据
+      // 		user:this.$store.state.userInfo.id,
+      // 		shop:20
+      // 	},
+      // 	success: (res) => {
+      // 		uni.showToast({
+      // 			title:'您已成功加入独白伊利门店',
+      // 			icon:'none'
+      // 		})
+      // 	}
+      // })
     },
     toNoticeContent: function toNoticeContent(item) {
       this.noticeID = id;
@@ -344,29 +477,33 @@ var _this;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! imp
         url: '../../all-item-content/index-more/index-more?value=' + item.value });
 
     },
-    showMoreInfo: function showMoreInfo(item) {
-      console.log(item, " at pages\\tab-item\\index\\index.vue:248");
-      if (item.value == 'skill') {
+    showMoreInfo: function showMoreInfo(type) {
+      if (type == 'skill') {
         uni.navigateTo({
-          url: '../../all-item-content/index-more/index-more?value' + item.value });
+          url: '../../all-item-content/index-more/index-more?value=' + type });
 
         //销售技巧
-      } else if (item.value == 'example') {
+      } else if (type == 'example') {
         uni.navigateTo({
-          url: '../../all-item-content/index-more/index-more?value' + item.value });
+          url: '../../all-item-content/index-more/index-more?value=' + type });
 
       }
     },
     //关闭弹出框
-    hideModal: function hideModal() {
-      this.isShowJoinModal = false;
+    hideModal: function hideModal(type) {
+      if (type == 'company') {
+        this.isShowJoinCompany = false;
+      } else if (type == 'shop') {
+        this.isShowJoinModal = false;
+      }
+
     },
     cardSwiper: function cardSwiper(e) {
       this.cardCur = e.detail.current;
     },
-    detailContent: function detailContent(item) {
+    detailContent: function detailContent(type, item) {
       uni.navigateTo({
-        url: '../../all-item-content/detail-content/detail-content?item=' + item });
+        url: '../../all-item-content/detail-content/detail-content?type=' + type + '&id=' + item.id });
 
     },
     //加入门店
@@ -394,15 +531,21 @@ var _this;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! imp
         case 2:
           //我的门店
           uni.navigateTo({
-            url: '../../tab-item-content/shop-center/shop-list/shop-list' });
+            url: '../../tab-item-content/work-center/express-center/express-index/express-index' });
 
           break;
         case 3:
           //工作日志
           uni.navigateTo({
-            url: '../../tab-item-content/work-center/work-index/work-index' });}
+            url: '../../tab-item-content/shop-center/shop-list/shop-list' });}
 
 
+    },
+    getShopInfo: function getShopInfo(id) {var _this6 = this;
+      this.$ajax('ProprietorShop', { id: id }, function (res) {
+        _this6.shop.shopName = res.name;
+        console.log(_this6.shop.shopName, " at pages\\tab-item\\index\\index.vue:447");
+      });
     } },
 
   components: {
@@ -410,14 +553,55 @@ var _this;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! imp
     uniGrid: uniGrid,
     NAUIcard: NAUIcard },
 
-  onLoad: function onLoad() {
-    if (this.$store.state.userInfo.status === this.$store.state.userStatus.inviting) {
-      this.isShowJoinModal = true;
-    } else {
-      this.isShowJoinModal = false;
-      this.company.name = this.$store.state.userInfo.ownerName;
-      this.company.cover = this.$store.state.userInfo.ownerLogoUrl;
-    }
+  onLoad: function onLoad() {var _this7 = this;
+    this.showArticles();
+    //owner=0,显示加入公司
+    //owenr=0&&status=3显示邀请
+    uni.getStorage({
+      key: 'userInfo',
+      success: function success(res) {
+
+        _this7.userInfo = res.data;
+        // console.log(this.userInfo)
+        if (res.data.owner == 0) {
+          _this7.isShowJoinCompany = true;
+        } else if (res.data.owner != 0 && res.data.status == 3) {
+          _this7.isShowJoinModal = true;
+          _this7.shop.shopID = res.data.department;
+          _this7.getShopInfo(_this7.shop.shopID);
+        } else {
+          _this7.company = {
+            name: res.data.ownerName,
+            cover: res.data.ownerLogoUrl };
+
+        }
+        // if(res.data.owner==0){
+        // 	if(res.data.status==3){
+        // 		//显示加入公司
+        // 		this.isShowJoinCompany=true;
+        // 	}else{
+        // 		//显示加入门店
+        // 		this.isShowJoinModal=true;
+        // 	}
+        // }
+
+        // console.log(this.company)
+      } });
+
+    // if(this.$store.state.userInfo.owner==0){
+    // 	if(this.$store.state.userInfo.status!=3){
+    // 		//显示加入公司
+    // 		this.isShowJoinCompany=true;
+    // 	}else{
+    // 		//显示加入门店
+    // 		this.isShowJoinModal=true;
+    // 	}
+    // }else {
+    // 	this.company={
+    // 		name:this.$store.state.userInfo.ownerName,
+    // 		cover:this.$store.state.userInfo.ownerLogoUrl
+    // 	}
+    // }
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 
@@ -449,6 +633,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.noticeList2.map(function(item, index) {
+    var f0 = _vm._f("formatTime")(item.createdate, "YMD", "/")
+
+    return {
+      $orig: _vm.__get_orig(item),
+      f0: f0
+    }
+  })
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

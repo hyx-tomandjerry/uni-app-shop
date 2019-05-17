@@ -1,5 +1,6 @@
 {
-  "navigationStyle": "custom",
-  "titleNView": false,
-  "usingComponents": {}
+  "navigationBarTitleText": "我的门店",
+  "usingComponents": {
+    "head-tab": "/components/head-tab"
+  }
 }

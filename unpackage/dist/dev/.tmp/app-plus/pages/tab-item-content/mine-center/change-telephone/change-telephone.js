@@ -148,12 +148,21 @@ __webpack_require__.r(__webpack_exports__);
     return {
       telephone: '',
       checked: true,
-      isShow: false };
+      isShow: false,
+      userInfo: '' };
 
   },
   components: {
     popModal: popModal },
 
+  onLoad: function onLoad() {var _this = this;
+    uni.getStorage({
+      key: 'userInfo',
+      success: function success(res) {
+        _this.userInfo = res.data;
+      } });
+
+  },
   methods: {
     refuse: function refuse() {
       this.checked = false;
@@ -164,25 +173,30 @@ __webpack_require__.r(__webpack_exports__);
           title: '请输入电话号码',
           icon: 'none' });
 
-      } else {
-        this.isShow = true;
+        return;
       }
-
     },
     hideModal: function hideModal() {
       this.isShow = false;
     },
     checkTelEvent: function checkTelEvent(event) {
-      if (!/^1(3|4|5|6|7|8)\d{9}$/.test(event)) {
+
+      if (/^1[345678]\d{9}$/.test(event)) {
         uni.showToast({
           title: '输入电话号码有误',
           icon: 'none' });
 
-        return;
+        this.isShow = false;
+
+      } else {
+        this.isShow = true;
       }
     },
     inputCheckCard: function inputCheckCard() {
       //输入验证码
+      uni.navigateTo({
+        url: '../input-code/input-code?mobile=' + this.userInfo.mobile });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 

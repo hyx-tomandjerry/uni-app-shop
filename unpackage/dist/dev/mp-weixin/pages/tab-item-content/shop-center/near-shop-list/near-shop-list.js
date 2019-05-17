@@ -135,19 +135,26 @@ var _default =
 
 
   onLoad: function onLoad(option) {var _this = this;
+    console.log(option);
     if (option.address) {
-      uni.request({
-        url: this.$store.state.url + 'MyShops',
-        data: {
-          owner: 18,
-          userId: 49,
-          address: option.address },
+      this.$ajax('MyShops', {
+        address: option.address },
+      function (res) {
+        _this.shopList = res;
 
-        success: function success(res) {
-          console.log(res.data.data);
-          _this.shopList = res.data.data;
-        } });
-
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'MyShops',
+      // 	data:{
+      // 		owner:18,
+      // 		userId:49,
+      // 		address:option.address
+      // 	},
+      // 	success: (res) => {
+      // 		console.log(res.data.data)
+      // 		this.shopList=res.data.data;
+      // 	}
+      // })
     }
   },
   methods: {

@@ -1,4 +1,6 @@
 {
-  "navigationStyle": "custom",
-  "usingComponents": {}
+  "navigationBarTitleText": "选择类别",
+  "usingComponents": {
+    "uni-tag": "/components/uni/uni-tag/uni-tag"
+  }
 }

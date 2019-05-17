@@ -1,41 +1,289 @@
-page {
-  background: #fff;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+page.data-v-8a4f9896 {
+  background: #ffffff !important;
 }
-.code-content {
-  text-align: center;
-  padding-top: 56px;
-  padding-right: 32px;
-  padding-left: 38px;
-  font-size: 15px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: #2a2a2a;
+.page.data-v-8a4f9896 {
+  height: auto;
+  min-height: 100%;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
-.code-content .input-content {
-  margin-top: 38px;
-  padding-left: 50px;
-  padding-right: 50px;
-  margin-bottom: 24px;
+.page .options.data-v-8a4f9896 {
+    padding: 10px;
+    margin-top: 20px;
 }
-.code-content .box-item {
-  width: 43px;
-  height: 43px;
-  border-radius: 4px;
-  line-height: 43px;
-  border: 1px solid #42b0ed;
-  background: #f2f2f2;
+.page .options .option.data-v-8a4f9896 {
+      margin-bottom: 10px;
 }
-.code-content .again {
-  font-size: 14px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: #42b0ed;
-  margin-bottom: 24px;
+.page .message-tip.data-v-8a4f9896 {
+    color: #666666;
+    line-height: 30px;
 }
-.notice {
-  font-size: 16px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: #42b0ed;
+.page .code-tip.data-v-8a4f9896 {
+    margin-top: 100rpx;
+    height: 100rpx;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+.page .code-tip .left.data-v-8a4f9896 {
+      color: #666666;
+}
+.page .code-tip .right button.data-v-8a4f9896 {
+      color: #fa541c;
+      border: 1px solid #fa541c;
+      font-size: 12px;
+      border-radius: 2px;
+}
+.page .codes.data-v-8a4f9896 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+}
+.page .codes input.data-v-8a4f9896 {
+      background: #ffffff;
+      border: 1px solid #eeeeee;
+      width: 100rpx;
+      height: 100rpx;
+      text-align: center;
+}
+.page .codes .input.data-v-8a4f9896 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      background: #ffffff;
+      border: 1px solid #eeeeee;
+      width: 100rpx;
+      height: 100rpx;
+      font-size: 50rpx;
+      font-weight: 500;
+      color: #333333;
+}
+.page .codes .input .shining.data-v-8a4f9896 {
+        border: 1px solid #fa541c;
+        height: 60rpx;
+        animation: shining-data-v-8a4f9896 1s linear infinite;
+        /* 其它浏览器兼容性前缀 */
+        -webkit-animation: shining-data-v-8a4f9896 1s linear infinite;
+        -moz-animation: shining-data-v-8a4f9896 1s linear infinite;
+        -ms-animation: shining-data-v-8a4f9896 1s linear infinite;
+        -o-animation: shining-data-v-8a4f9896 1s linear infinite;
+}
+.page .codes .active.data-v-8a4f9896 {
+      border: 1px solid #fa541c;
+      caret-color: #fa541c;
+}
+.page .oneline-codes input.data-v-8a4f9896 {
+    text-align: center;
+}
+@-webkit-keyframes shining-data-v-8a4f9896 {
+0% {
+    opacity: 1;
+}
+50% {
+    opacity: 1;
+}
+50.01% {
+    opacity: 0;
+}
+100% {
+    opacity: 0;
+}
 }
 

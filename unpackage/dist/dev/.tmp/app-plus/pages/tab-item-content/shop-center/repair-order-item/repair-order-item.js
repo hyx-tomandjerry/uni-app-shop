@@ -98,234 +98,240 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! import() | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then(__webpack_require__.bind(null, /*! ../../../../components/uni-grid/uni-grid.vue */ "../../../../../myapps/components/uni-grid/uni-grid.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
-      avatar: ['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg', 'https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg', 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg', 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'],
+      avatar: [],
       modalName: null,
       repaitItem: '' };
 
   },
+  components: {
+    uniGrid: uniGrid },
+
   methods: {
     tabSelect: function tabSelect(e) {
       this.TabCur = e.currentTarget.dataset.id;
@@ -338,20 +344,44 @@ var _default =
     hideModal: function hideModal() {
       this.modalName = '';
     },
+    viewImg: function viewImg() {
+      var imgList = [];
+      this.repaitItem.files.forEach(function (item) {
+        if (item.postfix) {
+          imgList.push(item.url);
+        }
+      });
+      uni.previewImage({
+        urls: imgList });
+
+
+    },
     //获得详情
     getRepairItem: function getRepairItem(id) {var _this = this;
-      uni.request({
-        url: this.$store.state.url + 'ServiceOrder',
-        data: {
-          id: id,
-          userId: 49,
-          owner: 18 },
+      this.$ajax('ServiceOrder', {
+        id: id },
+      function (res) {
+        _this.repaitItem = res;
+        res.files.forEach(function (item) {
+          _this.avatar.push({
+            image: item.url,
+            text: '' });
 
-        success: function success(res) {
-
-          _this.repaitItem = res.data.data;
-        } });
-
+        });
+        console.log(_this.avatar, " at pages\\tab-item-content\\shop-center\\repair-order-item\\repair-order-item.vue:271");
+      });
+      // uni.request({
+      // 	url:this.$store.state.url+'ServiceOrder',
+      // 	data:{
+      // 		id:id,
+      // 		userId:49,
+      // 		owner:18
+      // 	},
+      // 	success: (res) => {
+      // 		
+      // 		this.repaitItem=res.data.data;
+      // 	}
+      // })
     } },
 
   onLoad: function onLoad(option) {

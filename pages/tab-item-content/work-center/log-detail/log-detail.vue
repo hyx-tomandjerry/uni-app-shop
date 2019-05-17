@@ -1,15 +1,23 @@
 <template>
 	<view >
-		<view class="header flex justify-between bg-white">
-			<view><image src="../../../../static/icon/fanhui.png" 
-				@click="goBack()"
-			style="width:22px;height:22px;"></image></view>
+		<!-- <view class="header flex justify-between bg-white">
+			<view><text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text></view>
 			<text class="title">日志详情</text>
 			<image src="../../../../static/icon/garbage.png" 
 			@click="deleteLog()"
 			style="width:15px;height:15px;"></image>
-		</view>
-		
+		</view> -->
+		<cu-custom :isBack="true">
+			<block slot="left">
+				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
+			</block>
+			<block slot="content"><text class="title">日志详情</text></block>
+			<block slot="right">
+				<image src="../../../../static/icon/garbage.png" 
+				@click="deleteLog()"
+				style="width:15px;height:15px;"></image>
+			</block>
+		</cu-custom>
 		<view class="log-content">
 			<view class="cu-form-group">
 				<view class="log-title"><text class="text-red ">*</text>标题</view>

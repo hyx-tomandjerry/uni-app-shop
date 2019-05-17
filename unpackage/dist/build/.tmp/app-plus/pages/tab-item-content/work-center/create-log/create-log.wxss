@@ -23,4 +23,10 @@
   margin-bottom: 24px;
   border-bottom: 1px solid #EEEEED;
 }
+.cu-bar .search-form {
+  margin: 0;
+}
+.log-content .cu-bar {
+  padding-left: 13px;
+}
 

@@ -1,76 +1,25 @@
-uni-input input {
+.dateStyle {
   font-size: 12px;
 }
-.header-content {
-  padding: 15px 14px;
-  border-bottom: 1px solid #EEEEED;
-}
-.header-content .header-title {
-  font-size: 16px;
-  font-family: PingFangSC-Semibold;
-  font-weight: 600;
-  color: #2a2a2a;
-}
-.header-content .headers-submit {
-  font-size: 14px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: #42b0ed;
-}
-.cu-form-group uni-textarea {
-  background: #f7f7f7;
-  padding-top: 8px;
-  padding-left: 11px;
-}
-.addItem {
-  font-size: 15px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: #42b0ed;
-}
-.padding-tb-sm {
-  padding: 0;
-}
-.del {
+.repair-item {
   font-size: 13px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: #42b0ed;
-}
-.shopname {
-  font-size: 15px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: #2a2a2a;
-  margin-bottom: 3px;
-}
-.shopadress {
-  font-size: 14px;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #898888;
+  padding-top: 4px;
+  padding-bottom: 10px;
+  padding-left: 14px;
 }
-.test {
-  text-align: center;
-  padding: 10px 0;
-}
-button {
-  margin: 20rpx;
-  font-size: 28rpx;
-}
-.cu-form-group uni-input {
-  text-align: right;
-}
-.dateStyle {
-  font-size: 13px;
+.title {
+  font-size: 12px;
   font-family: PingFangSC-Regular;
   font-weight: 400;
-  color: gray;
+  color: #2a2a2a;
 }
-.cu-list.menu > .cu-item .content {
-  font-size: 16px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: gray;
+.cu-form-group uni-textarea {
+  background: #f7f7f7;
+  border-radius: 4px;
+  padding-top: 5px;
+  padding-left: 10px;
 }
 

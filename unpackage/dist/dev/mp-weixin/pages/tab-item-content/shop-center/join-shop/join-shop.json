@@ -1,7 +1,4 @@
 {
   "navigationBarTitleText": "加入门店",
-  "usingComponents": {
-    "mpvue-picker": "/components/city/mpvue-picker/mpvuePicker",
-    "mpvue-city-picker": "/components/city/mpvue-citypicker/mpvueCityPicker"
-  }
+  "usingComponents": {}
 }

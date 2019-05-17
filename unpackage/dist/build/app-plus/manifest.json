@@ -5,7 +5,7 @@
     "iPad"
   ],
   "id": "__UNI__8F064BF",
-  "name": "myapps",
+  "name": "门店助手",
   "version": {
     "name": "1.0.0",
     "code": "100"
@@ -21,7 +21,6 @@
     "Maps": {
       "coordType": "gcj02"
     },
-    "Messaging": {},
     "UniNView": {
       "description": "UniNView原生渲染"
     }
@@ -68,25 +67,23 @@
           "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
           "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
           "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-          "<uses-permission android:name=\"android.permission.READ_SMS\"/>",
           "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
-          "<uses-permission android:name=\"android.permission.SEND_SMS\"/>",
           "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
           "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
           "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
           "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
-          "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
-          "<uses-permission android:name=\"android.permission.WRITE_SMS\"/>"
+          "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
         ]
       },
       "apple": {},
       "plugins": {
         "maps": {
           "amap": {
-            "appkey_ios": "59bb8954d72c5a6f7be516dd9c89e7eb",
-            "appkey_android": "59bb8954d72c5a6f7be516dd9c89e7eb"
+            "appkey_ios": "4c523fb1857f99ba7f2d683d9e88ec1e",
+            "appkey_android": "4c523fb1857f99ba7f2d683d9e88ec1e"
           }
         },
+        "oauth": {},
         "audio": {
           "mp3": {
             "description": "Android平台录音支持MP3格式文件"

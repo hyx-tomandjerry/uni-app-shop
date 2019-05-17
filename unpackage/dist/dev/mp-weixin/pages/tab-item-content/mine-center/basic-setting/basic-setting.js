@@ -195,6 +195,12 @@ var _default =
 
   },
   methods: {
+    tochangeMobile: function tochangeMobile() {
+      // 账号管理
+      uni.navigateTo({
+        url: '../account-manager/account-manager' });
+
+    },
     goBack: function goBack() {
       uni.navigateBack({
         delta: 1 });
@@ -202,24 +208,31 @@ var _default =
     },
     getUserInfo: function getUserInfo() {var _this = this;
       uni.getStorage({
-        key: 'usrInfo',
+        key: 'userInfo',
         success: function success(res) {
           _this.userInfo = res.data;
+          console.log(_this.userInfo);
         } });
 
     },
 
     //退出登录
     quitEvent: function quitEvent() {
-      uni.clearStorage();
-      uni.navigateTo({
-        url: '../../../login-design/login/login' });
+      uni.removeStorage({
+        key: 'userInfo',
+        success: function success(res) {
+          console.log(res);
+          uni.navigateTo({
+            url: '../../../login-design/login/login' });
+
+        } });
+
 
     } },
 
   onLoad: function onLoad() {
     this.getUserInfo();
-    console.log(this.userInfo);
+
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
@@ -251,16 +264,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var f0 = _vm._f("formatTime")(_vm.userInfo.birthday, "YDM")
-
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        f0: f0
-      }
-    }
-  )
 }
 var staticRenderFns = []
 render._withStripped = true

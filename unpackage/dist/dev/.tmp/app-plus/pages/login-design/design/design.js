@@ -158,6 +158,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 var _this;var _default =
 {
   data: function data() {
@@ -189,8 +192,8 @@ var _this;var _default =
 
     },
     //注册
-    design: function design() {
-      _this = this;
+    design: function design() {var _this2 = this;
+      var _this = this;
       if (this.checkPwd && this.checkTel) {
         uni.request({
           url: this.$store.state.url,
@@ -205,21 +208,24 @@ var _this;var _default =
 
           success: function success(res) {
             if (res.data.data == -2) {
-              _this.isShow = true;
-              _this.modalName = 'exit';
+              _this2.isShow = true;
+              _this2.modalName = 'exit';
               setTimeout(function () {
-                _this.isShow = false;
-                _this.modalName = '';
+                this.isShow = false;
+                this.modalName = '';
               }, 2000);
             } else {
-              _this.isShow = true;
-              _this.modalName = 'success';
+              console.log(res, " at pages\\login-design\\design\\design.vue:118");
+              console.log(_this2.designr, " at pages\\login-design\\design\\design.vue:119");
+              _this2.isShow = true;
+              _this2.modalName = 'success';
               setTimeout(function () {
-                _this.isShow = false;
-                _this.modalName = '',
-                console.log('1111', " at pages\\login-design\\design\\design.vue:120");
+                _this2.isShow = false;
+                _this2.modalName = '',
+                console.log('1111', " at pages\\login-design\\design\\design.vue:125");
+                console.log(_this2.designr.mobile, " at pages\\login-design\\design\\design.vue:126");
                 uni.navigateTo({
-                  url: '../login/login?account=' + _this.designr.mobile + '&token=' + _this.designr.token });
+                  url: '../login/login?account=' + _this2.designr.mobile + '&token=' + _this2.designr.token });
 
               }, 500);
             }
@@ -242,7 +248,7 @@ var _this;var _default =
       this.designr.token = '';
     },
     checkTelEvent: function checkTelEvent(event) {
-      console.log(event, " at pages\\login-design\\design\\design.vue:145");
+      console.log(event, " at pages\\login-design\\design\\design.vue:151");
       if (event) {
         if (!/^1[34578]\d{9}$/.test(event)) {
 

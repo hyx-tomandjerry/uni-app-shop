@@ -98,9 +98,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
-//
-//
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -158,17 +156,20 @@ var _self;var _default =
       // 地区列表
       addressd3: [],
       //省份id 默认为64，可根据想要默认展示的id自行更改
-      co: '1',
+      co: '65',
       //默认省份名称
-      coname: '北京',
+      coname: '',
+      coObj: {},
       //城市id 默认为64，可根据想要默认展示的id自行更改
       ct: '64',
       //默认城市名称
-      ctname: '朝阳区',
+      ctname: '',
+      ctObj: {},
       //地区id 默认为575，可根据想要默认展示的id自行更改
       cs: '575',
       //默认地区名称
-      csname: '三环以内' };
+      csname: '',
+      csObj: {} };
 
   },
   props: {
@@ -187,7 +188,7 @@ var _self;var _default =
     this.emitData();
 
   },
-  methods: _defineProperty({
+  methods: {
     //呼出模态框
     showAddress: function showAddress() {
       // 呼出模态框
@@ -205,8 +206,11 @@ var _self;var _default =
     emitData: function emitData() {
       var data = {
         province: _self.coname,
+        provinceID: _self.co,
         city: _self.ctname,
-        district: _self.csname };
+        cityID: _self.ct,
+        district: _self.csname,
+        districtID: _self.cs };
 
       _self.$emit("changes", data);
     },
@@ -251,18 +255,19 @@ var _self;var _default =
         success: function success(res) {
           switch (flag) {
             case 1:
-              _self.addressd1 = res.data;
+              _self.addressd1 = res.data.data;
+
               break;
             case 2:
-              _self.addressd2 = res.data;
-              _self.ctname = res.data[0].name;
-              _self.ct = res.data[0].id;
+              _self.addressd2 = res.data.data;
+              _self.ctname = res.data.data[0] ? res.data.data[0].name : '';
+              _self.ct = res.data.data[0] ? res.data.data[0].id : 1208;
               _self.getadd(3, _self.ct);
               break;
             case 3:
-              _self.addressd3 = res.data;
-              _self.csname = res.data[0].name;
-              _self.cs = res.data[0].id;
+              _self.addressd3 = res.data.data;
+              _self.csname = res.data.data[0] ? res.data.data[0].name : '';
+              _self.cs = res.data.data[0] ? res.data.data[0].id : 1220;
               break;
             default:
               return;}
@@ -270,191 +275,7 @@ var _self;var _default =
         } });
 
 
-    } }, "getadd", function getadd(
-
-
-  flag, id) {
-    switch (flag) {
-      case 1:
-        _self.addressd1 = addObj;
-        break;
-      case 2:
-        var newArr = [];
-        for (var i = 0; i < addObj.length; i++) {
-          if (addObj[i].id == id) {
-            newArr = addObj[i].city;
-          }
-        }
-        _self.addressd2 = newArr;
-        _self.ctname = newArr[0].name;
-        _self.ct = newArr[0].id;
-        _self.getadd(3, _self.ct);
-        break;
-      case 3:
-        // 根据业务做相应处理
-        break;
-      default:
-        return;}
-
-  })
-
-
-  // 	var addObj = [{
-  // 			"id": 1,
-  // 			"code": "",
-  // 			"name": "北京市",
-  // 			"parent_id": 0,
-  // 			"level": 1,
-  // 			"path": "0,",
-  // 			city: [{
-  // 				"id": 575,
-  // 				"code": "",
-  // 				"name": "三环以内",
-  // 				"parent_id": 64,
-  // 				"level": 3,
-  // 				"path": "0,1,64,"
-  // 			}, {
-  // 				"id": 576,
-  // 				"code": "",
-  // 				"name": "三环到四环之间",
-  // 				"parent_id": 64,
-  // 				"level": 3,
-  // 				"path": "0,1,64,"
-  // 			}, {
-  // 				"id": 577,
-  // 				"code": "",
-  // 				"name": "四环到五环之间",
-  // 				"parent_id": 64,
-  // 				"level": 3,
-  // 				"path": "0,1,64,"
-  // 			}, {
-  // 				"id": 578,
-  // 				"code": "",
-  // 				"name": "五环到六环之间",
-  // 				"parent_id": 64,
-  // 				"level": 3,
-  // 				"path": "0,1,64,"
-  // 			}, {
-  // 				"id": 579,
-  // 				"code": "",
-  // 				"name": "管庄",
-  // 				"parent_id": 64,
-  // 				"level": 3,
-  // 				"path": "0,1,64,"
-  // 			}]
-  // 		}, {
-  // 			"id": 2,
-  // 			"code": "",
-  // 			"name": "上海",
-  // 			"parent_id": 0,
-  // 			"level": 1,
-  // 			"path": "0,",
-  // 			city: [{
-  // 				"id": 82,
-  // 				"code": "",
-  // 				"name": "黄浦区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}, {
-  // 				"id": 83,
-  // 				"code": "",
-  // 				"name": "徐汇区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}, {
-  // 				"id": 84,
-  // 				"code": "",
-  // 				"name": "长宁区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}, {
-  // 				"id": 85,
-  // 				"code": "",
-  // 				"name": "静安区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}, {
-  // 				"id": 86,
-  // 				"code": "",
-  // 				"name": "闸北区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}, {
-  // 				"id": 87,
-  // 				"code": "",
-  // 				"name": "虹口区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}, {
-  // 				"id": 88,
-  // 				"code": "",
-  // 				"name": "杨浦区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}, {
-  // 				"id": 89,
-  // 				"code": "",
-  // 				"name": "宝山区",
-  // 				"parent_id": 2,
-  // 				"level": 2,
-  // 				"path": "0,2,"
-  // 			}]
-  // 		}, {
-  // 			"id": 3,
-  // 			"code": "",
-  // 			"name": "天津",
-  // 			"parent_id": 0,
-  // 			"level": 1,
-  // 			"path": "0,",
-  // 			city: [{
-  // 				"id": 99,
-  // 				"code": "",
-  // 				"name": "东丽区",
-  // 				"parent_id": 3,
-  // 				"level": 2,
-  // 				"path": "0,3,"
-  // 			}, {
-  // 				"id": 100,
-  // 				"code": "",
-  // 				"name": "和平区",
-  // 				"parent_id": 3,
-  // 				"level": 2,
-  // 				"path": "0,3,"
-  // 			}, {
-  // 				"id": 101,
-  // 				"code": "",
-  // 				"name": "河北区",
-  // 				"parent_id": 3,
-  // 				"level": 2,
-  // 				"path": "0,3,"
-  // 			}, {
-  // 				"id": 102,
-  // 				"code": "",
-  // 				"name": "河东区",
-  // 				"parent_id": 3,
-  // 				"level": 2,
-  // 				"path": "0,3,"
-  // 			}, {
-  // 				"id": 103,
-  // 				"code": "",
-  // 				"name": "河西区",
-  // 				"parent_id": 3,
-  // 				"level": 2,
-  // 				"path": "0,3,"
-  // 			}]
-  // 		},
-  // 
-  // 
-  // 
-  // 	];
-};exports.default = _default;
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["default"]))
 
 /***/ }),

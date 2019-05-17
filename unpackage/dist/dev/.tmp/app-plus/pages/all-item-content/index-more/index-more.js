@@ -98,148 +98,137 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var headTab = function headTab() {return __webpack_require__.e(/*! import() | components/head-tab */ "components/head-tab").then(__webpack_require__.bind(null, /*! ../../../components/head-tab.vue */ "../../../../../myapps/components/head-tab.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
-      exampleList: [
-      {
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        title: '我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。',
-        date: '2019/02/20',
-        time: '21:21' },
-
-      {
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        title: '我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。',
-        date: '2019/02/20',
-        time: '21:21' },
-
-      {
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        title: '我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。',
-        date: '2019/02/20',
-        time: '21:21' },
-
-      {
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        title: '我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。',
-        date: '2019/02/20',
-        time: '21:21' },
-
-      {
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        title: '我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。',
-        date: '2019/02/20',
-        time: '21:21' }],
-
-
-      skillList: [
-      {
-        title: '有时我觉得自己很无知，世界这么大，我竟然不知道拿什么来爱',
-        content: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        date: '2019/5/20',
-        time: '20:00' },
-
-      {
-        title: ' 爱情就是一个将陌生人变成情侣，又将情侣变成陌生人的游戏。',
-        content: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        date: '2019/5/20',
-        time: '20:00' },
-
-      {
-        title: ' 世间有什么缘分不缘分，都是撑来的。',
-        content: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        date: '2019/5/20',
-        time: '20:00' },
-
-      {
-        title: ' 电影开场，我们的爱情却已散场ゞ',
-        content: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        date: '2019/5/20',
-        time: '20:00' },
-
-      {
-        title: '真心喜欢一个人，就会想，如果我可以再漂亮一点就好了。',
-        content: '折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！',
-        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',
-        date: '2019/5/20',
-        time: '20:00' }],
-
-
+      exampleList: [],
+      skillList: [],
       title: '',
       value: '' };
 
   },
+  components: {
+    headTab: headTab },
+
   methods: {
+    checkItemInfo: function checkItemInfo(item) {
+      uni.navigateTo({
+        url: "../detail-content/detail-content?id=" + item.id + "&type=" + this.value });
+
+    },
     goBack: function goBack() {
       uni.navigateBack({
         delta: 1 });
 
+    },
+    //获得销售技巧列表
+    getArticleList: function getArticleList() {var _this = this;
+      this.$ajax('Articles', {
+        zone: -1 },
+      function (res) {
+        res.forEach(function (item) {
+          if (_this.value == 'skill' && item.type == 1) {
+            _this.skillList.push(item);
+          } else if (_this.value == 'example' && item.type == 2) {
+            console.log('----', " at pages\\all-item-content\\index-more\\index-more.vue:122");
+            _this.skillList.push(item);
+          }
+        });
+        console.log(_this.skillList, " at pages\\all-item-content\\index-more\\index-more.vue:126");
+      });
     } },
 
   onLoad: function onLoad(option) {
+
     if (option.value == 'skill') {
       this.title = '销售技巧';
       this.value = option.value;
@@ -249,6 +238,7 @@ var _default =
       this.value = option.value;
 
     }
+    this.getArticleList();
 
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
@@ -281,6 +271,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.skillList.map(function(item, index) {
+    var f0 = _vm._f("formatTime")(item.createdate, "YMD", "/")
+
+    return {
+      $orig: _vm.__get_orig(item),
+      f0: f0
+    }
+  })
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

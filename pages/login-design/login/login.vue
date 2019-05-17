@@ -2,7 +2,7 @@
 	<view class="login_container">
 		<view class="title">
 			<view class="login_title">登录</view>
-			<!-- <view class="login_design">还没有账号,&nbsp;<text style="color:rgba(66, 176, 237, 1);margin-left:10px;" @click="toDesign()">立即注册</text></view> -->
+			<view class="login_design">还没有账号,&nbsp;<text style="color:rgba(66, 176, 237, 1);margin-left:10px;" @click="toDesign()">立即注册</text></view>
 		</view>
 		<view class="login_form">
 			<form>
@@ -11,8 +11,6 @@
 					<input placeholder="请输入账号" 
 					@input="inputAccount($event)"
 					 v-model="designer.account" type="text"></input>
-
-					<!-- <text class="cuIcon-roundclose position_absolute" style="right:44rpx;" v-show="isInput"></text> -->
 				</view>
 				<view class="cu-form-group  position_relative " >
 					<view class="text-gray">
@@ -20,8 +18,18 @@
 					</view>
 					<input placeholder="请输入密码"  
 					@input="inputPwd($event)"
-					v-model="designer.token" type="password"></input>
-					<!-- <image src="../../static/img/login/eye.png" style="width:32rpx;height:32rpx;position: absolute;right:44rpx;"></image> -->
+					v-model="designer.token" type="password" v-if="isShowPwd"></input>
+					<input type="text" v-model="designer.token" v-else @input="inputPwd($event)">
+					<image 
+					@click="showPwd()"
+					v-if="isShowPwd"
+					src="../../../static/icon/eye.png" 
+					style="width:24rpx;height:24rpx;position: absolute;right:44rpx;"></image>
+					<image src="../../../static/icon/eye_open.png" 
+					style="width:16px;height:17px;position: absolute;right:44rpx;"
+					v-else
+					@click="noShowPwd()"
+					></image>
 				</view>
 			</form>
 			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;">
@@ -45,7 +53,8 @@
 					account:'',
 					token:''
 				},
-				isShow:false
+				isShow:false,
+				isShowPwd:true,//显示密码
 			}
 		},
 		components:{
@@ -55,10 +64,18 @@
 			if(option){
 				this.designer.account=option.account;
 				this.designer.token=option.token;
+				this.isShow=true;
 			}
+			
 			
 		},
 		methods:{
+			noShowPwd(){
+				this.isShowPwd=true;
+			},
+			showPwd(){
+				this.isShowPwd=false;
+			},
 			inputAccount(event){
 				this.isShow=true;
 			},
@@ -78,7 +95,9 @@
 				})
 			},
 			loginEvent(){
+				
 				uni.request({
+					
 					url:this.$store.state.url+'Login',
 					data:{
 						user:this.designer.account,
@@ -105,17 +124,20 @@
 								this.$store.commit('setUserInfo',res.data.data);
 								uni.setStorage({
 									key: 'userInfo',
-									data: res.data.data
+									data: res.data.data,
+									success: (res) => {
+										uni.showToast({
+											title:'登录成功',
+											icon:'none'
+										})
+										setTimeout(function(){
+											uni.switchTab({
+												url:'../../tab-item/index/index'
+											})
+										},500)
+									}
 								});
-								uni.showToast({
-									title:'登录成功',
-									icon:'none'
-								})
-								setTimeout(function(){
-									uni.switchTab({
-										url:'../../tab-item/index/index'
-									})
-								},500)
+								
 							}
 						}
 

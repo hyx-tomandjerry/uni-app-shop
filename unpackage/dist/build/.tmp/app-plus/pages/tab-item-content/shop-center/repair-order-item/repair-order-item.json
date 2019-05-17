@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "报修详情",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-grid": "/components/uni-grid/uni-grid"
+  }
 }

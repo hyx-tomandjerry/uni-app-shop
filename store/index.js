@@ -11,15 +11,43 @@ const store=new Vuex.Store({
 		uploadHostUrl:'http://up.qiniup.com?token=',
 		userInfo:null,
 		statusHeight:44,
+		IMSDKAPPID:1400132581,
+		loginInfo:'',//聊天信息
 		constants:{
 			brand_type:29,//品牌类别
 			repair_type:39,//维修类别
 			serviceorder_file:18,//报修附件
-			shop_file:26,//门店附件
+			shop_file:26,//门店附件,
+			
 		},
 		notice:{
 			todo:1,//代办
 			info:2,//通知
+		},
+		//门店状态
+		shopStatus:{
+			1:'筹备中',
+			2:'施工中',
+			3:'营业中',
+			4:'已撤柜',
+			5:'已重装',
+			6:'已移位',
+		},
+		shopStatusZn:{
+			ready:1,
+			processing:2,
+			businessing:3,
+			canceled:4,
+			renovated:5,
+			moved:6
+		},
+		shopStatusColor:{
+			1:'#5cdbd3',
+			2:'#ffa940',
+			3:'#52c41a',
+			4:'#f5222d',
+			5:'#9254de',
+			6:'#006d75'
 		},
 		noticeType:{
 			'unSign':0,
@@ -147,6 +175,9 @@ const store=new Vuex.Store({
 		},
 		setAddress(state,address){
 			this.state.address=address;
+		},
+		setLoginInfo(state,loginInfo){
+			this.state.loginInfo=loginInfo
 		}
 
 	}

@@ -138,6 +138,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
@@ -145,8 +153,9 @@ __webpack_require__.r(__webpack_exports__);
         account: '',
         token: '' },
 
-      isShow: false };
-
+      isShow: false,
+      isShowPwd: true //显示密码
+    };
   },
   components: {
     popModal: popModal },
@@ -155,10 +164,18 @@ __webpack_require__.r(__webpack_exports__);
     if (option) {
       this.designer.account = option.account;
       this.designer.token = option.token;
+      this.isShow = true;
     }
+
 
   },
   methods: {
+    noShowPwd: function noShowPwd() {
+      this.isShowPwd = true;
+    },
+    showPwd: function showPwd() {
+      this.isShowPwd = false;
+    },
     inputAccount: function inputAccount(event) {
       this.isShow = true;
     },
@@ -178,7 +195,9 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     loginEvent: function loginEvent() {var _this = this;
+
       uni.request({
+
         url: this.$store.state.url + 'Login',
         data: {
           user: this.designer.account,
@@ -205,17 +224,20 @@ __webpack_require__.r(__webpack_exports__);
               _this.$store.commit('setUserInfo', res.data.data);
               uni.setStorage({
                 key: 'userInfo',
-                data: res.data.data });
+                data: res.data.data,
+                success: function success(res) {
+                  uni.showToast({
+                    title: '登录成功',
+                    icon: 'none' });
 
-              uni.showToast({
-                title: '登录成功',
-                icon: 'none' });
+                  setTimeout(function () {
+                    uni.switchTab({
+                      url: '../../tab-item/index/index' });
 
-              setTimeout(function () {
-                uni.switchTab({
-                  url: '../../tab-item/index/index' });
+                  }, 500);
+                } });
 
-              }, 500);
+
             }
           }
 

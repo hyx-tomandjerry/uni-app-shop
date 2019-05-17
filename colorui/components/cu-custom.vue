@@ -62,5 +62,6 @@
 <style>
 .cu-custom .cu-bar{
 	min-height: 40px;
+	padding:0 15px 0 3px;
 }
 </style>

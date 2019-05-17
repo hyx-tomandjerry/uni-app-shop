@@ -48,11 +48,20 @@
 			return {
 				telephone:'',
 				checked:true,
-				isShow:false
+				isShow:false,
+				userInfo:''
 			}
 		},
 		components:{
 			popModal
+		},
+		onLoad(){
+			uni.getStorage({
+				key:'userInfo',
+				success: (res) => {
+					this.userInfo=res.data
+				}
+			})
 		},
 		methods: {
 			refuse(){
@@ -64,27 +73,29 @@
 						title:'请输入电话号码',
 						icon:'none'
 					})
-				}else{
-					this.isShow=true;
+					return
 				}
-				
 			},
 			hideModal(){
 				this.isShow=false;
 			},
 			checkTelEvent(event){
-				if(!(/^1(3|4|5|6|7|8)\d{9}$/.test(event))){ 
+				
+				if((/^1[345678]\d{9}$/.test(event))){ 
 					uni.showToast({
 						title:'输入电话号码有误',
 						icon:'none'
 					})
-					return;
+					this.isShow=false;
+					
+				}else{
+					this.isShow=true;
 				}
 			},
 			inputCheckCard(){
 				//输入验证码
 				uni.navigateTo({
-					url:'../input-code/input-code'
+					url:'../input-code/input-code?mobile='+this.userInfo.mobile
 				})
 			}
 		}

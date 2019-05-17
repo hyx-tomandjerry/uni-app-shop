@@ -1,12 +1,12 @@
 <template>
-	<view>
-		<view class="header-content flex justify-between">
-			<text class="cuIcon-back" style="font-size:17px;" @click="goBack()"></text>
-			<text class="header-content-title">建议列表</text>
-			<view>
+	<view >
+		<cu-custom  isBack="true">
+			 <block slot="left"><text class="cuIcon-back" @click="goBack()"></text></block>
+			<block slot="content">设置登录密码</block>
+			<block slot="right">
 				<image src="../../../../static/icon/roundadd.png" style="width:20px;height:20px;" @click="addSuggestion()"></image>
-			</view>
-		</view>
+			</block>
+		</cu-custom>
 		<view class="suggestion-list-content">
 			<view class="cu-list menu-avatar comment solids-top">
 					<view class="cu-item" style="border-bottom:1px solid #EEEEED;border-radius: 10px;">
@@ -24,8 +24,8 @@
 							<view class="margin-top-sm flex justify-between">
 								<view class="text-gray text-df">2018年12月4日</view>
 								<view>
-									<text class="cu-tag line-red">查看评价</text>
-									<text class="cu-tag line-red">修改</text>
+									<text class="cu-tag line-red">查看</text>
+									<text class="cu-tag line-red">删除</text>
 								</view>
 							</view>
 						</view>
@@ -46,8 +46,8 @@
 							<view class="margin-top-sm flex justify-between">
 								<view class="text-gray text-df">2018年12月4日</view>
 								<view>
-									<text class="cu-tag line-red">查看评价</text>
-									<text class="cu-tag line-red">修改</text>
+									<text class="cu-tag line-red">查看</text>
+									<text class="cu-tag line-red">删除</text>
 								</view>
 							</view>
 						</view>
@@ -68,8 +68,8 @@
 							<view class="margin-top-sm flex justify-between">
 								<view class="text-gray text-df">2018年12月4日</view>
 								<view>
-									<text class="cu-tag line-red">查看评价</text>
-									<text class="cu-tag line-red">修改</text>
+									<text class="cu-tag line-red">查看</text>
+									<text class="cu-tag line-red">删除</text>
 								</view>
 							</view>
 						</view>
@@ -90,8 +90,8 @@
 							<view class="margin-top-sm flex justify-between">
 								<view class="text-gray text-df">2018年12月4日</view>
 								<view>
-									<text class="cu-tag line-red">查看评价</text>
-									<text class="cu-tag line-red">修改</text>
+									<text class="cu-tag line-red">查看</text>
+									<text class="cu-tag line-red">删除</text>
 								</view>
 							</view>
 						</view>
@@ -102,10 +102,11 @@
 </template>
 
 <script>
+	import headTab from '../../../../components/head-tab.vue'
 	export default {
 		data() {
 			return {
-				
+				title:'建议列表'
 			}
 		},
 		methods: {
@@ -119,6 +120,9 @@
 					url:'../create-suggestion/create-suggestion'
 				})
 			}
+		},
+		components:{
+			headTab
 		}
 	}
 </script>
@@ -127,22 +131,6 @@
 	page{
 		background:#fff ;
 	}
-	.header-content{
-		padding:15px 13px 15px 15px;
-		width:100%;
-		border-bottom:0.5px solid #EEEEED;
-		.header-content-title{
-			font-size:16px;
-			font-family:PingFangSC-Semibold;
-			font-weight:600;
-			color:rgba(42,42,42,1);
-		}
-		.header-content-submit{
-			font-size:14px;
-			font-family:PingFangSC-Regular;
-			font-weight:400;
-			// color:rgba(182,222,251,1);
-			color:rgba(66,176,237,1)
-		}
-	}
+
+	
 </style>

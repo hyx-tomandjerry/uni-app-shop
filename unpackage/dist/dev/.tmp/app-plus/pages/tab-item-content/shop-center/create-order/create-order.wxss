@@ -1,3 +1,6 @@
+.dateStyle {
+  font-size: 12px;
+}
 .repair-item {
   font-size: 13px;
   font-family: PingFangSC-Regular;
@@ -8,7 +11,7 @@
   padding-left: 14px;
 }
 .title {
-  font-size: 15px;
+  font-size: 12px;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #2a2a2a;

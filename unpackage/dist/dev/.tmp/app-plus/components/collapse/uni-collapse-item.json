@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "uni-icon": "/components/collapse/uni-icon"
+  },
+  "component": true
+}

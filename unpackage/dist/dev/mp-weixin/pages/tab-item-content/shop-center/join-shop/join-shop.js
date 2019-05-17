@@ -98,61 +98,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _cityData = _interopRequireDefault(__webpack_require__(/*! ../../../../static/js/city.data.js */ "../../../../../myapps/static/js/city.data.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -205,9 +151,63 @@ var _cityData = _interopRequireDefault(__webpack_require__(/*! ../../../../stati
 //
 //
 //
-var mpvuePicker = function mpvuePicker() {return __webpack_require__.e(/*! import() | components/city/mpvue-picker/mpvuePicker */ "components/city/mpvue-picker/mpvuePicker").then(__webpack_require__.bind(null, /*! ../../../../components/city/mpvue-picker/mpvuePicker.vue */ "../../../../../myapps/components/city/mpvue-picker/mpvuePicker.vue"));};var mpvueCityPicker = function mpvueCityPicker() {return Promise.all(/*! import() | components/city/mpvue-citypicker/mpvueCityPicker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/city/mpvue-citypicker/mpvueCityPicker")]).then(__webpack_require__.bind(null, /*! ../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue */ "../../../../../myapps/components/city/mpvue-citypicker/mpvueCityPicker.vue"));};var _default = { components: { mpvuePicker: mpvuePicker, mpvueCityPicker: mpvueCityPicker }, data: function data() {return { index: -1, mulLinkageTwoPicker: _cityData.default, cityPickerValueDefault: [0, 0, 1], cityLobal: '', themeColor: '#007AFF', mode: '', deepLength: 1, pickerValueDefault: [0], pickerValueArray: [], shoplist: ['喵喵喵', '汪汪汪', '哼唧哼唧'], titleValue: '' };}, onLoad: function onLoad(option) {if (option.name == 'record') {//录入门店
-      this.titleValue = '录入门店';} else if (option.name == 'join') {this.titleValue = '加入门店';}}, methods: { // 三级联动选择
-    showMulLinkageThreePicker: function showMulLinkageThreePicker() {this.$refs.mpvueCityPicker.show();}, onConfirm: function onConfirm(e) {this.cityLobal = e.label;this.pickerText = JSON.stringify(e);}, onCancel: function onCancel(e) {}, onBackPress: function onBackPress() {if (this.$refs.mpvuePicker.showPicker) {this.$refs.mpvuePicker.pickerCancel();return true;}if (this.$refs.mpvueCityPicker.showPicker) {this.$refs.mpvueCityPicker.pickerCancel();return true;
+
+// import cityData from '../../../../static/js/city.data.js'
+// import mpvuePicker from '../../../../components/city/mpvue-picker/mpvuePicker.vue'
+// import mpvueCityPicker from '../../../../components/city/mpvue-citypicker/mpvueCityPicker.vue'
+var _default = {
+  components: {
+    // mpvuePicker,
+    // mpvueCityPicker
+  },
+  data: function data() {
+    return {
+      index: -1,
+      mulLinkageTwoPicker: cityData,
+      cityPickerValueDefault: [0, 0, 1],
+      cityLobal: '',
+      themeColor: '#007AFF',
+      mode: '',
+      deepLength: 1,
+      pickerValueDefault: [0],
+      pickerValueArray: [],
+      shoplist: ['喵喵喵', '汪汪汪', '哼唧哼唧'],
+      titleValue: '' };
+
+
+  },
+  onLoad: function onLoad(option) {
+    if (option.name == 'record') {
+      //录入门店
+      this.titleValue = '录入门店';
+    } else if (option.name == 'join') {
+      this.titleValue = '加入门店';
+    }
+  },
+  methods: {
+    // 三级联动选择
+    showMulLinkageThreePicker: function showMulLinkageThreePicker() {
+      this.$refs.mpvueCityPicker.show();
+    },
+    onConfirm: function onConfirm(e) {
+
+      this.cityLobal = e.label;
+      this.pickerText = JSON.stringify(e);
+
+
+
+    },
+    onCancel: function onCancel(e) {
+
+    },
+    onBackPress: function onBackPress() {
+      if (this.$refs.mpvuePicker.showPicker) {
+        this.$refs.mpvuePicker.pickerCancel();
+        return true;
+      }
+      if (this.$refs.mpvueCityPicker.showPicker) {
+        this.$refs.mpvueCityPicker.pickerCancel();
+        return true;
       }
     },
     onUnload: function onUnload() {

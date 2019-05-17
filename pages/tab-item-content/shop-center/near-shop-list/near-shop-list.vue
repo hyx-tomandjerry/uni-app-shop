@@ -1,5 +1,5 @@
 
- 
+
  <template>
  	<view>
 		<view class="shop-content bg-white">
@@ -9,17 +9,32 @@
 					<view>
 						<text class="cuIcon-shop" style="margin-right:8px;"></text><text>{{item.name}}</text>
 					</view>
-					
-					<text class="text-blue">{{item.source/1000}}km</text>
-					
+
+					<text class="text-blue cuIcon-brand" v-if="item.catalogName">{{item.catalogName}}</text>
+
 					</view>
 					<view style="width:100%" class=".shop-item-address">
-						<text class="cuIcon-location" style="margin-right:8px;"></text><text style="text-align:left;"  >{{item.address}}</text>
-						
+						<text class="cuIcon-location" style="margin-right:5px;"></text>
+						<text style="text-align:left;font-size:11px" >
+							{{item.provinceName || ''}}{{item.cityName || ''}}{{item.districtName||''}}{{item.address}}
+						</text>
+
 					</view>
-					<view class="cu-tag line-blue text-blue" v-if="item.catalogName">品牌名称</view>
+					<!-- <view class="cu-tag line-blue text-blue" v-if="item.catalogName">品牌名称</view> -->
 				</view>
 			</scroll-view>
+		</view>
+		
+		<view v-if="type=='express'" style="position:fixed;bottom:0px;width:100%">
+			<view v-if="cat=='send'">
+				<view class="cu-btn" style="width:100%;background:lightgray;" @click="searchMore()">搜索更多</view>
+			</view>
+			<view v-if="cat=='receive'">
+				<view class="cu-btn" style="width:30%;background:lightgreen;" @click="searchMore()">搜索更多</view>
+				<view class="cu-btn" style="width:30%;background:lightgray;" @click="chooseStore()">选择仓库</view>
+				<view class="cu-btn bg-orange text-white" style="width:40%" @click="createAddress()"
+				><text class="cuIcon-add" style="font-size:15px;margin-right:5px;"></text>创建新地址</view>
+			</view>
 		</view>
  	</view>
  </template>
@@ -28,33 +43,55 @@
  		data(){
  			return{
 				shopList:[],
-				shopAddress:''
+				shopAddress:'',
+				type:'',
+				cat:'',
+				shopID:''
  			}
  		},
  		components:{
- 			
+
  		},
- 		onLoad(option){
-		if(option.address){
-			uni.request({
-				url:this.$store.state.url+'MyShops',
-				data:{
-					owner:18,
-					userId:49,
-					address:option.address
-				},
-				success: (res) => {
-					console.log(res.data.data)
-					this.shopList=res.data.data;
-				}
-			})
-		}
+ 		onLoad(options){
+			console.log(options)
+			this.type=options.type;
+			this.cat=options.cat;
+			if(options.shop){
+				this.shopID=options.shop
+			}
+			this.getNearShopList()
  		},
 		methods:{
-			goBack(){
-				uni.reLaunch({
-					url:'../create-order/create-order'
+			chooseStore(){},
+			//搜索更多
+			searchMore(){
+				uni.navigateTo({
+					url:'../search-more-shop/search-more-shop'
 				})
+			},
+			//新建地址
+			createAddress(){
+				uni.navigateTo({
+					url:"../../work-center/express-center/create-address/create-address"
+				})
+			},
+ 		    getNearShopList(){
+				if(this.cat=='receive'){
+					 this.$ajax('IntraCityShops',{
+					    shop:this.shopID
+					},res=>{
+					    this.shopList=res
+						console.log(this.shopList)
+					})
+				}else{
+					this.$ajax('MyShops',{
+					    address:''
+					},res=>{
+					    this.shopList=res
+						console.log(this.shopList)
+					})
+				}
+                
 			},
 			choseShop(item){
 				uni.navigateBack({
@@ -62,11 +99,6 @@
 					success: (res) => {
 						this.$fire.fire('shop',item)
 					}
-				})
-			},
-			toSearchShop(){
-				uni.navigateTo({
-					url:'../search-shop/search-shop'
 				})
 			}
 		}
