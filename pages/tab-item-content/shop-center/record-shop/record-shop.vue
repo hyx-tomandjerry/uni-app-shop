@@ -127,7 +127,6 @@
 
 <script>
 	import addressed from '../../../../components/jm-address/jm-address.vue'
-	var qiniu =require('qiniu-js')
 	import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
 	export default{
 		components:{

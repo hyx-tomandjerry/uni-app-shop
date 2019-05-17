@@ -48,15 +48,21 @@
 			</view>
 		</view>
 		
-		<view class="express-info" style="padding:10px ;">
-			<view class="flex justify-between" style="border-bottom:1px solid #EEEEED;padding:10px 0;">
+		<view class="express-info" style="padding:10px ;border:1px solid #EEEEED;border-radius: 10px;">
+			<view class="flex justify-between" style="border-bottom:1px solid #EEEEED;padding:10px;">
 				<view style="font-size: 13px;color:gray">商品名称</view>
 				<view>
 					<input type="text" placeholder="请输入商品名称" v-model="goods.name" style="font-size:13px;text-align:right;">
 				</view>
 			</view>
+			<view class="flex justify-between" style="border-bottom:1px solid #EEEEED;padding:10px ;margin-top: 6px;">
+				<view style="font-size: 13px;color:gray">期望上门时间</view>
+				<view>
+					<text class="cuIcon-right" style="font-size:15px;"></text>
+				</view>
+			</view>
 		</view>
-		<view class="good-content" style="padding:0 15px;color:gray;font-size:12px;">
+		<view class="goods-content" style="padding:10px 15px;color:gray;font-size:12px;border:1px solid #EEEEED;border-radius: 10px;margin: 10px 8px">
 			<view class="flex justify-between" >
 				<view style="color:black;font-size:13px;margin-bottom:20px;">
 					<text>货物重量估计</text>
@@ -67,7 +73,7 @@
 					<text @click="changeChoose()" v-else>重量填写</text>
 				</view>
 			</view>
-			<view class="good-info">
+			<view class="goods-info">
 				<view v-if="showChoose">
 					<!-- 显示选择 -->
 					<view class="flex justify-around">
@@ -108,6 +114,19 @@
 					</view>
 				</view>
 			</view>
+			
+			<view style="margin-top:20px;padding-top:10px;" >
+				<view style="color:black;font-size:13px;margin-bottom:20px;">
+					<text>货物数量</text>
+				</view>
+				<view class="flex justify-between" style="padding:0px 20px;">
+					<text style="font-size:23px;background:lightgray;width:20%;text-align:center;">-</text>
+					<input type="number" placeholder="输入数量" v-model="goods.number" 
+					style="text-align:right;width:52%;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;padding-left:10px;">
+					<text style="width:8%;text-align:center;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;line-height:28px;height:28px;">kg</text>
+					<text  style="font-size:23px;background:lightgray;width:20%;text-align:center;">+</text>
+				</view>
+			</view>
 		</view>
 		
 		
@@ -146,7 +165,7 @@
 				goods:{
 					name:'',
 					quantity:1,
-					number:''
+					number:1
 				},
 				showInput:false,//显示输入框
 				showChoose:true,//显示选择
@@ -278,6 +297,12 @@
 				background: rgb(0, 122, 255);
 				color: white;
 				border-radius: 50%;
+			}
+		}
+		.goods-info{
+			.goods-num{
+				border-top:1px solid #EEEEED;
+				padding:10px 15px;
 			}
 		}
 		

@@ -71,7 +71,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 </template>
 
 <script>
-	var qiniu=require('qiniu-js');
+	
 	import uniGrid from '../../../../components/uni-grid/uni-grid.vue'
 	import myIssue  from '../../../../components/start/App.vue'
 	export default{
