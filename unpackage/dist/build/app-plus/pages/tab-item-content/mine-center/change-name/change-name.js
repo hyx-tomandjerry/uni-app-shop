@@ -1,2 +1,0 @@
-setCssToHead(["body { background: #fff; }\n.",[1],"name-content { padding-top: 25px; padding-right: 15px; padding-left: 15px; }\n",],undefined,{path:"./pages/tab-item-content/mine-center/change-name/change-name.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/mine-center/change-name/change-name.wxml') } }));

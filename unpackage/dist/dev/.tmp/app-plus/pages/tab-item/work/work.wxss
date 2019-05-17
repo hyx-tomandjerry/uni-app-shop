@@ -1,7 +1,0 @@
-page {
-  background: #fff;
-}
-.tab-content {
-  padding: 20px 26px;
-}
-

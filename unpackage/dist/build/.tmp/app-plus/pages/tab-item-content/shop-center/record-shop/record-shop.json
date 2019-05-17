@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "录入门店",
-  "usingComponents": {
-    "addressed": "/components/jm-address/jm-address",
-    "mx-date-picker": "/components/uni/mx-datepicker/mx-datepicker"
-  }
-}

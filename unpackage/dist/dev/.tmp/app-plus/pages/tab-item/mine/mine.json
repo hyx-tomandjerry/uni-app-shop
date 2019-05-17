@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "我的",
-  "usingComponents": {
-    "pop-modal": "/components/popmodal"
-  }
-}

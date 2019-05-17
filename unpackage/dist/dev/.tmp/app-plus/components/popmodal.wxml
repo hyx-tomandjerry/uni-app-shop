@@ -1,1 +1,0 @@
-<view class="{{['cu-modal',isShow?'show':'']}}" bind:__l="__l"><view class="cu-dialog"><view class="padding-xl"><slot name="content"></slot></view></view></view>

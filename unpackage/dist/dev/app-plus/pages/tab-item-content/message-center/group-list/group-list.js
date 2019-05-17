@@ -1,2 +1,0 @@
-setCssToHead(["body { background: #fff; }\n.",[1],"group-content .",[1],"group-content-list { padding: 10px 20px; }\n",],undefined,{path:"./pages/tab-item-content/message-center/group-list/group-list.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/message-center/group-list/group-list.wxml') } }));

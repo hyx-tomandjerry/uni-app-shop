@@ -1,2 +1,0 @@
-setCssToHead(["body { background: #fff; }\n.",[1],"tab-content { padding: 20px 26px; }\n",],undefined,{path:"./pages/tab-item/work/work.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item/work/work.wxml') } }));

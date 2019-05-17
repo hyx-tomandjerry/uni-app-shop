@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "新增报修",
-  "usingComponents": {
-    "uni-tag": "/components/uni/uni-tag/uni-tag"
-  }
-}

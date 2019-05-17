@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "门店助手",
-  "usingComponents": {
-    "pop-modal": "/components/popmodal"
-  }
-}

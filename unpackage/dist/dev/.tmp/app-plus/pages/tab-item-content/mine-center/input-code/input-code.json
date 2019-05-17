@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "输入验证码",
-  "usingComponents": {
-    "number-keyboard": "/components/code/number-keyboard"
-  }
-}

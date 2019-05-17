@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "群组列表",
-  "usingComponents": {
-    "uni-collapse": "/components/collapse/uni-collapse",
-    "uni-collapse-item": "/components/collapse/uni-collapse-item"
-  }
-}

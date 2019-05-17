@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "首页",
-  "usingComponents": {
-    "axb-check-box": "/components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox",
-    "uni-grid": "/components/uni-grid/uni-grid",
-    "n-a-u-icard": "/components/NAUI-card/NAUI-card"
-  }
-}

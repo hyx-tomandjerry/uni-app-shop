@@ -1,2 +1,0 @@
-setCssToHead(["body { background: #fff; }\n",],undefined,{path:"./pages/tab-item-content/mine-center/suggestion-list/suggestion-list.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/mine-center/suggestion-list/suggestion-list.wxml') } }));

@@ -1,2 +1,0 @@
-setCssToHead(["body { background: #fff; }\n",],undefined,{path:"./pages/tab-item-content/work-center/express-center/express-index/express-index.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/work-center/express-center/express-index/express-index.wxml') } }));

@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "发表评价",
-  "usingComponents": {
-    "my-issue": "/components/start/App",
-    "uni-grid": "/components/uni-grid/uni-grid"
-  }
-}

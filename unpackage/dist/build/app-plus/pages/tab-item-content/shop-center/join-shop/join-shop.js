@@ -1,2 +1,0 @@
-setCssToHead([".",[1],"cu-btn{ border-radius: ",[0,30],"; margin: 0 ",[0,40]," !important; }\n.",[1],"title{ font-size:15px; font-family:\x27PingFangSC-Regular\x27; font-weight:400; color:rgba(42,42,42,1); }\n",],undefined,{path:"./pages/tab-item-content/shop-center/join-shop/join-shop.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/shop-center/join-shop/join-shop.wxml') } }));

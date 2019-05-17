@@ -1,9 +1,0 @@
-page {
-  background: #fff;
-}
-.name-content {
-  padding-top: 25px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-

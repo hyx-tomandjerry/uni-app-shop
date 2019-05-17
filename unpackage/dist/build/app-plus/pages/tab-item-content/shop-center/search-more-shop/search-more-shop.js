@@ -1,2 +1,0 @@
-setCssToHead(["body { background: #fff; }\n.",[1],"shop-content { padding: 10px 15px 10px 4px; }\n.",[1],"shop-content .",[1],"category-left { width: 30%; border-right: 1px solid #EEEEED; font-size: 13px; }\n",],undefined,{path:"./pages/tab-item-content/shop-center/search-more-shop/search-more-shop.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tab-item-content/shop-center/search-more-shop/search-more-shop.wxml') } }));

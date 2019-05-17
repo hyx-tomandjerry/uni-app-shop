@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "店员列表",
-  "usingComponents": {
-    "pop-modal": "/components/popmodal"
-  }
-}
