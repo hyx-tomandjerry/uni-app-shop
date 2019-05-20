@@ -1,7 +1,9 @@
 let url="http://192.168.10.22/services?f=";
 // let url='http://192.168.10.58:8080/blade/services?f='
-const ajax=(api,param,resp,a=true)=>{
-	if(a){
+const errorText = require('./errorText')
+
+const ajax=(api,param,resp,reqCache=true)=>{
+	if(reqCache){
 		uni.getStorage({
 			key:'userInfo',
 			success: (res) => {
@@ -20,8 +22,11 @@ const ajax=(api,param,resp,a=true)=>{
 				httpMethod(api,param,baseParam,resp)
 			},
 			fail:()=>{
-				console.log('kkkkkkkkkk')
-				}
+                uni.showToast({
+                    title:`请求错误`,
+                    icon:'none'
+                })
+			}
 		})
 	}else{
 		let baseParam = {}
@@ -34,20 +39,45 @@ const httpMethod = (api,param,baseParam,resp)=>{
 		data:Object.assign(param,baseParam),
 		method:'POST',
 		header: {
-			'content-type': 'application/x-www-form-urlencoded;charset=UTF-8', 
+			'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
 		},
-		success: (data) => {
-			if(data.statusCode==200){
-				resp(data.data.data)
+		success: (res) => {
+			if(res.statusCode==200){
+
+                if (res.data.code === 0) {
+                    resp(res.data.data)
+                } else {
+                    switchCode(res.code.toString());
+                }
+
+
 			}else {
-				uni.showToast({
-					title:'调用接口失败',
-					icon:'none'
-				})
+                handleError(res)
 			}
-			
+
 		}
 	})
+}
+
+
+
+const handleError = (error)=> {
+    const errortext = errorText.serverMessage[error.statusCode] || error.statusCode;
+    uni.showToast({
+        title:`请求错误，${errortext}`,
+        icon:'none'
+    })
+}
+
+
+
+
+const switchCode =  (code)=> {
+    const errortext = errorText.codeMessage[code] || code;
+    uni.showToast({
+        title:`${errortext}`,
+        icon:'none'
+    })
 }
 
 export {
