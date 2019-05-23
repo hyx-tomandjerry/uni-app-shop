@@ -1,16 +1,25 @@
 <template>
 	<view >
+		<cu-custom :isBack="true">
+			<block slot="left">
+				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
+			</block>
+			<block slot="content"><view style="font-weight:600;">详情内容</view></block>
+			<block slot="right"><text class="text-blue" style="font-size:13px;" @click="writeLog()">编写汇报</text></block>
+		</cu-custom>
 		<view class="container">
 			<view class="title">{{itemInfo.title}}</view>
 			<view class="desc">
 				<view class="flex justify-start">
-					<image :src="shopInfo.coverurl" style="width:50px;height:50px;border-radius: 50%;vertical-align: middle;margin-right:10px"></image>
+					<image :src="itemInfo.coverurl" class="img"></image>
 					<view>
-						<view style="color:#00BFFF;font-weight: 600;font-size:17px;display: block;margin-bottom:6px;padding-top:4px">{{itemInfo.shopName}}</view>
-						<view style="font-size:12px;color:grey;">
-							<text style="margin-right:10px;">{{itemInfo.createdate |formatTime('YMD')}}</text>{{itemInfo.creatorName}}
+						<view class="shop-name">{{itemInfo.shopName}}</view>
+						<view>
+							<text>{{itemInfo.createdate |formatTime('YMD')}}</text>
 						</view>
-						
+						<view>
+							{{itemInfo.creatorName}}
+						</view>
 					</view>
 					
 				</view>
@@ -32,6 +41,11 @@
 			}
 		},
 		methods: {
+			writeLog(){
+				uni.navigateTo({
+					url:"../../tab-item-content/work-center/create-log/create-log?id="+this.itemInfo.id
+				})
+			},
 			getItemInfo(id) {
 				this.$ajax('Article',{id:id},res=>{
 					this.itemInfo=res;
@@ -42,6 +56,11 @@
 			getShopInfo(id){
 				this.$ajax('ProprietorShop',{id:id},res=>{
 					this.shopInfo=res;
+				})
+			},
+			goBack(){
+				uni.navigateBack({
+					delta:1
 				})
 			}
 		},
@@ -58,6 +77,7 @@
 <style scoped>
 	page{
 		background:#fff;
+		font-size:12px;
 	}
 	.container{
 		padding:10px 13px 10px 14px;
@@ -80,5 +100,14 @@
     }
 	.content >>> pre {
 		white-space: pre-wrap;
+   }
+   .content >>> strong{
+	   font-size:20px !important;
+   }
+   .img{
+	   width:50px;height:50px;border-radius: 50%;vertical-align: middle;margin-right:10px
+   }
+   .shop-name{
+	   color:#00BFFF;font-weight: 600;font-size:17px;display: block;margin-bottom:6px;
    }
 </style>

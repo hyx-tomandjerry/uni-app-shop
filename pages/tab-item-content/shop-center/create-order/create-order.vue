@@ -144,6 +144,7 @@
 			return this.format(date,'YMD')
 		},
 		onLoad(){
+			console.log((/^1[3|5|7|8][0-9]\d{4,8}$/.test('18838280488')))
 			// //进行定位
 			// this.amapPlugin=new amap.AMapWX({
 			// 	key:this.key
@@ -390,7 +391,8 @@
 			},
 			//验证电话号码
 			checkTelEvent(event){
-				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event))){
+				
+				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event.detail.value))){
 					uni.showToast({
 						title:'手机号码不存在',
 						icon:'none'

@@ -22,7 +22,7 @@
 			
 				<view class="form-content-item flex justify-between" style="margin-bottom:18px;">
 					<view class="form-title text-black"><text class="text-red">*</text>确认密码</view>
-					<input type="text" v-model="user.confirmPwd" placeholder="再次填写确认" @blur="checkConfirmpwdEvent($event)">
+					<input type="text" v-model="user.confirmPwd" placeholder="再次填写确认" >
 				</view>
 				<view class="pwd-desc">
 					密码必须是6-20位的数字、英文组合
@@ -54,22 +54,38 @@
 		},
 		methods: {
 			changePassword(){
-				this.$ajax('ResetPwd',{
-					token:this.user.confirmPwd,
-					original:this.user.pwd
-				},res=>{
-					console.log(res)
-				})
-			},
-			checkConfirmpwdEvent(event){
-				if(event.detail.value !=this.user.newPwd){
+				if(this.user.confirmPwd !=this.user.newPwd){
 					uni.showToast({
 						title:'两次输入的密码不相同',
 						icon:'none'
 					})
 					return
 				}
+				this.$ajax('ResetPwd',{
+					token:this.user.confirmPwd,
+					original:this.user.pwd
+				},res=>{
+					uni.showToast({
+						title:'设置登录密码成功',
+						icon:'none'
+					})
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1
+						})
+					},500)
+				})
 			},
+			// checkConfirmpwdEvent(event){
+			// 	console.log(event)
+			// 	if(event.detail.value !=this.user.newPwd){
+			// 		uni.showToast({
+			// 			title:'两次输入的密码不相同',
+			// 			icon:'none'
+			// 		})
+			// 		return
+			// 	}
+			// },
 			goBack(){
 				uni.navigateBack({
 					delta:1

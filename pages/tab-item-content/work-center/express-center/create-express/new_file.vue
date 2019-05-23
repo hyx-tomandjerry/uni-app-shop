@@ -31,7 +31,7 @@
 						<view v-if="checkItemInfo" style="padding-top:6px;">
 							<view style="font-size:12px;" class="flex justify-start">
 								<view>
-									<text style="font-size:16px;" class="text-blue">{{checkItemInfo.fromshopName}}</text>
+									<text style="font-size:16px;" class="text-blue">{{checkItemInfo.name}}</text>
 								</view>
 								<view>
 									<text style="margin-left:8px;">(   {{userInfo.name}}</text>
@@ -40,7 +40,7 @@
 								</view>
 							 </view>
 							<view    class="text-gray shop-faddr">
-								{{checkItemInfo.faddr || ''}}
+								{{shopItem.provinceName||''}}/{{shopItem.cityName||''}}/{{shopItem.districtName||''}}/{{shopItem.address||''}}
 							</view>
 						</view>
 						<view v-else class="notice">请选择寄件信息</view>
@@ -54,18 +54,10 @@
 								<view v-if="receiveShopItem || shopMaleInfo" style="padding-top:6px;">
 									<view style="font-size:12px;">
 										<text style="font-size:16px;" class="text-blue">{{receiveShopItem.name}}</text>
-										<text >(   {{shopMaleInfo.name}}</text>
+										<text style="margin-left:8px;">(   {{shopMaleInfo.name}}</text>
 										 <text class="text-green" style="margin:0 4px;">|</text> 
 										 {{ shopMaleInfo.account ||''}}  )</view>
 									<view  class="text-gray shop-faddr">{{receiveShopItem.provinceName|| shopMaleInfo.provinceName||''}}/{{receiveShopItem.cityName|| shopMaleInfo.cityName||''}}/{{receiveShopItem.districtName||shopMaleInfo.districtName ||''}}/{{receiveShopItem.address||shopMaleInfo.address||''}}</view>
-								</view>
-								<view v-if="checkItemInfo" style="padding-top:6px;">
-									<view style="font-size:12px;">
-										<text style="font-size:16px;" class="text-blue">{{checkItemInfo.toshopName}}</text>
-										<text >(   {{checkItemInfo.receiverName}}</text>
-										 <text class="text-green" style="margin:0 4px;">|</text> 
-										 {{ checkItemInfo.receiverMobile ||''}}  )</view>
-									<view  class="text-gray shop-faddr">{{checkItemInfo.taddr || ''}}</view>
 								</view>
 								<view  v-else class="notice">请选择收件信息</view>
 							</view>
@@ -81,10 +73,7 @@
 			<view class="express-info" >
 				<view class="flex justify-between express-info-goods" >
 					<view style="font-size: 13px;color:gray"><text style="color:red;margin-right:5px;">*</text>商品名称</view>
-					<view v-if="checkItemInfo">
-						<input type="text" placeholder="请输入商品名称" v-model="checkItemInfo.name" style="font-size:13px;text-align:right;">
-					</view>
-					<view v-else>
+					<view>
 						<input type="text" placeholder="请输入商品名称" v-model="goods.name" style="font-size:13px;text-align:right;">
 					</view>
 				</view>
@@ -102,17 +91,15 @@
 				</view>
 				<view class="flex justify-between express-info-express">
 					<view style="font-size: 13px;color:gray"><text style="color:red;margin-right:5px;">*</text>期望上门时间</view>
-					<view style="font-size:12px;">
-						<text v-if="checkItemInfo" style="margin-right:8px;width:43%">{{checkItemInfo.appointdate}}</text>
-						<text v-else style="margin-right:8px;width:43%">{{mainTimeName || ''}}</text>{{smallTimeName || ''}}
+					<view>
+						<text style="margin-right:8px;">{{mainTimeName || ''}}</text>{{smallTimeName || ''}}
 						<text class="cuIcon-right" style="font-size:15px;" @click="chooseTime($event)" data-target="bottomModal"></text>
 					</view>
 				</view>
 				<view class="flex justify-between express-info-goods" style="margin-top:6px" >
 					<view style="font-size: 13px;color:gray">物件保价</view>
 					<view>
-						
-						<input type="text"  placeholder="请输入保价金额" v-model="goods.price" style="font-size:13px;text-align:right;">
+						<input type="text" placeholder="请输入保价金额" v-model="goods.price" style="font-size:13px;text-align:right;">
 					</view>
 				</view>
 			</view>
@@ -185,9 +172,7 @@
 					<text style="margin-left:10px;">我已阅读并同意快递服务条款</text>
 				</view>
 				<view class="cu-btn bg-orange">
-					<text   v-if="checkItemInfo" @click="createExpress('edit')">修改完毕</text>
-					<text  v-else  @click="createExpress('new')">立即下单</text>
-
+					<text @click="createExpress()">立即下单</text>
 				</view>
 			</view>
 			
@@ -242,8 +227,7 @@
 				//快递信息
 				expressObj:{
 					id:'',
-					name:'',
-					img:''
+					name:''
 				},
 				sender:{
 					name:''
@@ -280,7 +264,7 @@
 			acceptDel(){
 				this.isAccept=!this.isAccept;
 			},
-			createExpress(type){
+			createExpress(){
 				var data=new Date();
 				var year   =  data.getFullYear(); 
 				var month  = data.getMonth() + 1<10?"0"+(data.getMonth() + 1):data.getMonth() + 1
@@ -316,67 +300,62 @@
 							icon:'none'
 						})
 					}else{
-						if(type=='edit'){
-							console.log('edit')
-						}else if(type=='new'){
-							if(!this.shopItem || !this.shopMaleInfo){
-								uni.showToast({
-									title:'请填写寄件信息',
-									icon:'none'
-								})
-							}else if(!this.goods.name || !this.mainTimeName || !this.smallTimeName2 || !this.title){
-								uni.showToast({
-									title:'请填写完成信息',
-									icon:'none'
-								})
-							}else{
-								uni.getStorage({
-									key:'userInfo',
-									success: (res) => {
-										this.$ajax('NewExpress',{
-											way:1,//way=1是快递。不填是调拨
-											express:this.title.id,//订单类型（1是速递，2是物流)
-											fromshop:this.shopItem.id,
-											faddr:`${this.shopItem.provinceName || ''}${this.shopItem.cityName || ''}${this.shopItem.districtName || ''}${this.shopItem.address || ''}`,
-											toshop:this.receiveShopItem.id?this.receiveShopItem.id:'',
-											taddr:this.receiveShopItem?`${this.receiveShopItem.provinceName || ''}${this.receiveShopItem.cityName || ''}${this.receiveShopItem.districtName || ''}${this.receiveShopItem.address || ''}`:`${this.shopMaleInfo.provinceName || ''}${this.shopMaleInfo.cityName || ''}${this.shopMaleInfo.districtName || ''}${this.shopMaleInfo.address || ''}`,
-											weight:this.goods.quantity,
-											quantity:this.goods.number,
-											appointdate:`${this.mainTimeName2} ${this.smallTimeName2}`,
-											inprice:this.goods.price,
-											summary:this.goods.summary,
-											name:this.goods.name,
-											type:this.type,
-											catalog:this.expressObj.id,
-											receiver:this.type==1?this.shopMaleInfo.id:'',//如果是门店receiver为店员的id,如果是消费者则为kong
-											sender:res.data.id,
-											contactor:this.type==2?this.shopMaleInfo.name:'',//如果是type=2是消费者，为联系人的姓名
-											telephone:this.type==2?this.shopMaleInfo.account:''
-										},res=>{
-											var title=''
-											if(this.title.id==1){
-												title='新建速递订单成功'
-											}else if(this.title.id==2){
-												title='新建物流订单成功'
-											}else {
-												title='新建调拨订单成功'
-											}
-											uni.showToast({
-												title:title,
-												icon:'none'
-											})
-											setTimeout(()=>{
-												uni.navigateTo({
-													url:'../express-list/express-list'
-												})
+						if(!this.shopItem || !this.shopMaleInfo){
+							uni.showToast({
+								title:'请填写寄件信息',
+								icon:'none'
+							})
+						}else if(!this.goods.name || !this.mainTimeName || !this.smallTimeName2 || !this.title){
+							uni.showToast({
+								title:'请填写完成信息',
+								icon:'none'
+							})
+						}else{
+							uni.getStorage({
+								key:'userInfo',
+								success: (res) => {
+									this.$ajax('NewExpress',{
+										way:1,//way=1是快递。不填是调拨
+										express:this.title.id,//订单类型（1是速递，2是物流)
+										fromshop:this.shopItem.id,
+										faddr:`${this.shopItem.provinceName || ''}${this.shopItem.cityName || ''}${this.shopItem.districtName || ''}${this.shopItem.address || ''}`,
+										toshop:this.receiveShopItem.id?this.receiveShopItem.id:'',
+										taddr:this.receiveShopItem?`${this.receiveShopItem.provinceName || ''}${this.receiveShopItem.cityName || ''}${this.receiveShopItem.districtName || ''}${this.receiveShopItem.address || ''}`:`${this.shopMaleInfo.provinceName || ''}${this.shopMaleInfo.cityName || ''}${this.shopMaleInfo.districtName || ''}${this.shopMaleInfo.address || ''}`,
+										weight:this.goods.quantity,
+										quantity:this.goods.number,
+										appointdate:`${this.mainTimeName2} ${this.smallTimeName2}`,
+										inprice:this.goods.price,
+										summary:this.goods.summary,
+										name:this.goods.name,
+										type:this.type,
+										catalog:this.expressObj.id,
+										receiver:this.type==1?this.shopMaleInfo.id:'',//如果是门店receiver为店员的id,如果是消费者则为kong
+										sender:res.data.id,
+										contactor:this.type==2?this.shopMaleInfo.name:'',//如果是type=2是消费者，为联系人的姓名
+										telephone:this.type==2?this.shopMaleInfo.account:''
+									},res=>{
+										var title=''
+										if(this.title.id==1){
+											title='新建速递订单成功'
+										}else if(this.title.id==2){
+											title='新建物流订单成功'
+										}else {
+											title='新建调拨订单成功'
+										}
+										uni.showToast({
+											title:title,
+											icon:'none'
+										})
+										setTimeout(()=>{
+											uni.navigateTo({
+												url:'../express-list/express-list'
 											})
 										})
-									}
-								})
-								
-							}
+									})
+								}
+							})
+							
 						}
-						
 				}
 				
 				
@@ -453,26 +432,6 @@
 					{name:'后天',time:second,id:2},
 				]
 			},
-			//获得快递信息
-			getExpressCatalogInfo(type){
-				console.log(type)
-				if(type==1){
-					//速递
-					this.$store.state.expressList.forEach(item=>{
-						if(this.checkItemInfo.catalog==item.id){
-							this.expressObj=item
-						}
-					})
-					console.log(this.expressObj.name)
-				}else if(type==2){
-					this.$store.state.logisticsList.forEach(item=>{
-						if(this.checkItemInfo.catalog==item.id){
-							this.expressObj=item
-						}
-					})
-					console.log(this.expressObj)
-				}
-			},
 			//选择时间
 			chooseTime(event){
 				this.modalName=event.currentTarget.dataset.target;
@@ -511,7 +470,21 @@
 				}
 				
 			},
-			
+			// showModal(e) {
+			// 	this.modalName = e.currentTarget.dataset.target
+			// 	console.log(this.modalName)
+			// },
+			// hideModal(e) {
+			// 	this.modalName = null
+			// },
+			// RadioChange(e) {
+			// 	this.radio = e.detail.value.substr(5)
+			// 	console.log(this.radio)
+			// 	this.distributeObj={
+			// 		id:this.radio,
+			// 		name:this.radio==0?'到店':'调拨'
+			// 	}
+			// },
 			//获得门店信息
 			getShopInfo(id,type){
 				this.$ajax('ProprietorShop',{id:id},res=>{
@@ -572,21 +545,8 @@
 				this.$ajax('Express',{way:1,id:id},res=>{
 					console.log(res);
 					this.checkItemInfo=res;
-					this.goods={
-					name:this.checkItemInfo.name?this.checkItemInfo.name:'',
-					quantity:this.checkItemInfo.weight?this.checkItemInfo.weight:1,
-					number:this.checkItemInfo.quantity?this.checkItemInfo.quantity:1,
-					price:this.checkItemInfo.insprice?this.checkItemInfo.insprice:'',
-					summary:this.checkItemInfo.summary?this.checkItemInfo.summary:''
-					},
-					this.shopItem.faddr=res.faddr;
-					this.shopItem.taddr=res.taddr
-					this.getExpressCatalogInfo(this.title.id)
 				})
-			},
-			hideModal() {
-				this.modalName = null
-			},
+			}
 			
 		},
 		
@@ -594,22 +554,16 @@
 		
 		onLoad(options){
 			console.log(options)
-			//checkType判断是快递还是物流
-			
 			if(options){
 				if(options.type==1 || options.checkType==1){
-					this.title={id:1,name:'速递订单',value:'express-order'};
-					
+					this.title={id:1,name:'速递订单',value:'express-order'}
 				}else if(options.type==2 || options.checkType==2){
 					this.title={id:2,name:'物流订单',value:'logistics-order'}
-					
 				}
 				//修改快递信息
 				if(options.checkID){
 					this.checkID=options.checkID;
 					this.getExpressItemInfo(options.checkID)
-					
-					
 				}
 			}
 			this.getUserInfo();

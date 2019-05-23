@@ -137,6 +137,12 @@
 										},500)
 									}
 								});
+								uni.getStorage({
+									key:'userInfo',
+									success: (res) => {
+										console.log(res)
+									}
+								})
 								
 							}
 						}

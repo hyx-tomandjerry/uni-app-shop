@@ -2423,7 +2423,7 @@ button.icon.lg {
 	padding: 0 30upx 0;
 	max-height: 6.4em;
 	overflow: hidden;
-	font-size: 30upx;
+	font-size: 24upx;
 	margin-bottom: 20upx;
 }
 
@@ -2482,7 +2482,7 @@ button.icon.lg {
 }
 
 .cu-card.article>.cu-item .content .text-content {
-	font-size: 28upx;
+	font-size: 24upx;
 	color: #888;
 	height: 4.8em;
 	overflow: hidden;

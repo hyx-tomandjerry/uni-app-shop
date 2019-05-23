@@ -1,6 +1,5 @@
 <template>
     <view >
-		
 		<view class="index-container">
 			
 			<view>
@@ -51,14 +50,14 @@
 							<view class="content">
 
 								<view class="desc">
-									<view class="text-content" style="font-size:18px;color:#000;font-weight: 600;height:3.9em">{{item.title}} </view>
+									<view class="text-content" style="font-size:13px;color:#000;font-weight: 600;height:3.9em">{{item.title}} </view>
 									
 									<view>
 										<view class="cu-tag bg-red light sm round">
 											<!-- {{item.createdate | formatTime('YMD','/')}} -->
 											{{item.creatorName}}
 										</view>
-										<view class="cu-tag bg-green light sm round">{{item.shopName}}</view>
+										<view class="cu-tag bg-green light sm round">{{item.createdate | formatTime('YMDHMS')}}</view>
 									</view>
 								</view>
 								<image :src="item.coverurl"
@@ -78,21 +77,33 @@
 							<text class="card-more" @click="showMoreInfo('example')">更多&gt;</text>
 						</view>
 					</view>
-					<view class="cu-card article no-card" v-for="(item,index) in noticeList2" :key="index" @click="detailContent('example',item)">
+					<!-- <view class="cu-card article no-card" v-for="(item,index) in noticeList2" :key="index" @click="detailContent('example',item)">
 						<view class="cu-item shadow" style="padding-top:19px;padding-bottom:10px;border-bottom:1px solid rgba(238, 238, 237, 1);">
 							<view class="title"><view class="text-cut">{{item.title}}</view></view>
 							<view class="content">
 				
-								<view class="desc">
-									<view class="text-content" v-html="item.summary"> </view>
+								<view class="desc" >
+									<view class="text-content" v-html="item.summary" > </view>
 									<view>
 										<view class="cu-tag bg-red light sm round">{{item.createdate | formatTime('YMD','/')}}</view>
-										<view class="cu-tag bg-green light sm round">{{item.shopName}}</view>
+										<view class="cu-tag bg-green light sm round">{{item.createdate | formatTime('YMDHMS')}}</view>
 									</view>
 								</view>
 								<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
 								 mode="aspectFill"></image>
 							</view>
+						</view>
+					</view> -->
+					<view class="example-list" v-for="(item,index) in noticeList2" :key="index" @click="detailContent('example',item)" style="border-bottom:1px solid #EEEEED;padding-bottom:10px;">
+						<view class="example-item-title" style="font-size:17px;font-weight: 600;padding:10px">{{item.title}}</view>
+						<view class="example-item-content flex justify-between">
+							<view style="overflow: hidden;width:60%;font-size:12px;padding:4px;max-height:84px;font-size:12px;">
+								<view class="desc" v-html="item.summary"
+								 ></view>
+								<view class="cu-tag bg-red light sm round">{{item.createdate | formatTime('YMD','/')}}</view>
+							</view>
+							<image :src="item.coverurl"
+								  style="width:35%;height:80px;border-radius: 10px;"></image>
 						</view>
 					</view>
 				</view>
@@ -142,38 +153,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- <view class="box" style="position:fixed;bottom:0px;width:100%;">
-			<view class="cu-bar tabbar bg-white">
-				<view class="action" style="padding-top:5px;" @click="showIndexClick()">
-					<view class="cuIcon-cu-image">
-						<image src="../../../static/img/tab_img/shouye_color.png"></image>
-						
-					</view>
-					<view class="text-blue">首页</view>
-				</view>
-				<view class="action" style="padding-top:5px;">
-					<view class="cuIcon-cu-image" @click="showMessageClick()">
-						<image src="../../../static/img/tab_img/xiaoxi.png" ></image>
-						<view class="cu-tag badge">99</view>
-					</view>
-					<view class="text-gray">消息</view>
-				</view>
-					<view class="action" style="padding-top:5px;">
-					<view class="cuIcon-cu-image" @click="showWorkClick()">
-						<image src="../../../static/img/tab_img/gongzuo.png" ></image>
-						
-					</view>
-					<view class="text-gray">工作</view>
-				</view>
-				<view class="action" style="padding-top:5px;" @click="showMineClick()">
-					<view class="cuIcon-cu-image">
-						
-						<image src="../../../static/img/tab_img/mine.png"></image>
-					</view>
-					<view class="text-gray">我的</view>
-				</view>
-			</view>
-		</view> -->
+		
     </view>
 </template>
 <script>
@@ -246,18 +226,8 @@
 							array2.push(item)
 						}
 					})
-					if(array1.length<=3){
-						this.noticeList1=array1;
-					}else{
-						this.noticeList1=array1.splice(0,3)
-					}
-					if(array2.length<=3){
-						this.noticeList2=array2;
-					}else{
-						this.noticeList1=array2.splice(0,3)
-					}
-					console.log(this.noticeList1)
-					console.log(this.noticeList2)
+					this.noticeList1=array1.splice(0,3);
+					this.noticeList2=array2.splice(0,3);
 				})
 			},
 			//加入公司
@@ -515,7 +485,7 @@
 		},
 	}
 </script>
-<style lang="less">
+<style scoped>
 	page{
 		background:#fff;
 	}
@@ -557,7 +527,9 @@
 	padding-top:12px;
 	padding-right:14px;
 	padding-left:18px;
-	.notice_title{
+	
+}
+.notice_title{
 		display: flex;
 		padding: 0 10rpx;
 		justify-content: space-between;
@@ -569,7 +541,6 @@
 		margin-left:0;
 	}
 	.notice_content{}
-}
 .operateItem{
 	display: flex;
 	justify-content: space-around;
@@ -662,6 +633,10 @@ color:rgba(137,136,136,1);
 	font-family:PingFangSC-Semibold;
 	font-weight:600;
 	color:rgba(64,64,64,1);
+}
+.desc >>>span{
+	padding:3px;
+	font-size:12px !important;
 }
 </style>
 

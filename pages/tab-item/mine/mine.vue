@@ -2,8 +2,8 @@
 	<view style="position:relative">
 		<view class="header-content flex justify-between">
 			<view class="flex justify-start" @click="operateItem(0)">
-				<image :src="avatar.resurl"
-					v-if="avatar"
+				<image :src="userInfo.ownerLogoUrl"
+					v-if="userInfo.ownerLogoUrl"
 					style="width:70px;height:70px;vertical-align: bottom;margin-right:25px;border-radius: 50%;"
 				></image>
 				<image src="../../../static/img/avatar.jpg"
@@ -86,12 +86,11 @@
 		data(){
 			return{
 				isQuit:false,
-				avatar:'',
 				userInfo:'',
 				operateList:[
 					{image:'../../../static/img/mine/icon-shezhi@2x.png',index:0,text:'基本设置'},
 					{image:'../../../static/img/mine/icon-xiugaimima@2x.png',index:1,text:'修改密码'},
-					{image:'../../../static/img/mine/icon-fankui@2x.png',index:2,text:'意见反馈'},
+					// {image:'../../../static/img/mine/icon-fankui@2x.png',index:2,text:'意见反馈'},
 					{image:'../../../static/img/mine/tuichu.png',index:3,text:'退出登录'},
 				]
 			}
@@ -102,9 +101,7 @@
 		methods:{
 			hideModal(type){
 				this.isQuit=false;
-				console.log('11111')
 				if(type=='agree'){
-					
 					uni.clearStorage()
 					setTimeout(()=>{
 						uni.navigateTo({
@@ -114,31 +111,6 @@
 				}
 				
 			},
-			showWorkClick(){
-				uni.navigateTo({
-					url:'../work/work'
-				})
-			},
-			showMessageClick(){
-				uni.navigateTo({
-					url:'../message/message'
-				})
-			},
-			showIndexClick(){
-				uni.navigateTo({
-					url:'../index/index'
-				})
-			},
-			getUserInfo(){
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						this.userInfo=res.data;
-						
-					}
-				})
-			},
-			
 			operateItem(index){
 
 				switch(index){
@@ -154,45 +126,24 @@
 						url:'../../tab-item-content/mine-center/edit-password/edit-password'
 					})
 					break;
-					case 2:
+					case 3:
 					//意见反馈
 					uni.navigateTo({
 						url:'../../tab-item-content/mine-center/suggestion-list/suggestion-list'
 					})
 					break;
-					case 3:
+					case 2:
 					this.isQuit=true;
 					//退出登录
 					// uni.clearStorage();
+					uni.removeStorageSync('userInfo')
 					
 				}
-			},
-		
-			//获得头像图片
-			getAvater(id){
-				this.$ajax('File',{id:id},res=>{
-					this.avatar=res;
-					uni.setStorage({
-						key:'logo',
-						data:this.avatar
-					})
-				})
-			},
+			}
 		},
-		onLoad(){
-			this.getUserInfo()
-			uni.getStorage({
-				key:'logo',
-				success: (res) => {
-					
-					this.avatar=res.data
-					console.log(this.avatar)
-				}
-			})
-			this.$fire.on('image',res=>{
-				if(res){
-					this.getAvater(res)
-				}
+		onShow(){
+			this.$ajax('RefreshOnlineUser',{},res=>{
+				this.userInfo=res;
 			})
 		}
 	}

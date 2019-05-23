@@ -49,8 +49,8 @@
 									
 								</view>
 							</view>
-							<!-- <image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-							 mode="aspectFill"></image> -->
+							<image :src="item.coverurl"
+							 mode="aspectFill"></image>
 						</view>
 					</view>
 				</view>
@@ -145,7 +145,9 @@
 </script>
 
 <style lang="less">
-	
+	page{
+		background:#fff;
+	}
 	.notice_title{
 		font-size:34rpx;
 		height:100rpx;

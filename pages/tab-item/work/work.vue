@@ -3,7 +3,7 @@
 		<view class="tab-content bg-white flex justify-between">
 			<view @click="showItem('log')">
 				<image src="../../../static/img/work/work.png" style="width:50px;height:50px;"></image>
-				<view>工作日志</view>
+				<view>工作汇报</view>
 			</view>
 			<view @click="showItem('express')">
 				<image src="../../../static/img/index-tab/tab4.png" style="width:50px;height:50px;"></image>

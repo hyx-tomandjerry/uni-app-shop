@@ -4,7 +4,9 @@
  	<view>
 		<view class="shop-content bg-white">
 			<scroll-view scroll-y="true" >
-				<view class="shop-list-item" v-for="(item,index) in shopList" :key="index" @click="choseShop(item)">
+				<view class="shop-list-item" v-for="(item,index) in shopList"
+					:class="{'bg-gray':shopIndex==item.id}"
+				 :key="index" @click="choseShop(item)">
 					<view class="shop-item-name flex justify-between">
 					<view>
 						<text class="cuIcon-shop" style="margin-right:8px;"></text><text>{{item.name}}</text>
@@ -26,14 +28,38 @@
 		</view>
 		
 		<view v-if="type=='express'" style="position:fixed;bottom:0px;width:100%">
-			<view v-if="cat=='send'">
-				<view class="cu-btn" style="width:100%;background:lightgray;" @click="searchMore()">搜索更多</view>
-			</view>
-			<view v-if="cat=='receive'">
+			<!-- <view v-if="cat=='send' || cat=='distribute_send'">
+				<view class="cu-btn" style="width:100%;background:lightgray;" @click="searchMore()">搜索更多</view> -->
+			<!-- </view> -->
+			<view v-if="cat=='receive' ">
 				<view class="cu-btn" style="width:30%;background:lightgreen;" @click="searchMore()">搜索更多</view>
 				<view class="cu-btn" style="width:30%;background:lightgray;" @click="chooseStore()">选择仓库</view>
 				<view class="cu-btn bg-orange text-white" style="width:40%" @click="createAddress()"
 				><text class="cuIcon-add" style="font-size:15px;margin-right:5px;"></text>创建新地址</view>
+			</view>
+			<view v-if="cat=='distribute' ">
+				<view class="cu-btn" style="width:50%;background:lightgreen;" @click="searchMore()">搜索更多</view>
+				<view class="cu-btn" style="width:50%;background:lightgray;" @click="chooseStore()">选择仓库</view>
+			</view>
+		</view>
+		
+		<view class="cu-modal" :class="isShow?'show':''" @tap="hideModal()">
+			
+			<view class="cu-dialog" @tap.stop="">
+				<view style="padding:10px 0;">选择收件人</view>
+				<radio-group class="block" @change="RadioChange($event)">
+					<view class="cu-list menu text-left">
+						<view class="cu-item" v-for="(item,index) in shopMaleList" :key="index">
+							<label class="flex justify-between align-center flex-sub">
+								<view class="flex-sub">{{item.name}} <text style="margin:0px 10px;color:blue;font-size:14px">|</text>{{item.account}}</view>
+								<radio class="round" 
+								:class="radio=='radio' + item.id?'checked':''" 
+								:checked="radio=='radio' + item.id?true:false"
+								 :value="'radio' + item.id"></radio>
+							</label>
+						</view>
+					</view>
+				</radio-group>
 			</view>
 		</view>
  	</view>
@@ -46,27 +72,45 @@
 				shopAddress:'',
 				type:'',
 				cat:'',
-				shopID:''
+				shopID:'',
+				isShow:false,
+				shopMaleList:[],
+				radio:'',
+				shopMaleID:-1,
+				shopIndex:-1,
  			}
  		},
  		components:{
 
  		},
  		onLoad(options){
-			console.log(options)
 			this.type=options.type;
 			this.cat=options.cat;
-			if(options.shop){
-				this.shopID=options.shop
-			}
+			console.log(this.type,this.cat)
 			this.getNearShopList()
  		},
 		methods:{
+			RadioChange(event){
+				this.shopMaleID=event.detail.value.substr(5,)
+				this.isShow=false;
+				setTimeout(()=>{
+					uni.navigateBack({
+						delta:2,
+						success:(res)=>{
+							this.$fire.fire('shop',{
+								shopID:this.shopIndex,
+								shopMaleID:this.shopMaleID,
+								type:'receive'
+							})
+						}
+					})
+				},500)
+			},
 			chooseStore(){},
 			//搜索更多
 			searchMore(){
 				uni.navigateTo({
-					url:'../search-more-shop/search-more-shop'
+					url:'../search-more-shop/search-more-shop?cat='+this.cat
 				})
 			},
 			//新建地址
@@ -76,30 +120,60 @@
 				})
 			},
  		    getNearShopList(){
-				if(this.cat=='receive'){
-					 this.$ajax('IntraCityShops',{
-					    shop:this.shopID
-					},res=>{
-					    this.shopList=res
-						console.log(this.shopList)
+				if(this.cat=='receive' || this.cat=='distribute'){
+					uni.getStorage({
+						key:'userInfo',
+						success: (res) => {
+							 this.$ajax('IntraCityShops',{
+							   shop:res.data.id
+							},res=>{
+							    this.shopList=res
+							})
+						}
 					})
+					
 				}else{
 					this.$ajax('MyShops',{
 					    address:''
 					},res=>{
 					    this.shopList=res
-						console.log(this.shopList)
+						
 					})
 				}
                 
 			},
-			choseShop(item){
-				uni.navigateBack({
-					delta:1,
-					success: (res) => {
-						this.$fire.fire('shop',item)
-					}
+			getShopMaleInfo(id){
+				this.$ajax('ShopSalesmen',{shop:id},res=>{
+					this.shopMaleList=res
 				})
+			},
+			choseShop(item){
+				if(this.cat=='send' || this.cat=='distribute_send'){
+					uni.navigateBack({
+						delta:1,
+						success: (res) => {
+							this.$fire.fire('sendShop',{
+								shopID:item.id,
+								type:this.cat
+							})
+						}
+					})
+				}else if(this.cat=='receive' ){
+					this.isShow=true;
+					this.shopIndex=item.id;
+					this.getShopMaleInfo(item.id)
+				}else if(this.cat=='distribute'){
+					this.shopIndex=item.id;
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1,
+							success:(res)=>{
+								this.$fire.fire('shopID',item.id)
+							}
+						})
+					},500)
+				}
+				
 			}
 		}
  	}

@@ -21,7 +21,15 @@ Vue.filter('repairStatusColor',function(value){
 	if(!value) return ''
 	return store.state.repairStatusColor[value]
 })
-
+//快递状态
+Vue.filter('expressStatusPipe',(value)=>{
+	if(!value) return''
+	return store.state.expressStatus[value]
+})
+Vue.filter('distributeStatusPipe',(value)=>{
+	if(!value) return''
+	return store.state.distributeStatus[value]
+})
 //门店
 Vue.filter('shopStatus',(value)=>{
 	if(!value) return ''

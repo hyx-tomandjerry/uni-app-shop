@@ -18,29 +18,15 @@
 								<view>
 									<text style="font-size:16px;" class="text-blue">{{shopItem.name}}</text>
 								</view>
-								<view>
+								<view v-if="!expressID">
 									<text style="margin-left:8px;">(   {{userInfo.name}}</text>
 									 <text class="text-green" style="margin:0 4px;">|</text> 
 									 {{ userInfo.mobile ||''}}  )
 								</view>
 							 </view>
-							<view    class="text-gray shop-faddr">
+							<view v-if="expressID"   class="text-gray shop-faddr">{{shopItem.faddr}}</view>
+							<view  v-else  class="text-gray shop-faddr">
 								{{shopItem.provinceName||''}}/{{shopItem.cityName||''}}/{{shopItem.districtName||''}}/{{shopItem.address||''}}
-							</view>
-						</view>
-						<view v-if="checkItemInfo" style="padding-top:6px;">
-							<view style="font-size:12px;" class="flex justify-start">
-								<view>
-									<text style="font-size:16px;" class="text-blue">{{checkItemInfo.fromshopName}}</text>
-								</view>
-								<view>
-									<text style="margin-left:8px;">(   {{userInfo.name}}</text>
-									 <text class="text-green" style="margin:0 4px;">|</text> 
-									 {{ userInfo.mobile ||''}}  )
-								</view>
-							 </view>
-							<view    class="text-gray shop-faddr">
-								{{checkItemInfo.faddr || ''}}
 							</view>
 						</view>
 						<view v-else class="notice">请选择寄件信息</view>
@@ -50,22 +36,22 @@
 				<view class="flex justify-start user-info">
 					<view class="express-tab bg-orange" >收</view>
 						<view style="width:78%;">
-							<view >
+							<view v-if="expressID">
+								<view style="padding-top:6px;">
+									<view style="font-size:12px;">
+										<text style="font-size:16px;" class="text-blue">{{shopItem.toshopName}}</text>
+									</view>
+									<view  class="text-gray shop-faddr">{{shopItem.taddr || ''}}</view>
+								</view>
+							</view>
+							<view v-else>
 								<view v-if="receiveShopItem || shopMaleInfo" style="padding-top:6px;">
 									<view style="font-size:12px;">
 										<text style="font-size:16px;" class="text-blue">{{receiveShopItem.name}}</text>
-										<text >(   {{shopMaleInfo.name}}</text>
+										<text style="margin-left:8px;">(   {{shopMaleInfo.name}}</text>
 										 <text class="text-green" style="margin:0 4px;">|</text> 
 										 {{ shopMaleInfo.account ||''}}  )</view>
 									<view  class="text-gray shop-faddr">{{receiveShopItem.provinceName|| shopMaleInfo.provinceName||''}}/{{receiveShopItem.cityName|| shopMaleInfo.cityName||''}}/{{receiveShopItem.districtName||shopMaleInfo.districtName ||''}}/{{receiveShopItem.address||shopMaleInfo.address||''}}</view>
-								</view>
-								<view v-if="checkItemInfo" style="padding-top:6px;">
-									<view style="font-size:12px;">
-										<text style="font-size:16px;" class="text-blue">{{checkItemInfo.toshopName}}</text>
-										<text >(   {{checkItemInfo.receiverName}}</text>
-										 <text class="text-green" style="margin:0 4px;">|</text> 
-										 {{ checkItemInfo.receiverMobile ||''}}  )</view>
-									<view  class="text-gray shop-faddr">{{checkItemInfo.taddr || ''}}</view>
 								</view>
 								<view  v-else class="notice">请选择收件信息</view>
 							</view>
@@ -78,18 +64,15 @@
 				</view>
 			</view>
 			
-			<view class="express-info" >
-				<view class="flex justify-between express-info-goods" >
+			<view class="express-info" style="padding:10px ;border:1px solid #EEEEED;border-radius: 10px;">
+				<view class="flex justify-between" style="border-bottom:1px solid #EEEEED;padding:10px;">
 					<view style="font-size: 13px;color:gray"><text style="color:red;margin-right:5px;">*</text>商品名称</view>
-					<view v-if="checkItemInfo">
-						<input type="text" placeholder="请输入商品名称" v-model="checkItemInfo.name" style="font-size:13px;text-align:right;">
-					</view>
-					<view v-else>
+					<view>
 						<input type="text" placeholder="请输入商品名称" v-model="goods.name" style="font-size:13px;text-align:right;">
 					</view>
 				</view>
 				
-				<view class="flex justify-between express-info-express" >
+				<view class="flex justify-between" style="border-bottom:1px solid #EEEEED;padding:10px;margin-top:6px">
 					<view style="font-size: 13px;color:gray">
 						<text style="color:red;margin-right:5px;">*</text>
 						<text v-if="title.value=='express-order' ">快递公司</text>
@@ -100,41 +83,63 @@
 						<text class="cuIcon-right" style="font-size:15px;" @click="chooseExpress()"></text>
 					</view>
 				</view>
-				<view class="flex justify-between express-info-express">
+				<view class="flex justify-between" style="border-bottom:1px solid #EEEEED;padding:10px ;margin-top: 6px;" >
 					<view style="font-size: 13px;color:gray"><text style="color:red;margin-right:5px;">*</text>期望上门时间</view>
-					<view style="font-size:12px;">
-						<text v-if="checkItemInfo" style="margin-right:8px;width:43%">{{checkItemInfo.appointdate}}</text>
-						<text v-else style="margin-right:8px;width:43%">{{mainTimeName || ''}}</text>{{smallTimeName || ''}}
+					<view>
+						<text style="margin-right:8px;">{{mainTimeName || ''}}</text>{{smallTimeName || ''}}
 						<text class="cuIcon-right" style="font-size:15px;" @click="chooseTime($event)" data-target="bottomModal"></text>
 					</view>
 				</view>
-				<view class="flex justify-between express-info-goods" style="margin-top:6px" >
+				<view class="flex justify-between" style="border-bottom:1px solid #EEEEED;padding:10px;margin-top: 6px;" >
 					<view style="font-size: 13px;color:gray">物件保价</view>
 					<view>
-						
-						<input type="text"  placeholder="请输入保价金额" v-model="goods.price" style="font-size:13px;text-align:right;">
+						<input type="text" placeholder="请输入保价金额" v-model="goods.price" style="font-size:13px;text-align:right;">
 					</view>
 				</view>
 			</view>
-			<view class="goods-content" >
+			<view class="goods-content" style="padding:10px 15px;color:gray;font-size:12px;border:1px solid #EEEEED;border-radius: 10px;margin: 10px 8px" >
 				<view class="flex justify-between" >
-					<view  class="goods-content-item ">
+					<view style="color:black;font-size:13px;margin-bottom:20px;">
 						<text style="color:red;margin-right:5px;">*</text><text>货物重量估计</text>
 					</view>
-					<!-- <view>
+					<view>
 						<text class="cuIcon-order"></text>
+						<!-- <text @click="changeInput()" v-if="showChoose">重量预估</text> -->
 						<text @click="changeChoose()">重量填写</text>
-					</view> -->
+					</view>
 				</view>
 				<view class="goods-info">
+					<!-- <view v-if="showChoose"> -->
+						<!-- 显示选择 -->
+					<!-- 	<view class="flex justify-around">
+							<view v-for="(item,index ) in goodChooseList" :key="index" style="text-align: center;" @click="chooseQuantity(item)">
+								<view>
+									<image :src="item.image"
+									:class="{
+										'img25':item.id==0,
+										'img35':item.id==1,
+										'img55':item.id==2,
+										'img75':item.id==3,
+									}"
+									></image>
+								</view>
+								<view :class="{'text-orange':goodID==item.id}">
+									<view style="margin:5px">{{item.text}}</view>
+									<view style="margin-left:4px;">
+										{{item.name}}
+									</view>
+								</view>
+							</view>
+						</view>
+					</view> -->
+					
 					<view >
 						<view class="flex justify-between" style="padding:10px 20px;">
-							<text class="minuBtn"  @click="numberMinus('quantity')">-</text>
+							<text style="font-size:23px;background:lightgray;width:20%;text-align:center;" @click="numberMinus('quantity')">-</text>
 							<input type="number" placeholder="输入重量" v-model="goods.quantity" 
-								class="inputBtn"
-							>
-							<text class="unitBtn">kg</text>
-							<text  class="addBtn" @click="numberAdd('quantity')">+</text>
+							style="text-align:right;width:52%;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;padding-left:10px;">
+							<text style="width:8%;text-align:center;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;line-height:28px;height:28px;">kg</text>
+							<text  style="font-size:23px;background:lightgray;width:20%;text-align:center;" @click="numberAdd('quantity')">+</text>
 						</view>
 						<view class="flex justify-between" style="padding:10px 20px;">
 								<view>
@@ -146,23 +151,23 @@
 				</view>
 				
 				<view style="margin-top:20px;padding-top:10px;" >
-					<view class="goods-content-item">
+					<view style="color:black;font-size:13px;margin-bottom:20px;">
 						<text style="color:red;margin-right:5px;">*</text><text>货物数量</text>
 					</view>
 					<view class="flex justify-between" style="padding:0px 20px;">
-						<text class="minuBtn" @click="numberMinus('number')">-</text>
+						<text style="font-size:23px;background:lightgray;width:20%;text-align:center;" @click="numberMinus('number')">-</text>
 						<input type="number" placeholder="输入数量" v-model="goods.number" 
-						class="inputBtn">
-						<text class="unitBtn"></text>
-						<text  class="addBtn" @click="numberAdd('number')">+</text>
+						style="text-align:right;width:52%;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;padding-left:10px;">
+						<text style="width:8%;text-align:center;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;line-height:28px;height:28px;">kg</text>
+						<text  style="font-size:23px;background:lightgray;width:20%;text-align:center;" @click="numberAdd('number')">+</text>
 					</view>
 				</view>
 			</view>
 			
-			<view class="goods-summary text-gray" >
-				<view style="font-size:13px;margin-bottom:8px;">寄件备注</view>
+			<view class="goods-summary" style="border:1px solid #EEEEED;border-radius: 10px;padding:10px 15px;margin:6px 10px;">
+				<view style="font-size:13px;margin-bottom:6px;">寄件备注</view>
 				<view>
-					<textarea  placeholder="请输入寄件备注信息" v-model="goods.summary" style="font-size:13px;"/>
+					<textarea value="" placeholder="请输入寄件备注信息" v-model="goods.summary"/>
 				</view>
 			</view>
 			
@@ -176,18 +181,17 @@
 		
 		
 		
-		<view class="bottom-area">
+		<view style="bottom:0px;left:0px;width:100%;position:fixed;background:lightgrey">
 			<view class="flex justify-between">
-				<view  class="bottom-area-item">
+				<view style="font-size:12px;padding-top:8px;padding-left:10px;">
+					<!-- <radio :class="radio=='A'?'checked':''" :checked="radio=='A'?true:false" value="A" ></radio> -->
 					
 					<text class="cuIcon-roundcheck" v-if="isAccept" style="font-size:16px;color:#00BFFF" @click="acceptDel()"></text>
 					<text class="cuIcon-round" v-else style="font-size:16px;color:#00BFFF" @click="acceptDel()"></text>
 					<text style="margin-left:10px;">我已阅读并同意快递服务条款</text>
 				</view>
 				<view class="cu-btn bg-orange">
-					<text   v-if="checkItemInfo" @click="createExpress('edit')">修改完毕</text>
-					<text  v-else  @click="createExpress('new')">立即下单</text>
-
+					<text @click="createExpress()">立即下单</text>
 				</view>
 			</view>
 			
@@ -223,6 +227,24 @@
 				</view>
 			</view>
 		</view>
+		
+<!-- 		<view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()">
+			<view class="cu-dialog" @tap.stop="">
+				<radio-group class="block" @change="RadioChange($event)">
+					<view class="cu-list menu text-left">
+						<view class="cu-item" v-for="(item,index) in distributeList" :key="index">
+							<label class="flex justify-between align-center flex-sub">
+								<view class="flex-sub">{{item.name}}</view>
+								<radio class="round" 
+								:class="radio=='radio' + index?'checked':''" 
+								:checked="radio=='radio' + index?true:false"
+								 :value="'radio' + index"></radio>
+							</label>
+						</view>
+					</view>
+				</radio-group>
+			</view>
+		</view> -->
 	</view>
 </template>
 
@@ -232,18 +254,17 @@
 			return {
 				radio:'',
 				goodID:-1,
-				// goodChooseList:[
-				// 	{name:'<3kg',text:'小件',id:0,image:'../../../../../static/img/work/goods/box1.jpg'},
-				// 	{name:'3-10kg',id:1,text:'标准大件',image:'../../../../../static/img/work/goods/box2.jpg'},
-				// 	{name:'31-60kg',text:'超重大件',id:2,image:'../../../../../static/img/work/goods/box3.jpg'},
-				// 	{name:'>60kg',text:'物流',id:3,image:'../../../../../static/img/work/goods/box4.jpg'},
-				// ],
+				goodChooseList:[
+					{name:'<3kg',text:'小件',id:0,image:'../../../../../static/img/work/goods/box1.jpg'},
+					{name:'3-10kg',id:1,text:'标准大件',image:'../../../../../static/img/work/goods/box2.jpg'},
+					{name:'31-60kg',text:'超重大件',id:2,image:'../../../../../static/img/work/goods/box3.jpg'},
+					{name:'>60kg',text:'物流',id:3,image:'../../../../../static/img/work/goods/box4.jpg'},
+				],
 				title:{},
 				//快递信息
 				expressObj:{
 					id:'',
-					name:'',
-					img:''
+					name:''
 				},
 				sender:{
 					name:''
@@ -271,19 +292,30 @@
 				mainTimeName2:'',
 				type:'',//用于区分消费者还是门店(1是消费之，2是门店)
 				isAccept:true,//是否遵守跳跃
+				distributeList:[
+					{name:'到店',id:1},
+					{name:'调拨',id:2}
+				],
+				distributeObj:{},
+				expressID:'',//调拨转订单时调拨单的id
 				checkID:'',//修改快递订单的id
 				checkItemInfo:'',//修改快递单的内容
 			};
 		},
 		methods: {
+			chooseDistribute(){
+				//调拨方式
+			},
 			//接受条约
 			acceptDel(){
 				this.isAccept=!this.isAccept;
+				console.log(this.isAccept)
 			},
-			createExpress(type){
+			createExpress(){
 				var data=new Date();
 				var year   =  data.getFullYear(); 
 				var month  = data.getMonth() + 1<10?"0"+(data.getMonth() + 1):data.getMonth() + 1
+				console.log(this.mainTimeName)
 				if(this.mainTimeName=='今天'){
 					console.log()
 					var day    = data.getDate()<10?"0"+data.getDate():data.getDate(); 
@@ -295,6 +327,7 @@
 					var day  = data.getDate()+2<10?"0"+data.getDate()+2:data.getDate()+2; 
 					this.mainTimeName2=year+'-'+month+'-'+day;
 				}	
+				
 				if(this.smallTimeName=='2小时上门'){
 					var data=new Date();
 					var year   =  data.getFullYear();  
@@ -303,6 +336,7 @@
 					var hour   = data.getHours()<10?"0"+data.getHours():data.getHours();
 					var delHour=data.getHours()<10?"0"+data.getHours()+2:data.getHours()+2;
 					var minute =  data.getMinutes()<10?"0"+data.getMinutes():data.getMinutes();
+				
 					let startTime=hour+':'+minute;
 					let endTime=delHour+':'+minute
 					this.smallTimeName2=`${startTime}--${endTime}`
@@ -310,73 +344,124 @@
 				}else{
 					this.smallTimeName2=this.smallTimeName;
 				}
-				if(!this.isAccept){
+				
+				if(this.expressID){
+					if(!this.title || !this.mainTimeName || !this.smallTimeName2 ){
+						uni.showToast({
+							title:'填写完整信息',
+							icon:'none'
+						})
+					}else{
+						uni.navigateTo({
+							key:'userInfo',
+							success: (res) => {
+								this.$ajax('ChangeProprietorExpress',{
+									id:this.expressID,
+									express:this.title.id,//订单类型（1是速递，2是物流)
+									fromshop:this.distributeObj.id,
+									faddr:this.distributeObj.faddr,
+									toshop:this.distributeObj.toshop,
+									taddr:this.distributeObj.taddr,
+									weight:this.goods.quantity,
+									quantity:this.goods.number,
+									appointdate:`${this.mainTimeName2} ${this.smallTimeName2}`,
+									inprice:this.goods.price,
+									summary:this.goods.summary,
+									name:this.distributeObj.name,
+									type:this.distributeObj.type,
+									catalog:this.expressObj.id,
+									receiver:res.data.id,//如果是门店receiver为店员的id,如果是消费者则为kong
+									contactor:this.distributeObj.type==2?this.shopMaleInfo.name:'',//如果是type=2是消费者，为联系人的姓名
+									telephone:this.distributeObj.type==2?this.shopMaleInfo.account:''
+								},res=>{
+									var title=''
+									if(this.title.id==1){
+										title='转为速递订单成功'
+									}else if(this.title.id==2){
+										title='转为物流订单成功'
+									}
+									uni.showToast({
+										title:title,
+										icon:'none'
+									})
+									setTimeout(()=>{
+										uni.navigateTo({
+											url:'../express-list/express-list'
+										})
+									})
+								})
+							}
+						})
+						
+					}
+				}else{
+					if(!this.isAccept){
 						uni.showToast({
 							title:'请遵守寄件条款',
 							icon:'none'
 						})
 					}else{
-						if(type=='edit'){
-							console.log('edit')
-						}else if(type=='new'){
-							if(!this.shopItem || !this.shopMaleInfo){
-								uni.showToast({
-									title:'请填写寄件信息',
-									icon:'none'
-								})
-							}else if(!this.goods.name || !this.mainTimeName || !this.smallTimeName2 || !this.title){
-								uni.showToast({
-									title:'请填写完成信息',
-									icon:'none'
-								})
-							}else{
-								uni.getStorage({
-									key:'userInfo',
-									success: (res) => {
-										this.$ajax('NewExpress',{
-											way:1,//way=1是快递。不填是调拨
-											express:this.title.id,//订单类型（1是速递，2是物流)
-											fromshop:this.shopItem.id,
-											faddr:`${this.shopItem.provinceName || ''}${this.shopItem.cityName || ''}${this.shopItem.districtName || ''}${this.shopItem.address || ''}`,
-											toshop:this.receiveShopItem.id?this.receiveShopItem.id:'',
-											taddr:this.receiveShopItem?`${this.receiveShopItem.provinceName || ''}${this.receiveShopItem.cityName || ''}${this.receiveShopItem.districtName || ''}${this.receiveShopItem.address || ''}`:`${this.shopMaleInfo.provinceName || ''}${this.shopMaleInfo.cityName || ''}${this.shopMaleInfo.districtName || ''}${this.shopMaleInfo.address || ''}`,
-											weight:this.goods.quantity,
-											quantity:this.goods.number,
-											appointdate:`${this.mainTimeName2} ${this.smallTimeName2}`,
-											inprice:this.goods.price,
-											summary:this.goods.summary,
-											name:this.goods.name,
-											type:this.type,
-											catalog:this.expressObj.id,
-											receiver:this.type==1?this.shopMaleInfo.id:'',//如果是门店receiver为店员的id,如果是消费者则为kong
-											sender:res.data.id,
-											contactor:this.type==2?this.shopMaleInfo.name:'',//如果是type=2是消费者，为联系人的姓名
-											telephone:this.type==2?this.shopMaleInfo.account:''
-										},res=>{
-											var title=''
-											if(this.title.id==1){
-												title='新建速递订单成功'
-											}else if(this.title.id==2){
-												title='新建物流订单成功'
-											}else {
-												title='新建调拨订单成功'
-											}
-											uni.showToast({
-												title:title,
-												icon:'none'
-											})
-											setTimeout(()=>{
-												uni.navigateTo({
-													url:'../express-list/express-list'
-												})
+						console.log(this.shopItem)
+						console.log(this.receiveShopItem)
+						if(!this.shopItem || !this.shopMaleInfo){
+							uni.showToast({
+								title:'请填写寄件信息',
+								icon:'none'
+							})
+						}else if(!this.goods.name || !this.mainTimeName || !this.smallTimeName2 || !this.title){
+							uni.showToast({
+								title:'请填写完成信息',
+								icon:'none'
+							})
+						}else{
+							uni.getStorage({
+								key:'userInfo',
+								success: (res) => {
+									this.$ajax('NewExpress',{
+										way:1,//way=1是快递。不填是调拨
+										express:this.title.id,//订单类型（1是速递，2是物流)
+										fromshop:this.shopItem.id,
+										faddr:`${this.shopItem.provinceName || ''}${this.shopItem.cityName || ''}${this.shopItem.districtName || ''}${this.shopItem.address || ''}`,
+										toshop:this.receiveShopItem.id?this.receiveShopItem.id:'',
+										taddr:this.receiveShopItem?`${this.receiveShopItem.provinceName || ''}${this.receiveShopItem.cityName || ''}${this.receiveShopItem.districtName || ''}${this.receiveShopItem.address || ''}`:`${this.shopMaleInfo.provinceName || ''}${this.shopMaleInfo.cityName || ''}${this.shopMaleInfo.districtName || ''}${this.shopMaleInfo.address || ''}`,
+										weight:this.goods.quantity,
+										quantity:this.goods.number,
+										appointdate:`${this.mainTimeName2} ${this.smallTimeName2}`,
+										inprice:this.goods.price,
+										summary:this.goods.summary,
+										name:this.goods.name,
+										type:this.type,
+										catalog:this.expressObj.id,
+										receiver:this.type==1?this.shopMaleInfo.id:'',//如果是门店receiver为店员的id,如果是消费者则为kong
+										sender:res.data.id,
+										contactor:this.type==2?this.shopMaleInfo.name:'',//如果是type=2是消费者，为联系人的姓名
+										telephone:this.type==2?this.shopMaleInfo.account:''
+									},res=>{
+										var title=''
+										if(this.title.id==1){
+											title='新建速递订单成功'
+										}else if(this.title.id==2){
+											title='新建物流订单成功'
+										}else {
+											title='新建调拨订单成功'
+										}
+										uni.showToast({
+											title:title,
+											icon:'none'
+										})
+										setTimeout(()=>{
+											uni.navigateTo({
+												url:'../express-list/express-list'
 											})
 										})
-									}
-								})
-								
-							}
+									})
+								}
+							})
+							
 						}
-						
+				}
+				
+					
 				}
 				
 				
@@ -453,26 +538,6 @@
 					{name:'后天',time:second,id:2},
 				]
 			},
-			//获得快递信息
-			getExpressCatalogInfo(type){
-				console.log(type)
-				if(type==1){
-					//速递
-					this.$store.state.expressList.forEach(item=>{
-						if(this.checkItemInfo.catalog==item.id){
-							this.expressObj=item
-						}
-					})
-					console.log(this.expressObj.name)
-				}else if(type==2){
-					this.$store.state.logisticsList.forEach(item=>{
-						if(this.checkItemInfo.catalog==item.id){
-							this.expressObj=item
-						}
-					})
-					console.log(this.expressObj)
-				}
-			},
 			//选择时间
 			chooseTime(event){
 				this.modalName=event.currentTarget.dataset.target;
@@ -511,7 +576,21 @@
 				}
 				
 			},
-			
+			// showModal(e) {
+			// 	this.modalName = e.currentTarget.dataset.target
+			// 	console.log(this.modalName)
+			// },
+			// hideModal(e) {
+			// 	this.modalName = null
+			// },
+			// RadioChange(e) {
+			// 	this.radio = e.detail.value.substr(5)
+			// 	console.log(this.radio)
+			// 	this.distributeObj={
+			// 		id:this.radio,
+			// 		name:this.radio==0?'到店':'调拨'
+			// 	}
+			// },
 			//获得门店信息
 			getShopInfo(id,type){
 				this.$ajax('ProprietorShop',{id:id},res=>{
@@ -548,7 +627,7 @@
 			},
 			//调拨转为订单，获得单个调拨单的信息
 			getDistributeItemInfo(id){
-				this.$ajax('Express',{id:id,transferred:1},res=>{
+				this.$ajax('Express',{id:id},res=>{
 					console.log(res)
 					this.distributeObj=res;
 					this.shopItem={
@@ -572,21 +651,8 @@
 				this.$ajax('Express',{way:1,id:id},res=>{
 					console.log(res);
 					this.checkItemInfo=res;
-					this.goods={
-					name:this.checkItemInfo.name?this.checkItemInfo.name:'',
-					quantity:this.checkItemInfo.weight?this.checkItemInfo.weight:1,
-					number:this.checkItemInfo.quantity?this.checkItemInfo.quantity:1,
-					price:this.checkItemInfo.insprice?this.checkItemInfo.insprice:'',
-					summary:this.checkItemInfo.summary?this.checkItemInfo.summary:''
-					},
-					this.shopItem.faddr=res.faddr;
-					this.shopItem.taddr=res.taddr
-					this.getExpressCatalogInfo(this.title.id)
 				})
-			},
-			hideModal() {
-				this.modalName = null
-			},
+			}
 			
 		},
 		
@@ -594,22 +660,15 @@
 		
 		onLoad(options){
 			console.log(options)
-			//checkType判断是快递还是物流
-			
 			if(options){
-				if(options.type==1 || options.checkType==1){
-					this.title={id:1,name:'速递订单',value:'express-order'};
-					
-				}else if(options.type==2 || options.checkType==2){
+				if(options.type==1 ){
+					this.title={id:1,name:'速递订单',value:'express-order'}
+				}else if(options.type==2 ){
 					this.title={id:2,name:'物流订单',value:'logistics-order'}
-					
 				}
-				//修改快递信息
-				if(options.checkID){
-					this.checkID=options.checkID;
-					this.getExpressItemInfo(options.checkID)
-					
-					
+				if(options.expressID){
+					this.expressID=options.expressID
+					this.getDistributeItemInfo(options.expressID)
 				}
 			}
 			this.getUserInfo();
@@ -644,7 +703,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" >
 	
 	uni-textarea{
 		width:100%;
@@ -690,13 +749,6 @@
 		background:#fff;
 		margin:6px;
 		border-radius: 8px;
-		padding:10px ;border:1px solid #EEEEED;border-radius: 10px;
-		.express-info-goods{
-			border-bottom:1px solid #EEEEED;padding:10px;
-		}
-		.express-info-express{
-			border-bottom:1px solid #EEEEED;padding:10px;margin-top:6px
-		}
 	}
 	.express-container{
 		position: relative;
@@ -749,32 +801,5 @@
 		border:1px solid #EEEEED;
 		border-radius: 9px;
 		padding:10px 15px;
-	}
-	.goods-content{
-		padding:10px 15px;color:gray;font-size:12px;border:1px solid #EEEEED;border-radius: 10px;margin: 10px 8px
-	}
-	.goods-content-item{
-		color:gray;font-size:13px;margin-bottom:20px;
-	}
-	.minuBtn{
-		font-size:23px;background:lightgray;width:20%;text-align:center;
-	}
-	.inputBtn{
-		text-align:right;width:52%;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;padding-left:10px;
-	}
-	.unitBtn{
-		width:8%;text-align:center;border-top:1px solid #EEEEED;border-bottom:1px solid #EEEEED;line-height:28px;height:28px;
-	}
-	.addBtn{
-		font-size:23px;background:lightgray;width:20%;text-align:center;
-	}
-	.goods-summary{
-		border:1px solid #EEEEED;border-radius: 10px;padding:10px 15px;margin:6px 10px;
-	}
-	.bottom-area{
-		bottom:0px;left:0px;width:100%;position:fixed;background:lightgrey
-	}
-	.bottom-area-item{
-		font-size:12px;padding-top:8px;padding-left:10px;
 	}
 </style>

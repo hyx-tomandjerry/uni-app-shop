@@ -18,7 +18,59 @@ const store=new Vuex.Store({
 			repair_type:39,//维修类别
 			serviceorder_file:18,//报修附件
 			shop_file:26,//门店附件,
+			 log : 4,		//Work Report Daily日志
 			
+		},
+		expressList:[
+			{name:'申通快递',id:1,img:'../../../../../static/icon/express/shentong.png'},
+			{name:'圆通快递',id:2,img:'../../../../../static/icon/express/yuantong.png'},
+			{name:'中通快递',id:3,img:'../../../../../static/icon/xpress/zhongtong.png'},
+			{name:'韵达快递',id:4,img:'../../../../../static/icon/express/yunda.png'},
+			{name:'天天快递',id:5,img:'../../../../../static/icon/express/tiantian.png'},
+			{name:'汇通快递',id:6,img:'../../../../../static/icon/express/huitong.png'},
+			{name:'德邦快递',id:7,img:'../../../../../static/icon/express/debang.png'},
+			{name:'顺丰',id:8,img:'../../../../../static/icon/express/shunfeng.png'},
+		],
+		logisticsList:[
+			{name:'顺丰速运',id:1,img:'../../../../../static/icon/express/shunfeng.png'},
+			{name:'圆通速递',id:2,img:'../../../../../static/icon/express/yuantong.png'},
+			{name:'申通快递',id:4,img:'../../../../../static/icon/express/shentong.png'},
+		],
+		expressStatus:{
+			1:'待签收',
+			2:'已揽件',
+			3:'已签收'
+		},
+		expressStatusZn:{
+			'unSign':1,
+			'sign':2,
+			'finish':3
+		},
+		distributeStatus:{
+			1:'未处理',
+			2:'已转为订单'
+		},
+		distributeStatusZn:{
+			'unDeal':1,
+			'finish':2
+		},
+		//快递公司
+		expressZn:{
+			1:'申通快递',
+			2:'圆通快递',
+			3:'中通快递',
+			4:'韵达快递',
+			5:'天天快递',
+			6:'汇通快递',
+			7:'德邦快递',
+			8:'顺丰'
+		},
+		//物流公司
+		logisticsZn:{
+			1:'顺丰速运',
+			2:'圆通速递',
+			3:'远成物流',
+			4:'申通快递'
 		},
 		notice:{
 			todo:1,//代办

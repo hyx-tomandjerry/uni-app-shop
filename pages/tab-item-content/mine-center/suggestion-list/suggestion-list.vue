@@ -2,7 +2,7 @@
 	<view >
 		<cu-custom  isBack="true">
 			 <block slot="left"><text class="cuIcon-back" @click="goBack()"></text></block>
-			<block slot="content">设置登录密码</block>
+			<block slot="content">反馈建议</block>
 			<block slot="right">
 				<image src="../../../../static/icon/roundadd.png" style="width:20px;height:20px;" @click="addSuggestion()"></image>
 			</block>

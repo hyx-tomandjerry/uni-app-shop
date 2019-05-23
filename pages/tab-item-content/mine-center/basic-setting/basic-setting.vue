@@ -16,8 +16,8 @@
 					<image 
 					@click.stop.prevent="uploadAvatar()"
 					class="img47"
-					v-if="avatar"
-					:src="avatar.resurl" ></image>
+					v-if="userInfo.ownerLogoUrl"
+					:src="userInfo.ownerLogoUrl" ></image>
 					<image 
 					@click.stop.prevent="uploadAvatar()"
 					class="img47"
@@ -133,7 +133,7 @@
 				isShow:true,
 				value: '',
 				type: 'rangetime',
-				radio:'radio1',
+				radio:0,
 				sexList:['男','女'],
 				isChangeSex:false,
 				userInfo:{},
@@ -160,7 +160,7 @@
 			},
 			RadioChange(e) {
 				this.radio = e.detail.value.substr(5,1);
-				this.userInfo.gender=this.radio==1?'男':'女'
+				this.userInfo.gender=this.radio
 			},
 			hideModal(){
 				this.isChangeSex=false;
@@ -181,25 +181,6 @@
 					delta:1
 				})
 			},
-			getUserInfo(){
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						this.userInfo=res.data
-						console.log(this.userInfo)
-					}
-				})
-			},
-			//获得头像
-			getUserInfoAvatar(){
-				uni.getStorage({
-					key:'logo',
-					success: (res) => {
-						// console.log(res)
-						this.avatar=res.data
-					}
-				})
-			},
 			changeGender(){
 				this.isChangeSex=true;
 			},
@@ -215,16 +196,6 @@
 							url:'../cut-image/cut-image?src='+src
 						})
 					}
-				})
-			},
-			//获得头像图片
-			getAvater(id){
-				this.$ajax('File',{id:id},res=>{
-					this.avatar=res;
-					uni.setStorage({
-						key:'logo',
-						data:this.avatar
-					})
 				})
 			},
 			//获得上传图片的token
@@ -252,13 +223,12 @@
 			  this.value = this[type];
 			},
 			setUserInfo(){
-				console.log(this.userInfo.name,this.userInfo.mobile,this.radio,this.birthday,this.userInfo.motto)
 				this.$ajax('SetProfile',{
-					gender:this.radio=='radio1'?1:2,
+					gender:this.radio,
 					mobile:this.userInfo.mobile,
 					name:this.userInfo.name,
 					motto:this.userInfo.motto,
-					birthday:this.birthday?this.birthday:this.userInfo.birthday
+					birthday:this.birthday
 				},res=>{
 					uni.showToast({
 						title:'编辑基本信息成功',
@@ -276,13 +246,8 @@
 			MxDatePicker
 		},
 		onLoad(){
-			this.getUserInfo();
-			this.getUserInfoAvatar()
-			this.$fire.on('image',res=>{
-				// console.log(res)
-				if(res){
-					this.getAvater(res)
-				}
+			this.$ajax('RefreshOnlineUser',{},res=>{
+				this.userInfo=res;
 			})
 			this.$fire.on('name',res=>{
 				if(res){

@@ -1,81 +1,109 @@
 <template>
 	<view>
-		<view class="flex text-center bg-white nav">
-			<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect($event)" :data-id="index">
-				{{item.text}}
-			</view>
-		</view>
-		<scroll-view scroll-x class="bg-white">
-			<view v-if="TabCur==0">全部</view>
-			<view v-if="TabCur==1">待揽件</view>
-			<view v-if="TabCur==2">已取件</view>
-			<view v-if="TabCur==3">已签收</view>
-		</scroll-view>
-		<image src="../../../../../static/icon/add.png"
-				style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;"
-				 @click.stop="createExpress()"></image>
-				 
-		<view v-show="showExpress" 
-		style="position:absolute;right:98px;
-		
-		bottom:12px;z-index:100;">
-				<view v-for="(item,index) in expressList" :key="index" @click="choseExpress(item)" >
-					<view class="cu-tag round " 
-					:class="{'bg-green':chose==item.id}"
-					style="margin-bottom:10px;font-size:15px;padding:5px 6px">{{item.name}}</view>
-				</view>
+		<view v-for="(item,index) in tabList" :key="index" 
+		@click="expressTabClick(item)"
+		class="express-tab-content">
+			<view class="express-tab"
+				:class="{
+					'border-blue':item.id==1,
+					'border-orange':item.id==2,
+					'border-green':item.id==3,
+					'border-red':item.id==4,
+					'border-purple':item.id==5
+				}"
+			>{{item.name}}</view>
 		</view>
 	</view>
 </template>
-
 <script>
-	export default {
-		data() {
-			return {
-				radio:'radio1',
-				TabCur: 0,
-				scrollLeft: 0,
-				showExpress:false,
-				chose:-1,
-				
+	export default{
+		data(){
+			return{
 				tabList:[
-					{text:'全部'},
-					{text:'待揽件'},
-					{text:'已取件'},
-					{text:'已签收'},
+					{name:'新建速递订单',id:1},
+					{name:'新建物流订单',id:2},
+					{name:'新建调拨订单',id:3},
+					{name:'快递订单记录',id:4},
+					{name:'调拨代发任务',id:5},
 				],
-				expressList:[
-					{name:'速递订单',id:0},
-					{name:'物流订单',id:1},
-					{name:'调拨订单',id:2},
-				],
-			};
-		},
-		methods: {
-			choseExpress(event){
-				this.chose=event.id;
-				uni.navigateTo({
-					url:'../create-express/create-express?express='+this.chose
-				})
-			},
-			RadioChange(event){
-				console.log(event)
-			},
-			//新建快递
-			createExpress(){
-				this.showExpress=true;
-			},
-			tabSelect(e) {
-				this.TabCur = e.currentTarget.dataset.id;
-				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-				console.log(this.TabCur)
+				
 			}
-		}
+		},
+		components:{
+			
+		},
+		methods:{
+			expressTabClick(event){
+				switch(event.id){
+					case 1:
+					//新建速递订单
+					uni.navigateTo({
+						url:'../create-express/create-express?type='+event.id
+					})
+					break;
+					case 2:
+					//新建物流订单
+					uni.navigateTo({
+						url:'../create-express/create-express?type='+event.id
+					})
+					break;
+					case 3:
+					// 新建调拨订单
+					uni.navigateTo({
+						url:'../create-distribute/create-distribute'
+					})
+					break;
+					case 4:
+					// 快递订单记录
+					uni.navigateTo({
+						url:'../express-list/express-list'
+					})
+					break;
+					case 5:
+					// 调拨代发记录
+					break;
+				}
+			}
+		},
+		onLoad(){
+			
+		},
 	}
 </script>
+<style lang="less" >
+		page{
+			background:#fff;
+		}
+		.express-tab-content{
+			padding:10px 15px;
+			.express-tab{
+				padding:30px 15px;
+				font-size:17px;
+				font-weight: 600;
+				// border:1px solid #EEEEED;
+				
+				box-shadow:lightblue 5px 5px 5px 2px;
+				margin-bottom:12px;
+			}
+			.express-tab:hover {
+				box-shadow: 3px 3px 2px lightgray,
+								-3px -3px 2px lightgray;
+			}
 
-<style lang="less">
-	page{
-		background:#fff;
-	}
+		}
+		.border-red{
+			border-left:4px solid red;
+		}
+		.border-blue{
+			border-left:4px solid deepskyblue;
+		}
+		.border-orange{
+			border-left:4px solid orange;
+		}
+		.border-green{
+			border-left:4px solid green;
+		}
+		.border-purple{
+			border-left:4px solid purple;
+		}
 </style>

@@ -430,7 +430,7 @@
 			checkTelEvent(event){
 				console.log(event)
 				if(event){
-					if((/^[1][3,4,5,7,8][0-9]{9}$/.test(event))){
+					if((/^[1][3,4,5,7,8][0-9]{9}$/.test(event.detail.value))){
 
 							uni.showToast({
 								title:'电话号码不存在',

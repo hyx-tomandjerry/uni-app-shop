@@ -48,6 +48,27 @@
 				</view>
 			</scroll-view>
 		</view>
+		
+		<view class="cu-modal" :class="isShow?'show':''" @tap="hideModal()">
+			
+			<view class="cu-dialog" @tap.stop="">
+				<view style="padding:10px 0;">选择收件人</view>
+				<radio-group class="block" @change="RadioChange($event)">
+					<view class="cu-list menu text-left">
+						<view class="cu-item" v-for="(item,index) in shopMaleList" :key="index">
+							<label class="flex justify-between align-center flex-sub">
+								<view class="flex-sub">{{item.name}} <text style="margin:0px 10px;color:blue;font-size:14px">|</text>{{item.account}}</view>
+								<radio class="round" 
+								:class="radio=='radio' + item.id?'checked':''" 
+								:checked="radio=='radio' + item.id?true:false"
+								 :value="'radio' + item.id"></radio>
+							</label>
+						</view>
+					</view>
+				</radio-group>
+			</view>
+		</view>
+		
 	</view>
 </template>
 <script>
@@ -55,6 +76,7 @@
 	export default{
 		data(){
 			return{
+				isShow:false,
 				shop:{},
 				category:{
 					name:'',
@@ -64,22 +86,77 @@
 				isChoseCity:false,
 				shopStatus:this.$store.state.shopStatusZn,
 				shopIndex:-1,
+				shopMaleList:[],
+				radio:'',
+				shopMaleID:'',
+				cat:'',//用于区分调拨还是快递（调拨不显示弹出框）
+				
 			}
 		},
 		components:{
 			addressed
 		},
 		methods:{
-			chooseShop(item){
-				this.shopIndex=item.id;
+			RadioChange(event){
+				this.shopMaleID=event.detail.value.substr(5,)
+				this.isShow=false;
 				setTimeout(()=>{
 					uni.navigateBack({
 						delta:2,
 						success:(res)=>{
-							this.$fire.fire('shop',item)
+							this.$fire.fire('shop',{
+								shopID:this.shopIndex,
+								shopMaleID:this.shopMaleID,
+								type:'receive'
+							})
 						}
 					})
 				},500)
+			},
+			hideModal(){
+				this.isShow=false;
+			},
+			chooseShop(item){
+				this.shopIndex=item.id;
+				if(this.cat=='distribute'){
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:2,
+							success:(res)=>{
+								this.$fire.fire('shopID',item.id)
+							}
+						})
+					},500)
+				}else if(this.cat=='distribute_send'){
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:2,
+							success:(res)=>{
+								this.$fire.fire('sendShop',{
+									shopID:item.id
+								})
+							}
+						})
+					},500)
+				}else if(this.cat=='log'){
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1,
+							success:(res)=>{
+								this.$fire.fire('shop',{
+									shopID:item.id
+								})
+							}
+						})
+					},500)
+				}else{
+					this.isShow=true;
+					this.$ajax('ShopSalesmen',{shop:item.id},res=>{
+						this.shopMaleList=res
+					})
+				}
+				
+				
 			},
 			showShopCatalog(){
 				uni.navigateTo({
@@ -120,7 +197,12 @@
 				})
 			}
 		},
-		onLoad(){
+		onLoad(options){
+			console.log(options)
+			if(options.cat){
+				this.cat=options.cat;
+				console.log(this.cat)
+			}
 			this.$fire.on('category',result=>{
 				this.category.name=result.name;
 				this.category.id=result.id;
