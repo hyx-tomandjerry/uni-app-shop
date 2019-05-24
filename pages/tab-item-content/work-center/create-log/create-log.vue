@@ -1,35 +1,42 @@
 <template>
-	<view>
-		<view class="log-content">
+	<view class="create-log">
+		<view class="create-log-content">
+			<!--<view class="cu-form-group">-->
+				<!--<view class="log-title"><text class="text-red">*</text>选择门店</view>-->
+				<!--<view>-->
+					<!--<text>{{shopItem.name}}</text>-->
+					<!--<text class="cuIcon-right" style="font-size:14px;margin-left:6px;" @click="toChooseShop()"></text>-->
+				<!--</view>-->
+			<!--</view>-->
+
 			<view class="cu-form-group">
-				<view class="log-title"><text class="text-red">*</text>选择门店</view>
-				<view>
-					<text>{{shopItem.name}}</text>
-					<text class="cuIcon-right" style="font-size:14px;margin-left:6px;" @click="toChooseShop()"></text>
-				</view>
+				<view class="log-title"><text class="text-red">*</text>文章编号</view>
+				<input placeholder="文章编号" v-model="ArticleInfo.seq" disabled>
 			</view>
+
 			<view class="cu-form-group">
 				<view class="log-title"><text class="text-red">*</text>文章标题</view>
-				<input placeholder="请输入日志标题" v-model="ArticleInfo.title"   class="inputStyle"></input>
+				<input placeholder="文章标题" v-model="ArticleInfo.title" disabled>
 			</view>
 			<view class="cu-form-group">
-				<view class="log-title"><text class="text-red">*</text>标题</view>
-				<input placeholder="请输入日志标题" v-model="log.title"   class="inputStyle"></input>
+				<view class="log-title"><text class="text-red">*</text>汇报标题</view>
+				<input placeholder="汇报标题" v-model="log.title">
 			</view>
-			
-			<view class="cu-form-group" style="position:relative">
-				<textarea  v-model="log.content" maxlength="1000"   placeholder="请输入工作日志.."class="log-summary"></textarea>
-				<text class="num">1000以内</text>
+
+			<view class="cu-form-group create-log-textarea">
+				<textarea  v-model="log.summary" maxlength="1000"   placeholder="请输入汇报内容.."></textarea>
+				<!--<textarea maxlength="-1" :disabled="modalName!=null" @input="textareaAInput" placeholder="多行文本输入框"></textarea>-->
+				<text class="create-log-num">1000字以内</text>
 			</view>
 		</view>
-		
+
 		<view class="img-content margin-top-13">
 			<view class="cu-bar bg-white margin-top">
 				<view class="action text-grey" style="font-size:12px;">
 					上传附件
 				</view>
 				<view class="action">
-					
+
 				</view>
 			</view>
 			<view class="cu-form-group">
@@ -45,15 +52,15 @@
 					</view>
 				</view>
 			</view>
-			
+
 			<!-- <view class="cu-form-group  margin-top">
 				<view class="title text-grey" style="font-size:12px;"><text class="text-red">*</text>抄送人</view>
 				<view><text class="cuIcon-right" @click="goChoseCopy()"></text></view>
 			</view> -->
 		</view>
-		
-		<view  >
-			<button type="default" class="submitBtn" @click="createLog()">提交</button>
+
+		<view  class="create-log-bottom">
+			<button type="default" @click="createLog()">提交</button>
 		</view>
 	</view>
 </template>
@@ -64,17 +71,19 @@
 			return {
 				log:{
 					title:'',//标题
-					content:'',//内容
+                    summary:'',//内容
 				},
 				imgList: [],
 				index:-1,
 				shopItem:'',
 				files:'',
-				ArticleInfo:''
+				ArticleInfo:'',
+				article:''
 			}
 		},
 		onLoad(options){
 			console.log(options)
+			this.article = options.id
 			if(options){
 				this.getArticleInfo(options.id)
 			}
@@ -83,14 +92,30 @@
 			})
 		},
 		methods: {
+		    // 新建日志
 			createLog(){
-				if(!this.shopItem || !this.log.title){
+				if(!this.log.title || !this.log.summary){
 					uni.showToast({
 						title:'请填写完整信息',
 						icon:'none'
 					})
 				}else{
-					
+                    this.$ajax('NewWorkReportByShop',{
+                        title:this.log.title,
+                        article:this.article,
+                        summary:this.log.summary,
+                        files:this.files?this.files.join(','):'',
+                    },res=>{
+                        uni.showToast({
+                            title:'新建工作汇报成功',
+                            icon:'success'
+                        });
+                        setTimeout(()=>{
+                            uni.navigateBack({
+                                delta:1
+                            })
+                        },500)
+                    })
 				}
 			},
 			//获得门店信息
@@ -158,23 +183,23 @@
 									}
 								}
 							})
-							
-			
-			
+
+
+
 						}
 					})
-			
+
 			},
 			InputFocus(event){
 				console.log('InputFocus')
 			},
-			
+
 				ViewImage(e) {
 					uni.previewImage({
 						urls: this.imgList,
 						current: e
 					});
-			
+
 				},
 				DelImg(event) {
 					uni.showModal({
@@ -205,28 +230,19 @@
 				uni.navigateTo({
 					url:'../chose-copy/chose-copy'
 				})
-			}
-			
+			},
+
 		}
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	page{
 		font-size:12px;
 	}
-	.cu-form-group uni-input{
-		text-align: right;
-	}
-	.num{
-		font-size:12px;
-		font-family:PingFangSC-Regular;
-		font-weight:400;
-		color:rgba(137,136,136,1);
-		position:absolute;
-		bottom:20px;
-		right:25px;
-	}
+	/*.cu-form-group uni-input{*/
+		/*text-align: right;*/
+	/*}*/
 	.log-title{
 		font-size:12px;
 		font-family:PingFangSC-Regular;
@@ -246,14 +262,52 @@
 	.log-content .cu-bar{
 		padding-left:13px;
 	}
-	.log-summary{
-		min-height:137px;font-size:12px;background:#F7F7F7;border-radius: 10px;padding:10px;
+	.input-placeholder{
+		text-align: right;
 	}
-	.inputStyle{
-		padding-left:10px;padding-top:4px;font-size:12px;
-	}
-	.submitBtn{
-		width:94%;bottom:31px;position:absolute;background:rgba(66,176,237,1);
-		border-radius:5px;color:#fff;left:15px;
+	.create-log{
+		&-textarea{
+			position: relative;
+			padding-bottom: 24px;
+			uni-textarea{
+				display: block;
+				margin:12px 0 12px 0;
+				.uni-textarea-compute{
+					display: block;
+				}
+				.uni-textarea-wrapped{
+					.uni-textarea-textarea{
+						line-height: 16px;
+					}
+				}
+			}
+		}
+		&-num{
+			position: absolute;
+			bottom: 12px;
+			right: 12px;
+			color: #898888;
+		}
+		&-content{
+			.cu-form-group{
+
+			}
+			input{
+				text-align: right;
+	    	}
+		}
+		&-bottom{
+			width: 100%;
+			margin-top: 30px;
+			margin-bottom: 30px;
+			button{
+				color: #fff;
+				background:rgba(66,176,237,1);
+				width:94%;
+				border-radius:5px;
+				height: 40px;
+				line-height: 40px;
+			}
+		}
 	}
 </style>

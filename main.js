@@ -12,6 +12,8 @@ Vue.prototype.$fire=new onfire();
 import webim from './static/js/webim.js'
 import {ajax} from './common/http.js'
 Vue.prototype.$ajax=ajax;
+import utils from './common/utils'
+Vue.prototype.$utils=utils;
 //管道
 Vue.filter('repairStatus',function(value){
 	if(!value) return ''
@@ -61,7 +63,7 @@ Vue.prototype.format=function(value,type){
 					dataTime = hour+":" + minute+":" + second;
 				}else if(type == "YM"){
 					dataTime = year + "-" + month;
-	
+
 				}
 				return dataTime;//将格式化后的字符串输出到前端显示
 }
@@ -83,11 +85,11 @@ Vue.filter('formatTime',function(value,type){
 					dataTime = hour+":" + minute+":" + second;
 				}else if(type == "YM"){
 					dataTime = year + "-" + month;
-	
+
 				}
 				return dataTime;//将格式化后的字符串输出到前端显示
 })
-	
+
 //代办通知显示类型
 Vue.filter('todoType',function(value){
 	return store.state.noticeTypeZn[value]

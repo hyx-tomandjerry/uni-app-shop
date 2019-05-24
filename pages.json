@@ -1,41 +1,54 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	 {
+	{
+	     "path" : "pages/tab-item/index/index",
+	     "style" : {
+					"navigationStyle":"custom",
+					"app-plus":{
+						"titleNView":false
+					}
+					  
+				  }
+	 },
+{
+	    "path" : "pages/login-design/login/login",
+	    "style": {
+	      "navigationBarTitleText": "门店助手"
+	    }
+	  },	
+	{
 	      "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
 	      "style" : {
-	  		"navigationBarTitleText": "快递包裹"
+	  		"navigationStyle":"custom",
+	  		"app-plus":{
+	  			"titleNView":false
+	  		}
 	  	}
 	  },
-	 
+	
+	
+	
+	
+	
+	 {
+	     "path" : "pages/tab-item/mine/mine",
+	     "style" : {
+	 		"navigationBarTitleText": "我的"
+	 	}
+	 },
 	 {
 	     "path" : "pages/tab-item-content/shop-center/search-more-shop/search-more-shop",
 	     "style" : {
 	 		"navigationBarTitleText": "选择门店"
 	 	}
 	 },
-	 {
-	    "path" : "pages/login-design/login/login",
-	    "style": {
-	      "navigationBarTitleText": "门店助手"
-	    }
-	  },
-	 {
-	      "path" : "pages/tab-item/mine/mine",
-	      "style" : {
-	  		"navigationBarTitleText": "我的"
-	  	}
-	  },
-	  
-	  
-	 
 	   {
 	      "path" : "pages/tab-item-content/work-center/express-center/create-address/create-address",
 	      "style" : {
 	  		"navigationBarTitleText": "新增地址"
 	  	}
 	  },
-	  
-	 
+	
 	  {
 	      "path" : "pages/tab-item-content/work-center/express-center/create-express/create-express",
 	      "style" : {
@@ -45,8 +58,6 @@
 	     	}
 	     }
 	  },
-	  
-	  
 	   {
 	       "path" : "pages/tab-item-content/mine-center/basic-setting/basic-setting",
 	       "style" : {
@@ -56,10 +67,7 @@
 	   		}
 	   	}
 	   },
-	   
-	  
-	
-	
+
 	{
 	      "path" : "pages/tab-item-content/mine-center/suggestion-list/suggestion-list",
 	      "style" : {
@@ -77,22 +85,7 @@
 	 			"titleNView":false
 	 		}
 	 	}
-	 }
-	 
-	 
-	 ,
-	
-	
-	
-	 
-	 
-	{
-	     "path" : "pages/tab-item/index/index",
-	     "style" : {
-					 "navigationBarTitleText": "首页"
-					  
-				  }
-	 },
+	 } ,
 	{
 	    "path" : "pages/all-item-content/index-more/index-more",
 	    "style" : {
@@ -101,19 +94,13 @@
 				"titleNView":false
 			}
 		}
-	}
-	,
+	},
 	{
 	    "path" : "pages/tab-item-content/shop-center/shop-list/shop-list",
 	    "style" : {
 			"navigationBarTitleText": "我的门店"
 		}
 	},
-	
-		
-	
-	 
-	
 	{
 	    "path" : "pages/tab-item-content/mine-center/create-suggestion/create-suggestion",
 	    "style" : {
@@ -123,10 +110,6 @@
 			}
 		}
 	},
-	
-	
-	
-	
 	{
 	    "path" : "pages/tab-item-content/shop-center/create-comment/create-comment",
 	    "style" : {
@@ -155,11 +138,7 @@
 	   	 "style": {
 	   		"navigationBarTitleText": "门店助手"
 	   	}
-	   },
-	  
-		
-		  
-		  
+	   },  
 		 {
 	          "path" : "pages/tab-item-content/shop-center/create-order/create-order",
 	          "style" : {
@@ -206,15 +185,7 @@
 	      			"navigationBarTitleText": "工作日志"
 	      	}
 	      },
-		  {
-	          "path" : "pages/tab-item-content/notice-center/notice-center",
-	          "style" : {
-	      		"navigationBarTitleText": "通知公告"
-	      	}
-	      },
-		  
-		  
-		
+		 
 		 {
 	          "path" : "pages/tab-item-content/shop-center/near-shop-list/near-shop-list",
 	           "style": {
@@ -227,20 +198,12 @@
 		  		"navigationBarTitleText": "报修记录"
 		  	}
 		  },
-		 
-		
-		
-	   
-		
-	
 	{
 	    "path" : "pages/tab-item-content/work-center/create-log/create-log",
 	    "style" : {
-			"navigationBarTitleText": "新增日志"
+			"navigationBarTitleText": "工作汇报"
 		}
 	},
-	
-
 	{
 	    "path" : "pages/login-design/find-password/find-password",
 		 "style": {
@@ -255,10 +218,6 @@
 		}
 
 	}
-
-
-       
-
         ,{
             "path" : "pages/tab-item-content/shop-center/clerk-list/clerk-list",
             "style" : {
@@ -284,7 +243,10 @@
         ,{
             "path" : "pages/all-item-content/detail-content/detail-content",
             "style" : {
-				"navigationBarTitleText": "详情内容"
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
         }
         ,{
@@ -371,6 +333,50 @@
 			}
         }
 
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/choose-express/choose-express",
+            "style" : {
+            	"navigationStyle":"custom",
+            	"app-plus":{
+            		"titleNView":false
+            	}
+            }
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/express-list/express-list",
+            "style" : {
+				"navigationBarTitleText": "快递订单记录",
+				"enablePullDownRefresh": true
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/create-distribute/create-distribute",
+            "style" : {
+				"navigationBarTitleText": "调拨订单"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/express-item/express-item",
+            "style" : {
+				  "navigationBarTitleText": "订单详情"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/notice-center/notice-index/notice-index",
+            "style" : {
+				"navigationBarTitleText": "通知公告",
+				"enablePullDownRefresh": true
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/notice-center/notice-item/notice-item",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

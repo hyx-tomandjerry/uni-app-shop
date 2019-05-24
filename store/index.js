@@ -19,7 +19,7 @@ const store=new Vuex.Store({
 			serviceorder_file:18,//报修附件
 			shop_file:26,//门店附件,
 			 log : 4,		//Work Report Daily日志
-			
+
 		},
 		expressList:[
 			{name:'申通快递',id:1,img:'../../../../../static/icon/express/shentong.png'},
@@ -216,6 +216,7 @@ const store=new Vuex.Store({
 		province:'',//省份
 		address:'',//详细地址
 		repairSubID:'',//用于新增保修的报修ID;
+        pageCount: 20 //每页分页数
 
 	},
 	mutations:{
