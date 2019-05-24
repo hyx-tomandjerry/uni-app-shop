@@ -5,7 +5,7 @@
 				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
 			</block>
 			<block slot="content"><view style="font-weight:600;">详情内容</view></block>
-			<block slot="right"><text class="text-blue" style="font-size:13px;" @click="writeLog()">编写汇报</text></block>
+			<block slot="right"><text class="text-blue" style="font-size:13px;" @click="writeLog()" v-if="itemInfo.report">编写汇报</text></block>
 		</cu-custom>
 		<view class="container">
 			<view class="title">{{itemInfo.title}}</view>
@@ -21,13 +21,13 @@
 							{{itemInfo.creatorName}}
 						</view>
 					</view>
-					
+
 				</view>
 			</view>
 			<view class="content" v-html="itemInfo.summary"  v-if="type=='example'"></view>
 			<view class="content" v-html="itemInfo.summary"   v-if="type=='skill'"></view>
 		</view>
-	
+
 	</view>
 </template>
 
@@ -35,7 +35,7 @@
 	export default{
 		data(){
 			return{
-				itemInfo:'',
+				itemInfo:{},
 				shopInfo:'',
 				type:''
 			}
@@ -81,12 +81,12 @@
 	}
 	.container{
 		padding:10px 13px 10px 14px;
-		
+
 	}
 	.desc{
 		padding:10px 0;
 	}
-	
+
 	.title{
 		font-size:20px;
 		font-weight: 600;
