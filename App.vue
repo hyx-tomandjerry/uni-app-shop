@@ -52,32 +52,12 @@ import Vue from 'vue'
 <style>
 	@import "colorui/main.css";
     @import "colorui/icon.css";
+	@import url("./static/css/index.css");
 	page{
 		font-family: PingFangSC-Medium;
+		color:rgba(42,42,42,1);
 	}
-	.img20{
-		width:20px;
-		height:20px;
-	}
-	.img18{
-		width:18px;
-		height:18px;
-	}
-	.borderBottom{
-		border-bottom:1px solid rgba(238, 238, 237, 1);
-	}
-	.submitBtn{
-		background:rgba(66,176,237,1);
-		border-radius:5px;
-		margin-right:12px;
-		margin-left:15px;
-		font-size:16px;
-		font-family:PingFangSC-Regular;
-		font-weight:400;
-		color:rgba(255,255,255,1);
-	}
-	.tabTitle{
-		
-	}
+	
+	
 	
 </style>

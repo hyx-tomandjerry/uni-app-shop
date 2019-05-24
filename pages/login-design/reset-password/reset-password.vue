@@ -9,19 +9,41 @@
 					<view class="text-gray">
 						<text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text>
 					</view>
-					<input type="text" placeholder="请输入密码" v-model="designer.pwd" 
-					@blur="checkPwdEvent(designer.pwd)">
-					<text class="cuIcon-roundclose position_absolute" style="right:44rpx;" v-show="isInput" ></text>
+					<input type="password" placeholder="请输入密码" v-model="designer.pwd" @blur="checkPwdEvent(designer.pwd)" v-if="isShowPwd">
+					<input type="text" v-model="designer.pwd" v-else  @input="inputPwd($event)">
+					<image 
+					@click="showPwd('pwd')"
+					v-if="isShowPwd"
+					src="../../../static/icon/eye.png" 
+					style="width:24rpx;height:24rpx;position: absolute;right:44rpx;"></image>
+					<image src="../../../static/icon/eye_open.png" 
+					style="width:16px;height:17px;position: absolute;right:44rpx;"
+					v-else
+					@click="noShowPwd('pwd')"
+					></image>
 				</view>
 
 				<view class="cu-form-group">
 					<view class="text-gray"><text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text></view>
 					<input 
-					type="text" 
+					type="password" 
 					placeholder="再次输入密码" 
+					v-if="isShowConfrimPwd"
 					v-model="designer.confirmPwd" 
+					@blur="checkPwdEvent(designer.confirmPwd)"
 					:style="isSame ? '':sameStyle"
-					@blur="checkConfirmEvent(designer.confirmPwd)">
+					>
+					<input type="text" v-model="designer.confirmPwd" v-else  @input="inputPwd($event)">
+					<image 
+					@click="showPwd('confirm')"
+					v-if="isShowConfrimPwd"
+					src="../../../static/icon/eye.png" 
+					style="width:24rpx;height:24rpx;position: absolute;right:44rpx;"></image>
+					<image src="../../../static/icon/eye_open.png" 
+					style="width:16px;height:17px;position: absolute;right:44rpx;"
+					v-else
+					@click="noShowPwd('confirm')"
+					></image>
 				</view>
 				<view class="passwordSet">密码长度为6-12位，由英文和数字组成</view>
 			</form>
@@ -47,6 +69,8 @@
             return{
                 isInput:false,//是否输入账号,
 				isSame:true,
+				isShowPwd:true,
+				isShowConfrimPwd:true,
 				designer:{
 					pwd:'',
 					confirmPwd:'',
@@ -66,6 +90,24 @@
 			this.designer.vcode=options.vcode
         },
 		methods:{
+			noShowPwd(type){
+				if(type=='pwd'){
+					this.isShowPwd=true;
+				}else if(type=='confirm'){
+					console.log('kkkk')
+					this.isShowConfrimPwd=true;
+				}
+			
+			},
+			showPwd(type){
+				console.log(type)
+				if(type=='pwd'){
+						this.isShowPwd=false;
+				}else if(type=='confirm'){
+					console.log('llll')
+					this.isShowConfrimPwd=false;
+				}
+			},
 			resetPassword(){
 				if(!this.designer.pwd || !this.designer.confirmPwd){
 					uni.showToast({
@@ -73,21 +115,30 @@
 						icon:'none'
 					})
 				}else{
-					this.$ajax('InitPwd',{
-						vcode:this.designer.vcode,
-						token:this.designer.confirmPwd,
-						mobile:this.designer.mobile
-					},res=>{
+					if(this.designer.pwd!=this.designer.confirmPwd){
+						this.isSame=false;
 						uni.showToast({
-							title:'设置密码成功',
+							title:'两次输入的密码不一致',
 							icon:'none'
 						})
-						setTimeout(()=>{
-							uni.navigateTo({
-								url:'../../login-design/login/login'
+					}else{
+						this.$ajax('InitPwd',{
+							vcode:this.designer.vcode,
+							token:this.designer.confirmPwd,
+							mobile:this.designer.mobile
+						},res=>{
+							uni.showToast({
+								title:'设置密码成功',
+								icon:'none'
 							})
-						},800)
-					},false)
+							setTimeout(()=>{
+								uni.navigateTo({
+									url:'../../login-design/login/login'
+								})
+							},800)
+						})
+					}
+					
 				}
 			},
 			//验证密码
@@ -105,18 +156,6 @@
 					
 				}
 			},
-			checkConfirmEvent(event){
-				if(!this.isSame){
-					this.isSame=true;
-				}
-				if(this.designer.pwd!=event){
-					this.isSame=false;
-					uni.showToast({
-						title:'两次输入的密码不一致',
-						icon:'none'
-					})
-				}
-			}
 		}
     }
 </script>

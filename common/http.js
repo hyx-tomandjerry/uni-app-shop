@@ -1,5 +1,5 @@
-// let url="http://192.168.10.22/services?f=";
-let url='http://192.168.10.58:8080/blade/services?f='
+let url="http://192.168.10.22/services?f=";
+// let url='http://192.168.10.58:8080/blade/services?f='
 const errorText = require('./errorText')
 
 const ajax=(api,param,resp,reqCache=true)=>{
@@ -15,9 +15,11 @@ const ajax=(api,param,resp,reqCache=true)=>{
 					return;
 				}
 				let baseParam={
-					owner:res.data.owner,
+					// owner:res.data.owner,
 					session:res.data.session,
-					userId:res.data.id
+					// userId:res.data.id
+					owner:16,
+					userId:1
 				}
 				httpMethod(api,param,baseParam,resp)
 			},
@@ -43,11 +45,10 @@ const httpMethod = (api,param,baseParam,resp)=>{
 		},
 		success: (res) => {
 			if(res.statusCode==200){
-
                 if (res.data.code === 0) {
                     resp(res.data.data)
                 } else {
-                    switchCode(res.code.toString());
+                    switchCode(res.data.code.toString());
                 }
 
 

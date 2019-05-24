@@ -397,7 +397,7 @@
 					//通知公告
 					uni.navigateTo({
 
-						url:'../../tab-item-content/notice-center/notice-center'
+						url:'../../tab-item-content/notice-center/notice-index/notice-index'
 					})
 					break;
 					case 1:
