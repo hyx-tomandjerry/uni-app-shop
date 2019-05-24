@@ -11,12 +11,12 @@
 					</view>
 					<input type="password" placeholder="请输入密码" v-model="designer.pwd" @blur="checkPwdEvent(designer.pwd)" v-if="isShowPwd">
 					<input type="text" v-model="designer.pwd" v-else  @input="inputPwd($event)">
-					<image 
+					<image
 					@click="showPwd('pwd')"
 					v-if="isShowPwd"
-					src="../../../static/icon/eye.png" 
+					src="../../../static/icon/eye.png"
 					style="width:24rpx;height:24rpx;position: absolute;right:44rpx;"></image>
-					<image src="../../../static/icon/eye_open.png" 
+					<image src="../../../static/icon/eye_open.png"
 					style="width:16px;height:17px;position: absolute;right:44rpx;"
 					v-else
 					@click="noShowPwd('pwd')"
@@ -25,21 +25,21 @@
 
 				<view class="cu-form-group">
 					<view class="text-gray"><text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-					<input 
-					type="password" 
-					placeholder="再次输入密码" 
+					<input
+					type="password"
+					placeholder="再次输入密码"
 					v-if="isShowConfrimPwd"
-					v-model="designer.confirmPwd" 
+					v-model="designer.confirmPwd"
 					@blur="checkPwdEvent(designer.confirmPwd)"
 					:style="isSame ? '':sameStyle"
 					>
 					<input type="text" v-model="designer.confirmPwd" v-else  @input="inputPwd($event)">
-					<image 
+					<image
 					@click="showPwd('confirm')"
 					v-if="isShowConfrimPwd"
-					src="../../../static/icon/eye.png" 
+					src="../../../static/icon/eye.png"
 					style="width:24rpx;height:24rpx;position: absolute;right:44rpx;"></image>
-					<image src="../../../static/icon/eye_open.png" 
+					<image src="../../../static/icon/eye_open.png"
 					style="width:16px;height:17px;position: absolute;right:44rpx;"
 					v-else
 					@click="noShowPwd('confirm')"
@@ -49,7 +49,7 @@
 			</form>
 
 			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;">
-				<button 
+				<button
 					@click="resetPassword()"
 				class="cu-btn block  margin-tb-sm lg" :class="designer.pwd || designer.confirmPwd ?'inputStyle':'noInputStyle'">
 					<text>确定</text>
@@ -97,7 +97,7 @@
 					console.log('kkkk')
 					this.isShowConfrimPwd=true;
 				}
-			
+
 			},
 			showPwd(type){
 				console.log(type)
@@ -136,15 +136,15 @@
 									url:'../../login-design/login/login'
 								})
 							},800)
-						})
+						},false)
 					}
-					
+
 				}
 			},
 			//验证密码
 			checkPwdEvent(event){
 				if(event){
-					var reg=/^[a-zA-Z0-9]{6,12}$/;   
+					var reg=/^[a-zA-Z0-9]{6,12}$/;
 					if(reg.test(event)==false){
 						uni.showToast({
 							title:'密码不能含有非法字符，长度在6-12之间',
@@ -153,7 +153,7 @@
 					}else{
 						this.checkPwd=true;
 					}
-					
+
 				}
 			},
 		}

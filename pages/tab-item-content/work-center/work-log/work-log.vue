@@ -1,31 +1,36 @@
 <template>
 	<view>
-		<view class="work-item" @click="itemDetail()">
-			<view class="user flex justify-start">
-				<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
-				<view class="user-info">
-					<view  style="margin-bottom:1px;">
-						<text class="user-name">TomAndJerry</text>
+		<view v-if="list.length > 0">
+			<view class="work-item" @click="itemDetail()">
+				<view class="user flex justify-start">
+					<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
+					<view class="user-info">
+						<view  style="margin-bottom:1px;">
+							<text class="user-name">TomAndJerry</text>
+						</view>
+						<view class="work-date"><text style="margin-right:10px">2019/03/20</text>18:00</view>
 					</view>
-					<view class="work-date"><text style="margin-right:10px">2019/03/20</text>18:00</view>
+				</view>
+				<view class="work-content">
+					<text class="user-name">今日工作设计工作日志界面完成，banner图设计完成 完成设计流程，完成h5界面。</text>
+				</view>
+				<view class="work-tag">
+					<text class="tag-name">工作日志</text>
 				</view>
 			</view>
-			<view class="work-content">
-				<text class="user-name">今日工作设计工作日志界面完成，banner图设计完成 完成设计流程，完成h5界面。</text>
-			</view>
-			<view class="work-tag">
-				<text class="tag-name">工作日志</text>
-			</view>
-		</view>
 
-		<image src="../../../../static/icon/add.png"
-		style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createWork()"></image>
+			<image src="../../../../static/icon/add.png"
+				   style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createWork()"></image>
+		</view>
+		<lx-empty v-else></lx-empty>
 	</view>
 </template>
 
 <script>
+	import LxEmpty from '../../../../lx_components/lx-empty'
 	export default {
-		data() {
+        components: {LxEmpty},
+        data() {
 			return {
 				page:0,
 				list:[]
