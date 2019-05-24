@@ -31,7 +31,7 @@
 				<view class="cu-form-group position_relative">
 					<view class="text-gray"><text class="cuIcon-mail text-gray" style="font-size:22px;margin-right:15px;"></text></view>
 					<input placeholder="请输入验证码" v-model="designr.vcode" type="number" name='vcode'/>
-					<view class="position_absolute">
+					<view class="position_absolute" style="right:10px;">
 						<button class="cu-btn block bg-blue margin-tb-sm"
 						style="background:rgba(66,176,237,1);border-radius:4px;height:28px;line-height:28px;">
 						<text class="code">获取验证码</text>

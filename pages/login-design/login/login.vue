@@ -95,61 +95,107 @@
 				})
 			},
 			loginEvent(){
-				
-				uni.request({
-					
-					url:this.$store.state.url+'Login',
-					data:{
-						user:this.designer.account,
-						token:this.designer.token
-					},
-					success: (res) => {
-						if(res.data.code == -1){
+				this.$ajax('Login',{
+					user:this.designer.account,
+					token:this.designer.token
+				},res=>{
+					if(res.code == -1){
+						uni.showToast({
+							title: `账号或者密码错误`,
+							mask: false,
+							icon:'none',
+							duration: 1500
+						})
+						
+					}else{
+						if(res.type!=4){
 							uni.showToast({
-								title: `账号或者密码错误`,
+								title: `您的账号无法在“门店助手”登录`,
 								mask: false,
 								icon:'none',
 								duration: 1500
 							})
-							
 						}else{
-							if(res.data.data.type!=4){
-								uni.showToast({
-									title: `您的账号无法在“门店助手”登录`,
-									mask: false,
-									icon:'none',
-									duration: 1500
-								})
-							}else{
-								this.$store.commit('setUserInfo',res.data.data);
-								uni.setStorage({
-									key: 'userInfo',
-									data: res.data.data,
-									success: (res) => {
-										uni.showToast({
-											title:'登录成功',
-											icon:'none'
+							this.$store.commit('setUserInfo',res);
+							uni.setStorage({
+								key: 'userInfo',
+								data: res,
+								success: (res) => {
+									uni.showToast({
+										title:'登录成功',
+										icon:'none'
+									})
+									setTimeout(function(){
+										uni.switchTab({
+											url:'../../tab-item/index/index'
 										})
-										setTimeout(function(){
-											uni.switchTab({
-												url:'../../tab-item/index/index'
-											})
-										},500)
-									}
-								});
-								uni.getStorage({
-									key:'userInfo',
-									success: (res) => {
-										console.log(res)
-									}
-								})
-								
-							}
+									},500)
+								}
+							});
+							uni.getStorage({
+								key:'userInfo',
+								success: (res) => {
+									console.log(res)
+								}
+							})
+							
 						}
-
-
 					}
-				})
+				},false)
+// 				uni.request({
+// 					
+// 					url:this.$store.state.url+'Login',
+// 					data:{
+// 						user:this.designer.account,
+// 						token:this.designer.token
+// 					},
+// 					success: (res) => {
+// 						if(res.data.code == -1){
+// 							uni.showToast({
+// 								title: `账号或者密码错误`,
+// 								mask: false,
+// 								icon:'none',
+// 								duration: 1500
+// 							})
+// 							
+// 						}else{
+// 							if(res.data.data.type!=4){
+// 								uni.showToast({
+// 									title: `您的账号无法在“门店助手”登录`,
+// 									mask: false,
+// 									icon:'none',
+// 									duration: 1500
+// 								})
+// 							}else{
+// 								this.$store.commit('setUserInfo',res.data.data);
+// 								uni.setStorage({
+// 									key: 'userInfo',
+// 									data: res.data.data,
+// 									success: (res) => {
+// 										uni.showToast({
+// 											title:'登录成功',
+// 											icon:'none'
+// 										})
+// 										setTimeout(function(){
+// 											uni.switchTab({
+// 												url:'../../tab-item/index/index'
+// 											})
+// 										},500)
+// 									}
+// 								});
+// 								uni.getStorage({
+// 									key:'userInfo',
+// 									success: (res) => {
+// 										console.log(res)
+// 									}
+// 								})
+// 								
+// 							}
+// 						}
+// 
+// 
+// 					}
+// 				})
 			}
 		}
 	}

@@ -1,5 +1,5 @@
-let url="http://192.168.10.22/services?f=";
-// let url='http://192.168.10.58:8080/blade/services?f='
+// let url="http://192.168.10.22/services?f=";
+let url='http://192.168.10.58:8080/blade/services?f='
 const errorText = require('./errorText')
 
 const ajax=(api,param,resp,reqCache=true)=>{

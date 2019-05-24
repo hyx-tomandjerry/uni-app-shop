@@ -96,7 +96,7 @@
 									</view>
 									<view class="margin-top-sm flex justify-between">
 										<view  style="font-size:13px;">{{item.pubdate | formatTime('YMDHMS')}}</view>
-										<view>{{item.sender}}</view>
+										<view>{{item.senderName}}</view>
 									</view>
 								</view>
 							</view>
@@ -134,7 +134,8 @@
 			this.switchTabCur(this.TabCur)
 		},
 		onReachBottom(){
-			this.loadingType=2
+			this.loadingType=2;
+			this.page++;
 			setTimeout(()=>{
 				if(this.TabCur==0){
 					//我的通知
@@ -144,7 +145,7 @@
 						status:1,
 						catalog:this.$store.state.notice.todo,
 						psize:-1,
-						offset:15
+						offset:this.$utils.getOffset(this.page)
 					},res=>{
 						if(res==''){
 							this.loadingType=4;
@@ -163,6 +164,7 @@
 						contract:0,
 						status:0,
 						catalog:this.$store.state.notice.info,
+						offset:this.$utils.getOffset(this.page)
 					},res=>{
 						if(res==''){
 							this.loadingType=4;
@@ -174,7 +176,17 @@
 						}
 					})
 				}else if(this.TabCur==2){
-					
+					this.$ajax('Messages',{offset:this.$utils.getOffset(this.page)},res=>{
+						if(res==''){
+								this.loadingType=4;
+							}else{
+								this.loadingType!=2
+								res.forEach(item=>{
+									this.todoList=this.todoList.concat(item)
+								})
+							}
+				
+					})
 				}
 			},1000)
 			
@@ -214,11 +226,12 @@
 						contract:0,
 						status:0,
 						catalog:this.$store.state.notice.info,
+						offset:0
 					},res=>{
 						this.todoList=res;
 					})
 				}else if(index==2){
-					this.$ajax('Messages',{offset:(this.page-1)*15},res=>{
+					this.$ajax('Messages',{offset:0},res=>{
 						console.log(res)
 						this.todoList=res;
 					})

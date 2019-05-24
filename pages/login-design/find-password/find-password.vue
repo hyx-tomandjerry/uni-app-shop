@@ -17,7 +17,7 @@
 					<view class="text-gray"><text class="cuIcon-mail text-gray" style="font-size:22px;margin-right:15px;"></text></view>
 
 					<input type="text" placeholder="请输入验证码" v-model="designer.vcode">
-					<view class="position_absolute">
+					<view class="position_absolute" style="right:10px;">
 						
 						<button class="cu-btn block bg-gray margin-tb-sm" 
 							disabled="true"
@@ -75,8 +75,6 @@
 		methods:{
 			sendMessage(){
 				//发送验证码
-				
-				
 				console.log('kkkk')
 				if(!this.designer.mobile){
 					uni.showToast({
