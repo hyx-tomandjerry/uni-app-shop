@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-// let url="http://192.168.10.22/services?f=";
-let url='http://192.168.10.58:8080/blade/services?f='
-=======
 import store from '../store/index'
->>>>>>> abf0507adb7a4556b6697c960190db88d35aabeb
 const errorText = require('./errorText')
 
 const ajax=(api,param,resp,reqCache=true)=>{

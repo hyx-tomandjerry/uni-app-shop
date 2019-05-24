@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="99191785-f02d-4e9d-b508-f51b9992ff0f" name="默认更改列表" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/myapps.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/http.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lx_components/lx-empty.vue" beforeDir="false" afterPath="$PROJECT_DIR$/lx_components/lx-empty.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -49,20 +40,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/common/http.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="38" column="32" lean-forward="true" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
+            <state relative-caret-position="240">
+              <caret line="45" column="36" lean-forward="true" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="138" column="32" lean-forward="true" selection-start-line="138" selection-start-column="32" selection-end-line="138" selection-end-column="32" />
+            <state relative-caret-position="180">
+              <caret line="126" column="44" selection-start-line="126" selection-start-column="44" selection-end-line="126" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -80,7 +71,7 @@
         <entry file="file://$PROJECT_DIR$/pages/login-design/login/login.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
-              <caret line="100" column="44" selection-start-line="100" selection-start-column="44" selection-end-line="100" selection-end-column="44" />
+              <caret line="100" column="24" selection-start-line="100" selection-start-column="24" selection-end-line="100" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -196,8 +187,8 @@
         <option value="$PROJECT_DIR$/lx_components/lx-empty.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue" />
         <option value="$PROJECT_DIR$/store/index.js" />
-        <option value="$PROJECT_DIR$/common/http.js" />
         <option value="$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue" />
+        <option value="$PROJECT_DIR$/common/http.js" />
       </list>
     </option>
   </component>
@@ -224,48 +215,7 @@
             <path>
               <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
               <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
-              <item name="colorui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
               <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
-              <item name="lx_components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="work-center" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="work-center" type="462c0819:PsiDirectoryNode" />
-              <item name="work-log" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lx-erp-shop" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lx-erp-shop" type="462c0819:PsiDirectoryNode" />
-              <item name="store" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -330,18 +280,18 @@
       <workItem from="1557482161265" duration="904000" />
       <workItem from="1557486811242" duration="1879000" />
       <workItem from="1558580732591" duration="12770000" />
-      <workItem from="1558662291124" duration="14339000" />
+      <workItem from="1558662291124" duration="14689000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85824000" />
+    <option name="totallyTimeSpent" value="86174000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17798841" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17798841" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -353,7 +303,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3457627" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3457627" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="调试" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -648,7 +598,7 @@
     <entry file="file://$PROJECT_DIR$/pages/login-design/login/login.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="100" column="44" selection-start-line="100" selection-start-column="44" selection-end-line="100" selection-end-column="44" />
+          <caret line="100" column="24" selection-start-line="100" selection-start-column="24" selection-end-line="100" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -696,13 +646,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/common/http.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="38" column="32" lean-forward="true" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/common/qiniuUploader.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
@@ -712,8 +655,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="138" column="32" lean-forward="true" selection-start-line="138" selection-start-column="32" selection-end-line="138" selection-end-column="32" />
+        <state relative-caret-position="180">
+          <caret line="126" column="44" selection-start-line="126" selection-start-column="44" selection-end-line="126" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/http.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="45" column="36" lean-forward="true" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
         </state>
       </provider>
     </entry>
