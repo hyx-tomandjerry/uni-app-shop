@@ -76,13 +76,15 @@
 				imgList: [],
 				index:-1,
 				shopItem:'',
-				files:'',
+				files:[],
 				ArticleInfo:'',
-				article:''
+				article:'',
+				token:''
 			}
 		},
 		onLoad(options){
 			console.log(options)
+			this.getUploadToken()
 			this.article = options.id
 			if(options){
 				this.getArticleInfo(options.id)
@@ -100,6 +102,7 @@
 						icon:'none'
 					})
 				}else{
+				    console.log(this.files)
                     this.$ajax('NewWorkReportByShop',{
                         title:this.log.title,
                         article:this.article,
@@ -110,11 +113,11 @@
                             title:'新建工作汇报成功',
                             icon:'success'
                         });
-                        setTimeout(()=>{
-                            uni.navigateBack({
-                                delta:1
-                            })
-                        },500)
+                        // setTimeout(()=>{
+                        //     uni.navigateBack({
+                        //         delta:1
+                        //     })
+                        // },500)
                     })
 				}
 			},
@@ -137,6 +140,16 @@
 					url:"../../shop-center/search-more-shop/search-more-shop?cat=log"
 				})
 			},
+            //获得上传token
+            getUploadToken(){
+                uni.request({
+                    url:this.$store.state.url+'UploadToken',
+                    success: (res) => {
+                        this.token=res.data.data
+
+                    }
+                })
+            },
 			chooseImageEvent(){
 					uni.chooseImage({
 						count:9,
@@ -158,12 +171,13 @@
 											filePath:tempFilePaths[i],
 											name:'file',
 											formData:{
-												'x:type':this.$store.state.constants.log,
+												'x:type':this.$store.state.doc.workReportShop,
 												'x:owner': info.data.owner,
 												'x:creator': info.data.id,
 											},
 											success: (uploadFileRes) => {
 												let res=JSON.parse(uploadFileRes.data);
+												console.log(this.files)
 												this.files.push(res.data);
 											}
 										});

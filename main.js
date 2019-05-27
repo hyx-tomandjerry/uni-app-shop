@@ -4,6 +4,8 @@ import App from './App'
 Vue.config.productionTip = false
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
+import LxEmpty from 'lx_components/lx-empty'
+Vue.component('lx-empty',LxEmpty)
 App.mpType = 'app'
 import store from './store/index.js'
 Vue.prototype.$store=store;

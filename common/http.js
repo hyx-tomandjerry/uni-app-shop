@@ -17,7 +17,6 @@ const ajax=(api,param,resp,reqCache=true)=>{
 					owner:res.data.owner,
 					session:res.data.session,
 					userId:res.data.id
-				
 				}
 				httpMethod(api,param,baseParam,resp)
 			},

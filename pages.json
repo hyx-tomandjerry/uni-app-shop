@@ -1,7 +1,5 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	
-	
 	 {
 	 	    "path" : "pages/login-design/login/login",
 	 	    "style": {
@@ -15,10 +13,9 @@
 		  				"app-plus":{
 		  					"titleNView":false
 		  				}
-		  				  
+
 		  			  }
 		   },
-	
 	{
 	      "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
 	      "style" : {
@@ -28,11 +25,11 @@
 	  		}
 	  	}
 	  },
-	
-	
-	
-	
-	
+
+
+
+
+
 	 {
 	     "path" : "pages/tab-item/mine/mine",
 	     "style" : {
@@ -51,7 +48,7 @@
 	  		"navigationBarTitleText": "新增地址"
 	  	}
 	  },
-	
+
 	  {
 	      "path" : "pages/tab-item-content/work-center/express-center/create-express/create-express",
 	      "style" : {
@@ -119,7 +116,7 @@
 			"navigationBarTitleText": "发表评价"
 		}
 	},
-	
+
 	{
 	 "path" : "pages/tab-item/message/message",
 	 "style" : {
@@ -135,7 +132,7 @@
 	    	}
 	    }
 	},
-	
+
 	  {
 	       "path" : "pages/login-design/design/design",
 	   	 "style": {
@@ -144,7 +141,7 @@
 	   			"titleNView":false
 	   		}
 	   	}
-	   },  
+	   },
 		 {
 	          "path" : "pages/tab-item-content/shop-center/create-order/create-order",
 	          "style" : {
@@ -157,14 +154,14 @@
 	     		"navigationBarTitleText": "录入门店"
 	     	}
 	     },
-		 
+
 		 {
 	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
 	          "style" : {
 	      		"navigationBarTitleText": "新增报修"
 	      	}
 	      },
-		
+
 		  {
 	          "path" : "pages/tab-item-content/mine-center/input-code/input-code",
 	          "style" : {
@@ -183,15 +180,15 @@
 		  				  "navigationBarTitleText": "手机号码"
 		  			  }
 		  },
-		 
-		  
+
+
 		  {
 	          "path" : "pages/tab-item-content/work-center/work-index/work-index",
 	          "style" : {
 	      			"navigationBarTitleText": "工作日志"
 	      	}
 	      },
-		 
+
 		 {
 	          "path" : "pages/tab-item-content/shop-center/near-shop-list/near-shop-list",
 	           "style": {
@@ -236,7 +233,7 @@
 				"navigationBarTitleText": "店员列表"
 			}
         }
-        
+
 
         ,{
             "path" : "pages/tab-item-content/shop-center/invite-join/invite-join",
@@ -251,7 +248,7 @@
 			}
         }
 
-        
+
         ,{
             "path" : "pages/all-item-content/detail-content/detail-content",
             "style" : {
@@ -276,7 +273,7 @@
 				}
 			}
         }
-        
+
 
         ,{
             "path" : "pages/tab-item-content/work-center/log-detail/log-detail",
@@ -293,7 +290,7 @@
 				"navigationBarTitleText": "选择抄送人"
 			}
         }
-       
+
         ,{
             "path" : "pages/tab-item-content/shop-center/category-item/category-item",
             "style" : {
@@ -306,7 +303,7 @@
 				"navigationBarTitleText": "群组列表"
 			}
         }
-        
+
         ,{
             "path" : "pages/tab-item/work/work",
             "style" : {
@@ -316,7 +313,7 @@
         ,{
             "path" : "pages/tab-item-content/work-center/work-log/work-log",
             "style" : {
-				"navigationBarTitleText": "工作日志"
+				"navigationBarTitleText": "工作汇报"
 			}
         }
 
@@ -413,7 +410,7 @@
 					"text":"消息"
 			},
 			{
-			
+
 					"pagePath":"pages/tab-item/work/work",
 					"iconPath":"static/img/tab_img/gongzuo.png",
 					"selectedIconPath":"static/img/tab_img/gongzuo_color.png",
