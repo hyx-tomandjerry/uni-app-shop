@@ -3,14 +3,14 @@ import Vue from 'vue'
 	export default {
 		data(){
 			return{
-				
+
 			}
 		},
 		onLoad(){
-			
+
 		},
 		methods:{
-			
+
 		},
 		filters:{
 			repairStatus(value){
@@ -19,7 +19,7 @@ import Vue from 'vue'
 			repairStatusColor(value){
 				return this.$store.state.repairStatusColor[value]
 			},
-			
+
 		},
 		onLaunch: function() {
 			// console.log('kkkk')
@@ -38,7 +38,7 @@ import Vue from 'vue'
 					let custom = wx.getMenuButtonBoundingClientRect();
 					Vue.prototype.Custom = custom;
 					Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
-					// #endif       
+					// #endif
 					// #ifdef MP-ALIPAY
 					Vue.prototype.StatusBar = e.statusBarHeight;
 					Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
@@ -57,7 +57,7 @@ import Vue from 'vue'
 		font-family: PingFangSC-Medium;
 		color:rgba(42,42,42,1);
 	}
-	
-	
-	
+
+
+
 </style>
