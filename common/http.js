@@ -14,11 +14,10 @@ const ajax=(api,param,resp,reqCache=true)=>{
 					return;
 				}
 				let baseParam={
-					// owner:res.data.owner,
+					owner:res.data.owner,
 					session:res.data.session,
-					// userId:res.data.id
-					owner:16,
-					userId:1
+					userId:res.data.id
+				
 				}
 				httpMethod(api,param,baseParam,resp)
 			},

@@ -1,21 +1,24 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	{
-	     "path" : "pages/tab-item/index/index",
-	     "style" : {
-					"navigationStyle":"custom",
-					"app-plus":{
-						"titleNView":false
-					}
-					  
-				  }
-	 },
-{
-	    "path" : "pages/login-design/login/login",
-	    "style": {
-	      "navigationBarTitleText": "门店助手"
-	    }
-	  },	
+	
+	
+	 {
+	 	    "path" : "pages/login-design/login/login",
+	 	    "style": {
+	 	      "navigationBarTitleText": "门店助手"
+	 	    }
+	 	  },
+		  {
+		       "path" : "pages/tab-item/index/index",
+		       "style" : {
+		  				"navigationStyle":"custom",
+		  				"app-plus":{
+		  					"titleNView":false
+		  				}
+		  				  
+		  			  }
+		   },
+	
 	{
 	      "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
 	      "style" : {
@@ -136,7 +139,10 @@
 	  {
 	       "path" : "pages/login-design/design/design",
 	   	 "style": {
-	   		"navigationBarTitleText": "门店助手"
+	   		"navigationStyle":"custom",
+	   		"app-plus":{
+	   			"titleNView":false
+	   		}
 	   	}
 	   },  
 		 {
@@ -207,14 +213,20 @@
 	{
 	    "path" : "pages/login-design/find-password/find-password",
 		 "style": {
-			"navigationBarTitleText": "门店助手"
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
+			}
 		}
 
 	},
 	{
 	    "path" : "pages/login-design/reset-password/reset-password",
 		 "style": {
-			"navigationBarTitleText": "门店助手"
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
+			}
 		}
 
 	}

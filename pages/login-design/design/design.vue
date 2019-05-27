@@ -1,54 +1,44 @@
 <template>
-	<view class="login_container">
-		<view class="title">
-			<view class="login_title">注册</view>
-			<view class="login_design">您好！欢迎来到乐象门店助手</view>
+	<view>
+		<view class="design-container">
+			<view class="design-title font-weight-bold">注册</view>
+			<view class="design-title-desc font-weight-normal font-size-normal">您好！欢迎来到乐象工程管家</view>
 		</view>
-		<view class="login_form">
-			<form>
-				<view class="cu-form-group position_relative">
-					<view class="text-gray"><text class="cuIcon-people text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-					<input placeholder="请输入姓名" v-model="designr.name"  type="text" />
-
-				</view>
-
-				<view class="cu-form-group position_relative">
-					<view class="text-gray"><text class="cuIcon-mobile text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-					<input placeholder="请输入手机号" v-model="designr.mobile"  type="phone" @blur="checkTelEvent(designr.mobile)" />
-				</view>
-
-				<view class="cu-form-group  position_relative " >
-					<view class="text-gray">
-						<text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text>
-					</view>
-					<input placeholder="密码长度6-12位,英文和数字组成" v-model="designr.token" type="text"
-					 @blur='checkPwdEvent(designr.token)'/>
-					<text 
-					class="cuIcon-roundclose position_absolute" 
-					style="right:44rpx;color:gray" v-show="designr.token" @click="clearPwd()"></text>
-				</view>
-
-				<view class="cu-form-group position_relative">
-					<view class="text-gray"><text class="cuIcon-mail text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-					<input placeholder="请输入验证码" v-model="designr.vcode" type="number" name='vcode'/>
-					<view class="position_absolute" style="right:10px;">
-						<button class="cu-btn block bg-blue margin-tb-sm"
-						style="background:rgba(66,176,237,1);border-radius:4px;height:28px;line-height:28px;">
-						<text class="code">获取验证码</text>
-						</button>
-					</view>
-				</view>
-			</form>
-			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;" >
-				<button  :class="designr.name||designr.token || designr.mobile?'inputStyle':'noInputStyle'"  @click="design()">
-					<text >注册</text></button>
+		<view class="design-info">
+			<view class="design-info-item flex justify-start borderBottom">
+				<text class="cuIcon-people text-grey" style="font-size:22px;margin-right:16px;padding-left:7px;"></text>
+				<input type="text" placeholder="请输入姓名" v-model="designer.name" class="design-info-item-input font-size-big font-weight-normal" style="width:80%">
 			</view>
-			<view class="forget">已有账号?
-			<text style="color:rgba(66, 176, 237, 1);margin-left:10px;" @click="toLogin()">登录</text>
+			
+			<view class="design-info-item flex justify-start borderBottom">
+				<text class="cuIcon-mobile text-grey" style="font-size:33px;margin-right:16px;"></text>
+				<input type="telephone" placeholder="请输入手机号" v-model="designer.mobile" class="design-info-item-input font-size-big font-weight-normal" @blur="checkTelEvent(designer.mobile)" style="width:80%">
+			</view>
+			
+			<view class="design-info-item flex justify-start borderBottom position_relative">
+				<text class="cuIcon-lock text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
+				<input type="text" placeholder="密码长度6-12位，英文和数字组成" v-model="designer.token" class="design-info-item-input font-size-big font-weight-normal" @blur="checkPwdEvent(designer.token)" style="width:80%">
+				<text class="cuIcon-close position_absolute"  
+				style="right:19px;top:23px;" 
+				@click="clearPwd()"
+				v-if="designer.token"></text>
+			</view>
+			
+			<view class="design-info-item flex justify-start borderBottom position_relative">
+				<text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
+				<input type="text" placeholder="请输入验证码" v-model="designer.vcode" class="design-info-item-input font-size-big font-weight-normal" style="width:80%">
+				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
+				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
 		</view>
-		<view class="copyright" >
-			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">乐象工程管家服务协议</text>
+		
+		<view class="design-submit">
+			<button style="width:100%" :class="{'bg-gray':!designer.name,
+				'bg-blue':designer.name
+				}" @click="designerSubmit()">登录</button>
+		</view>
+		<view class="design-del font-weight-normal font-size-small " style="bottom:17px;right:59px;position:fixed">
+			<text style="color:#898888" >登录/注册即表示同意</text><text style="color:#42B0ED">《乐象工程管家服务协议》</text>
 		</view>
 		<pop-modal :isShow="isShow">
 			<block slot="content">
@@ -59,109 +49,88 @@
 	</view>
 </template>
 <script>
-	
 	import popModal from '../../../components/popmodal.vue'
-	var _this;
 	export default{
 		data(){
 			return{
-				designr:{
+				isShow:false,
+				designer:{
 					name:'',
 					mobile:'',
 					token:'',
 					vcode:''
 				},
-				isShow:false,
+				num:60,
+				isSend:false,
 				modalName:'',
-				checkTel:false,
-				checkPwd:false
-				
 			}
 		},
 		components:{
-			popModal	
-		},
-		onLoad(){
-
+			popModal
 		},
 		methods:{
-			//登录
-			toLogin(){
-				uni.navigateTo({
-					url:'../login/login'
-				})
-			},
-			//注册
-			design(){
-				var _this=this;
-				if(this.checkPwd && this.checkTel){
-					uni.request({
-						url:this.$store.state.url,
-						data:{
-							name:this.designr.name,
-							token:this.designr.token,
-							mobile:this.designr.mobile,
-							gender:1,
-							type:4,
-							vcode:this.designr.vcode,
-							f:'Signup'
-						},
-						success:(res)=>{
-							if(res.data.data==-2){
-								this.isShow=true;
-								this.modalName='exit'
-								setTimeout(function(){
-									this.isShow=false;
-									this.modalName=''
-								},2000)
-							}else{
-								console.log(res)
-								console.log(this.designr)
-								this.isShow=true;
-								this.modalName='success'
-								setTimeout(()=>{
-									this.isShow=false;
-									this.modalName='',
-									console.log('1111')
-									console.log(this.designr.mobile)
-									uni.navigateTo({
-										url:'../login/login?account='+this.designr.mobile+'&token='+this.designr.token
-									})
-								},500)
-							}
-							
-						}
-					})
-				}else{
+			designerSubmit(){
+				if(!this.designer.name || !this.designer.mobile || !this.designer.token){
 					uni.showToast({
-						title:'所填内容不符合规则',
+						title:'请完善基本信息',
 						icon:'none'
 					})
+				}else if(!this.designer.vcode){
+					uni.showToast({
+						title:'请输入验证码',
+						icon:'none'
+					})
+				}else{
+					this.$ajax('Signup',{
+						name:this.designer.name,
+						token:this.designer.token,
+						mobile:this.designer.mobile,
+						gender:1,
+						type:4,
+						vcode:this.designer.vcode,
+					},res=>{
+						uni.showToast({
+							title:'用户注册成功',
+							icon:'none'
+						})
+						setTimeout(()=>{
+							uni.navigateTo({
+								url:'../login/login?account='+this.designer.mobile+'&token='+this.designer.token
+							})
+						},600)
+					},false)
+				}
+			},
+			sendCode(){
+				console.log(this.designer.mobile)
+				if(!this.designer.mobile){
+					uni.showToast({
+						title:'请输入手机号',
+						icon:'none'
+					})
+				}else{
+					this.$ajax('SendVerCode',{mobile:this.designer.mobile},res=>{
+						uni.showToast({
+							title:'短信已发送，请注意接受',
+							icon:'none'
+						})
+					},false)
+					this.isSend=true;
+					this.num=60;
+					setInterval(()=>{
+						if(this.num>0){
+							this.num--
+						}
+						if(this.num==0){
+							this.isSend=false;
+						}
+					},1000)
 				}
 				
 			},
-			hideModal(e) {
-				this.modalName = null;
-				this.isShow=false;
+			clearPwd(){
+				this.designer.token=''
 			},
-			clearPwd(event){
-				this.designr.token=''
-			},
-			checkTelEvent(event){
-				console.log(event)
-				if(event){
-					if(!(/^1[34578]\d{9}$/.test(event))){ 
-						
-							uni.showToast({
-								title:'电话号码不存在',
-								icon:'none'
-							})
-						} else{
-							this.checkTel=true;
-						}
-					}
-				},
-			//验证密码
 			checkPwdEvent(event){
 				if(event){
 					var reg=/^[a-zA-Z0-9]{6,12}$/;   
@@ -170,105 +139,69 @@
 							title:'密码不能含有非法字符，长度在6-12之间',
 							icon:'none'
 						})
-					}else{
-						this.checkPwd=true;
+						return false;
 					}
 					
 				}
+			},
+			checkTelEvent(event){
+				if(!(/^1[34578]\d{9}$/.test(event))){ 
+					uni.showToast({
+						title:'电话号码不存在',
+						icon:'none'
+					})
+					return false
+				} 
 			}
-				
+		},
+		onLoad(){
+			
+		},
+	}
+</script>
+<style lang="less" >
+	page{
+		background:#fff;
+	}
+	.design-container{
+		padding:59px 12px 17px 15px;
+		.design-title{
+			font-size:30px;
+		}
+		.design-title-desc{
+			color:rgba(137,136,136,1);
+		}
+	}
+	.design-info{
+		padding-top:34px;
+		padding-left:15px;
+		padding-right:12px;
+		margin-bottom:34px;
+		.design-info-item{
+			padding:16px 0 16px 0;
+		}
+		.design-info-item-input{
+			color:rgba(185,185,185,1);
+		}
+		.btn-area{
+			padding:2px 11px;
+			background:rgba(66,176,237,1);
+			color:#fff;
+			border-radius:4px;
+			right:10px;
+			line-height: 28px;
+		}
+		.default-btn{
+			padding:2px 45px;
+			color:gray;
+			border-radius:4px;
+			right:10px;
+			line-height: 28px;
 			
 		}
 	}
-</script>
-<style lang="less">
-		page{
-			background:#fff;
-		}
-		.login_container{
-			padding:47px 12px 17px 15px;
-			.title{
-				padding-left:7px;
-				.login_title{
-					height:42px;
-					line-height:42px;
-					font-size:30px;
-
-					font-weight:600;
-					color:rgba(42,42,42,1);
-
-				}
-				.login_design{
-					width:195px;
-					height:21px;
-					font-size:15px;
-
-					font-weight:400;
-					
-					line-height:21px;
-
-
-				}
-			}
-			.login_form{
-				margin-top:28px;
-			}
-			.forget{
-				font-size:14px;
-
-				font-weight:400;
-				color:rgba(42,42,42,1);
-				height:20px;
-				line-height:20px;
-			}
-
-		}
-		.cu-form-group{
-			height:60px;
-			line-height:60px;
-		}
-		.cu-form-group uni-input{
-			font-size:16px;
-
-			font-weight:400;
-			color:rgba(185,185,185,1);
-
-		}
-		.cu-form-group+.cu-form-group{
-			border-bottom:0.5px solid #eee;
-		}
-		.cu-btn{
-			background:rgba(255,255,255,1);
-			border:1px solid rgba(233,233,233,1);
-			text{
-				font-size:16px;
-
-				font-weight:400;
-			}
-		}
-		.copyright{
-			margin-top:99px;
-			margin-left:36px;
-			font-size:12px;
-
-			font-weight:400;
-			color:rgba(137,136,136,1);
-		}
-		.cu-form-group>uni-text{
-			font-size:14px;
-		}
-		.cu-btn uni-text{
-			font-size:14px;
-
-			font-weight:400;
-			color:#fff;
-		}
-		.inputStyle{
-			background:rgba(66,176,237,1);
-			color:#fff;
-		}
-		.noInputStyle{
-			background:rgba(245,246,248,1);
-			color:rgba(137,136,136,1);
-		}
+	.design-submit{
+		padding-right:12px;
+		padding-left:15px;
+	}
 </style>

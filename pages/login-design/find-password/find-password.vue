@@ -1,54 +1,29 @@
 <template>
-	<view class="login_container">
-		<view class="title">
-			<view class="login_title">密码找回</view>
+	<view>
+		<view class="findPwd-container">
+			<view class="fintPwd-title font-weight-bold">密码找回</view>
 		</view>
-		<view class="login_form">
-			<form>
-				<view class="cu-form-group position_relative">
-					<view class="text-gray"><text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-
-					<input type="text" placeholder="请输入手机号" v-model="designer.mobile" 
-					@blur="checkTelEvent(designer.mobile)">
-					<!-- <text class="cuIcon-roundclose position_absolute" style="right:44rpx;" v-show="isInput"></text> -->
-				</view>
-
-				<view class="cu-form-group position_relative">
-					<view class="text-gray"><text class="cuIcon-mail text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-
-					<input type="text" placeholder="请输入验证码" v-model="designer.vcode">
-					<view class="position_absolute" style="right:10px;">
-						
-						<button class="cu-btn block bg-gray margin-tb-sm" 
-							disabled="true"
-							v-if="isSend"
-							style="background:#EEEEED;border-radius:4px;height:28px;line-height:28px;">
-							<text style="color:gray">重新发送({{num}})</text>
-						</button>
-						<button class="cu-btn block bg-blue margin-tb-sm"
-							@click="sendMessage()"
-							v-else
-							:disabled="checkTel"
-							style="background:rgba(66,176,237,1);border-radius:4px;height:28px;line-height:28px;">
-							<text class="code" style="color:#fff;">发送验证码</text>
-						</button>
-						
-					</view>
-				</view>
-
-			</form>
-			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;">
-				<button
-				@click="toResetPassword()"
-				class=" block  margin-tb-sm lg"
-				:class="designer.mobile||designer.vcode?'inputStyle':'noInputStyle'" 
-				>
-					<text>下一步</text>
-				</button>
+		<view class="findPwd-info">
+			<view class="findPwd-info-item flex justify-start borderBottom">
+				<text class="cuIcon-mobile text-grey" style="font-size:22px;margin-right:16px;padding-left:8px;"></text>
+				<input type="text" placeholder="请输入手机号" v-model="designer.mobile"  class="findPwd-info-item-input font-size-big font-weight-normal" style="width:80%" @blur="checkTelEvent(designer.mobile)">
 			</view>
-		</view>
-		<view class="copyright">
-			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">乐象工程管家服务协议</text>
+			
+			<view class="findPwd-info-item flex justify-start borderBottom">
+				<text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:8px;"></text>
+				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode" class="findPwd-info-item-input font-size-big font-weight-normal" style="width:80%">
+				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
+				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
+			</view>
+			
+			<view class="design-submit">
+				<button style="width:100%" :class="{'bg-gray':!designer.mobile,
+					'bg-blue':designer.mobile
+					}" @click="toNextPage()">下一步</button>
+			</view>
+			<view class="design-del font-weight-normal font-size-small " style="bottom:17px;right:59px;position:fixed">
+				<text style="color:#898888" >登录/注册即表示同意</text><text style="color:#42B0ED">《乐象工程管家服务协议》</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -56,72 +31,18 @@
 	export default{
 		data(){
 			return{
-				isInput:false,//是否输入账号,
-				checkTel:false,
-				isSend:false,//是否发送验证码
-				num:60,
 				designer:{
 					mobile:'',
 					vcode:''
-				}
+				},
+				isSend:false,
+				num:60,
 			}
 		},
 		components:{
-
-		},
-		onLoad(){
-
+			
 		},
 		methods:{
-			sendMessage(){
-				//发送验证码
-				console.log('kkkk')
-				if(!this.designer.mobile){
-					uni.showToast({
-						title:'请输入电话号码',
-						icon:'none'
-					})
-				}else{
-					this.isSend=true;
-					this.$ajax('SendVerCode',{mobile:this.designer.mobile},res=>{
-						console.log(res)
-						uni.showToast({
-							title:'短信已发送，请注意接受',
-							icon:'none'
-						})
-					},false)
-					setInterval(()=>{
-						if(this.num>=0){
-							this.num--;
-							if(this.num==0){
-								this.isSend=false;
-							}
-						}
-						
-					},1000)
-					
-				}
-				
-				
-				
-				
-				
-			},
-			//重置密码
-			toResetPassword(){
-				if(!this.designer.vcode){
-					uni.showToast({
-						title:'请输入验证码',
-						icon:'none'
-					})
-				}else{
-					uni.navigateTo({
-						url:'../reset-password/reset-password?mobile='+this.designer.mobile+'&vcode='+this.designer.vcode
-					})
-				}
-				
-				
-			},
 			checkTelEvent(event){
 				if(event){
 					if(!(/^1[34578]\d{9}$/.test(event))){ 
@@ -136,93 +57,94 @@
 					}
 				}
 			},
-		}
+			toNextPage(){
+				if(!this.designer.mobile || !this.designer.vcode){
+					uni.showToast({
+						title:'请完善基本信息',
+						icon:'none'
+					})
+				}else{
+					uni.navigateTo({
+						url:'../reset-password/reset-password?mobile='+this.designer.mobile+'&vcode='+this.designer.vcode
+					})
+				}
+			},
+			sendCode(){
+				console.log(this.designer.mobile)
+				if(!this.designer.mobile){
+					uni.showToast({
+						title:'请输入手机号',
+						icon:'none'
+					})
+				}else{
+					this.$ajax('SendVerCode',{mobile:this.designer.mobile},res=>{
+						uni.showToast({
+							title:'短信已发送，请注意接受',
+							icon:'none'
+						})
+					},false)
+					this.isSend=true;
+					this.num=60;
+					setInterval(()=>{
+						if(this.num>0){
+							this.num--
+						}
+						if(this.num==0){
+							this.isSend=false;
+						}
+					},1000)
+				}
+				
+			},
+		},
+		onLoad(){
+			
+		},
 	}
 </script>
 <style lang="less">
-		page{
-			background:#fff;
-		}
-		.login_container{
-			padding:57px 12px 17px 15px;
-			.title{
-				padding-left:7px;
-				.login_title{
-					height:42px;
-					line-height:42px;
-					font-size:30px;
-
-					font-weight:600;
-					color:rgba(42,42,42,1);
-
-				}
-				.login_design{
-					font-size:15px;
-
-					font-weight:400;
-					color:rgba(137,136,136,1);
-					height:21p;
-					line-height:21px;
-
-
-				}
+	page{
+		background: #fff;
+	}
+		.findPwd-container{
+			padding:57px 15px 17px 22px;
+		
+			.fintPwd-title{
+				font-size:30px;
 			}
-			.login_form{
-				margin-top:53px;
+			
+		}
+		.findPwd-info{
+			padding-top:62px;
+			padding-left:15px;
+			padding-right:12px;
+			margin-bottom:34px;
+			.findPwd-info-item{
+				padding:16px 0 16px 0;
 			}
-			.forget{
-				font-size:14px;
-
-				font-weight:400;
-				color:rgba(42,42,42,1);
+			.findPwd-info-item-input{
+				color:rgba(185,185,185,1);
 			}
-
-		}
-		.cu-form-group{
-			height:77px;
-			line-height:77px;
-		}
-		.cu-form-group uni-input{
-			font-size:16px;
-			font-weight:400;
-			color:rgba(185,185,185,1);
-
-		}
-		.cu-form-group+.cu-form-group{
-			border-bottom:0.5px solid #eee;
-		}
-		.cu-btn{
-			background:rgba(255,255,255,1);
-			border:1px solid rgba(233,233,233,1);
-			text{
-				font-size:16px;
-
-				font-weight:400;
-				color:rgba(137,136,136,1);
+			.btn-area{
+				padding:2px 11px;
+				background:rgba(66,176,237,1);
+				color:#fff;
+				border-radius:4px;
+				right:10px;
+				line-height: 28px;
+			}
+			.default-btn{
+				padding:2px 45px;
+				color:gray;
+				border-radius:4px;
+				right:10px;
+				line-height: 28px;
+				
 			}
 		}
-		.copyright{
-			margin-top:202px;
-			margin-left:36px;
-			font-size:12px;
-			font-weight:400;
-			color:rgba(137,136,136,1);
-		}
-		.cu-form-group>uni-text{
-			font-size:14px;
-		}
-		.cu-btn uni-text{
-			font-size:14px;
-
-			font-weight:400;
-			color:#fff;
-		}
-		.inputStyle{
-			background:rgba(66,176,237,1);
-			color:#fff;
-		}
-		.noInputStyle{
-			background:rgba(245,246,248,1);
-			color:rgba(137,136,136,1);
+		.design-submit{
+			margin-top:31px;
+			padding-right:12px;
+			padding-left:15px;
 		}
 </style>

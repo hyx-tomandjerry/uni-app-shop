@@ -432,7 +432,7 @@
 			uniGrid,
 			NAUIcard
 		},
-		onLoad(){
+		onShow(){
 			this.getTodoList()
 			this.showArticles()
 			//owner=0,显示加入公司
@@ -440,7 +440,7 @@
 			uni.getStorage({
 				key:'userInfo',
 				success: (res) => {
-					
+					console.log(res)
 					this.userInfo=res.data
 					// console.log(this.userInfo)
 					if(res.data.owner==0){

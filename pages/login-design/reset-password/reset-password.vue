@@ -10,7 +10,7 @@
 						<text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text>
 					</view>
 					<input type="password" placeholder="请输入密码" v-model="designer.pwd" @blur="checkPwdEvent(designer.pwd)" v-if="isShowPwd">
-					<input type="text" v-model="designer.pwd" v-else  @input="inputPwd($event)">
+					<input type="text" v-model="designer.pwd" v-else >
 					<image
 					@click="showPwd('pwd')"
 					v-if="isShowPwd"
@@ -33,7 +33,7 @@
 					@blur="checkPwdEvent(designer.confirmPwd)"
 					:style="isSame ? '':sameStyle"
 					>
-					<input type="text" v-model="designer.confirmPwd" v-else  @input="inputPwd($event)">
+					<input type="text" v-model="designer.confirmPwd" v-else  >
 					<image
 					@click="showPwd('confirm')"
 					v-if="isShowConfrimPwd"
@@ -91,16 +91,17 @@
         },
 		methods:{
 			noShowPwd(type){
+				console.log('jjjjj')
 				if(type=='pwd'){
 					this.isShowPwd=true;
 				}else if(type=='confirm'){
-					console.log('kkkk')
+					
 					this.isShowConfrimPwd=true;
 				}
 
 			},
 			showPwd(type){
-				console.log(type)
+				console.log('kkkk')
 				if(type=='pwd'){
 						this.isShowPwd=false;
 				}else if(type=='confirm'){
