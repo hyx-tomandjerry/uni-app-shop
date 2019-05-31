@@ -3,7 +3,11 @@
 		<cu-custom  isBack="true">
 			 <block slot="left"><text class="cuIcon-back" @click="goBack()"></text></block>
 			<block slot="content">设置登录密码</block>
-			<block slot="right"><text class="text-blue" @click="changePassword()">提交</text></block>
+			<block slot="right">
+				<text 
+				:class="{'text-blue':user.newPwd ||user.confirmPwd ,'text-gray':!user.newPwd && !user.confirmPwd }" 
+				@click="changePassword()">完成</text>
+			</block>
 		</cu-custom>
 		<view>
 			<view class="account-content bg-white" >
@@ -15,12 +19,12 @@
 					<input type="text" v-model="user.pwd" placeholder="请输入您的原密码" >
 				</view> -->
 			
-				<view class="form-content-item flex justify-between">
+				<view class="form-content-item flex justify-between borderBottom">
 					<view class="form-title text-black"><text class="text-red">*</text>新密码</view>
 					<input type="text" v-model="user.newPwd" placeholder="填写新密码">
 				</view>
 			
-				<view class="form-content-item flex justify-between" style="margin-bottom:18px;">
+				<view class="form-content-item borderBottom flex justify-between" style="margin-bottom:18px;">
 					<view class="form-title text-black"><text class="text-red">*</text>确认密码</view>
 					<input type="text" v-model="user.confirmPwd" placeholder="再次填写确认" >
 				</view>
@@ -54,27 +58,35 @@
 		},
 		methods: {
 			changePassword(){
-				if(this.user.confirmPwd !=this.user.newPwd){
+				if(!this.user.confirmPwd || !this.user.newPwd){
+					uni.showToast({
+						title:'请输入新密码',
+						icon:'none'
+					})
+				}else if(this.user.confirmPwd !=this.user.newPwd){
 					uni.showToast({
 						title:'两次输入的密码不相同',
 						icon:'none'
 					})
 					return
-				}
-				this.$ajax('ResetPwd',{
-					token:this.user.confirmPwd,
-					original:this.user.pwd
-				},res=>{
-					uni.showToast({
-						title:'设置登录密码成功',
-						icon:'none'
-					})
-					setTimeout(()=>{
-						uni.navigateBack({
-							delta:1
+				}else{
+					this.$ajax('ResetPwd',{
+						token:this.user.confirmPwd,
+						original:this.user.pwd
+					},res=>{
+						uni.showToast({
+							title:'设置登录密码成功',
+							icon:'none'
 						})
-					},500)
-				})
+						uni.removeStorageSync('userInfo');
+						setTimeout(()=>{
+							uni.navigateTo({
+								url:'../../../login-design/login/login'
+							})
+						},500)
+					})
+				}
+				
 			},
 			// checkConfirmpwdEvent(event){
 			// 	console.log(event)
@@ -159,9 +171,9 @@
 		color:rgba(137,136,136,1);
 	}
 	.form-content{
+		padding:29px 12px 8px 18px;
 		.form-content-item{
-			padding:29px 12px 8px 18px;
-			border-bottom:1px solid #EEEEED;
+			padding:29px 0px 8px 0px;
 		}
 		.form-title{
 			font-size:15px;

@@ -1,6 +1,9 @@
 .borderBottom{
 		border-bottom:1px solid rgba(238, 238, 237, 1);
 	}
+	.font-size-litter{
+		font-size:13px;
+	}
 	.font-size-big{
 		font-size:16px;
 	}
@@ -16,6 +19,9 @@
 	.font-weight-normal{
 		font-weight: 400;
 	}
+	.font-weight-super{
+		font-weight: 800;
+	}
 .border-top{
 	border-top:1px solid #EEEEED
 }
@@ -24,4 +30,10 @@
 }
 .position_relative{
 	position:relative
+}
+.color-normal{
+	color:#898888;
+}
+.borderTop{
+	border-top:1px solid #EEEEED
 }

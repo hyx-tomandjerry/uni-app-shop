@@ -37,6 +37,9 @@
 					}
 				})
 			}
+		},
+		onLoad(options){
+			this.motto=options.content;
 		}
 	}
 </script>

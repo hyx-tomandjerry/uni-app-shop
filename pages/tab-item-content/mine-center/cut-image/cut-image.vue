@@ -96,17 +96,12 @@ export default {
 									'x:creator': res.data.id,
 								},
 								success: (uploadFileRes) => {
-							
 									let res=JSON.parse(uploadFileRes.data)
 									this.avatarID=res.data
 								}
 							});
 							uploadTask.onProgressUpdate((res)=>{
 								if(res.progress==100){
-									uni.showToast({
-										title:'上传成功',
-										icon:'none'
-									})
 									setTimeout(()=>{
 										uni.navigateBack({
 											delta:1,

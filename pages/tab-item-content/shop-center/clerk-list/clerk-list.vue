@@ -5,16 +5,14 @@
 				<view class="text-blue">
 					<text style="font-size:30rpx;">门店信息</text>
 				</view>
-				<!--<view>-->
-					<!--<text class="text-green cuIcon-friendfamous"></text>-->
-					<!--<text style="margin-left:20rpx;" class="text-green" @click="showModal($event)"  data-target="RadioModal" >设置店长</text>-->
-				<!--</view>-->
 			</view>
-			<view class="flex justify-start">
+			<view class="flex justify-start align-center">
 				<view>
 					 <image :src="shopItem.coverurl"
 					v-if="shopItem.coverurl"
 					class="noManagePic"
+					@click.stop="showModal($event)"
+					data-target="imageModal"
 					:class="{'shopImg':shopItem.managerName|| shopItem.telephone}"
 					></image>
 					<image src="../../../../static/img/default.png"
@@ -25,21 +23,11 @@
 
 				</view>
 				<view >
-					<view class="shop-name flex justify-between" style="width:100%;">
+					<view class=" flex justify-between font-size-big font-weight-normal" style="width:100%;margin-bottom:10px;" >
 						{{shopItem.name || ''}}
-						<!-- <view style="font-size:12px;" class="line-blue">
-							<text class="cuIcon-brand" style="margin-right:3px;"></text>
-							<text>{{shopItem.catalogName}}</text>
-						</view> -->
 					</view>
-					<view class="shop-desc" :class="{'hasManager':shopItem.contactor|| shopItem.telephone}" style="white-space: nowrap;" v-if="shopItem.contactor|| shopItem.telephone">
-						<image src="../../../../static/icon/shop-list/icon-dianzhang@2x.png" class="img15"></image>
-						<text style="margin-right:6px;">店长:{{shopItem.contactor}}</text>
-						<text class="line-blue">|</text>
-						<text style="margin-left:3px;"> {{shopItem.telephone}}</text>
-					</view>
-					<view class="shop-desc flex ">
-						<image src="../../../../static/icon/addRepairDingwei.png" style="width:18px;height:18px;vertical-align: middle;margin-right:5px;"></image>
+					<view class=" flex font-size-litter font-weight-normal">
+						<image src="../../../../static/icon/addRepairDingwei.png" style="width:19px;height:20px;vertical-align: middle;margin-right:5px;"></image>
 						<text>{{shopItem.provinceName  || '' }}{{shopItem.cityName  || '' }}{{shopItem.districtName  || ''}}{{shopItem.address || ''}}</text>
 
 					</view>
@@ -74,7 +62,9 @@
 									</view>
 								</view>
 								<view>
-									<text class="cu-tag bg-green round" v-if="item.status==salemanStatus.normal" style="font-size:13px;">在职</text>
+									<text class="cu-tag bg-green round" v-if="item.status==salemanStatus.normal" style="font-size:13px;padding:0 20px;">
+										{{shopItem.manager ==item.id?'店长' :'在职'}}
+									</text>
 									<text class="cu-tag bg-orange round" v-if="item.status==salemanStatus.inviting" style="font-size:13px;">邀请中待确认</text>
 									<text class="cu-tag round " style="background:#00BFFF;color:white" 
 									v-if="item.status==salemanStatus.free" @click="SendInvitationEvent(item)">发送邀请</text>
@@ -130,7 +120,14 @@
 		</view>
 		
 		<image src="../../../../static/icon/add.png"
+		v-if="shopItem.manager==userInfo.id"
 		style="position:fixed;right:12px;bottom:23px;width:68px;height:68px;z-index:100;" @click.stop="inviteJoin()"></image>
+		
+		<view class="cu-modal" :class="modalName=='imageModal'?'show':''">
+			<view class="cu-dialog">
+				<image :src="shopItem.coverurl" @click="hideModal()"></image>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -148,10 +145,11 @@
 					name:'',
 					telephone:''
 				},
-				manager:this.$store.state.userInfo,
+				
 				userList:[],//店员列表
 				isWrongName:false,
-				isWrongTel:false
+				isWrongTel:false,
+				userInfo:''
 			}
 		},
 		components:{
@@ -165,7 +163,13 @@
 						title:'已发送短信邀请',
 						icon:'none'
 					})
+					this.$ajax('ShopSalesmen',{shop:this.shopItem.id},res=>{
+						this.userList=res;
+					})
 				})
+				
+				
+				
 			},
 			checkNameEvent(event){
 				if(!event){
@@ -196,7 +200,12 @@
 				this.modalName = e.currentTarget.dataset.target
 			},
 			hideModal(){
-				this.isShow=false;
+				if(this.isShow){
+					this.isShow=false;
+				}
+				if(this.modalName){
+					this.modalName=null;
+				}
 			},
 
 			RadioChange(e) {
@@ -236,9 +245,19 @@
 					})
 				}
 
+			},
+			getUserInfo(){
+				uni.getStorage({
+					key:'userInfo',
+					success: (res) => {
+						this.userInfo=res.data;
+						console.log(this.userInfo)
+					}
+				})
 			}
 		},
 		onLoad(option){
+			this.getUserInfo()
 		   if(option){
                this.checkShopDetail(option.shopID)
 		   }

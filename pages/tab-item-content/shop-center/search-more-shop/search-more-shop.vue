@@ -27,7 +27,7 @@
 							<text class="text-green">{{item.brandName}}</text>
 						</view>
 						
-						<text class="cu-tag round" style="font-size:12px;height:20px;"
+						<!-- <text class="cu-tag round" style="font-size:12px;height:20px;"
 						:class="{
 							'bg-pink':item.status==shopStatus.ready,
 							'bg-blue':item.status==shopStatus.processing,
@@ -36,7 +36,7 @@
 							'bg-orange':item.status==shopStatus.renovated,
 							'bg-purple':item.status==shopStatus.moved,
 						}"
-						>{{item.status | shopStatus}}</text>
+						>{{item.status | shopStatus}}</text> -->
 					</view>
 					<view v-if="item.contactor || item.managerName" style="margin-bottom:10px;">
 						<text class="cuIcon-people" style="font-size:15px;margin-right:10px;color:orange"></text>
@@ -149,6 +149,20 @@
 							}
 						})
 					},500)
+				}else if(this.cat=='chooseShop'){
+					this.$ajax('ChooseShop',{shop:item.id},res=>{
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1,
+								success:(res)=>{
+									this.$fire.fire('chooseShop',{
+										shopID:item.id
+									})
+								}
+							})
+						},500)
+					})
+					
 				}else{
 					this.isShow=true;
 					this.$ajax('ShopSalesmen',{shop:item.id},res=>{
@@ -168,6 +182,7 @@
 					brand:id,
 					offset:0,
 					zone:-1,
+					status:this.cat=='chooseShop'?3:'',
 					province:this.shop.provinceID,
 					city:this.shop.cityID,
 					district:this.shop.districtID
@@ -189,6 +204,7 @@
 					brand:this.category?this.category.id:0,
 					offset:0,
 					zone:-1,
+					status:this.cat=='chooseShop'?3:'',
 					province:this.shop.provinceID,
 					city:this.shop.cityID,
 					district:this.shop.districtID
@@ -201,7 +217,6 @@
 			console.log(options)
 			if(options.cat){
 				this.cat=options.cat;
-				console.log(this.cat)
 			}
 			this.$fire.on('category',result=>{
 				this.category.name=result.name;

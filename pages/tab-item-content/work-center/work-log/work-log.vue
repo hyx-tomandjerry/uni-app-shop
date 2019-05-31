@@ -1,28 +1,24 @@
 <template>
-	<view class="position_relative">
+	<view >
 		<view v-if="list.length > 0">
-			<view class="work-item" @click="itemDetail(item)" v-for="item in list">
+			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index">
 				<view class="user flex justify-start">
 					<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
 					<view class="user-info">
-						<view  style="margin-bottom:1px;">
-							<text class="user-name">TomAndJerry</text>
+						<view  style="margin-bottom:4px;">
+							<text class="user-name">{{userInfo.name}}</text>
 						</view>
-						<view class="work-date"><text style="margin-right:10px">2019/03/20</text>18:00</view>
+						<view class="work-date  tag-name">{{item.title}}</view>
 					</view>
 				</view>
 				<view class="work-content">
 					<text class="user-name ellipsis-2">{{item.summary}}</text>
 				</view>
-				<text class="tag-name">{{item.title}}</text>
+				<!-- <text class="tag-name">{{item.title}}</text> -->
 			</view>
-
-			<image src="../../../../static/icon/add.png"
-				   style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createWork()"></image>
 		</view>
-		<view class="empty-middle" v-else>
-			<!--<lx-empty></lx-empty>-->
-		</view>
+		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
+		<view class="cu-load bg-gray over" v-if="isFinish"></view>
 	</view>
 </template>
 
@@ -31,11 +27,38 @@
         data() {
 			return {
 				page:0,
-				list:[]
+				list:[],
+				userInfo:'',
+				isLoading:false,
+				isFinish:false,
 			}
 		},
+		onReachBottom(){
+			this.page++;
+			this.isLoading=true;
+			setTimeout(()=>{
+				this.$ajax('WorkReportsByShop',{
+				     zone:-1,
+					 brand:0,
+					 offset:this.$utils.getOffset(this.page)
+				},res=>{
+					if(res==''){
+						this.isFinish=true;
+						this.isLoading=false;
+					}else{
+						res.forEach(item=>{
+							this.list=this.list.concat(item);
+						})
+						
+					}
+				})
+			},500)
+			
+			
+		},
         onLoad(){
-			this.getList()
+			this.getList();
+			this.getUserInfo();
         },
 		methods: {
 			//新建
@@ -58,6 +81,14 @@
 					 offset:this.$utils.getOffset(this.page)
 				},res=>{
 					 this.list = res;
+				})
+			},
+			getUserInfo(){
+				uni.getStorage({
+					key:'userInfo',
+					success: (res) => {
+						this.userInfo=res.data;
+					}
 				})
 			}
 		}

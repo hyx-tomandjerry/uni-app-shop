@@ -88,39 +88,66 @@
 			},
 			getCategory() {
 				var _this=this;
-				uni.request({
-					url:this.$store.state.url+'Constants',
-					data:{
-						owner:8,
-						type:this.$store.state.constants.brand_type,
-						parent:-1,
-						objects:1
-					},
-					success: (res) => {
-						this.list=res.data.data
-						var bigArray=[],subArray=[];
-						res.data.data.forEach(item=>{
-							if(item.parent==0){
-								bigArray.push(item)
-							}else{
-								subArray.push(item);
-							}
-						})
-						for(var i=0;i<bigArray.length;i++){
-							var subList = [];
-							for(var j=0;j<subArray.length;j++){
-								if(subArray[j].parent==bigArray[i].id){
-									subList.push({"name":subArray[j].val,obj:subArray[j]})
-								}
-							}
-							this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
+				this.$ajax('Constants',{
+					type:this.$store.state.constants.brand_type,
+					parent:-1,
+					objects:1
+				},res=>{
+					this.list=res;
+					var bigArray=[],subArray=[];
+					res.forEach(item=>{
+						if(item.parent==0){
+							bigArray.push(item)
+						}else{
+							subArray.push(item);
 						}
-						this.subCategoryList = this.categoryList[0].subCategoryList;
-						this.categoryObj.id=this.categoryList[0].obj.id;
-						this.categoryObj.name=this.categoryList[0].name;
-
+					})
+					for(var i=0;i<bigArray.length;i++){
+						var subList = [];
+						for(var j=0;j<subArray.length;j++){
+							if(subArray[j].parent==bigArray[i].id){
+								subList.push({"name":subArray[j].val,obj:subArray[j]})
+							}
+						}
+						this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
 					}
+					this.subCategoryList = this.categoryList[0].subCategoryList;
+					this.categoryObj.id=this.categoryList[0].obj.id;
+					this.categoryObj.name=this.categoryList[0].name;
 				})
+				// uni.request({
+				// 	url:this.$store.state.url+'Constants',
+				// 	data:{
+				// 		owner:8,
+				// 		type:this.$store.state.constants.brand_type,
+				// 		parent:-1,
+				// 		objects:1
+				// 	},
+// 					success: (res) => {
+// 						this.list=res.data.data
+// 						var bigArray=[],subArray=[];
+// 						res.data.data.forEach(item=>{
+// 							if(item.parent==0){
+// 								bigArray.push(item)
+// 							}else{
+// 								subArray.push(item);
+// 							}
+// 						})
+// 						for(var i=0;i<bigArray.length;i++){
+// 							var subList = [];
+// 							for(var j=0;j<subArray.length;j++){
+// 								if(subArray[j].parent==bigArray[i].id){
+// 									subList.push({"name":subArray[j].val,obj:subArray[j]})
+// 								}
+// 							}
+// 							this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
+// 						}
+// 						this.subCategoryList = this.categoryList[0].subCategoryList;
+// 						this.categoryObj.id=this.categoryList[0].obj.id;
+// 						this.categoryObj.name=this.categoryList[0].name;
+// 
+// 					}
+// 				})
 
 			},
 			choseCategory(){

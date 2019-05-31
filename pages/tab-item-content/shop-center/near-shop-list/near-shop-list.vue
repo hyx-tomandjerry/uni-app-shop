@@ -86,7 +86,7 @@
  		onLoad(options){
 			this.type=options.type;
 			this.cat=options.cat;
-			console.log(this.type,this.cat)
+			
 			this.getNearShopList()
  		},
 		methods:{
@@ -169,6 +169,16 @@
 							delta:1,
 							success:(res)=>{
 								this.$fire.fire('shopID',item.id)
+							}
+						})
+					},500)
+				}else if(this.cat=='createOrder'){
+					this.shopIndex=item.id;
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1,
+							success:(res)=>{
+								this.$fire.fire('createOrderShopID',item.id)
 							}
 						})
 					},500)

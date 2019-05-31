@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="font-size:0;">
 		<cu-custom :isBack="true" bgColor="white">
 			<block slot="left">
 				<text class="cuIcon-back" @click="goBack()" style="font-size:22px;"></text>
@@ -8,9 +8,7 @@
 			<block slot="right"><view class="font-size-normal font-weight-normal">寄件记录</view></block>
 		</cu-custom>
 		<view class="express-container">
-			<view>
-				<image src="../../../../../static/img/work/express/log1.png" style="width:100%;height:120px;"></image>
-			</view>
+			<image src="../../../../../static/img/work/express/log1.png" style="width:100%;height:120px;"></image>
 			<view class="express-tab flex justify-around" style="flex-wrap: wrap;">
 				
 				<view class="express-tab-item1 express-tab-item" @click="expressTabClick(1)">

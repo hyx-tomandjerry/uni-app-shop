@@ -1,15 +1,15 @@
 
 <template>
-	<view>
-		<view class="flex text-center">
-				<view class="cu-item flex-sub"
+	<view class="bg-white">
+		<view class="flex text-center" style="padding:10px;">
+				<view class="cu-item flex-sub font-size-big font-weight-normal"
 				:class="index==TabCur?'text-orange cur':''"
 				v-for="(item,index) in titleList" :key="index"
 				@click="tabSelect($event)" :data-id="index">
 					{{item.name}}
 				</view>
 		</view>
-		<view v-show="TabCur==0">
+		<view v-show="TabCur==0" >
 				<view class="cu-card dynamic" :class="isCard?'no-card':''">
 					<view class="cu-list menu-avatar comment solids-top">
 						<view class="cu-item" style="margin-top:20rpx;margin-right:15px;margin-left:15px;border-radius: 10px;" v-for="(item,index) in todoList" :key="index">
@@ -104,9 +104,9 @@
 					</view>
 			
 			</view>
+			<view class="cu-load bg-gray loading" v-if="loadingType==2"></view>
+			<view class="cu-load bg-gray over" v-if="loadingType==4"></view>
 			
-		<view class="cu-load bg-gray loading" v-if="loadingType==2"></view>
-			<view class="cu-load bg-gray" v-if="loadingType==4">没有更多数据了</view>
 	</view>
 </template>
 
@@ -199,7 +199,6 @@
 			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
-				console.log(this.TabCur)
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 				this.switchTabCur(this.TabCur)
 			},

@@ -4,28 +4,29 @@
 			<block slot="left">
 				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
 			</block>
-			<block slot="content"><view style="font-weight:600;">详情内容</view></block>
-			<block slot="right"><text class="text-blue" style="font-size:13px;" @click="writeLog()" v-if="itemInfo.report">编写汇报</text></block>
+			<block slot="content">
+				<view class="font-size-big font-weight-bold">详情内容</view>
+			</block>
+			<block slot="right">
+				<text class="text-blue" style="font-size:13px;" @click="writeLog()" v-if="itemInfo.report==1">编写汇报</text>
+			</block>
 		</cu-custom>
-		<view class="container">
+		<view class="container borderTop bg-white">
 			<view class="title">{{itemInfo.title}}</view>
-			<view class="desc">
-				<view class="flex justify-start">
-					<image :src="itemInfo.coverurl" class="img"></image>
-					<view>
-						<view class="shop-name">{{itemInfo.shopName}}</view>
-						<view>
-							<text>{{itemInfo.createdate |formatTime('YMD')}}</text>
-						</view>
-						<view>
-							{{itemInfo.creatorName}}
-						</view>
-					</view>
-
+			<view class="desc flex justify-between  font-weight-normal" style="padding:10px 0;">
+				<view class="font-size-normal">{{itemInfo.applierName}}</view>
+				<view class="font-size-litter color-normal">
+					{{itemInfo.applyDate | formatTime('YMDHMS')}}
 				</view>
 			</view>
-			<view class="content" v-html="itemInfo.summary"  v-if="type=='example'"></view>
-			<view class="content" v-html="itemInfo.summary"   v-if="type=='skill'"></view>
+			<view>
+				<image :src="itemInfo.coverurl" style="width:100%;height:130px;border-radius: 15px;margin-bottom:10px;"></image>
+			</view>
+			<view class="detail">
+				<view class="content" v-html="itemInfo.summary"  v-if="type=='example'"></view>
+				<view class="content" v-html="itemInfo.summary"   v-if="type=='skill'"></view>
+			</view>
+			
 		</view>
 
 	</view>
@@ -49,13 +50,6 @@
 			getItemInfo(id) {
 				this.$ajax('Article',{id:id},res=>{
 					this.itemInfo=res;
-					console.log(this.itemInfo)
-					this.getShopInfo(res.shop)
-				})
-			},
-			getShopInfo(id){
-				this.$ajax('ProprietorShop',{id:id},res=>{
-					this.shopInfo=res;
 				})
 			},
 			goBack(){
@@ -77,7 +71,12 @@
 <style scoped>
 	page{
 		background:#fff;
-		font-size:12px;
+		font-size:15px;
+		font-weight: 500;
+	}
+	.detail >>> div{
+		margin-bottom:15px;
+		
 	}
 	.container{
 		padding:10px 13px 10px 14px;

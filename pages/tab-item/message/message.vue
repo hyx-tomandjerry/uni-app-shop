@@ -121,7 +121,9 @@
 				console.log(result)
 				
 			})
+			
 		},
+		
 		methods: {
 			showWorkClick(){
 				uni.navigateTo({
@@ -156,9 +158,22 @@
 				this.listTouchDirection = null
 			},
 			showGroupList(name){
-				uni.navigateTo({
-					url:'../../tab-item-content/message-center/group-list/group-list?type='+name
+				uni.getStorage({
+					key:'userInfo',
+					success: (res) => {
+						if(res.data.status!=1){
+							uni.showToast({
+								title:'您没有该权限',
+								icon:'none'
+							})
+						}else{
+							uni.navigateTo({
+								url:'../../tab-item-content/message-center/group-list/group-list?type='+name
+							})
+						}
+					}
 				})
+				
 			},
 			//获得通讯录列表
 			getAllFriendEvent(){

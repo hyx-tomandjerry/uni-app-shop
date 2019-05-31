@@ -11,7 +11,6 @@
 		</scroll-view>
 		</view>
 		<view class="order_content position_relative" >
-			<scroll-view scroll-y="true" class="page show" >
 				<view class="list-item"  v-for="(item,index) in repairList" :key="index"  @click="orderDetail(item)">
 					<view class=" flex justify-between">
 						<view class="list-item-title">{{item.catalogName}}</view>
@@ -28,28 +27,28 @@
 					</view>
 					<view class="list-content">
 						<view class="list-content-item">
-							<image src="../../../static/icon/shop.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
+							<image src="../../../static/icon/shop.png" class="shopImg " style="vertical-align:middle;" ></image>
 							<text style="margin-right:5px;">门店名称:</text> {{item.shopname}}
 						</view>
 
 
 						<view class="list-content-item">
-							<image src="../../../static/icon/time.png" class="img20 marginRight10" style="vertical-align:middle;" ></image>
+							<image src="../../../static/icon/time.png" class="shopImg" style="vertical-align:middle;" ></image>
 							<text style="margin-right:5px;">报修时间:</text> {{item.createdate| formatTime('YMDHMS')}}
 						</view>
 
 						<view class="list-content-item">
-							<image src="../../../static/icon/client.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
+							<image src="../../../static/icon/client.png" class="shopImg " style="vertical-align:middle;" ></image>
 							<text style="margin-right:5px;">报修人:</text> {{item.creatorName}}  <text class="text-blue" style="margin:0 5px;">|</text> {{item.creatorMobile}}
 						</view>
 						<view class="list-content-item"
 						 style="border-top:1px solid #EEEEED;padding-top:10px;text-align:right;margin-bottom:7px;" >
 						 <!-- <text class="cu-tag line-blue" @click="orderDetail(item)" style="margin-right:20px;">查看详情</text> -->
 						 
-							<text v-if="item.status==repairStatus.treating"
+							<text v-if="item.status==repairStatus.finish && !item.comment"
 							 class="cu-tag line-blue" @click.stop.prevent="createComment(item)">进行评价</text>
-							 <text v-if="item.status==repairStatus.refuse"
-							  class="cu-tag line-red" @click.stop.prevent="delOrder(item)">删除订单</text>
+							<!-- <text v-if="item.status==repairStatus.refuse"
+							  class="cu-tag line-red" @click.stop.prevent="delOrder(item)">删除订单</text> -->
 							   <text v-if="item.status==repairStatus.finish"
 							   class="cu-tag line-blue" @click.stop.prevent="checkComment(item)">查看评价</text>
 						</view>
@@ -57,11 +56,10 @@
 				</view>
 				<image src="../../../static/icon/add.png"
 						style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createRepair()"></image>
-			</scroll-view>
-
 		</view>
 
-
+		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
+		<view class="cu-load bg-gray over" v-if="isFinish"></view>
 	</view>
 </template>
 
@@ -86,8 +84,69 @@
 				repairList:[],
 				userInfo:{},
 				type:'',//用于区分来自门店报修还是我的报修
+				isLoading:false,
+				isFinish:false,
+				page:1,
 				
 			}
+		},
+		onReachBottom(){
+			
+			this.page++;
+			this.isLoading=true;
+			setTimeout(()=>{
+				uni.getStorage({
+					key:'userInfo',
+					success: (res) => {
+						if(this.type=='all'){
+								this.$ajax('ServiceOrders',{
+								catalog:-1,
+								status:this.TabCur,
+								stored:1,
+								offset:this.$utils.getOffset(this.page),
+								creator:res.data.id
+								},res=>{
+									if(res==''){
+										this.isLoading=false;
+										setTimeout(()=>{
+												this.isFinish=true;
+										},200)
+										
+									
+									}else{
+										res.forEach(item=>{
+											this.repairList.concat(item)
+										})
+									}
+							})
+							
+						}else if(this.type=='alone'){
+							this.$ajax('ServiceOrdersBySalesman',{
+								catalog:-1,
+								status:this.TabCur,
+								offset:this.$utils.getOffset(this.page),
+								creator:res.data.id
+								},res=>{
+								if(res==''){
+									this.isLoading=false;
+									setTimeout(()=>{
+											this.isFinish=true;
+									},200)
+									
+									
+								}else{
+									res.forEach(item=>{
+										this.repairList.concat(item)
+									})
+								}
+							})
+						}
+					}
+				})
+				
+				
+				
+			},1000)
 		},
 		components:{
 			
@@ -142,13 +201,34 @@
 				
 			//报修列表
 			getRepairList(status){
-				this.$ajax('ServiceOrders',{
-					catalog:-1,
-					status:status,
-					stored:this.type=='all'?1:0,
-					},res=>{
-					this.repairList=res
+				uni.getStorage({
+					key:'userInfo',
+					success: (res) => {
+						if(this.type=='all'){
+							
+							this.$ajax('ServiceOrders',{
+								catalog:-1,
+								status:status,
+								stored:1,
+								offset:this.$utils.getOffset(this.page),
+								creator:res.data.id
+								},res=>{
+								this.repairList=res
+							})
+						}else if(this.type=='alone'){
+							this.$ajax('ServiceOrdersBySalesman',{
+								catalog:-1,
+								status:status,
+								creator:res.data.id,
+								offset:this.$utils.getOffset(this.page)
+								},res=>{
+								this.repairList=res
+							})
+						}
+					}
 				})
+				
+				
 				
 			
 			},
@@ -175,6 +255,12 @@
 	}
 	.black{
 		background:black;
+	}
+	.shopImg{
+		width:18px;
+		height:18px;
+		vertical-align: middle;
+		margin-right:10px;
 	}
 			.operateItem{
 				text-align:center;

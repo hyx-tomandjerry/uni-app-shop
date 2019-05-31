@@ -2,8 +2,8 @@
 	<view style="position:relative">
 		<view class="header-content flex justify-between">
 			<view class="flex justify-start" @click="operateItem(0)">
-				<image :src="userInfo.ownerLogoUrl"
-					v-if="userInfo.ownerLogoUrl"
+				<image :src="avatar.resurl"
+					v-if="avatar.resurl"
 					style="width:70px;height:70px;vertical-align: bottom;margin-right:25px;border-radius: 50%;"
 				></image>
 				<image src="../../../static/img/avatar.jpg"
@@ -12,12 +12,11 @@
 				></image>
 				<view>
 					<text class="header-title">{{userInfo.name || ''}}</text>
-					<text class="header-tel">{{userInfo.mobile}}</text>
+					<text class="header-tel">{{userInfo.account}}</text>
 				</view>
-				<text class="cuIcon-right" style="position:absolute;right:20px;top:52px;color:rgba(0,0,0,1)" ></text>
+				<text class="cuIcon-right color-normal" style="position:absolute;right:20px;top:52px;font-size:20px;" ></text>
 			</view>
 		</view>
-		<view style="height:13px;width:100%;"></view>
 		<view class="list-content">
 			<view class="list-content-item flex justify-start"
 
@@ -26,7 +25,7 @@
 				<view class="list-content-item-title" >
 					<text>{{item.text}}</text>
 				</view>
-				<text class="cuIcon-right" style="position: absolute;right:30px;font-size:18px;"></text>
+				<text class="cuIcon-right color-normal" style="position: absolute;right:20px;font-size:18px;"></text>
 			</view>
 		</view>
 		
@@ -85,6 +84,7 @@
 	export default{
 		data(){
 			return{
+				avatar:'',
 				isQuit:false,
 				userInfo:'',
 				operateList:[
@@ -99,6 +99,16 @@
 			popModal
 		},
 		methods:{
+			//获得头像
+			getUserInfoAvatar(){
+				uni.getStorage({
+					key:'logo',
+					success: (res) => {
+						
+						this.avatar=res.data
+					}
+				})
+			},
 			hideModal(type){
 				this.isQuit=false;
 				if(type=='agree'){
@@ -142,22 +152,29 @@
 			}
 		},
 		onShow(){
+			this.getUserInfoAvatar()
+		},
+		onLoad(){
 			this.$ajax('RefreshOnlineUser',{},res=>{
 				this.userInfo=res;
 			})
+			this.$fire.on('refresh',res=>{
+				this.$ajax('RefreshOnlineUser',{},res=>{
+					this.userInfo=res;
+				})
+			})
+			
 		}
 	}
 </script>
 
 <style lang="less">
-	page{
-		background: #fff;
-	}
+	
 	.header-content{
 		
 		background:#fff;
 		padding:29px 16px 23px 22px;
-		box-shadow:0px 4px 6px 0px rgba(242,241,241,0.5);
+		margin-bottom: 13px;
 		border-radius:4px;
 		.header-title{
 			font-size:18px;

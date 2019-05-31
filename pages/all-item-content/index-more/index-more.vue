@@ -1,87 +1,36 @@
 <template>
 	<view >
 		<cu-custom :isBack="true">
-			<block slot="left"><text class="cuIcon-back" @click="goBack()"></text></block>
-			<block slot="content">{{title}}</block>
+			<block slot="left"><text class="cuIcon-back " @click="goBack()" style="font-size:20px;"></text></block>
+			<block slot="content">
+				<view class="font-size-big font-weight-bold">{{title}}</view>
+			</block>
 		</cu-custom>
-		<view class="more-content">
+		<view class="more-content borderTop">
 			<view v-if="value=='skill'">
-				<view class="cu-card article " v-for="(item,index) in skillList" :key="index"  @click="checkItemInfo(item)">
-					<view class="cu-item shadow" 
-					style="padding-top:19px;padding-bottom:10px;border-bottom:1px solid rgba(238, 238, 237, 1);margin:5px;">
-						<!-- <view class="title"><view class="text-cut">{{item.title}}</view></view> -->
-						<view class="content">
-				
-							<view class="desc">
-								<view class="text-content" style="font-size:18px;color:#000;font-weight: 600;">{{item.title}} </view>
-								
-								<view>
-									<view class="cu-tag bg-red light sm round">
-										<!-- {{item.createdate | formatTime('YMD','/')}} -->
-										{{item.creatorName}}
-									</view>
-									<view class="cu-tag bg-green light sm round">{{item.shopName}}</view>
-								</view>
-							</view>
-							<image :src="item.coverurl"
-							 mode="aspectFill"></image>
-						</view>
+				<view class="flex justify-start align-center borderBottom position_relative" v-for="(item,index) in skillList" :key="index"  @click="checkItemInfo(item)" style="padding:23px 18px 21px 14px;">
+					<view style="width:40%;margin-right:20px;">
+						<image :src="item.coverurl" mode="aspectFill" style="height:79px;border-radius: 10px;;"></image>
 					</view>
+					<view>
+						<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.title}} </view>
+						<view class="font-size-litter font-weight-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
+					</view>
+					<image src="../../../static/img/huizhi.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
 				</view>
 			</view>
 			<view class="cu-card case" v-show="value=='example'"  style="margin:7px;border-radius: 10px;">
-				
-				<view class="cu-card article no-card" v-for="(item,index) in skillList" :key="index" @click="checkItemInfo(item)">
-					<view class="cu-item shadow" style="padding-top:19px;padding-bottom:10px;border-bottom:1px solid rgba(238, 238, 237, 1);">
-						<view class="title"><view class="text-cut">{{item.title}}</view></view>
-						<view class="content ">
-								
-							<view class="desc  ">
-								<view class="text-content  ellipse" style="width:46%;" v-html="item.summary"> </view>
-								<view class="flex justify-between">
-									<view>
-										<view class="cu-tag bg-blue light sm round">{{item.creatorName}}</view>
-										<view class="cu-tag bg-green light sm round">{{item.shopName}}</view>
-									</view>
-									<view style="width:65%">
-										<view class="cu-tag bg-red light sm round">{{item.createdate | formatTime('YMD','/')}}</view>
-									</view>
-									
-								</view>
-							</view>
-							<image :src="item.coverurl"
-							 mode="aspectFill"></image>
-						</view>
-					</view>
+				<view v-for="(item,index) in skillList" :key="index" @click="checkItemInfo(item)" style="padding:23px 18px 21px 14px;" class="borderBottom position_relative">
+					<image :src="item.coverurl" mode="aspectFill" style="width:100%;height:109px;border-radius: 10px;margin-bottom:13px;"></image>
+					<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.title}}</view>
+					<view class="font-size-litter font-weight-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
+					<image src="../../../static/img/huizhi.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
 				</view>
-				<!-- <view class="cu-item shadow">
-					<view class="image">
-							<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" mode="widthFix"></image>
-							<view class="cu-tag bg-blue">案例</view>
-							<view class="cu-bar bg-shadeBottom"> 
-								<text class="text-cut">{{item.title}}</text>
-							</view>
-					</view>
-					<view class="cu-list menu-avatar">
-						<view class="cu-item">
-							<view class="content flex-sub">
-								<view class="text-gray text-sm flex justify-between">
-									<view>
-										<view class="cu-tag bg-red light sm round">{{item.date}}</view>
-										<view class="cu-tag bg-green light sm round">{{item.time}}</view>
-									</view>
-									<view class="text-gray text-sm">
-										<text class="cuIcon-attentionfill margin-lr-xs"></text> 10
-										<text class="cuIcon-appreciatefill margin-lr-xs"></text> 20
-										<text class="cuIcon-messagefill margin-lr-xs"></text> 30
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view> -->
 			</view>
 		</view>
+		
+		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
+		<view class="cu-load bg-gray over" v-if="isFinish"></view>
 	</view>
 </template>
 
@@ -94,10 +43,43 @@
 				skillList:[],
 				title:'',
 				value:'',
+				isLoading:false,
+				isFinish:false,
+				page:1,
 			}
 		},
 		components:{
 			headTab
+		},
+		onReachBottom(){
+			console.log('到达底部')
+			this.page++;
+			setTimeout(()=>{
+				this.$ajax('MyArticles',{
+					type:this.value=='skill'?1:2,
+					offset:this.$utils.getOffset(this.page)
+				},res=>{
+					this.isLoading=true;
+					if(res==''){
+						this.isLoading=false;
+						setTimeout(()=>{
+								this.isFinish=true;
+						},200)
+						
+					}else{
+						res.forEach(item=>{
+							this.skillList.concat(item)
+							// if(this.value=='skill'&& item.type==1){
+							// 	this.skillList.concat(item)
+							// }else if(this.value=='example' && item.type==2){
+							// 	this.skillList.concat(item)
+							// }
+						})
+					}
+					
+				})
+			},500)
+			
 		},
 		methods:{
 			checkItemInfo(item){
@@ -112,18 +94,18 @@
 			},
 			//获得销售技巧列表
 			getArticleList(){
-				this.$ajax('Articles',{
-					zone:-1
+				this.$ajax('MyArticles',{
+					type:this.value=='skill'?1:2,
+					offset:this.$utils.getOffset(this.page)
 				},res=>{
-					res.forEach(item=>{
-						if(this.value=='skill'&& item.type==1){
-							this.skillList.push(item)
-						}else if(this.value=='example' && item.type==2){
-							console.log('----')
-							this.skillList.push(item)
-						}
-					})
-					console.log(this.skillList)
+					this.skillList=res;
+					// res.forEach(item=>{
+					// 	if(this.value=='skill'&& item.type==1){
+					// 		this.skillList.push(item)
+					// 	}else if(this.value=='example' && item.type==2){
+					// 		this.skillList.push(item)
+					// 	}
+					// })
 				})
 			}
 		},
@@ -145,6 +127,12 @@
 </script>
 
 <style lang="less">
+	.operateImg{
+		width:37px;
+		height:37px;
+		top:21px;
+		left:14px;
+	}
 	page{
 		background:#fff;
 	}

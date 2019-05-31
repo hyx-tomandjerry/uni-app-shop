@@ -111,13 +111,11 @@
                     },res=>{
                         uni.showToast({
                             title:'新建工作汇报成功',
-                            icon:'success'
+                            icon:'none'
                         });
-                        // setTimeout(()=>{
-                        //     uni.navigateBack({
-                        //         delta:1
-                        //     })
-                        // },500)
+                        setTimeout(()=>{
+                           this.$fire.fire('logRefresh','')
+                        },500)
                     })
 				}
 			},

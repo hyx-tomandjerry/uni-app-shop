@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="findPwd-container">
-			<view class="fintPwd-title font-weight-bold">密码找回</view>
+			<view class="fintPwd-title font-weight-super">密码找回</view>
 		</view>
 		<view class="findPwd-info">
 			<view class="findPwd-info-item flex justify-start borderBottom">
@@ -21,9 +21,10 @@
 					'bg-blue':designer.mobile
 					}" @click="toNextPage()">下一步</button>
 			</view>
-			<view class="design-del font-weight-normal font-size-small " style="bottom:17px;right:59px;position:fixed">
-				<text style="color:#898888" >登录/注册即表示同意</text><text style="color:#42B0ED">《乐象工程管家服务协议》</text>
-			</view>
+			
+		</view>
+		<view class="copyright">
+			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 	</view>
 </template>
@@ -70,7 +71,6 @@
 				}
 			},
 			sendCode(){
-				console.log(this.designer.mobile)
 				if(!this.designer.mobile){
 					uni.showToast({
 						title:'请输入手机号',
@@ -106,8 +106,15 @@
 	page{
 		background: #fff;
 	}
+	.copyright{
+		margin-top:170px;
+		margin-left:36px;
+		font-size:12px;
+		font-weight:400;
+		color:rgba(137,136,136,1);
+	}
 		.findPwd-container{
-			padding:57px 15px 17px 22px;
+			padding:102px 15px 17px 22px;
 		
 			.fintPwd-title{
 				font-size:30px;

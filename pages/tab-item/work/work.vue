@@ -59,22 +59,35 @@
 		},
 		methods: {
 			showItem(type){
-				switch(type){
-					case 'log':
-					uni.navigateTo({
-						url:'../../tab-item-content/work-center/work-log/work-log'
-					});
-					break;
-					case 'express':
-					uni.navigateTo({
-						url:'../../tab-item-content/work-center/express-center/express-index/express-index'
-					});
-					break;
-					case 'repair':
-					uni.navigateTo({
-						url:'../../tab-item-content/shop-center/shop-center?type=alone'
-					})
-				}
+				uni.getStorage({
+					key:'userInfo',
+					success: (res) => {
+						if(res.data.status!=1){
+							uni.showToast({
+								title:'您没有该权限',
+								icon:'none'
+							})
+						}else{
+							switch(type){
+								case 'log':
+								uni.navigateTo({
+									url:'../../tab-item-content/work-center/work-log/work-log'
+								});
+								break;
+								case 'express':
+								uni.navigateTo({
+									url:'../../tab-item-content/work-center/express-center/express-index/express-index'
+								});
+								break;
+								case 'repair':
+								uni.navigateTo({
+									url:'../../tab-item-content/shop-center/shop-center?type=alone'
+								})
+							}
+						}
+					}
+				})
+				
 			},
 			showMineClick(){
 				uni.navigateTo({

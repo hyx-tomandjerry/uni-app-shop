@@ -12,13 +12,9 @@
 				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
 			</block>
 			<block slot="content"><text class="title">汇报详情</text></block>
-			<block slot="right">
-				<image src="../../../../static/icon/garbage.png"
-				@click="deleteLog()"
-				style="width:15px;height:15px;"></image>
-			</block>
+			
 		</cu-custom>
-		<view class="log-content">
+		<view class="log-content borderTop">
 			<view class="cu-form-group">
 				<view class="log-title"><text class="text-red ">*</text>标题</view>
 				<view><text class="log-title">{{selectItem.title}}</text></view>

@@ -20,19 +20,19 @@
 		</view>
 		
 		<view class="goods-container" style="margin-bottom:13px;">
-			<view class="goods-item flex justify-between borderBottom" v-if="title.value=='express'">
+			<view class="goods-item flex justify-between borderBottom " v-if="title.value=='express'">
 				<view class="font-weight-normal font-size-normal item-name">快递公司</view>
 				<view style="width:75%;text-align:right"><text class="font-weight-normal font-weight-normal text-grey" >请选择快递公司</text></view>
 				<text class="cuIcon-right right-icon"  @click="showModal($event)" data-target="bottomModal"></text>
 			</view>
 			<view class="goods-item flex justify-between borderBottom" v-if="title.value=='logistics'">
 				<view class="font-weight-normal font-size-normal item-name">物流公司</view>
-				<view style="width:75%;text-align:right"><text class="font-weight-normal font-weight-normal text-grey" >请选择物流公司</text></view>
+				<view style="width:75%;text-align:right;padding-top:2px;"><text class="font-weight-normal font-weight-normal text-grey" >请选择物流公司</text></view>
 				<text class="cuIcon-right right-icon"  @click="showModal($event)" data-target="bottomModal"></text>
 			</view>
 			<view class="goods-item flex justify-between borderBottom" >
 				<view class="font-weight-normal font-size-normal item-name">收件对象</view>
-				<view style="width:75%;text-align:right"><text class="font-weight-normal font-weight-normal text-grey" >请选择收件对象</text></view>
+				<view style="width:75%;text-align:right;padding-top:2px;"><text class="font-weight-normal font-weight-normal text-grey" >请选择收件对象</text></view>
 				<text class="cuIcon-right right-icon"></text>
 			</view>
 			

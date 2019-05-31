@@ -60,7 +60,7 @@
 				<text class="detail">{{detail3}}</text>
 			</view>
 		</view>
-		<view class="btn-area">
+		<view class="btn-area" v-if="!repaitItem">
 			<button 
 			@click="createComment()"
 			style="background:rgba(66,176,237,1); 
@@ -118,6 +118,10 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 					
 					this.repaitItem=res
 					console.log(this.repaitItem)
+					this.summary=this.repaitItem.comment;
+					this.cur1=this.repaitItem.service;
+					this.cur2=this.repaitItem.timely;
+					this.cur3=this.repaitItem.quality;
 					if(res.files){
 						res.files.forEach(item=>{
 							if(item.postfix){

@@ -7,7 +7,7 @@
 					{{shop.name}}
 				</view>
 				<view v-else>
-					<text style="font-size:12px;">选择门店进行报修</text>
+					<text style="font-size:13px;">选择门店进行报修</text>
 				</view>
 				<text class="cuIcon-right" style="font-size: 14px;margin-top:4px;" @click="toNearShopList()"></text>
 			</view>
@@ -31,7 +31,7 @@
 					</view>
 					<view @click="onShowDatePicker('date')" >
 						<view class="dateStyle" v-if="designer.date">{{ designer.date}}</view>
-						<view v-else><text class="cuIcon-right" style="font-size:12px;"></text></view>
+						<view v-else><text class="cuIcon-right" style="font-size:14px;"></text></view>
 					</view>
 				</view>
 			</view>
@@ -42,12 +42,12 @@
 						<text class="text-red" style="margin-right:4rpx;">*</text>维修类别
 					</view>
 					<view>
-						<view class="dateStyle" v-if="repairObj.bigName" @click="toRepairItem()" style="font-size:12px;">{{repairObj.bigName}}</view>
-						<view v-else><text class="cuIcon-right" style="font-size:14px;" @click="toRepairItem()"
-
-
-
-						></text></view>
+						<view class="dateStyle" v-if="repairObj.bigName" @click="toRepairItem()" >
+							<text style="font-size:12px;">{{repairObj.bigName}}</text> 
+						</view>
+						<view v-else>
+							<text class="cuIcon-right" style="font-size:14px;" @click="toRepairItem()"></text>
+						</view>
 					</view>
 				</view>
 
@@ -56,7 +56,7 @@
 						<text class="text-red" style="margin-right:4rpx;">*</text>维修项
 					</view>
 					<view>
-						<view class="dateStyle" v-if="repairObj.bigName" style="font-size:12px;">{{repairObj.subName}}</view>
+						<view class="dateStyle" v-if="repairObj.bigName"><text  style="font-size:12px;">{{repairObj.subName}}</text></view>
 						<view v-else><text class="cuIcon-right" style="font-size:14px;"></text></view>
 					</view>
 				</view>
@@ -70,14 +70,14 @@
 				</view>
 
 				<view class="cu-bar bg-white" >
-<view class="title text-black" style="font-size:24rpx;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
+<view class="title text-black" style="font-size:13px;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
 				</view>
 
 				<view class="cu-form-group">
 					<view class="grid col-4 grid-square flex-sub">
 						<view class="padding-xs bg-img" :style="[{backgroundImage:'url(' + imgList[index] +')'}]" v-for="(item,index) in imgList"
-													  :key="index" @tap="ViewImage(item)" :data-url="imgList[index]">
-							<view class="cu-tag bg-red" @tap.stop="DelImg(index)" :data-index="index">
+													  :key="index" @tap="DelImg(index) " :data-url="imgList[index]">
+							<view class="cu-tag bg-red" @tap.stop="ViewImage(item)" :data-index="index">
 								<text class='cuIcon-close'></text>
 							</view>
 						</view>
@@ -144,16 +144,18 @@
 			return this.format(date,'YMD')
 		},
 		onLoad(){
-			console.log((/^1[3|5|7|8][0-9]\d{4,8}$/.test('18838280488')))
+			
 			// //进行定位
 			// this.amapPlugin=new amap.AMapWX({
 			// 	key:this.key
 			// })
 			// this.getLocationInfo();
 			this.getUploadToken();
-			this.$fire.on('shop',result=>{
-				this.shop.id=result.id;
-				this.shop.name=result.name;
+			this.$fire.on('createOrderShopID',result=>{
+				if(result){
+					this.getShopInfo(result)
+				}
+			
 			})
 			this.$fire.on('repair',result=>{
 				this.repairObj={
@@ -177,8 +179,6 @@
 		methods:{
 			//提交报修
 			createOrder(){
-
-
 				if(!this.repairObj.bigID){
 					uni.showToast({
 						title:'请选择报修类别',
@@ -211,44 +211,18 @@
 								    uni.navigateBack({
 								    	delta:1
 								    })
-								},500)
+								},1000)
 							})
 
 						}
 					})
-
-			//         uni.request({
-			//             url:this.$store.state.url+'NewServiceOrder',
-			//             data:{
-			//                 // owner:this.$store.state.userInfo.owner,
-			// 				owner:18,
-			// 				userId:49,
-			//                 catalog:this.repairObj.subID,
-			//                 // creator:this.$store.state.userInfo.id,
-			// 				creator:49,
-			// 				// creator:49,
-			//                 shop:65,
-			//                 // shop:65,
-			//                 appointdate:this.designer.date?this.designer.date:this.getOpenDate,
-			//                 summary:this.repairObj.summary,
-			//                 files:this.files?this.files.join(','):'',
-			//                 contractor:this.designer.name?this.designer.name:this.$store.state.userInfo.name,
-			//                 telephone:this.designer.telephone?this.designer.telephone:this.$store.state.userInfo.mobile
-			//
-			//             },success: (res) => {
-			//                 uni.showToast({
-			//                     title:'新增报修成功',
-			//                     icon:'success'
-			//                 });
-			//                 setTimeout(()=>{
-			//                     uni.navigateTo({
-			//                         url:'../shop-center'
-			//                     })
-			// 					uni.clearStorage()
-			//                 },500)
-			//             }
-			//         })
 				}
+			},
+			//获得门店信息
+			getShopInfo(id){
+				this.$ajax('ProprietorShop',{id:id},res=>{
+					this.shop=res;
+				})
 			},
 			toRepairItem(){
 				uni.navigateTo({
@@ -270,41 +244,49 @@
 						sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 						sourceType: ['album'], //从相册选择
 						success: (res) => {
-							const tempFilePaths=res.tempFilePaths;
-							if (this.imgList.length != 0) {
-								this.imgList = this.imgList.concat(res.tempFilePaths)
-							} else {
-									this.imgList = res.tempFilePaths
-							}
-							for(var i=0;i<res.tempFilePaths.length;i++){
-								var  uploadTask=uni.uploadFile({
-									url:this.$store.state.uploadHostUrl+this.token,
-									filePath:tempFilePaths[i],
-									name:'file',
-									formData:{
-										'x:type':18,
-										'x:owner': 18,
-										'x:creator': 49,
-									},
-									success: (uploadFileRes) => {
-										let res=JSON.parse(uploadFileRes.data);
-										this.files.push(res.data);
+							uni.getStorage({
+								key:'userInfo',
+								success: (userInfo) => {
+									const tempFilePaths=res.tempFilePaths;
+									if (this.imgList.length != 0) {
+										this.imgList = this.imgList.concat(res.tempFilePaths)
+									} else {
+											this.imgList = res.tempFilePaths
 									}
-								});
-								uploadTask.onProgressUpdate((res)=>{
-									if(res.progress==100){
-										uni.showToast({
-											title:'上传成功',
-											icon:'none'
+									for(var i=0;i<res.tempFilePaths.length;i++){
+										var  uploadTask=uni.uploadFile({
+											url:this.$store.state.uploadHostUrl+this.token,
+											filePath:tempFilePaths[i],
+											name:'file',
+											formData:{
+												'x:type':this.$store.state.constants.serviceorder_file,
+												'x:owner': userInfo.data.owner,
+												'x:creator': userInfo.data.id,
+											},
+											success: (uploadFileRes) => {
+												let res=JSON.parse(uploadFileRes.data);
+												this.files.push(res.data);
+											}
+										});
+										uploadTask.onProgressUpdate((res)=>{
+											if(res.progress==100){
+												uni.showToast({
+													title:'上传成功',
+													icon:'none'
+												})
+											}
+										},(error)=>{
+											uni.showToast({
+												title:'上传失败',
+												icon:'none'
+											})
 										})
 									}
-								},(error)=>{
-									uni.showToast({
-										title:'上传失败',
-										icon:'none'
-									})
-								})
-							}
+								}
+							})
+							
+							
+							
 
 
 						}
@@ -344,11 +326,6 @@
 			    if(e) {
 			        this[this.type] = e.value;
 			        this.designer.date=e.value.replace(/\//g,'-');
-					console.log(this.designer.date)
-					// uni.setStorage({
-					// 	key:'time',
-					// 	data:e.value
-					// })
 			    }
 			},
 			 onShowDatePicker(type){//显示
@@ -359,7 +336,7 @@
 			//显示最近的门店
 			toNearShopList(){
 				uni.navigateTo({
-					url:'../near-shop-list/near-shop-list'
+					url:'../near-shop-list/near-shop-list?cat=createOrder'
 				})
 			},
 			// //获得位置
@@ -417,7 +394,7 @@
 		padding-left:14px;
 	}
 	.title{
-		font-size:12px;
+		font-size:13px;
 		font-family:PingFangSC-Regular;
 		font-weight:400;
 		color:rgba(42,42,42,1);

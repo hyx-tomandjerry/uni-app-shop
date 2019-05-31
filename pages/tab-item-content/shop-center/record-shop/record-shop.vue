@@ -228,7 +228,7 @@
 									filePath:tempFilePaths[0],
 									name:'file',
 									formData:{
-										'x:type':26,
+										'x:type':this.$store.state.shop_file,
 										'x:owner': res.data.owner,
 										'x:creator': res.data.id,
 									},

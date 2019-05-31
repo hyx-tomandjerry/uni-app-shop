@@ -1,57 +1,50 @@
 <template>
 	<view class="login_container">
 		<view class="title">
-			<view class="login_title">设置密码</view>
+			<view class="login_title font-weight-super">设置密码</view>
 		</view>
 		<view class="login_form">
-			<form>
-				<view class="cu-form-group position_relative">
-					<view class="text-gray">
-						<text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text>
-					</view>
-					<input type="password" placeholder="请输入密码" v-model="designer.pwd" @blur="checkPwdEvent(designer.pwd)" v-if="isShowPwd">
-					<input type="text" v-model="designer.pwd" v-else >
-					<image
-					@click="showPwd('pwd')"
-					v-if="isShowPwd"
-					src="../../../static/icon/eye.png"
-					style="width:24rpx;height:24rpx;position: absolute;right:44rpx;"></image>
-					<image src="../../../static/icon/eye_open.png"
-					style="width:16px;height:17px;position: absolute;right:44rpx;"
-					v-else
-					@click="noShowPwd('pwd')"
-					></image>
-				</view>
-
-				<view class="cu-form-group">
-					<view class="text-gray"><text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-					<input
-					type="password"
-					placeholder="再次输入密码"
-					v-if="isShowConfrimPwd"
-					v-model="designer.confirmPwd"
-					@blur="checkPwdEvent(designer.confirmPwd)"
-					:style="isSame ? '':sameStyle"
-					>
-					<input type="text" v-model="designer.confirmPwd" v-else  >
-					<image
-					@click="showPwd('confirm')"
-					v-if="isShowConfrimPwd"
-					src="../../../static/icon/eye.png"
-					style="width:24rpx;height:24rpx;position: absolute;right:44rpx;"></image>
-					<image src="../../../static/icon/eye_open.png"
-					style="width:16px;height:17px;position: absolute;right:44rpx;"
-					v-else
-					@click="noShowPwd('confirm')"
-					></image>
-				</view>
-				<view class="passwordSet">密码长度为6-12位，由英文和数字组成</view>
-			</form>
-
+			<view class="login-form-item borderBottom flex justify-start position_relative">
+				<view class="cuIcon-lock text-gray" style="font-size:23px;margin-right:21px;"></view>
+				<input type="password" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-if="isShowPwd" @blur="checkPwdEvent(designer.pwd)">
+				<input type="text" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)">
+				<image
+				v-if="isShowPwd"
+				@click="showPwd('pwd')"
+				src="../../../static/icon/eye.png"
+				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
+				<image
+				@click="showPwd('pwd')"
+				
+				v-else
+				src="../../../static/icon/eye_open.png"
+				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
+				
+			</view>
+			<view class="login-form-item borderBottom flex justify-start position_relative">
+				<view class="cuIcon-lock text-gray" style="font-size:23px;margin-right:21px;"></view>
+				<input type="password" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(designer.pwd)">
+				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)">
+				
+				
+				<image
+				v-if="isShowConfrimPwd"
+				@click="showPwd('confirm')"
+				src="../../../static/icon/eye.png"
+				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
+				<image
+				@click="showPwd('confirm')"
+				v-else
+				src="../../../static/icon/eye_open.png"
+				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
+			</view>
+			
 			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;">
-				<button
-					@click="resetPassword()"
-				class="cu-btn block  margin-tb-sm lg" :class="designer.pwd || designer.confirmPwd ?'inputStyle':'noInputStyle'">
+				<button @click="resetPassword()" 
+					:class="{
+						'inputStyle':designer.pwd || designer.confirmPwd,
+						'noInputStyle':! designer.pwd && ! designer.confirmPwd
+					}">
 					<text>确定</text>
 				</button>
 			</view>
@@ -59,7 +52,7 @@
 		</view>
 
 		<view class="copyright">
-			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">乐象工程管家服务协议</text>
+			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 	</view>
 </template>
@@ -67,8 +60,8 @@
     export default{
         data(){
             return{
-                isInput:false,//是否输入账号,
-				isSame:true,
+               
+	
 				isShowPwd:true,
 				isShowConfrimPwd:true,
 				designer:{
@@ -76,9 +69,6 @@
 					confirmPwd:'',
 					mobile:'',
 					vcode:''
-				},
-				sameStyle:{
-					color:'red'
 				}
             }
         },
@@ -90,23 +80,11 @@
 			this.designer.vcode=options.vcode
         },
 		methods:{
-			noShowPwd(type){
-				console.log('jjjjj')
-				if(type=='pwd'){
-					this.isShowPwd=true;
-				}else if(type=='confirm'){
-					
-					this.isShowConfrimPwd=true;
-				}
-
-			},
 			showPwd(type){
-				console.log('kkkk')
 				if(type=='pwd'){
-						this.isShowPwd=false;
+						this.isShowPwd=!this.isShowPwd;
 				}else if(type=='confirm'){
-					console.log('llll')
-					this.isShowConfrimPwd=false;
+					this.isShowConfrimPwd=!this.isShowConfrimPwd;
 				}
 			},
 			resetPassword(){
@@ -117,7 +95,6 @@
 					})
 				}else{
 					if(this.designer.pwd!=this.designer.confirmPwd){
-						this.isSame=false;
 						uni.showToast({
 							title:'两次输入的密码不一致',
 							icon:'none'
@@ -151,8 +128,7 @@
 							title:'密码不能含有非法字符，长度在6-12之间',
 							icon:'none'
 						})
-					}else{
-						this.checkPwd=true;
+						return;
 					}
 
 				}
@@ -165,15 +141,13 @@
 		background:#fff;
 	}
 	.login_container{
-		padding:57px 12px 17px 15px;
+		padding:113px 12px 17px 15px;
 		.title{
 			padding-left:7px;
 			.login_title{
 				height:42px;
 				line-height:42px;
 				font-size:30px;
-
-				font-weight:600;
 				color:rgba(42,42,42,1);
 
 			}
@@ -190,6 +164,9 @@
 		}
 		.login_form{
 			margin-top:47px;
+			.login-form-item{
+				padding:20px 12px 20px 15px;
+			}
 		}
 		.forget{
 			font-size:14px;

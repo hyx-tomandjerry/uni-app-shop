@@ -15,10 +15,11 @@
 
 			</view>
 
-		<swiper class="screen-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
+		<swiper class="screen-swiper square-dot"  :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in shopList" :key="index">
-				<image :src="item.url" mode="aspectFill" style="height:120px;width:100%;"></image>
+				<image :src="item.url" mode="aspectFill"></image>
+				
 			</swiper-item>
 		</swiper>
 			
@@ -37,76 +38,43 @@
 				<view>
 					<view class="cu-bar bg-white solid-bottom">
 						<view class="action">
-							<text class="cuIcon-titles text-blue"></text>
+							
 							<text class="card-title">销售技巧</text>
 						</view>
 						<view class="action">
-							<text class="card-more" @click="showMoreInfo('skill')">更多&gt;</text>
+							<text class="card-more" @click="showMoreInfo('skill')">更多<text class="cuIcon-right" style="margin-left:4px;"></text></text>
 						</view>
 					</view>
-					<view class="cu-card article no-card" v-for="(item,index) in noticeList1" :key="index" @click="detailContent('skill',item)">
-						<view class="cu-item shadow" style="padding-top:19px;padding-bottom:10px;border-bottom:1px solid rgba(238, 238, 237, 1);">
-							<!-- <view class="title"><view class="text-cut">{{item.title}}</view></view> -->
-							<view class="content">
-
-								<view class="desc">
-									<view class="text-content" style="font-size:13px;color:#000;font-weight: 600;height:3.9em">{{item.title}} </view>
-									
-									<view>
-										<view class="cu-tag bg-red light sm round">
-											<!-- {{item.createdate | formatTime('YMD','/')}} -->
-											{{item.creatorName}}
-										</view>
-										<view class="cu-tag bg-green light sm round">{{item.createdate | formatTime('YMDHMS')}}</view>
-									</view>
-								</view>
-								<image :src="item.coverurl"
-								 mode="aspectFill"></image>
-							</view>
+					<view class="flex justify-start align-center position_relative borderBottom" v-for="(item,index) in noticeList1" :key="index" @click="detailContent(item,'skill')" style="padding:23px 0 21px;;">
+						<view style="width:40%;margin-right:20px;">
+							<image :src="item.coverurl" mode="aspectFill" style="height:79px;border-radius: 10px;vertical-align: middle;"></image>
 						</view>
+						<view>
+							<view class="font-weight-bold font-size-big" style="margin-bottom:20rpx;">{{item.title}}</view>
+							<view class="font-size-small font-weight-normal color-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
+						</view>
+						<image src="../../../static/img/huizhi.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
 					</view>
 				</view>
-				
-				<view>
-					<view class="cu-bar bg-white solid-bottom">
-						<view class="action">
-							<text class="cuIcon-titles text-blue"></text>
-							<text class="card-title">陈列案例</text>
-						</view>
-						<view class="action">
-							<text class="card-more" @click="showMoreInfo('example')">更多&gt;</text>
-						</view>
-					</view>
-					<!-- <view class="cu-card article no-card" v-for="(item,index) in noticeList2" :key="index" @click="detailContent('example',item)">
-						<view class="cu-item shadow" style="padding-top:19px;padding-bottom:10px;border-bottom:1px solid rgba(238, 238, 237, 1);">
-							<view class="title"><view class="text-cut">{{item.title}}</view></view>
-							<view class="content">
-				
-								<view class="desc" >
-									<view class="text-content" v-html="item.summary" > </view>
-									<view>
-										<view class="cu-tag bg-red light sm round">{{item.createdate | formatTime('YMD','/')}}</view>
-										<view class="cu-tag bg-green light sm round">{{item.createdate | formatTime('YMDHMS')}}</view>
-									</view>
-								</view>
-								<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg"
-								 mode="aspectFill"></image>
-							</view>
-						</view>
-					</view> -->
-					<view class="example-list" v-for="(item,index) in noticeList2" :key="index" @click="detailContent('example',item)" style="border-bottom:1px solid #EEEEED;padding-bottom:10px;">
-						<view class="example-item-title" style="font-size:17px;font-weight: 600;padding:10px">{{item.title}}</view>
-						<view class="example-item-content flex justify-between">
-							<view style="overflow: hidden;width:60%;font-size:12px;padding:4px;max-height:84px;font-size:12px;">
-								<view class="desc" v-html="item.summary"
-								 ></view>
-								<view class="cu-tag bg-red light sm round">{{item.createdate | formatTime('YMD','/')}}</view>
-							</view>
-							<image :src="item.coverurl"
-								  style="width:35%;height:80px;border-radius: 10px;"></image>
-						</view>
-					</view>
+			</view>
+		</view>
+		<view class="bg-white" style="margin-top:13px;padding-right:14px;
+	padding-left:18px;">
+			<view class="cu-bar bg-white solid-bottom" >
+				<view class="action">
+					
+					<text class="card-title">陈列案例</text>
 				</view>
+				<view class="action">
+					<text class="card-more" @click="showMoreInfo('example')">更多<text class="cuIcon-right" style="margin-left:4px;"></text></text>
+				</view>
+			</view>
+			<view class="example-list borderBottom position_relative" style="padding:21px 0 18px;" v-for="(item,index) in noticeList2 " :key="index" @click="detailContent(item,'example')">
+				<image :src="item.coverurl"
+					  style="width:100%;height:41vw;border-radius: 10px;margin-bottom:13px;"></image>
+				<view class="example-item-title font-size-normal font-weight-bold" style="margin-bottom:2px;">{{item.title}}</view>
+				<view class="font-size-litter font-weight-normal color-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
+				<image src="../../../static/img/huizhi.png" class="operateImg position_absolute" style="top:18px;" v-if="item.report==1"></image>
 			</view>
 		</view>
 		<view class="cu-modal" :class="isShowJoinModal?'show':''">
@@ -134,13 +102,16 @@
 						placeholder="输入公司EID" style="border:1px solid #EEEEED;border-radius: 4px;padding:0px 55px 0 15px;"/> <text class="cu-tag bg-blue" style="margin-left:10px;border-radius: 4px;padding:0 15px" @click="searchCompany()">搜索</text>
 					</view>
 					
-					<view style="padding-left:16px;" v-if="companyObj">
-						<view style="padding-top:8px;font-size:12px;">公司名称 : <text style="margin-left:10px;">{{companyObj.name}}</text></view>
-						<view style="padding:4px;font-size:12px;" class="flex justify-start">
-							联系人 :<text style="margin-right:20px;margin-left:10px;">{{companyObj.contactor}}</text>
-							联系电话 : <text style="margin-left:10px;">{{companyObj.telephone}}</text>
+					<view style="padding-left:6px; font-size:13px;" v-if="companyObj" >
+						<view style="padding-top:8px;" >公司名称 : <text style="margin-left:10px;" class="text-blue font-weight-bold">{{companyObj.name}}</text></view>
+						<view  style="padding-top:8px;" >
+							联系人 : <text style="margin-left:3px;">{{companyObj.contactor}}</text>
+							
 						</view>
-						<view style="padding:4px;font-size:12px;">公司地址 : {{companyObj.provinceName || ''}}{{companyObj.cityName || ''}} {{companyObj.districtName ||''}}{{companyObj.address ||''}}</view>
+						<view   style="padding-top:8px;" >
+							联系电话 : <text style="margin-left:3px;">{{companyObj.telephone}}</text>
+						</view>
+						<view  style="padding-top:8px;font-size:12px;" >公司地址 : {{companyObj.provinceName || ''}}{{companyObj.cityName || ''}} {{companyObj.districtName ||''}}{{companyObj.address ||''}}</view>
 						
 					</view>
 				</view>
@@ -213,22 +184,37 @@
 			},
 			joinCompanyEvent(){
 				this.isShowJoinCompany=true;
+				this.eid='';
+				this.companyObj=null;
 			},
 			showArticles(){
-				this.$ajax('Articles',{
-					zone:-1
+				this.$ajax('MyArticles',{
+					offset:0,
+					type:0
 				},res=>{
-					let array1=[],array2=[]
 					res.forEach(item=>{
 						if(item.type==1){
-							array1.push(item)
+							this.noticeList1.push(item)
 						}else if(item.type==2){
-							array2.push(item)
+							this.noticeList2.push(item)
 						}
 					})
-					this.noticeList1=array1.splice(0,3);
-					this.noticeList2=array2.splice(0,3);
+					
 				})
+				// this.$ajax('Articles',{
+				// 	zone:-1
+				// },res=>{
+				// 	let array1=[],array2=[]
+				// 	res.forEach(item=>{
+				// 		if(item.type==1){
+				// 			array1.push(item)
+				// 		}else if(item.type==2){
+				// 			array2.push(item)
+				// 		}
+				// 	})
+				// 	this.noticeList1=array1.splice(0,3);
+				// 	this.noticeList2=array2.splice(0,3);
+				// })
 			},
 			//加入公司
 			joinCompany(){
@@ -247,22 +233,6 @@
 						})
 					}
 				})
-				
-				// uni.request({
-				// 	url:this.$store.state.url+'ApplyOrInvite2Join',
-				// 	data:{
-				// 		user:this.$store.state.userInfo.id,
-				// 		org:this.companyObj.id
-				// 	},
-				// 	success: (res) => {
-				// 		uni.showToast({
-				// 			title:'申请结果将会发您手机，请注意查收',
-				// 			icon:'none'
-				// 		});
-				// 		this.hideModal('company');
-				// 		
-				// 	}
-				// })
 			},
 			//搜素公司
 			searchCompany(){
@@ -272,19 +242,6 @@
 				},res=>{
 					this.companyObj=res
 				})
-				// uni.request({
-				// 	url:this.$store.state.url+'Customer',
-				// 	data:{
-				// 		owner:this.$store.state.userInfo.owner,
-				// 		userId:this.$store.state.userInfo.id,
-				// 		eid:this.eid
-				// 	},
-				// 	success: (res) => {
-				// 		this.companyObj=res.data.data
-				// 		console.log(this.companyObj)
-				// 		
-				// 	}
-				// })
 			},
 			showWorkClick(){
 				uni.navigateTo({
@@ -324,31 +281,8 @@
 							})
 							this.isShowJoinModal=false;
 						})
-						// this.$ajax('ApplyOrInvite2Join',{
-						// 	shop:this.shop.shopID,
-						// 	user:res.data.id
-						// 	},res=>{
-						// 	uni.showToast({
-						// 		title:'您已成功加入该门店',
-						// 		icon:'none'
-						// 	})
-						// })
 					}
 				})
-				// uni.request({
-				// 	url:this.$store.state.url+'ApplyOrInvite2Join',
-				// 	data:{
-				// 		owner:this.$store.state.userInfo.owner,//假数据
-				// 		user:this.$store.state.userInfo.id,
-				// 		shop:20
-				// 	},
-				// 	success: (res) => {
-				// 		uni.showToast({
-				// 			title:'您已成功加入独白伊利门店',
-				// 			icon:'none'
-				// 		})
-				// 	}
-				// })
 			},
 			toNoticeContent(item){
 				this.noticeID=id;
@@ -380,7 +314,8 @@
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
 			},
-			detailContent(type,item){
+			detailContent(item,type){
+				
 					uni.navigateTo({
 						url:'../../all-item-content/detail-content/detail-content?type='+type+'&id='+item.id
 					})
@@ -392,38 +327,46 @@
 				})
 			},
 			showOperateItem(event){
-				switch(event){
-					case 0:
-					//通知公告
-					uni.navigateTo({
-
-						url:'../../tab-item-content/notice-center/notice-index/notice-index'
+				if(this.userInfo.status!=1){
+					uni.showToast({
+						title:'您没有操作的权限',
+						icon:'none'
 					})
-					break;
-					case 1:
-					//门店报修
-					uni.navigateTo({
-
-						url:'../../tab-item-content/shop-center/shop-center?type=all'
-					})
-					break;
-					case 2:
-					//我的门店
-					uni.navigateTo({
-						url:'../../tab-item-content/work-center/express-center/express-index/express-index'
-					})
-					break;
-					case 3:
-					//工作日志
-					uni.navigateTo({
-						url:'../../tab-item-content/shop-center/shop-list/shop-list'
-					})
+				}else{
+					switch(event){
+						case 0:
+						//通知公告
+						uni.navigateTo({
+					
+							url:'../../tab-item-content/notice-center/notice-index/notice-index'
+						})
+						break;
+						case 1:
+						//门店报修
+						uni.navigateTo({
+					
+							url:'../../tab-item-content/shop-center/shop-center?type=all'
+						})
+						break;
+						case 2:
+						//我的门店
+						uni.navigateTo({
+							url:'../../tab-item-content/work-center/express-center/express-index/express-index'
+						})
+						break;
+						case 3:
+						//工作日志
+						uni.navigateTo({
+							url:'../../tab-item-content/shop-center/shop-list/shop-list'
+						})
+					}
 				}
+				
 			},
 			getShopInfo(id){
 				this.$ajax('ProprietorShop',{id:id},res=>{
 					this.shop.shopName=res.name;
-					console.log(this.shop.shopName)
+					console.log(this.shop)
 				})
 			}
 		},
@@ -432,62 +375,42 @@
 			uniGrid,
 			NAUIcard
 		},
-		onShow(){
+		onLoad(){
 			this.getTodoList()
 			this.showArticles()
+			
+		},
+		onReady(){
+			
 			//owner=0,显示加入公司
 			//owenr=0&&status=3显示邀请
 			uni.getStorage({
 				key:'userInfo',
 				success: (res) => {
-					console.log(res)
 					this.userInfo=res.data
 					// console.log(this.userInfo)
-					if(res.data.owner==0){
-						this.isShowJoinCompany=true;
-					}else if(res.data.owner!=0 && res.data.status==3){
+					 if(this.userInfo.owner!=0 && this.userInfo.status==3){
 						this.isShowJoinModal=true;
-						this.shop.shopID=res.data.department;
+						this.shop.shopID=this.userInfo.department;
 						this.getShopInfo(this.shop.shopID)
+					}else if(this.userInfo.owner==0 && this.userInfo.status==2){
+						
+						this.isShowJoinCompany=true;//显示EID
 					}else{
 						this.company={
-							name:res.data.ownerName,
-							cover:res.data.ownerLogoUrl
+							name:this.userInfo.ownerName,
+							cover:this.userInfo.ownerLogoUrl
 						}
 					}
-					// if(res.data.owner==0){
-					// 	if(res.data.status==3){
-					// 		//显示加入公司
-					// 		this.isShowJoinCompany=true;
-					// 	}else{
-					// 		//显示加入门店
-					// 		this.isShowJoinModal=true;
-					// 	}
-					// }
 					
-					// console.log(this.company)
 				}
 			})
-			// if(this.$store.state.userInfo.owner==0){
-			// 	if(this.$store.state.userInfo.status!=3){
-			// 		//显示加入公司
-			// 		this.isShowJoinCompany=true;
-			// 	}else{
-			// 		//显示加入门店
-			// 		this.isShowJoinModal=true;
-			// 	}
-			// }else {
-			// 	this.company={
-			// 		name:this.$store.state.userInfo.ownerName,
-			// 		cover:this.$store.state.userInfo.ownerLogoUrl
-			// 	}
-			// }
 		},
 	}
 </script>
 <style scoped>
-	page{
-		background:#fff;
+	.operateImg{
+		width:37px;height:37px;top:22px;left:0;
 	}
 	.notice-tag{
 		position: absolute;
@@ -518,7 +441,7 @@
 	bottom:38px;
 }
 .index-container{
-	padding:16px 14px 9px 18px;
+	padding:54px 14px 9px 18px;
 
 }
 .notice_container{
@@ -542,6 +465,7 @@
 	}
 	.notice_content{}
 .operateItem{
+	padding-top:16px;
 	display: flex;
 	justify-content: space-around;
 }
@@ -640,3 +564,6 @@ color:rgba(137,136,136,1);
 }
 </style>
 
+
+ 
+ 

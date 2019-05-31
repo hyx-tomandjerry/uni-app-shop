@@ -1,15 +1,5 @@
 <template>
 	<view>
-		<!-- <view class="operateItem" style="border-top:1px solid lightgray;border-bottom:1px solid rgba(233,233,233,1);padding-top:10px;">
-			<view class="cu-bar search bg-white">
-				<view class="search-form round">
-					<text class="cuIcon-search"></text>
-					<input @focus="InputFocus()" @blur="InputBlur()" :adjust-position="false" type="text" placeholder="输入门店姓名" confirm-type="search" />
-				</view>
-			</view>
-		</view> -->
-
-
 		<view style="background:#fff;">
 			<scroll-view scroll-y="true" >
 				<view class="shop-item flex justify-start borderBottom"  :key="index" v-for="(item,index) in shopList"
@@ -17,6 +7,7 @@
 					<view style="width:30%;"> 
 						<image
 						v-if="item.coverurl"
+						
 						:src="item.coverurl" class="noManagePic" :class="{' shopImg':item.contactor || item.managerName}">
 						</image>
 						<image
@@ -50,7 +41,29 @@
 
 		</view>
 		<image src="../../../../static/icon/add.png"
-		style="position:fixed;right:12px;bottom:23px;width:68px;height:68px;z-index:100;" @click="recordShop()"></image>
+		style="position:fixed;right:12px;bottom:23px;width:68px;height:68px;z-index:100;" @click="showModal($event)" data-target="RadioModal"></image>
+		
+		
+		<view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()">
+			<view class="cu-dialog" @tap.stop="">
+				<radio-group class="block" @change="RadioChange($event)">
+					<view class="cu-list menu text-left">
+						<view class="cu-item" v-for="(item,index) in shopRadioList" :key="index">
+							<label class="flex justify-between align-center flex-sub">
+								<view class="flex-sub">{{item.name}}</view>
+								<radio class="round" :class="radio=='radio' + index?'checked':''" :checked="radio=='radio' + index?true:false"
+								 :value="'radio' + index"></radio>
+							</label>
+						</view>
+					</view>
+				</radio-group>
+			</view>
+		</view>
+		
+		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
+		<view class="cu-load bg-gray over" v-if="isFinish"></view>
+		
+		
 	</view>
 </template>
 
@@ -60,17 +73,75 @@ import headTab from '../../../../components/head-tab.vue'
 	export default {
 		data() {
 			return {
+				isLoading:false,
+				isFinish:false,
+				modalName:'',
 				title:'门店列表',
 				CustomBar:0,
 				inputValue:0,
 				shopList:[],
 				fromType:'',//判断从快递还是从我的门店
+				radio:'',
+				shopRadioList:[
+					{id:1,name:'录入门店'},
+					{id:2,name:'选择门店'}
+				],
+				page:1,
 			};
+		},
+		onReachBottom(){
+			console.log('到底了')
+			this.page++;
+			this.isLoading=true;
+			setTime(()=>{
+				this.$ajax('MyShops',{address:'',offset:this.$utils.getOffset(this.page)},res=>{
+					if(res==''){
+						this.isLoading=false;
+						setTimeout(()=>{
+								this.isFinish=true;
+						},200)
+						
+					}else{
+						res.forEach(item=>{
+							this.shopList.concat(item)
+						})
+					}
+				})
+			},1000)
+			
 		},
 		components:{
 			headTab
 		},
 		methods: {
+			RadioChange(event){
+				this.radio=event.detail.value;
+				if(this.radio=='radio0'){
+					console.log('录入门店')
+					uni.navigateTo({
+						url:'../record-shop/record-shop',
+						success: (res) => {
+							this.modalName=''
+						}
+					})
+					
+				}else if(this.radio=='radio1'){
+					console.log('选择门店')
+					uni.navigateTo({
+						url:'../search-more-shop/search-more-shop?cat=chooseShop',
+						success: (res) => {
+							this.modalName=''
+						}
+					})
+				}
+			},
+			showModal(e) {
+				this.radio='';
+				this.modalName = e.currentTarget.dataset.target
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
 			goBack(){
 				uni.navigateBack({
 					delta:1
@@ -117,16 +188,19 @@ import headTab from '../../../../components/head-tab.vue'
 			},
 			//获得门店列表
 			getShopList(){
-				this.$ajax('MyShops',{address:''},res=>{
+				this.$ajax('MyShops',{address:'',offset:this.$utils.getOffset(this.page)},res=>{
 					this.shopList=res;
 				})
 			}
 		},
 		onLoad(options){
-		
+			
 			this.systemInfo();
 			this.getShopList();
 			this.$fire.on('record-shop',res=>{
+				this.getShopList()
+			})
+			this.$fire.on('chooseShop',res=>{
 				this.getShopList()
 			})
 		}

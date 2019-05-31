@@ -44,13 +44,10 @@
 							<view class="text-grey">{{repaitItem.shopname}}</view>
 						</view>
 						
-						<view class="repair-detail-list-item flex justify-between">
-							<view>品牌名称</view>
-							<view class="text-grey">大象漆</view>
-						</view>
+						
 						
 						<view class="repair-detail-list-item flex justify-between text-right">
-							<view style="width:26%;">门店地址</view>
+							<view >门店地址</view>
 							<view class="text-grey">{{repaitItem.provinceName}}{{repaitItem.cityName}}{{repaitItem.districtName}}{{repaitItem.address}}</view>
 						</view>
 						
@@ -69,7 +66,7 @@
 							<view class="text-grey">{{repaitItem.appointdate | formatTime('YMD')}}</view>
 						</view>
 						
-						<view class="repair-detail-list-item flex justify-between">
+						<view class="repair-detail-list-item">
 							<view>报修描述</view>
 							<view class="text-grey">{{repaitItem.summary}}</view>
 						</view>
@@ -261,13 +258,16 @@
 				this.$ajax('ServiceOrder',{
 					id:id
 				},res=>{
-					this.repaitItem=res
-					res.files.forEach(item=>{
-						this.avatar.push({
-							image:item.url,
-							text:''
+					this.repaitItem=res;
+					if(res.files){
+						res.files.forEach(item=>{
+							this.avatar.push({
+								image:item.url,
+								text:''
+							})
 						})
-					})
+					}
+					
 					console.log(this.avatar)
 				})
 				// uni.request({
