@@ -44,7 +44,7 @@
 		methods: {
 			writeLog(){
 				uni.navigateTo({
-					url:"../../tab-item-content/work-center/create-log/create-log?id="+this.itemInfo.id
+					url:"../../tab-item-content/work-center/create-log/create-log?id="+this.itemInfo.id+'&type=article'
 				})
 			},
 			getItemInfo(id) {

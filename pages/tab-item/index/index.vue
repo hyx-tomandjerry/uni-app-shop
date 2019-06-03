@@ -201,38 +201,32 @@
 					})
 					
 				})
-				// this.$ajax('Articles',{
-				// 	zone:-1
-				// },res=>{
-				// 	let array1=[],array2=[]
-				// 	res.forEach(item=>{
-				// 		if(item.type==1){
-				// 			array1.push(item)
-				// 		}else if(item.type==2){
-				// 			array2.push(item)
-				// 		}
-				// 	})
-				// 	this.noticeList1=array1.splice(0,3);
-				// 	this.noticeList2=array2.splice(0,3);
-				// })
 			},
 			//加入公司
 			joinCompany(){
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						this.$ajax('ApplyOrInvite2Join',{
-							user:res.data.id,
-							org:this.companyObj.id
-						},res=>{
-							uni.showToast({
-								title:'申请结果将会发您手机，请注意查收',
-								icon:'none'
-							});
-							this.hideModal('company');
-						})
-					}
-				})
+				if(!this.companyObj.id){
+					uni.showToast({
+						title:'请搜索公司',
+						icon:'none'
+					})
+				}else{
+					uni.getStorage({
+						key:'userInfo',
+						success: (res) => {
+							this.$ajax('ApplyOrInvite2Join',{
+								user:res.data.id,
+								org:this.companyObj.id
+							},res=>{
+								uni.showToast({
+									title:'申请结果将会发您手机，请注意查收',
+									icon:'none'
+								});
+								this.hideModal('company');
+							})
+						}
+					})
+				}
+				
 			},
 			//搜素公司
 			searchCompany(){
@@ -280,6 +274,20 @@
 								icon:'none'
 							})
 							this.isShowJoinModal=false;
+							this.$ajax('RefreshOnlineUser',{},res=>{
+								this.company={
+									name:res.ownerName,
+									cover:res.ownerLogoUrl
+								}
+								uni.setStorage({
+									key:'userInfo',
+									data:res,
+									success: (res) => {
+										console.log(res)
+									}
+								})
+							})
+							
 						})
 					}
 				})
@@ -377,8 +385,29 @@
 		},
 		onLoad(){
 			this.getTodoList()
-			this.showArticles()
+			this.showArticles();
 			
+				uni.getStorage({
+				key:'userInfo',
+				success: (res) => {
+					this.userInfo=res.data
+					// console.log(this.userInfo)
+					 if(res.data.owner!=0 && res.data.status==3){
+						this.isShowJoinModal=true;
+						this.shop.shopID=res.data.department;
+						this.getShopInfo(this.shop.shopID)
+					}else if(res.data.owner==0 && res.data.status==2){
+						
+						this.isShowJoinCompany=true;//显示EID
+					}else{
+						this.company={
+							name:res.data.ownerName,
+							cover:res.data.ownerLogoUrl
+						}
+					}
+					
+				}
+			})
 		},
 		onReady(){
 			
@@ -389,17 +418,17 @@
 				success: (res) => {
 					this.userInfo=res.data
 					// console.log(this.userInfo)
-					 if(this.userInfo.owner!=0 && this.userInfo.status==3){
+					 if(res.data.owner!=0 && res.data.status==3){
 						this.isShowJoinModal=true;
-						this.shop.shopID=this.userInfo.department;
+						this.shop.shopID=res.data.department;
 						this.getShopInfo(this.shop.shopID)
-					}else if(this.userInfo.owner==0 && this.userInfo.status==2){
+					}else if(res.data.owner==0 && res.data.status==2){
 						
 						this.isShowJoinCompany=true;//显示EID
 					}else{
 						this.company={
-							name:this.userInfo.ownerName,
-							cover:this.userInfo.ownerLogoUrl
+							name:res.data.ownerName,
+							cover:res.data.ownerLogoUrl
 						}
 					}
 					

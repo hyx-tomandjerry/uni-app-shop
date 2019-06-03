@@ -1,7 +1,13 @@
 <template>
 	<view >
-		<view v-if="list.length > 0">
-			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index">
+
+	<view class="flex text-center">
+		<view class="cu-item flex-sub font-size-big bg-white borderBottom" :class="index==TabCur?'text-orange cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect($event)" :data-id="index" style="padding:9px  0;">
+			{{item}}
+		</view>
+	</view>
+		<view v-if="TabCur==0">
+			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px">
 				<view class="user flex justify-start">
 					<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
 					<view class="user-info">
@@ -14,11 +20,15 @@
 				<view class="work-content">
 					<text class="user-name ellipsis-2">{{item.summary}}</text>
 				</view>
-				<!-- <text class="tag-name">{{item.title}}</text> -->
 			</view>
+		</view>
+		<view v-if="TabCur==1">
+
 		</view>
 		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
 		<view class="cu-load bg-gray over" v-if="isFinish"></view>
+		<image src="../../../../static/icon/add.png"
+				style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==1"></image>
 	</view>
 </template>
 
@@ -31,6 +41,8 @@
 				userInfo:'',
 				isLoading:false,
 				isFinish:false,
+				tabList:['工作汇报','日常日志'],
+				TabCur:0,
 			}
 		},
 		onReachBottom(){
@@ -43,28 +55,39 @@
 					 offset:this.$utils.getOffset(this.page)
 				},res=>{
 					if(res==''){
-						this.isFinish=true;
-						this.isLoading=false;
-					}else{
+                        this.isLoading=false;
+                        setTimeout(()=>{
+                            this.isFinish=true;
+                        },600)
+
+                    }else{
 						res.forEach(item=>{
 							this.list=this.list.concat(item);
 						})
-						
+
 					}
 				})
 			},500)
-			
-			
+
+
 		},
         onLoad(){
 			this.getList();
 			this.getUserInfo();
+			this.$fire.on('logRefresh',res=>{
+				console.log(res)
+			})
         },
 		methods: {
+			tabSelect(event){
+				this.TabCur=event.currentTarget.dataset.id;
+				this.getList()
+
+			},
 			//新建
 			createWork(event){
 				uni.navigateTo({
-					url:'../create-log/create-log'
+					url:'../create-log/create-log?type=log'
 				})
 			},
 			//查看详情
@@ -96,6 +119,7 @@
 </script>
 
 <style lang="less">
+
 	.empty-middle{
 		position: absolute;
 		transform: translateY(-50%);
@@ -111,8 +135,8 @@
 		-webkit-line-clamp:2;
 	}
 	.work-item{
-		margin:13px 10px 0;
-		border-radius:10px;
+
+
 		padding:18px 12px 13px 17px;
 		background: #fff;
 	}

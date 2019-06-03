@@ -4,10 +4,10 @@
 			<scroll-view scroll-y="true" >
 				<view class="shop-item flex justify-start borderBottom"  :key="index" v-for="(item,index) in shopList"
 					  style="padding:24px 10px 18px 14px;" @click="checkShopDetail(item)">
-					<view style="width:30%;"> 
+					<view style="width:30%;">
 						<image
 						v-if="item.coverurl"
-						
+
 						:src="item.coverurl" class="noManagePic" :class="{' shopImg':item.contactor || item.managerName}">
 						</image>
 						<image
@@ -36,15 +36,15 @@
 						</view>
 					</view>
 				</view>
-				
+
 			</scroll-view>
 
 		</view>
 		<image src="../../../../static/icon/add.png"
 		style="position:fixed;right:12px;bottom:23px;width:68px;height:68px;z-index:100;" @click="showModal($event)" data-target="RadioModal"></image>
-		
-		
-		<view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()">
+
+
+	<!-- 	<view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()">
 			<view class="cu-dialog" @tap.stop="">
 				<radio-group class="block" @change="RadioChange($event)">
 					<view class="cu-list menu text-left">
@@ -59,11 +59,45 @@
 				</radio-group>
 			</view>
 		</view>
-		
+		 -->
+		 <view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+
+					<view class="action flex justify-between" @tap="hideModal">
+
+					</view>
+				</view>
+				<view class=" flex justify-around" style="padding:12px;">
+					<view @click="operateItem('record')"  style="padding:13px 15px;">
+						<text class="cuIcon-writefill text-blue" style="margin-right:8px;font-size:16px;"></text>
+						<text class="font-size-normal text-blue font-weight-bold">录入门店</text>
+					</view>
+					<view  @click="operateItem('search')"  style="padding:13px 15px; ">
+						<text class="cuIcon-searchlist text-blue" style="margin-right:8px;font-size:20px;"></text>
+						<text class="font-size-normal text-blue font-weight-bold">选择门店</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="cu-modal" :class="isShow?'show':''">
+			<view class="cu-dialog">
+				<view class="padding-xl ">
+					只有店长才能录入门店!
+				</view>
+				<view class="cu-bar bg-white justify-end" style="padding:5px;">
+					<view class="action">
+						<button class="cu-btn bg-green margin-left" @tap="toRecordShop()">确定</button>
+
+					</view>
+				</view>
+			</view>
+		</view>
 		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
 		<view class="cu-load bg-gray over" v-if="isFinish"></view>
-		
-		
+
+
 	</view>
 </template>
 
@@ -87,20 +121,22 @@ import headTab from '../../../../components/head-tab.vue'
 					{id:2,name:'选择门店'}
 				],
 				page:1,
+				isShow:false
+
 			};
 		},
 		onReachBottom(){
 			console.log('到底了')
 			this.page++;
 			this.isLoading=true;
-			setTime(()=>{
+			setTimeout(()=>{
 				this.$ajax('MyShops',{address:'',offset:this.$utils.getOffset(this.page)},res=>{
 					if(res==''){
 						this.isLoading=false;
 						setTimeout(()=>{
 								this.isFinish=true;
-						},200)
-						
+						},600)
+
 					}else{
 						res.forEach(item=>{
 							this.shopList.concat(item)
@@ -108,12 +144,39 @@ import headTab from '../../../../components/head-tab.vue'
 					}
 				})
 			},1000)
-			
+
 		},
 		components:{
 			headTab
 		},
 		methods: {
+			toRecordShop(){
+				uni.navigateTo({
+					url:'../record-shop/record-shop',
+					success: (res) => {
+						this.hideModal();
+						this.isShow=false;
+					}
+				});
+			},
+			operateItem(type){
+
+				switch(type){
+					case 'record':
+
+						this.isShow=true;
+						break;
+					case 'search':
+						uni.navigateTo({
+							url:'../search-more-shop/search-more-shop?cat=chooseShop',
+							success: (res) => {
+								this.hideModal()
+
+							}
+						})
+						break;
+				}
+			},
 			RadioChange(event){
 				this.radio=event.detail.value;
 				if(this.radio=='radio0'){
@@ -121,16 +184,16 @@ import headTab from '../../../../components/head-tab.vue'
 					uni.navigateTo({
 						url:'../record-shop/record-shop',
 						success: (res) => {
-							this.modalName=''
+							this.hideModal()
 						}
 					})
-					
+
 				}else if(this.radio=='radio1'){
 					console.log('选择门店')
 					uni.navigateTo({
 						url:'../search-more-shop/search-more-shop?cat=chooseShop',
 						success: (res) => {
-							this.modalName=''
+							this.hideModal()
 						}
 					})
 				}
@@ -139,7 +202,7 @@ import headTab from '../../../../components/head-tab.vue'
 				this.radio='';
 				this.modalName = e.currentTarget.dataset.target
 			},
-			hideModal(e) {
+			hideModal() {
 				this.modalName = null
 			},
 			goBack(){
@@ -174,7 +237,7 @@ import headTab from '../../../../components/head-tab.vue'
 					}
 				})
 			},
-			
+
 			recordShop(){
 				uni.navigateTo({
 					url:'../record-shop/record-shop'
@@ -194,7 +257,7 @@ import headTab from '../../../../components/head-tab.vue'
 			}
 		},
 		onLoad(options){
-			
+
 			this.systemInfo();
 			this.getShopList();
 			this.$fire.on('record-shop',res=>{
@@ -210,6 +273,9 @@ import headTab from '../../../../components/head-tab.vue'
 <style lang="less">
 	page{
 		background:#fff;
+	}
+	.cu-bar{
+		min-height:0px;
 	}
 .header-content{
 		padding:15px 14px;

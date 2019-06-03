@@ -21,19 +21,19 @@
 					<view class="title " ><text class="text-red" style="margin-right:4rpx;">*</text>品牌类别</view>
 					<view @click="showShopCatalog()">
 						{{category.name}}
-						<text class="cuIcon-right" ></text>
+						<text class="cuIcon-right color-normal" ></text>
 					</view>
 				</view>
 				<view class="cu-form-group">
 						<view class="title"><text style="color:red;margin-right:5px;">*</text>门店名称</view>
-						<input type="text "  placeholder="门店名称" v-model="shop.name"  class="text-gray" style="font-size:12px;text-align:right">
+						<input type="text "  placeholder="门店名称" v-model="shop.name"  class="color-normal" style="font-size:12px;text-align:right">
 				</view>
 
 
 
 				<view class="cu-form-group ">
 						<view class="title text-gray" ><text style="color:red;margin-right:5px;">*</text>选择城市</view>
-						<addressed @changes="childClick($event)"></addressed>
+						<addressed @changes="childClick($event)" :isShow="false"></addressed>
 				</view>
 
 
@@ -56,12 +56,12 @@
 
 			<view class="cu-form-group">
 				<view class="title">门店联系人</view>
-				<text>{{shop.contractor}}</text>
+				<text class="color-normal">{{shop.contractor}}</text>
 				<!-- <input placeholder="门店联系人" v-model="shop.contractor" class="text-gray" style="font-size:12px;"></input> -->
 			</view>
 			<view class="cu-form-group position_relative">
 				<view class="text-black">联系方式</view>
-				<text>{{shop.telephone}}</text>
+				<text class="color-normal">{{shop.telephone}}</text>
 				<!-- <input placeholder="请输入手机号" v-model="shop.telephone" class="text-gray" style="font-size:12px;"  type="phone" @blur="checkTelEvent(shop.telephone)" /> -->
 			</view>
 
@@ -228,15 +228,13 @@
 									filePath:tempFilePaths[0],
 									name:'file',
 									formData:{
-										'x:type':this.$store.state.shop_file,
+										'x:type':this.$store.state.constants.shopCover,
 										'x:owner': res.data.owner,
 										'x:creator': res.data.id,
 									},
 									success: (uploadFileRes) => {
-								
 										let res=JSON.parse(uploadFileRes.data)
 										this.shop.coverID=res.data;
-										console.log(this.shop.coverID)
 									}
 								});
 								uploadTask.onProgressUpdate((res)=>{
@@ -616,7 +614,7 @@
 											filePath:tempFilePaths[i],
 											name:'file',
 											formData:{
-												'x:type':26,
+												'x:type':this.$store.state.constants.shop_file,
 												'x:owner': info.data.owner,
 												'x:creator': info.data.id,
 											},
@@ -803,28 +801,22 @@
 </script>
 
 <style lang="less">
-	.cu-btn{
-		border-radius: 5px;
-		font-size:16px;
-font-family:PingFangSC-Regular;
-font-weight:400;
-color:rgba(255,255,255,1);
-	}
+	
 	.title{
 		font-size:15px;
 		font-family:'PingFangSC-Regular';
 		font-weight:400;
 		color:rgba(42,42,42,1);
 	}
-	.cu-form-group uni-input{
-		text-align:right;
-	}
-	.uni-textarea-compute{
-		padding-top:8px;
-		padding-left:11px;
-		background:rgba(247,247,247,1);
-		border-radius:4px;
-	}
+	// .cu-form-group uni-input{
+	// 	text-align:right;
+	// }
+	// .uni-textarea-compute{
+	// 	padding-top:8px;
+	// 	padding-left:11px;
+	// 	background:rgba(247,247,247,1);
+	// 	border-radius:4px;
+	// }
 	.detail{
 		padding:18px 11px 5px 16px;
 		background: #fff;

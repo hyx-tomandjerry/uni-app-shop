@@ -110,7 +110,7 @@
 										this.isLoading=false;
 										setTimeout(()=>{
 												this.isFinish=true;
-										},200)
+										},600)
 										
 									
 									}else{
@@ -153,6 +153,9 @@
 		},
 		computed:{
 			
+		},
+		onShow(){
+			this.getRepairList(this.TabCur)
 		},
 		methods:{
 			//查看评价

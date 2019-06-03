@@ -8,7 +8,7 @@
 		<!-- 选择地址展示 -->
 		<view @tap="showAddress">
 			<text v-if="coname" style="font-size:13px;">{{coname}} - {{ctname}} - {{csname}}</text>
-			<text v-else class="cuIcon-right" style="font-size:20px;color:#898888"></text>
+			<text v-else class="cuIcon-right" style="font-size:20px;color:rgba(42,42,42,1)"></text>
 		</view>
 		<!-- 选择地址模态框 -->
 		<view class="jm-modal" :class="showFlag==true?'show1':''">
@@ -74,7 +74,11 @@
 		},
 		props: {
 			//载入的标签数据
-			addressd: Array
+			addressd: Array,
+			  isShow: {
+					type: Boolean,
+					default:false
+			},
 		},
 		mounted() {
 			_self = this;
@@ -109,8 +113,8 @@
 					provinceID:_self.co,
 					city: _self.ctname,
 					cityID:_self.ct,
-					district: _self.csname,
-					districtID:_self.cs
+					district:this.isShow?'': _self.csname,
+					districtID:this.isShow?'':_self.cs
 				}
 				_self.$emit("changes", data);
 			},
@@ -129,7 +133,16 @@
 					case 2:
 						_self.ctname = name;
 						_self.ct = id;
-						_self.getadd(3, id);
+						
+						if(this.isShow){
+							//不用显示点击第三级
+							console.log('jjjj')
+							_self.emitData();
+							_self.hideAddress();
+						}else{
+							_self.getadd(3, id);
+						}
+					
 						break;
 					case 3:
 						_self.csname = name;

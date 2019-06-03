@@ -6,8 +6,8 @@ const store=new Vuex.Store({
 	state:{
 		appKey:null,//存储服务器发送给客户端的sessionkey
 		hostUrl:'http://192.168.10.22/services',
-		// url:'http://192.168.10.58:8080/blade/services?f=',
-		url:'http://192.168.10.22/services?f=',
+		url:'http://192.168.10.58:8080/blade/services?f=',
+		// url:'http://192.168.10.22/services?f=',
 		uploadHostUrl:'http://up.qiniup.com?token=',
 		userInfo:null,
 		statusHeight:44,
@@ -19,6 +19,7 @@ const store=new Vuex.Store({
 			serviceorder_file:18,//报修附件
 			shop_file:26,//门店附件,
 			 log : 4,		//Work Report Daily日志
+			 shopCover:29,//门店头像
 
 		},
 		shoperType:4,

@@ -3,7 +3,7 @@
 		<view class="search-container">
 			<view class="flex justify-between search-item">
 				<view class="title">选择城市</view>
-				<addressed @changes="childClick($event)"></addressed>
+				<addressed @changes="childClick($event)" :isShow="true"></addressed>
 			</view>
 			<view class="flex justify-between search-item">
 				<view class="title">选择品牌类型</view>
@@ -24,7 +24,7 @@
 								{{item.name}} 
 							</text>
 							<text class="cuIcon-brand text-green" v-if="item.brandName" style="margin-right:3px;"></text>
-							<text class="text-green">{{item.brandName}}</text>
+							<text class="text-green" v-if="item.brandName">{{item.brandName}}</text>
 						</view>
 						
 						<!-- <text class="cu-tag round" style="font-size:12px;height:20px;"

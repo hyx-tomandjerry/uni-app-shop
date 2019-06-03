@@ -9,12 +9,12 @@
 				<!--</view>-->
 			<!--</view>-->
 
-			<view class="cu-form-group">
+			<view class="cu-form-group" v-if="type=='article'">
 				<view class="log-title"><text class="text-red">*</text>文章编号</view>
 				<input placeholder="文章编号" v-model="ArticleInfo.seq" disabled>
 			</view>
 
-			<view class="cu-form-group">
+			<view class="cu-form-group" v-if="type=='article'">
 				<view class="log-title"><text class="text-red">*</text>文章标题</view>
 				<input placeholder="文章标题" v-model="ArticleInfo.title" disabled>
 			</view>
@@ -79,15 +79,22 @@
 				files:[],
 				ArticleInfo:'',
 				article:'',
-				token:''
+				token:'',
+				type:''
 			}
 		},
 		onLoad(options){
 			console.log(options)
+			this.type=options.type;
 			this.getUploadToken()
-			this.article = options.id
+			
+			
 			if(options){
-				this.getArticleInfo(options.id)
+				if(options.id){
+					this.article = options.id;
+					this.getArticleInfo(options.id)
+				}
+				
 			}
 			this.$fire.on('shop',res=>{
 				this.getShopInfo(res.shopID)
@@ -102,21 +109,33 @@
 						icon:'none'
 					})
 				}else{
-				    console.log(this.files)
-                    this.$ajax('NewWorkReportByShop',{
-                        title:this.log.title,
-                        article:this.article,
-                        summary:this.log.summary,
-                        files:this.files?this.files.join(','):'',
-                    },res=>{
-                        uni.showToast({
-                            title:'新建工作汇报成功',
-                            icon:'none'
-                        });
-                        setTimeout(()=>{
-                           this.$fire.fire('logRefresh','')
-                        },500)
-                    })
+				    uni.getStorage({
+				    	key:'userInfo',
+						success: (res) => {
+							this.$ajax('NewWorkReportByShop',{
+								reporter:res.data.id,
+							    title:this.log.title,
+							    article:this.type=='article'?this.article:'',
+							    summary:this.log.summary,
+							    files:this.files?this.files.join(','):'',
+							},res=>{
+							    uni.showToast({
+							        title:'新建工作汇报成功',
+							        icon:'none'
+							    });
+							    setTimeout(()=>{
+									uni.navigateBack({
+										delta:1,
+										success:(res)=>{
+											 this.$fire.fire('logRefresh','111')
+										}
+									})
+							      
+							    },500)
+							})
+						}
+				    })
+                    
 				}
 			},
 			//获得门店信息
@@ -129,7 +148,6 @@
 			getArticleInfo(id){
 				this.$ajax('Article',{id:id},res=>{
 					this.ArticleInfo=res;
-					console.log(this.ArticleInfo)
 				})
 			},
 			//选择门店

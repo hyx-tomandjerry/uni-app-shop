@@ -68,7 +68,7 @@
 						
 						<view class="repair-detail-list-item">
 							<view>报修描述</view>
-							<view class="text-grey">{{repaitItem.summary}}</view>
+							<view class="text-grey " style="background:rgba(247,247,247,1);padding:10px 15px;border-radius: 10px;min-height:100px;;">{{repaitItem.summary}}</view>
 						</view>
 						
 					</view>
@@ -90,7 +90,7 @@
 							:class="{'bg-orange':repaitItem.status==$store.state.repairStatus.untreated,'bg-green':repaitItem.status==$store.state.repairStatus.treating,'bg-red':repaitItem.status==$store.state.repairStatus.refuse,'bg-purple':repaitItem.status==$store.state.repairStatus.finish}"
 							>{{repaitItem.status | repairStatus}}</text>
 						</view>
-						<view class="cu-tag line-blue" @click="showModal($event)" data-target="bottomModal" v-if="repaitItem.status!=1">
+						<view class="cu-tag line-blue" @click="showModal($event)" data-target="bottomModal" v-if="repaitItem.status==2 || repaitItem.status==4">
 							查看进度
 						</view>
 					</view>

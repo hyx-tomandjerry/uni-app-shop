@@ -1,17 +1,26 @@
 <template>
 	<view>
-		<view class="tab-content bg-white flex justify-between">
-			<view @click="showItem('log')">
-				<image src="../../../static/img/work/work.png" style="width:50px;height:50px;"></image>
-				<view>工作汇报</view>
+		<view class="tab-content bg-white text-center">
+			<view class="tab-item" style="background:rgba(239,249,251,1);" @click="showItem('log')">
+				<image src="../../../static/img/work/tab/work.png" 
+				style="width:43px;height:43px;"></image>
+				<view class="font-weight-normal font-size-big">
+					工作日志
+				</view>
 			</view>
-			<view @click="showItem('express')">
-				<image src="../../../static/img/index-tab/tab4.png" style="width:50px;height:50px;"></image>
-				<view>快递包裹</view>
+			<view class="tab-item" style="background:rgba(252,237,236,1);" @click="showItem('express')">
+				<image src="../../../static/img/work/tab/express.png" 
+				style="width:43px;height:43px;"></image>
+				<view class="font-weight-normal font-size-big">
+					快递包裹
+				</view>
 			</view>
-			<view @click="showItem('repair')">
-				<image src="../../../static/img/index-tab/tab2.png" style="width:50px;height:50px;"></image>
-				<view>我的报修</view>
+			<view class="tab-item" style="background:rgba(227,243,237,1);"  @click="showItem('repair')">
+				<image src="../../../static/img/work/tab/repair.png" 
+				style="width:43px;height:43px;"></image>
+				<view class="font-weight-normal font-size-big">
+					我的报修
+				</view>
 			</view>
 		</view>
 		
@@ -113,6 +122,16 @@
 		background:#fff;
 	}
 	.tab-content{
-		padding:20px 26px;
+		padding-top:16px;
+		padding-right:12px;
+		padding-left:14px;
+	}
+	.tab-item{
+		min-height:95px;
+		text-align:center;
+		border-radius:8px;
+		padding-top:13px;
+		padding-bottom:11px;
+		margin-bottom:11px;
 	}
 </style>

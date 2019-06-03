@@ -28,7 +28,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
 		<view class="cu-load bg-gray over" v-if="isFinish"></view>
 	</view>
@@ -64,8 +64,8 @@
 						this.isLoading=false;
 						setTimeout(()=>{
 								this.isFinish=true;
-						},200)
-						
+						},600)
+
 					}else{
 						res.forEach(item=>{
 							this.skillList.concat(item)
@@ -76,10 +76,10 @@
 							// }
 						})
 					}
-					
+
 				})
 			},500)
-			
+
 		},
 		methods:{
 			checkItemInfo(item){
@@ -110,18 +110,18 @@
 			}
 		},
 		onLoad(option){
-			
+
 			if(option.value=='skill'){
 				this.title='销售技巧';
 				this.value=option.value;
-				
+
 			}else if(option.value=='example'){
 				this.title='陈述案例';
 				this.value=option.value;
-			
+
 			}
 			this.getArticleList()
-		
+
 		}
 	}
 </script>

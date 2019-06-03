@@ -152,7 +152,10 @@
 			}
 		},
 		onShow(){
-			this.getUserInfoAvatar()
+			this.getUserInfoAvatar();
+			this.$ajax('RefreshOnlineUser',{},res=>{
+				this.userInfo=res;
+			})
 		},
 		onLoad(){
 			this.$ajax('RefreshOnlineUser',{},res=>{
