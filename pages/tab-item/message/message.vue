@@ -1,18 +1,18 @@
 <template>
 	<view style="position:relative;">
-		
+
 		<view class="header-content" >
-			<view class="flex justify-start" @click="showGroupList('group')">
-				<image src="../../../static/img/message/group.png" 
-				style="width:50px;
-				height:50px;
-				vertical-align: middle;
-				margin-right:29rpx;"
-				></image>
-				<view class="list-title">群组列表</view>
-			</view>
+			<!--<view class="flex justify-start" @click="showGroupList('group')">-->
+				<!--<image src="../../../static/img/message/group.png"-->
+				<!--style="width:50px;-->
+				<!--height:50px;-->
+				<!--vertical-align: middle;-->
+				<!--margin-right:29rpx;"-->
+				<!--&gt;</image>-->
+				<!--<view class="list-title">群组列表</view>-->
+			<!--</view>-->
 			<view class="flex justify-start" @click="showGroupList('telephone')">
-				<image src="../../../static/img/message/telephone.png" 
+				<image src="../../../static/img/message/telephone.png"
 				style="width:50px;
 				height:50px;
 				vertical-align: middle;
@@ -21,7 +21,7 @@
 				<view class="list-title">通讯录</view>
 			</view>
 		</view>
-		
+
 		<scroll-view scroll-y="true" class="page" :class="modalName!=null?'show':''" >
 			<view class="cu-list menu-avatar">
 				<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in chatList"  :key="index"
@@ -46,35 +46,35 @@
 					</view>
 				</view>
 			</view>
-		
+
 		</scroll-view>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		<!-- <view class="box" style="position:fixed;bottom:0px;width:100%;">
 			<view class="cu-bar tabbar bg-white">
 				<view class="action" style="padding-top:5px;" @click="showIndexClick()">
 					<view class="cuIcon-cu-image">
 						<image src="../../../static/img/tab_img/shouye.png"></image>
-						
+
 					</view>
 					<view class="text-gray">首页</view>
 				</view>
@@ -93,7 +93,7 @@
 				</view>
 				<view class="action" style="padding-top:5px;" @click="showMineClick()">
 					<view class="cuIcon-cu-image">
-						
+
 						<image src="../../../static/img/tab_img/mine.png"></image>
 					</view>
 					<view class="text-gray">我的</view>
@@ -110,7 +110,7 @@
 			return {
 				chatList:[],//当前聊天列表
 				modalName: null,
-				
+
 				listTouchStart: 0,
 				listTouchDirection: null,
 			}
@@ -119,11 +119,11 @@
 			this.getLoginInfo();
 			this.$fire.on('group',result=>{
 				console.log(result)
-				
+
 			})
-			
+
 		},
-		
+
 		methods: {
 			showWorkClick(){
 				uni.navigateTo({
@@ -142,15 +142,15 @@
 			ListTouchStart(e) {
 				this.listTouchStart = e.touches[0].pageX
 			},
-			
+
 			// ListTouch计算方向
 			ListTouchMove(e) {
 				this.listTouchDirection = e.touches[0].pageX - this.listTouchStart > 0 ? 'right' : 'left'
 			},
-			
+
 			// ListTouch计算滚动
 			ListTouchEnd(e) {
-				if (this.listTouchDirection == 'left') {
+				if (this.listTouchDirection === 'left') {
 					this.modalName = e.currentTarget.dataset.target
 				} else {
 					this.modalName = null
@@ -161,19 +161,19 @@
 				uni.getStorage({
 					key:'userInfo',
 					success: (res) => {
-						if(res.data.status!=1){
+						if(res.data.status!==1){
 							uni.showToast({
 								title:'您没有该权限',
 								icon:'none'
 							})
-						}else{
-							uni.navigateTo({
-								url:'../../tab-item-content/message-center/group-list/group-list?type='+name
-							})
+							return;
 						}
+                        uni.navigateTo({
+                            url:'../../tab-item-content/message-center/group-list/group-list?type='+name
+                        })
 					}
 				})
-				
+
 			},
 			//获得通讯录列表
 			getAllFriendEvent(){
@@ -203,7 +203,7 @@
 					// console.log('左侧会话列表',this.chatList)
 				})
 			},
-			
+
 			showIndexClick(){
 				uni.navigateTo({
 					url:'../index/index'
@@ -287,7 +287,7 @@
 									this.$store.commit('setLoginInfo',loginInfo);
 									this.getAllFriendEvent();
 									this.getRecentContactList();
-									
+
 								},
 								(err)=>{
 									// console.log(err,'用户登录失败');
@@ -303,8 +303,8 @@
 					}
 				})
 			},
-			
-			
+
+
 		}
 	}
 </script>
@@ -321,7 +321,7 @@
 		height: 100Vh;
 		width: 100vw;
 	}
-	
+
 	.page.show {
 		overflow: hidden;
 	}
@@ -331,7 +331,7 @@
 		padding-top:10px;
 		margin-bottom:28rpx;
 		background:#fff;
-		
+
 	}
 	.list-title{
 		width:70%;
@@ -345,7 +345,7 @@
 		margin-bottom:17px;
 	}
 	.talk-content{
-		
+
 		padding-right:26rpx;
 		padding-left:32rpx;
 		padding-top:10px;
