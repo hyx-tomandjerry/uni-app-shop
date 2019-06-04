@@ -102,8 +102,7 @@
 </template>
 
 <script>
-var _this;
-import headTab from '../../../../components/head-tab.vue'
+
 	export default {
 		data() {
 			return {
@@ -147,7 +146,7 @@ import headTab from '../../../../components/head-tab.vue'
 
 		},
 		components:{
-			headTab
+
 		},
 		methods: {
 			toRecordShop(){
@@ -180,7 +179,7 @@ import headTab from '../../../../components/head-tab.vue'
 			RadioChange(event){
 				this.radio=event.detail.value;
 				if(this.radio=='radio0'){
-					console.log('录入门店')
+
 					uni.navigateTo({
 						url:'../record-shop/record-shop',
 						success: (res) => {
@@ -189,7 +188,7 @@ import headTab from '../../../../components/head-tab.vue'
 					})
 
 				}else if(this.radio=='radio1'){
-					console.log('选择门店')
+
 					uni.navigateTo({
 						url:'../search-more-shop/search-more-shop?cat=chooseShop',
 						success: (res) => {
@@ -210,34 +209,6 @@ import headTab from '../../../../components/head-tab.vue'
 					delta:1
 				})
 			},
-			InputFocus(e) {
-				this.inputValue = e.detail.height
-			},
-			InputBlur(e) {
-				this.inputValue = 0
-			},
-			searchShop(e) {
-				let key = e.detail.value.toLowerCase();
-				let list = this.icon;
-				for (let i = 0; i < list.length; i++) {
-					let a = key;
-					let b = list[i].name.toLowerCase();
-					if (b.search(a) != -1) {
-						list[i].isShow = true
-					} else {
-						list[i].isShow = false
-					}
-				}
-				this.icon = list
-			},
-			systemInfo(){
-				uni.getSystemInfo({
-					success: (res) => {
-						this.CustomBar=res.windowTop
-					}
-				})
-			},
-
 			recordShop(){
 				uni.navigateTo({
 					url:'../record-shop/record-shop'
@@ -256,16 +227,18 @@ import headTab from '../../../../components/head-tab.vue'
 				})
 			}
 		},
-		onLoad(options){
-
-			this.systemInfo();
-			this.getShopList();
-			this.$fire.on('record-shop',res=>{
-				this.getShopList()
-			})
-			this.$fire.on('chooseShop',res=>{
-				this.getShopList()
-			})
+		onShow(){
+            this.getShopList()
+		},
+		onLoad(){
+			// this.getShopList();
+			// //录入门店成功
+			// this.$fire.on('record-shop',res=>{
+			// 	this.getShopList()
+			// })
+			// this.$fire.on('chooseShop',res=>{
+			// 	this.getShopList()
+			// })
 		}
 	}
 </script>

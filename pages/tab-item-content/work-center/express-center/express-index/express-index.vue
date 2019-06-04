@@ -5,7 +5,7 @@
 				<text class="cuIcon-back" @click="goBack()" style="font-size:22px;"></text>
 			</block>
 			<block slot="content"><view class="font-size-big font-weight-bold">快递包裹</view></block>
-			<block slot="right"><view class="font-size-normal font-weight-normal">寄件记录</view></block>
+			<block slot="right"><view class="font-size-normal font-weight-normal" @click="toShowList()">寄件记录</view></block>
 		</cu-custom>
 		<view class="express-container">
 			<image src="../../../../../static/img/work/express/log1.png" style="width:100%;height:120px;"></image>
@@ -53,6 +53,11 @@
 			
 		},
 		methods:{
+			toShowList(){
+				uni.navigateTo({
+					url:'../express-list/express-list'
+				})
+			},
 			goBack(){
 				uni.navigateBack({
 					delta:1
