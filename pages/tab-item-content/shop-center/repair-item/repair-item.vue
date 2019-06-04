@@ -94,45 +94,74 @@
 				}
 			},
 			getCategory() {
-				var _this=this;
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						this.$ajax('Constants',{
-							owner:res.data.owner,
-							type:this.$store.state.constants.repair_type,
-							parent:-1,
-							objects:1
-						},res=>{
-							this.list=res;
-							var bigArray=[],subArray=[];
-							res.forEach(item=>{
-								if(item.parent==0){
-									bigArray.push(item)
-								}else{
-									subArray.push(item);
-								}
-							})
-							this.repairObj.subID=subArray[0].id;
-							for(var i=0;i<bigArray.length;i++){
-								var subList = [];
-								for(var j=0;j<subArray.length;j++){
-									if(subArray[j].parent==bigArray[i].id){
-										subList.push({"name":subArray[j].val,obj:subArray[j]})
-									}
-								}
-								this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
-							}
-							this.subCategoryList = this.categoryList[0].subCategoryList;
-							this.repairObj={
-								bigName:this.categoryList[0].obj.val,
-								bigID:this.categoryList[0].obj.id,
-								subID:'',
-								subName:''
-							}
-						})
+				this.$ajax('ServiceCatalog',{},res=>{
+					this.list=res;
+					var bigArray=[],subArray=[];
+					res.forEach(item=>{
+						if(item.parent==0){
+							bigArray.push(item)
+						}else{
+							subArray.push(item);
+						}
+					})
+					if(subArray[0].id){
+						this.repairObj.subID=subArray[0].id;
 					}
-				})
+					for(var i=0;i<bigArray.length;i++){
+						var subList = [];
+						for(var j=0;j<subArray.length;j++){
+							if(subArray[j].parent==bigArray[i].id){
+								subList.push({"name":subArray[j].val,obj:subArray[j]})
+							}
+						}
+						this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
+					}
+					this.subCategoryList = this.categoryList[0].subCategoryList;
+					this.repairObj={
+						bigName:this.categoryList[0].obj.val,
+						bigID:this.categoryList[0].obj.id,
+						subID:'',
+						subName:''
+					}
+				},false)
+				// uni.getStorage({
+				// 	key:'userInfo',
+				// 	success: (res) => {
+				// 		this.$ajax('Constants',{
+				// 			owner:res.data.owner,
+				// 			type:this.$store.state.constants.repair_type,
+				// 			parent:-1,
+				// 			objects:1
+				// 		},res=>{
+				// 			this.list=res;
+				// 			var bigArray=[],subArray=[];
+				// 			res.forEach(item=>{
+				// 				if(item.parent==0){
+				// 					bigArray.push(item)
+				// 				}else{
+				// 					subArray.push(item);
+				// 				}
+				// 			})
+				// 			this.repairObj.subID=subArray[0].id;
+				// 			for(var i=0;i<bigArray.length;i++){
+				// 				var subList = [];
+				// 				for(var j=0;j<subArray.length;j++){
+				// 					if(subArray[j].parent==bigArray[i].id){
+				// 						subList.push({"name":subArray[j].val,obj:subArray[j]})
+				// 					}
+				// 				}
+				// 				this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
+				// 			}
+				// 			this.subCategoryList = this.categoryList[0].subCategoryList;
+				// 			this.repairObj={
+				// 				bigName:this.categoryList[0].obj.val,
+				// 				bigID:this.categoryList[0].obj.id,
+				// 				subID:'',
+				// 				subName:''
+				// 			}
+				// 		})
+				// 	}
+				// })
 				// uni.request({
 				// 	url:this.$store.state.url+'Constants',
 				// 	data:{

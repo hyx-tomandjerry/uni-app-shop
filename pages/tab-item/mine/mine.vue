@@ -112,12 +112,18 @@
 			hideModal(type){
 				this.isQuit=false;
 				if(type=='agree'){
-					uni.clearStorage()
-					setTimeout(()=>{
-						uni.navigateTo({
-							url:'../../login-design/login/login'
-						})
-					},500)
+					uni.removeStorage({
+						key:'userInfo',
+						success: (res) => {
+							console.log(res)
+							setTimeout(()=>{
+								uni.navigateTo({
+									url:'../../login-design/login/login'
+								})
+							},500)
+						}
+					})
+					
 				}
 				
 			},
@@ -158,9 +164,7 @@
 			})
 		},
 		onLoad(){
-			this.$ajax('RefreshOnlineUser',{},res=>{
-				this.userInfo=res;
-			})
+			
 			this.$fire.on('refresh',res=>{
 				this.$ajax('RefreshOnlineUser',{},res=>{
 					this.userInfo=res;

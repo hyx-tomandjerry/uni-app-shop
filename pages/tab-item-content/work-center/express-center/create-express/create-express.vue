@@ -65,7 +65,7 @@
 			<view class="goods-item flex justify-between borderBottom" >
 				<view class="font-weight-normal font-size-normal item-name">上门时间</view>
 				<view style="width:75%;text-align:right"><text class="font-weight-normal font-weight-normal text-grey" >请选择上门时间</text></view>
-				<text class="cuIcon-right right-icon" ></text>
+				<text class="cuIcon-right right-icon"   @click="showModal($event)" data-target="timeModal"></text>
 			</view>
 			
 			<view class="goods-item flex justify-between borderBottom">
@@ -117,8 +117,44 @@
 					<view class="font-weight-normal font-size-big">快递选择</view>
 					<view class="action cuIcon-close" @click="hideModal()"></view>
 				</view>
-				<view class="padding-xl">
-					Modal 内容。
+				<view class="bg-white">
+					<view  class="express-item-modal">
+						<view class="flex justify-start express-item-tab position_relative" 
+							@click="chooseExpress(item)"
+						v-for="(item,index) in expressList" :key="index">
+							<image :src="item.url" class="express-logo"></image>
+							<view style="text-align: left;">
+								<view class="font-size-big font-weight-bold">{{item.title}}</view>
+								<view class="font-size-normal font-weight-normal">{{item.desc}}</view>
+							</view>
+							<image src="../../../../../static/img/work/choose.png" v-if="item.id==expressTab" mode=""  class="position_absolute choose-item"></image>
+						</view>
+					</view>
+					
+				</view>
+			</view>
+		</view>
+		
+		<view class="cu-modal bottom-modal" :class="modalName=='timeModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white borderBottom">
+					<view class="action text-green"></view>
+					<view class="font-weight-normal font-size-big">上门取件时间</view>
+					<view class="action cuIcon-close" @click="hideModal()"></view>
+				</view>
+				<view class="">
+					<view  class="bg-white nav">
+						<view class="flex text-center">
+							<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(item,index) in timeTab" :key="index" 
+							 @click="tabSelect(index)"
+							 :data-id="index">
+							{{item}}
+							</view>
+						</view>
+						<view v-if="TabCur==0">000000</view>
+						<view v-if="TabCur==1">11111111111</view>
+						<view v-if="TabCur==2">222222</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -148,6 +184,19 @@
 				appointDate:'',//预约时间
 				receiver:'',
 				modalName:'',
+				expressList:[
+					{id:1,url:'../../../../../static/img/work/logo/shunfeng.png',title:'顺丰速运',desc:'传递，零距离，快速到达',isChecked:false},
+					{id:2,url:'../../../../../static/img/work/logo/tiantian.png',title:'天天快递',desc:'卓越服务，我们就在您身边',isChecked:false},
+					{id:3,url:'../../../../../static/img/work/logo/yuantong.png',title:'圆通快递',desc:'一键下单，快速取件',isChecked:false},
+					{id:4,url:'../../../../../static/img/work/logo/yunda.png',title:'韵达快递',desc:'韵悠之间，达通天下',isChecked:false},
+					{id:5,url:'../../../../../static/img/work/logo/zhongtong.png',title:'中通快递',desc:'一键下单，快速取件',isChecked:false},
+					
+				],
+				timeTab:[
+					'今天','明天','后天'
+				],
+				expressTab:0,//选中的快递
+				TabCur:0,//上门取件时间
 			
 			}
 		},
@@ -155,6 +204,12 @@
 			
 		},
 		methods:{
+			tabSelect(index){
+				this.TabCur=index;
+			},
+			chooseExpress(item){
+				this.expressTab=item.id
+			},
 			goBack(){
 				uni.navigateBack({
 					delta:1
@@ -276,4 +331,16 @@
 		
 	}
 	
+	.express-item-modal{
+		padding-top:20px;padding-left:14px;padding-bottom:5px;
+		.express-item-tab{
+			margin-bottom:19px;
+			.express-logo{
+				width: 44px;height:44px;vertical-align: middle;margin-right:16px;
+			}
+			.choose-item{
+				width:18px;height:18px;right:18px;top:15px;
+			}
+		}
+	}
 </style>

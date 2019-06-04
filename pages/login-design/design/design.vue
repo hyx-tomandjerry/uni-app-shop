@@ -89,8 +89,14 @@
 							icon:'none'
 						})
 						setTimeout(()=>{
-							uni.navigateTo({
-								url:'../login/login?account='+this.designer.mobile+'&token='+this.designer.token
+							uni.navigateBack({
+								delta:1,
+								success:(res)=>{
+									this.$fire.fire('login',{
+										account:this.designer.mobile,
+										token:this.designer.token
+									})
+								}
 							})
 						},600)
 					},false)

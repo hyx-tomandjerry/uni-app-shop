@@ -235,6 +235,7 @@
 									success: (uploadFileRes) => {
 										let res=JSON.parse(uploadFileRes.data)
 										this.shop.coverID=res.data;
+										console.log(this.shop.coverID)
 									}
 								});
 								uploadTask.onProgressUpdate((res)=>{
@@ -244,7 +245,7 @@
 											icon:'none'
 										})
 									}
-								
+
 								},(error)=>{
 									uni.showToast({
 										title:'上传失败',
@@ -253,8 +254,8 @@
 								})
 							}
 						})
-						
-						
+
+
 					}
 				})
 			},
@@ -520,9 +521,9 @@
 												setTimeout(()=>{
 													uni.navigateBack({
 														delta:1,
-														success:(res)=>{
-															this.$fire.fire('record-shop')
-														}
+														// success:(res)=>{
+														// 	this.$fire.fire('record-shop')
+														// }
 													})
 												},500)
 											})
@@ -565,7 +566,7 @@
 										}
 					}
 				})
-				
+
 			},
 			//获得省市区
 			getProvinceData() {
@@ -639,7 +640,7 @@
 									}
 								}
 							})
-							
+
 
 
 						}
@@ -801,7 +802,7 @@
 </script>
 
 <style lang="less">
-	
+
 	.title{
 		font-size:15px;
 		font-family:'PingFangSC-Regular';

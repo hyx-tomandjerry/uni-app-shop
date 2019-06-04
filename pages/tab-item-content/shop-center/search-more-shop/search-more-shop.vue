@@ -153,12 +153,12 @@
 					this.$ajax('ChooseShop',{shop:item.id},res=>{
 						setTimeout(()=>{
 							uni.navigateBack({
-								delta:1,
-								success:(res)=>{
-									this.$fire.fire('chooseShop',{
-										shopID:item.id
-									})
-								}
+								delta:2,
+								// success:(res)=>{
+								// 	this.$fire.fire('chooseShop',{
+								// 		shopID:item.id
+								// 	})
+								// }
 							})
 						},500)
 					})

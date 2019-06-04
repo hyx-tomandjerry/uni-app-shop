@@ -218,7 +218,7 @@
 								org:this.companyObj.id
 							},res=>{
 								uni.showToast({
-									title:'申请结果将会发您手机，请注意查收',
+									title:'结果将会发您手机，请注意查收',
 									icon:'none'
 								});
 								this.hideModal('company');
@@ -274,18 +274,20 @@
 								icon:'none'
 							})
 							this.isShowJoinModal=false;
-							this.$ajax('RefreshOnlineUser',{},res=>{
+							this.$ajax('RefreshOnlineUser',{},userInfo=>{
+								this.userInfo=userInfo;
 								this.company={
-									name:res.ownerName,
-									cover:res.ownerLogoUrl
+									name:userInfo.ownerName,
+									cover:userInfo.ownerLogoUrl
 								}
 								uni.setStorage({
 									key:'userInfo',
-									data:res,
-									success: (res) => {
-										console.log(res)
+									data:userInfo,
+									success: (data) => {
+										
 									}
 								})
+								
 							})
 							
 						})
@@ -383,58 +385,70 @@
 			uniGrid,
 			NAUIcard
 		},
-		onLoad(){
-			this.getTodoList()
-			this.showArticles();
-			
-				uni.getStorage({
-				key:'userInfo',
-				success: (res) => {
-					this.userInfo=res.data
-					// console.log(this.userInfo)
-					 if(res.data.owner!=0 && res.data.status==3){
-						this.isShowJoinModal=true;
-						this.shop.shopID=res.data.department;
-						this.getShopInfo(this.shop.shopID)
-					}else if(res.data.owner==0 && res.data.status==2){
-						
-						this.isShowJoinCompany=true;//显示EID
-					}else{
-						this.company={
-							name:res.data.ownerName,
-							cover:res.data.ownerLogoUrl
-						}
-					}
-					
-				}
-			})
-		},
-		onReady(){
-			
-			//owner=0,显示加入公司
-			//owenr=0&&status=3显示邀请
+		onShow(){
 			uni.getStorage({
 				key:'userInfo',
 				success: (res) => {
 					this.userInfo=res.data
-					// console.log(this.userInfo)
+							// console.log(this.userInfo)
 					 if(res.data.owner!=0 && res.data.status==3){
-						this.isShowJoinModal=true;
-						this.shop.shopID=res.data.department;
-						this.getShopInfo(this.shop.shopID)
+							this.isShowJoinModal=true;
+							this.shop.shopID=res.data.department;
+							this.getShopInfo(this.shop.shopID)
 					}else if(res.data.owner==0 && res.data.status==2){
-						
-						this.isShowJoinCompany=true;//显示EID
+								
+							this.isShowJoinCompany=true;//显示EID
 					}else{
-						this.company={
-							name:res.data.ownerName,
-							cover:res.data.ownerLogoUrl
-						}
+							this.company={
+								name:res.data.ownerName,
+								cover:res.data.ownerLogoUrl
+							}
 					}
-					
 				}
 			})
+			// this.$ajax('RefreshOnlineUser',{},res=>{
+			// 	console.log('2222',res)
+			// 	this.userInfo=res;
+			// 	if(this.userInfo.owner!=0 && this.userInfo.status==3){
+			// 		this.isShowJoinModal=true;
+			// 		this.shop.shopID=this.userInfo.department;
+			// 		this.getShopInfo(this.shop.shopID)
+			// 	}else if(this.userInfo.owner==0 && this.userInfo.status==2){
+			// 		
+			// 		this.isShowJoinCompany=true;//显示EID
+			// 	}else{
+			// 		this.company={
+			// 			name:this.userInfo.ownerName,
+			// 			cover:this.userInfo.ownerLogoUrl
+			// 		}
+			// 		this.getTodoList()
+			// 		this.showArticles();
+			// 	}
+			// })
+			// uni.getStorage({
+			// 	key:'userInfo',
+			// 	success: (res) => {
+			// 		console.log('lllll')
+			// 		this.userInfo=res.data
+			// 		// console.log(this.userInfo)
+			// 		 if(res.data.owner!=0 && res.data.status==3){
+			// 			this.isShowJoinModal=true;
+			// 			this.shop.shopID=res.data.department;
+			// 			this.getShopInfo(this.shop.shopID)
+			// 		}else if(res.data.owner==0 && res.data.status==2){
+			// 			
+			// 			this.isShowJoinCompany=true;//显示EID
+			// 		}else{
+			// 			this.company={
+			// 				name:res.data.ownerName,
+			// 				cover:res.data.ownerLogoUrl
+			// 			}
+			// 		}
+			// 		
+			// 	}
+			// })
 		},
+		
 	}
 </script>
 <style scoped>
