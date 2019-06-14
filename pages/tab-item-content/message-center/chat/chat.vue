@@ -105,6 +105,7 @@
 </template>
 <script>
 	import webim from '../../../../static/js/webim.js'
+    import { mapState } from 'vuex'
 	export default{
 		data(){
 			return{
@@ -117,6 +118,13 @@
 		},
 		components:{
 
+		},
+        computed: {
+            ...mapState(['chatWith'])
+        },
+		mounted(){
+            // console.log(this.chatWith)
+            console.log(this.chatWith)
 		},
 		onLoad(){
 			this.getChatObjInfo()
