@@ -46,15 +46,19 @@
 		</view>
 		
 		<view class="cu-modal" :class="modalName=='resignModal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content">Modal标题</view>
-					<view class="action" @tap="hideModal()">
-						<text class="cuIcon-close text-red"></text>
-					</view>
+			<view class="cu-dialog bg-white">
+				<view class="cu-bar justify-center" style="background:rgba(247,248,253,1)">
+					<view class="font-weight-bold" style="font-size:19px;color:rgba(51,51,51,1);">注册类型</view>
 				</view>
-				<view class="padding-xl">
-					Modal 内容。
+				<view class=" flex ">
+					<view class="resign-item" style="padding:28px 20px  38px ;border-right:1px solid #EEEEED" @click="resignOperate('alone')">
+						<image src="../../../static/img/resign/alone.png" style="width:40px;height:40px;vertical-align: middle;margin-right:10px;"></image>
+						<text class="font-size-small font-weight-bold text-blue">个人注册</text>
+					</view>
+					<view class="resign-item" style="padding:28px 20px  38px 22px;"  @click="resignOperate('company')">
+						<image src="../../../static/img/resign/company.png" style="width:40px;height:40px;vertical-align: middle;margin-right:10px;"></image>
+						<text class="font-size-small font-weight-bold text-blue">代理商注册</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -101,6 +105,17 @@
 			
 		},
 		methods:{
+			resignOperate(type){
+				switch(type){
+					case 'alone':
+					uni.navigateTo({
+						url:'../design/design'
+					})
+					break;
+					case 'company':
+					break;
+				}
+			},
 			hideModal(){
 				this.modalName=null;
 			},
@@ -125,9 +140,7 @@
 			//注册
 			toDesign(){
 				this.modalName='resignModal'
-				// uni.navigateTo({
-				// 	url:'../design/design'
-				// })
+				
 			},
 			//忘记密码
 			toFindPassword(){

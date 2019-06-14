@@ -1,7 +1,10 @@
 <template>
 	<view>
 		<view class="design-container">
-			<view class=" font-weight-super font-size-supper" style="margin-bottom:4px;">注册</view>
+			<view class=" font-weight-super font-size-supper position_relative" style="margin-bottom:4px;">
+				<text style="height:6px;background:rgba(66,176,237,1);width:20%" ></text>
+				<text>代理商注册</text>
+			</view>
 			<view class="color-normal font-weight-normal font-size-normal">您好！欢迎来到乐象工程管家</view>
 		</view>
 		<view class="design-info">
