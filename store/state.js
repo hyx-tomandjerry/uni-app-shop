@@ -254,8 +254,11 @@ export default {
         session: 'xml_session',       // token验证
         im: 'xml_im',       // im信息
     },
-    imInfo:null,
+    imInfo:{},
     method:{
-        setImInfo:'setImInfo'
-    }
+        setImInfo:'setImInfo',
+        setImStore:'setImStore',
+        setChatWith:'setChatWith'
+    },
+    chatWith:null
 }

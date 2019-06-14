@@ -11,7 +11,10 @@ export default {
     setLoginInfo(state,loginInfo){
         state.loginInfo=loginInfo
     },
-    setImInfo (state, imInfo) {
-        state.imInfo = imInfo
+    setImInfo (state, data) {
+        state.imInfo = data
+    },
+    setChatWith (state, data) {
+        state.chatWith = data
     }
 }

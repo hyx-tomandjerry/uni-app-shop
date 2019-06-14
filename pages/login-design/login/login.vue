@@ -13,8 +13,8 @@
 				<text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:13px;"></text>
 				<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token">
 				<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)" v-else v-model="designer.token">
-				
-				<image src="../../../static/icon/eye_open.png" 
+
+				<image src="../../../static/icon/eye_open.png"
 					v-if="isShowPwd"
 					@click="showPwd()"
 				 style="width:44rpx;height:44rpx;position: absolute;right:44rpx;top:30px;" ></image>
@@ -22,16 +22,16 @@
 					v-else
 					@click="showPwd()"
 				 ></image>
-				
+
 			</view>
-			
+
 			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;">
-				
+
 				<button  @click="loginEvent()" :class="{
 					'inputStyle':designer.account || designer.token,
 					'noInputStyle':!designer.account && !designer.token
 				}">登录</button>
-				
+
 			</view>
 			<view class="forget" @click="toFindPassword()">忘记密码?</view>
 		</view>
@@ -41,6 +41,7 @@
 	</view>
 </template>
 <script>
+	import im from '../../../common/im'
 	import popModal from '../../../components/popmodal.vue'
 	export default{
 		data(){
@@ -67,13 +68,13 @@
 					this.designer.account=res.account;
 					this.designer.token=res.token;
 			})
-			
-			
+
+
 		},
 		methods:{
 			checkPwdEvent(event){
 				if(event){
-					var reg=/^[a-zA-Z0-9]{6,12}$/;   
+					var reg=/^[a-zA-Z0-9]{6,12}$/;
 					if(reg.test(event)==false){
 						uni.showToast({
 							title:'密码不能含有非法字符，长度在6-12之间',
@@ -81,14 +82,14 @@
 						})
 						return false;
 					}
-					
+
 				}
 			},
 			showPwd(){
-				
+
 				this.isShowPwd=!this.isShowPwd;
 			},
-			
+
 			//注册
 			toDesign(){
 				uni.navigateTo({
@@ -127,7 +128,7 @@
 										icon:'none',
 										duration: 1500
 									})
-									
+
 								}else{
 									if(res.type!=4){
 										uni.showToast({
@@ -137,34 +138,36 @@
 											duration: 1500
 										})
 									}else{
-										
+
 										uni.setStorage({
 											key: 'userInfo',
 											data: res,
 											success: (data) => {
-												
+											    this.$store.commit('setUserInfo',res)
+												im.webimLogin()
+
 												uni.showToast({
 													title:'登录成功',
 													icon:'none'
 												})
-												
+
 												setTimeout(()=>{
 													uni.switchTab({
 														url:'../../tab-item/index/index',
-														
+
 													})
 												},500)
 											}
 										});
-										
-											
+
+
 									}
 								}
 							},false)
 						}
 					}
 				})
-				
+
 			}
 		}
 	}
