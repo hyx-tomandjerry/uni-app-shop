@@ -57,8 +57,7 @@
 		display: inline-block;
 		color: $uni-text-color;
 		border-radius: $uni-border-radius-base;
-		background-color: $uni-bg-color-grey;
-		border: 1px solid $uni-bg-color-grey;
+
 
 		&--circle {
 			border-radius: 30upx;

@@ -1,9 +1,9 @@
 <template>
 	<view>
-		<view style="background:#fff;">
-			<scroll-view scroll-y="true" >
+		<view style="background:#fff;" v-if="shopList.length>0">
+			
 				<view class="shop-item flex justify-start borderBottom"  :key="index" v-for="(item,index) in shopList"
-					  style="padding:24px 10px 18px 14px;" @click="checkShopDetail(item)">
+					  style="padding:24px 10px 18px 14px;" @click="checkShopDetail(item)" >
 					<view style="width:30%;">
 						<image
 						v-if="item.coverurl"
@@ -23,9 +23,9 @@
 								<text class="cuIcon-brand line-blue"></text>{{item.catalogName}}
 							</view>
 						</view>
-						<view class="shop-desc" style="white-space: nowrap;" v-if="item.contactor || item.telephone">
+						<view class="shop-desc" style="white-space: nowrap;" v-if="item.managerName || item.managerMobile">
 							<image src="../../../../static/icon/shop-list/icon-dianzhang@2x.png" style="width:15px;height:15px;vertical-align: middle;margin-right:5px;"></image>
-							<text style="margin-right:6px;">店长:{{item.contactor}}</text><text class="text-blue">|</text><text style="margin-left:3px;"> {{item.telephone}}</text>
+							<text style="margin-right:6px;">店长:{{item.managerName || ''}}</text><text class="text-blue">|</text><text style="margin-left:3px;"> {{item.managerMobile || ''}}</text>
 						</view>
 						<view class="shop-desc">
 							<image src="../../../../static/icon/addRepairDingwei.png" class="img15"></image>
@@ -36,38 +36,39 @@
 						</view>
 					</view>
 				</view>
+				
+		
 
-			</scroll-view>
-
+		</view>
+		<view v-else>
+			<LxEmpty></LxEmpty>
 		</view>
 		<image src="../../../../static/icon/add.png"
-		style="position:fixed;right:12px;bottom:23px;width:68px;height:68px;z-index:100;" @click="showModal($event)" data-target="RadioModal"></image>
-
-
-	<!-- 	<view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()">
-			<view class="cu-dialog" @tap.stop="">
-				<radio-group class="block" @change="RadioChange($event)">
-					<view class="cu-list menu text-left">
-						<view class="cu-item" v-for="(item,index) in shopRadioList" :key="index">
-							<label class="flex justify-between align-center flex-sub">
-								<view class="flex-sub">{{item.name}}</view>
-								<radio class="round" :class="radio=='radio' + index?'checked':''" :checked="radio=='radio' + index?true:false"
-								 :value="'radio' + index"></radio>
-							</label>
-						</view>
+		style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click="showModal($event)" data-target="RadioModal"></image>
+		
+		<view class="cu-modal bottom-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()" style="background:rgba(255,255,255,0.8);">
+			<view class="cu-dialog" style="padding-bottom:19px;background:rgba(255,255,255,0.1)">
+				<view class=" align-center font-size-big font-weight-normal color-normal" style="padding:12px;">
+					新增
+				</view>
+				<view class="padding-xl justify-around flex ">
+					<view  @click="operateItem('record')"  >
+						<image src="../../../../static/img/record-shop.png" style="width:50px;height:50px;"></image>
+						<view class="font-size-normal font-weight-normal color-normal">录入门店</view>
 					</view>
-				</radio-group>
-			</view>
-		</view>
-		 -->
-		 <view class="cu-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-
-					<view class="action flex justify-between" @tap="hideModal">
-
+					<view  @click="operateItem('search')">
+						<image src="../../../../static/img/choose-shop.png" style="width:50px;height:50px;"></image>
+						<view class="font-size-normal font-weight-normal color-normal">选择门店</view>
 					</view>
 				</view>
+				<view class="text-center bg-white" style="width:100%;">
+					<text class="cuIcon-close font-size-middle font-weight-normal text-blue"></text>
+				</view>
+			</view>
+		</view>
+		 <view class="cu-modal" :class="modalName=='RadioModal1'?'show':''" @tap="hideModal()">
+			<view class="cu-dialog">
+				
 				<view class=" flex justify-around" style="padding:12px;">
 					<view @click="operateItem('record')"  style="padding:13px 15px;">
 						<text class="cuIcon-writefill text-blue" style="margin-right:8px;font-size:16px;"></text>
@@ -81,33 +82,43 @@
 			</view>
 		</view>
 
-		<view class="cu-modal" :class="isShow?'show':''">
+		<view class="cu-modal" :class="isShow?'show':''" style="background:rgba(0, 0, 0, 0.6)">
 			<view class="cu-dialog">
-				<view class="padding-xl ">
+				<view class="cu-bar bg-white justify-end borderBottom">
+					<view class="content font-size-big font-weight-normal color-normal">提示</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl bg-white borderBottom font-size-big font-weight-normal color-normal" style="padding:25px 0 27px;">
 					只有店长才能录入门店!
 				</view>
 				<view class="cu-bar bg-white justify-end" style="padding:5px;">
-					<view class="action">
-						<button class="cu-btn bg-green margin-left" @tap="toRecordShop()">确定</button>
-
+					<view class="action flex justify-around" style="width:100%">
+						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;" @tap="cancelRecord()">取消</view>
+						<view style="width:50%" class="text-blue"  @tap="toRecordShop()">确定</view>
+						
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
-		<view class="cu-load bg-gray over" v-if="isFinish"></view>
-
+		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
 
 	</view>
 </template>
 
 <script>
-
+	import LxEmpty from '../../../../lx_components/lx-empty.vue';
+	import uniLoadMore from '../../../../components/uni-load-more.vue'
 	export default {
 		data() {
 			return {
-				isLoading:false,
-				isFinish:false,
+				content:{
+					contentdown: "",
+					contentrefresh: "正在加载...",
+					contentnomore: "没有更多数据了"
+				},
+				loading:'more',
 				modalName:'',
 				title:'门店列表',
 				CustomBar:0,
@@ -124,18 +135,20 @@
 
 			};
 		},
+		onPullDownRefresh(){
+			uni.stopPullDownRefresh();
+			this.getShopList()
+		},
 		onReachBottom(){
 			console.log('到底了')
 			this.page++;
-			this.isLoading=true;
+			this.loading='loading';
 			setTimeout(()=>{
 				this.$ajax('MyShops',{address:'',offset:this.$utils.getOffset(this.page)},res=>{
 					if(res==''){
-						this.isLoading=false;
 						setTimeout(()=>{
-								this.isFinish=true;
+							this.loading='noMore'
 						},600)
-
 					}else{
 						res.forEach(item=>{
 							this.shopList.concat(item)
@@ -146,7 +159,8 @@
 
 		},
 		components:{
-
+			LxEmpty,
+			uniLoadMore
 		},
 		methods: {
 			toRecordShop(){
@@ -157,6 +171,10 @@
 						this.isShow=false;
 					}
 				});
+			},
+			cancelRecord(){
+				this.hideModal();
+				this.isShow=false;
 			},
 			operateItem(type){
 
@@ -202,7 +220,11 @@
 				this.modalName = e.currentTarget.dataset.target
 			},
 			hideModal() {
-				this.modalName = null
+				
+				if(this.modalName){
+					this.modalName = null
+				}
+				
 			},
 			goBack(){
 				uni.navigateBack({
@@ -231,6 +253,7 @@
             this.getShopList()
 		},
 		onLoad(){
+			 this.getShopList()
 			// this.getShopList();
 			// //录入门店成功
 			// this.$fire.on('record-shop',res=>{
@@ -247,9 +270,9 @@
 	page{
 		background:#fff;
 	}
-	.cu-bar{
-		min-height:0px;
-	}
+	
+	
+	
 .header-content{
 		padding:15px 14px;
 		border-bottom:0.5px solid #EEEEED;
@@ -279,13 +302,14 @@
 		width:95px !important;
 		height:71px !important;
 		margin-right:17px;
+		border-radius:6px;
 	}
 	.shop-name{
 		font-size:16px;
 		font-family:'PingFangSC-Regular';
 		font-weight:400;
 		color:rgba(42,42,42,1);
-		margin-bottom:20px;
+		margin-bottom:6px;
 
 	}
 	.shop-desc{
@@ -293,7 +317,7 @@
 		display: flex;
 		font-weight:400;
 		color:rgba(137,136,136,1);
-		margin-bottom:10px;
+		margin-bottom:4px;
 	}
 	.img15{
 		width:15px;

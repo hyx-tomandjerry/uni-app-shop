@@ -1,8 +1,8 @@
 import store from '../store/index'
 const errorText = require('./errorText')
-
 const ajax=(api,param,resp,reqCache=true)=>{
 	if(reqCache){
+		
 		uni.getStorage({
 			key:'userInfo',
 			success: (res) => {
@@ -47,12 +47,16 @@ const httpMethod = (api,param,baseParam,resp)=>{
 			if(res.statusCode==200){
                 if (res.data.code === 0) {
                     resp(res.data.data)
-                } else {
-                    switchCode(res.data.code.toString());
-                }
+                } else if(res.data.code==-31) {
+					 resp(res.data.data)
+                    
+                }else{
+					switchCode(res.data.code.toString());
+				}
 
 
 			}else {
+			
                 handleError(res)
 			}
 

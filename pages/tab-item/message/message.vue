@@ -1,53 +1,56 @@
 <template>
-	<view style="position:relative;">
-
-		<view class="header-content" >
-			<!--<view class="flex justify-start" @click="showGroupList('group')">-->
-				<!--<image src="../../../static/img/message/group.png"-->
-				<!--style="width:50px;-->
-				<!--height:50px;-->
-				<!--vertical-align: middle;-->
-				<!--margin-right:29rpx;"-->
-				<!--&gt;</image>-->
-				<!--<view class="list-title">群组列表</view>-->
-			<!--</view>-->
-			<view class="flex justify-start" @click="showGroupList('telephone')">
-				<image src="../../../static/img/message/telephone.png"
-				style="width:50px;
-				height:50px;
-				vertical-align: middle;
-				margin-right:29rpx;"
-				></image>
-				<view class="list-title">通讯录</view>
-			</view>
-		</view>
-
-		<scroll-view scroll-y="true" class="page" :class="modalName!=null?'show':''" >
-			<view class="cu-list menu-avatar">
-				<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in chatList"  :key="index"
-				 @touchstart="ListTouchStart($event)"
-				 @click="chat(item)"
-				  @touchmove="ListTouchMove($event)"
-				   @touchend="ListTouchEnd($event)" :data-target="'move-box-' + index">
-					<view class="cu-avatar round lg" :style="[{backgroundImage:'url(https://ossweb-img.qq.com/images/lol/web201310/skin/big2100'+ (index+2) +'.jpg)'}]"></view>
-					<view class="content" >
-						<view class="text-grey">{{item.C2cNick}}</view>
-						<view class="text-gray text-sm" >
-							{{item.LastMsg.MsgBody[0].MsgContent.Text}}
-						</view>
-					</view>
-					<view class="action">
-						<view class="text-grey text-xs">{{item.MsgTimeStamp | formatTime('HMS')}}</view>
-						<view class=" round bg-grey sm"></view>
-					</view>
-					<view class="move">
-						<view class="bg-grey">置顶</view>
-						<view class="bg-red">删除</view>
-					</view>
+	<view >
+		<view style="position:relative;">
+			<view class="header-content" >
+				<!--<view class="flex justify-start" @click="showGroupList('group')">-->
+					<!--<image src="../../../static/img/message/group.png"-->
+					<!--style="width:50px;-->
+					<!--height:50px;-->
+					<!--vertical-align: middle;-->
+					<!--margin-right:29rpx;"-->
+					<!--&gt;</image>-->
+					<!--<view class="list-title">群组列表</view>-->
+				<!--</view>-->
+				<view class="flex justify-start" @click="showGroupList('telephone')">
+					<image src="../../../static/img/message/telephone.png"
+					style="width:50px;
+					height:50px;
+					vertical-align: middle;
+					margin-right:29rpx;"
+					></image>
+					<view class="list-title">通讯录</view>
 				</view>
 			</view>
+			<scroll-view scroll-y="true" class="page" :class="modalName!=null?'show':''" >
+				<view class="cu-list menu-avatar">
+					<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in chatList"  :key="index"
+					 @touchstart="ListTouchStart($event)"
+					 @click="chat(item)"
+					  @touchmove="ListTouchMove($event)"
+					   @touchend="ListTouchEnd($event)" :data-target="'move-box-' + index">
+						<view class="cu-avatar round lg" :style="[{backgroundImage:'url(https://ossweb-img.qq.com/images/lol/web201310/skin/big2100'+ (index+2) +'.jpg)'}]"></view>
+						<view class="content" >
+							<view class="text-grey">{{item.C2cNick}}</view>
+							<view class="text-gray text-sm" >
+								{{item.LastMsg.MsgBody[0].MsgContent.Text}}
+							</view>
+						</view>
+						<view class="action">
+							<view class="text-grey text-xs">{{item.MsgTimeStamp | formatTime('HMS')}}</view>
+							<view class=" round bg-grey sm"></view>
+						</view>
+						<view class="move">
+							<view class="bg-grey">置顶</view>
+							<view class="bg-red">删除</view>
+						</view>
+					</view>
+				</view>
+			
+			</scroll-view>
+		</view>
+		
 
-		</scroll-view>
+		
 
 
 

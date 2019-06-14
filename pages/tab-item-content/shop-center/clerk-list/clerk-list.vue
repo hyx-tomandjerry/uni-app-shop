@@ -23,11 +23,25 @@
 
 				</view>
 				<view >
-					<view class=" flex justify-between font-size-big font-weight-normal" style="width:100%;margin-bottom:10px;" >
-						{{shopItem.name || ''}}
+					<view class="  font-size-big font-weight-normal color-normal" style="margin-bottom:4px;" >
+						{{shopItem.name || ''}} <text v-if="shopItem.brandName" style="margin-left:6px;" class="text-blue">({{shopItem.brandName}})</text> 
 					</view>
-					<view class=" flex font-size-litter font-weight-normal">
-						<image src="../../../../static/icon/addRepairDingwei.png" style="width:19px;height:20px;vertical-align: middle;margin-right:5px;"></image>
+					
+					<view class="  font-size-small font-weight-normal color-placeholder flex justify-start" style="margin-bottom:4px;">
+						<view v-if="shopItem.zoneName"><text style="margin-right:5px;">区域:</text>{{shopItem.zoneName || ''}} </view>
+						<view v-if="shopItem.catalog !=0">
+							<text style="margin-right:5px;margin-left:15px;">经营类别:{{shopItem.catalog | operateZn}}</text>
+						</view>
+						
+					</view>
+					
+					
+					<view class=" flex font-size-small font-weight-normal  color-placeholder" style="margin-bottom:5px;" v-if="shopItem.managerName">
+						<image src="../../../../static/icon/client.png" style="width:13px;height:13px;vertical-align: middle;margin-right:2px;"></image>
+						<view><text>{{shopItem.managerName || ''}}</text><text class="text-blue">|</text><text>{{shopItem.managerMobile || ''}}</text></view>
+					</view>
+					<view class=" flex font-size-small font-weight-normal color-placeholder">
+						<image src="../../../../static/icon/addRepairDingwei.png" style="width:12px;height:15px;vertical-align: middle;margin-right:5px;"></image>
 						<text>{{shopItem.provinceName  || '' }}{{shopItem.cityName  || '' }}{{shopItem.districtName  || ''}}{{shopItem.address || ''}}</text>
 
 					</view>
@@ -46,16 +60,17 @@
 					<scroll-view :scroll-y="true" class="page show" style="min-height:460px;">
 						<view class="cu-list menu-avatar">
 							<view class="cu-item" v-for="(item ,index) in userList" :key="index">
-								<view class="cu-avatar lg" style="width:40px;height:40px;border-radius: 50%; background: #fff;border:1px solid #EEEEED"> 
-								<image :src="item.headurl" v-if="item.headurl" 	style="width:30px;height:30px;"></image>
-								<image 
+								<view class="cu-avatar lg" style="width:40px;height:40px; background: #fff;">
+								<image :src="item.headurl" v-if="item.headurl" 	style="width:40px;height:40px;border-radius: 50%;"></image>
+								<image
 								v-else
-								style="width:30px;height:30px;"
+								style="width:40px;height:40px;"
 								src="../../../../static/icon/client.png" mode=""></image>
 								</view>
 								<view class="content">
 									<view >
 										<text class="text-cut clerk-name">{{item.name}}</text>
+										<text class="font-size-litter font-weight-normal text-blue" style="margin-left:4px;"> {{shopItem.manager ==item.id?'（店长）' :''}}</text>
 									</view>
 									<view class="text-gray text-sm flex clerk-desc" >
 										<text style="margin-right:5px;">联系电话:</text><text>{{item.account}}</text>
@@ -63,15 +78,18 @@
 								</view>
 								<view>
 									<text class="cu-tag bg-green round" v-if="item.status==salemanStatus.normal" style="font-size:13px;padding:0 20px;">
-										{{shopItem.manager ==item.id?'店长' :'在职'}}
+										在职
 									</text>
-									<text class="cu-tag bg-orange round" v-if="item.status==salemanStatus.inviting" style="font-size:13px;">邀请中待确认</text>
-									<text class="cu-tag round " style="background:#00BFFF;color:white" 
-									v-if="item.status==salemanStatus.free" @click="SendInvitationEvent(item)">发送邀请</text>
+									<text class="cu-tag bg-orange round" v-if=" item.status==salemanStatus.inviting" style="font-size:13px;">邀请中待确认</text>
+									<text
+										v-if=" item.status==salemanStatus.free" @click="SendInvitationEvent(item)">
+										<text v-if="shopItem.manager == userInfo.id" class="cu-tag round " style="background:#00BFFF;color:white">发送邀请</text>
+										<text v-else></text>
+									</text>
 								</view>
 							</view>
 						</view>
-						
+
 					</scroll-view>
 				</view>
 
@@ -79,53 +97,81 @@
 		</view>
 
 
-		<view class="cu-modal" :class="isShow?'show':''">
+		<view class="cu-modal" :class="isShow?'show':''" >
+			<view class="position_absolute" style="right:65px;top:248px;z-index:100;" @click="hideModal()">
+				<image src="../../../../static/img/record-close.png" style="width:26px;height:26px;"></image>
+			</view>
 			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content text-black">(店员录入)</view>
+				
+				<view class=" bg-white justify-end borderBottom" style="padding:14px 0 8px;">
+					<view class=" font-weight-bold font-size-small color-normal">{{shopItem.name}}({{shopItem.brandName}})</view>
+					
 				</view>
-				<view class="padding-xl">
-					<form >
-						<view class="flex justify-start bg-white"
-						style="line-height:50px;height:50px;border-bottom:1px solid #EEEEED;">
-							<view class="title" style="width:12%;"><text class="cuIcon-shop" style="font-size:15px;"></text></view>
-							<view style="width:80%;text-align:center;" class="text-blue">{{shopItem.name}}</view>
-						</view>
-						<view class="cu-form-group">
-							<view class="title"><image src="../../../../static/icon/shop-list/icon-dianzhang@2x.png" style="width:15px;height:15px;margin-right:15px;"></image></view>
-							<input type="text" v-model="designer.name" 
-							:style="{color:isWrongName?'red':'gray'}"
-							@blur="checkNameEvent($event)"
-							placeholder="请输入店员姓名">
+				<view style="padding-bottom:20px" class="bg-white">
+						
+						<view class="flex justify-start bg-white " style="padding-top:22px;padding-left:14px;">
+							<view style="margin-right:5px;width:11%;margin-top:4px;">
+								<image src="../../../../static/img/record-name.png" style="width:26px;height:26px;vertical-align: middle;"></image>
+							</view>
+							<input type="text" v-model="designer.name" style="box-shadow:0px 1px 4px 1px rgba(227,227,227,0.5);
+border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text-align:left"
+								placeholder="请输入店员姓名"  class="join-modal-input">
 						</view>
 
-						<view class="cu-form-group position_relative">
-							<view class="text-gray"><text class="cuIcon-mobile text-gray" style="font-size:22px;margin-right:15px;"></text></view>
-							<input placeholder="请输入手机号" v-model="designer.telephone" 
-							
-							:style="{color:isWrongTel?'red':'gray'}"
-
-							 type="phone" @blur="checkTelEvent($event)" />
+						<view class="flex justify-start bg-white " style="padding-top:17px;padding-left:14px;">
+							<view style="margin-right:5px;width:11%;margin-top:4px;">
+								<image src="../../../../static/img/record-shouji.png" style="width:26px;height:26px;vertical-align: middle;"></image>
+							</view>
+							<input type="text" v-model="designer.telephone"
+								class="join-modal-input"
+								style="box-shadow:0px 1px 4px 1px rgba(227,227,227,0.5);
+								border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text-align:left"
+								placeholder="请输入手机号"  @blur="checkTelEvent(designer.telephone)">
 						</view>
-					</form>
 				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action">
-						<button class="cu-btn line-blue text-blue" @tap="hideModal()" style="margin-right:20px;border-radius:25px;">取消</button>
-						<button class="cu-btn bg-blue text-white" @tap="recordUser()">确定</button>
-
-					</view>
+				<view class="bg-white" style="padding:0 13px 15px;">
+					
+					<button 
+					style="border-radius: 5px;"
+					class=" bg-blue text-white font-size-small font-weight-normal" size="default" @tap="recordUser()">确定录入</button>
+					
 				</view>
 			</view>
+			
 		</view>
-		
+
 		<image src="../../../../static/icon/add.png"
 		v-if="shopItem.manager==userInfo.id"
-		style="position:fixed;right:12px;bottom:23px;width:68px;height:68px;z-index:100;" @click.stop="inviteJoin()"></image>
-		
+		style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="inviteJoin()"></image>
+
 		<view class="cu-modal" :class="modalName=='imageModal'?'show':''">
 			<view class="cu-dialog">
 				<image :src="shopItem.coverurl" @click="hideModal()"></image>
+			</view>
+		</view>
+
+		<view class="cu-modal" :class="secondModal=='nameModal'?'show':''" @click.stop="hideSecondModal()">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-center">
+					<view class=" font-size-litter font-weight-normal">请输入店员姓名</view>
+				</view>
+
+			</view>
+		</view>
+		<view class="cu-modal" :class="secondModal=='telModal'?'show':''" @click.stop="hideSecondModal()">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-center">
+					<view class=" font-size-litter font-weight-normal">电话号码不存在</view>
+				</view>
+
+			</view>
+		</view>
+		<view class="cu-modal" :class="secondModal=='exist'?'show':''" @click.stop="hideSecondModal()">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">工作关系已经存在,不能反复邀请或申请</view>
+				</view>
+
 			</view>
 		</view>
 	</view>
@@ -133,23 +179,24 @@
 
 <script>
 	import popModal from '../../../../components/popmodal.vue'
+	import {mapState} from 'vuex';
 	export default{
+	    computed:mapState(['userInfo']),
 		data(){
 			return{
 				salemanStatus:this.$store.state.userStatus,
 				modalName:null,
+				secondModal:null,
 				radio: 'radio1',
 				shopItem:'',
 				isShow:false,
 				designer:{
-					name:'',
-					telephone:''
+					name:null,
+					telephone:null
 				},
-				
+
 				userList:[],//店员列表
-				isWrongName:false,
-				isWrongTel:false,
-				userInfo:''
+				// userInfo:''
 			}
 		},
 		components:{
@@ -167,27 +214,23 @@
 						this.userList=res;
 					})
 				})
-				
-				
-				
+
+
+
 			},
 			checkNameEvent(event){
 				if(!event){
-					this.isWrongName=true;
+					// this.isWrongName=true;
 				}
 			},
 			//验证电话号码
 			checkTelEvent(event){
-				if(this.isWrongTel){
-					this.isWrongTel=false;
+
+				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event))){
+					console.log('llllll')
+					this.secondModal='Modal'
 				}
-				if(event.detail.value){
-					if(!(/^1[345678]\d{9}$/.test(event.detail.value))){
-							this.isWrongTel=true;
-						}
-					}
-					
-				},
+			},
 			//设置店长
 			setShopManager(){},
 			//邀请加入
@@ -206,8 +249,13 @@
 				if(this.modalName){
 					this.modalName=null;
 				}
-			},
 
+			},
+			hideSecondModal(){
+				if(this.secondModal){
+					this.secondModal=null;
+				}
+			},
 			RadioChange(e) {
 				this.radio = e.detail.value
 			},
@@ -225,39 +273,48 @@
 			},
 			//录入店员
 			recordUser(){
-				console.log(this.isWrongName,this.isWrongTel)
-				if(!this.isWrongName && !this.isWrongTel){
-					this.$ajax('Signup',{
-						name:this.designer.name,
-						mobile:this.designer.telephone,
-						type:4,
-						team:this.shopItem.id,
-					},res=>{
-						uni.showToast({
-							title:'录入店员成功',
-							icon:'none'
-						});
-						this.isShow=false;
-						this.$ajax('ShopSalesmen',{shop:this.shopItem.id},res=>{
-							this.userList=res;
+				if(!this.designer.name){
+					this.secondModal='nameModal'
+				}else if(!this.designer.telephone){
+					this.secondModal='telModal'
+				}else{
+					if(!(/^1[345678]\d{9}$/.test(this.designer.telephone))){
+						this.secondModal='telModal'
+
+					}else{
+							this.$ajax('Signup',{
+							name:this.designer.name,
+							mobile:this.designer.telephone,
+							type:4,
+							team:this.shopItem.id,
+						},res=>{
+							console.log(res)
+							if(res==-31){
+								this.secondModal='exist';
+							}else{
+								uni.showToast({
+									title:'录入店员成功',
+									icon:'none'
+								});
+								this.isShow=false;
+								this.$ajax('ShopSalesmen',{shop:this.shopItem.id},res=>{
+									this.userList=res;
+								})
+							}
+
+
 						})
-						
-					})
+					}
+
 				}
 
+
 			},
-			getUserInfo(){
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						this.userInfo=res.data;
-						console.log(this.userInfo)
-					}
-				})
-			}
+
 		},
 		onLoad(option){
-			this.getUserInfo()
+
+			// this.getUserInfo()
 		   if(option){
                this.checkShopDetail(option.shopID)
 		   }
@@ -266,7 +323,9 @@
 </script>
 
 <style lang="less">
-	
+	.cu-dialog{
+		max-width:263px;
+	}
 	.cu-list.menu-avatar>.cu-item .content{
 		width:70%;
 	}
@@ -331,5 +390,11 @@
 		border-top:1px solid #EEEEED;
 		border-bottom:1px solid #EEEEED;
 		padding:0;
+	}
+	.join-modal-item{
+		line-height:50px;height:50px;padding-left:14px;
+		.join-modal-input{
+			margin-top:10px;text-align:left;font-size:13px;
+		}
 	}
 </style>

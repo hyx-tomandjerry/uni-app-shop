@@ -31,7 +31,9 @@
 				<view class="pwd-desc">
 					密码必须是6-20位的数字、英文组合
 				</view>
-				<view class="forget-pwd" @click="forgetPwd()">忘记密码?</view>
+				<view class="forget-pwd">
+					<text  @click="forgetPwd()">忘记密码?</text>
+				</view>
 			</view>
 		</view>
 		
@@ -186,11 +188,11 @@
 			font-family:PingFangSC-Regular;
 			font-weight:400;
 			color:rgba(137,136,136,1);
-			padding-left:15px;
+			
 			margin-bottom:2px;
 		}
 		.forget-pwd{
-			padding-left:15px;
+		
 			font-size:13px;
 			font-family:PingFangSC-Regular;
 			font-weight:400;

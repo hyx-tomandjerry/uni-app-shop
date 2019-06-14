@@ -13,5 +13,22 @@ export default {
     },
     setImInfo (state, imInfo) {
         state.imInfo = imInfo
-    }
+    },
+	login(state,provider){
+		state.hasLogin=true;
+		state.userInfo=provider;
+		uni.setStorage({
+			key:'userInfo',
+			data:provider
+		})
+	},
+	logout(state){
+		//退出登录
+		state.hasLogin=false;
+		state.userInfo={};
+		uni.removeStorage({
+			key:'userInfo',
+		})
+	}
+	
 }

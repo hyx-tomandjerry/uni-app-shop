@@ -47,6 +47,10 @@ Vue.filter('shopStatusColor',(value)=>{
 	if(!value) return ''
 	return store.state.shopStatusColor[value];
 })
+Vue.filter('operateZn',(value)=>{
+	if(!value) return ''
+	return store.state.runCatalogZn[value]
+})
 Vue.prototype.format=function(value,type){
 				var dataTime="";
 				var data = new Date();  

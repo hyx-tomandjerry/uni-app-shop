@@ -1,16 +1,15 @@
 <template>
     <view >
 		<view class="index-container">
-			
 			<view>
 				<view v-if="userInfo.owner==0 && userInfo.status==2">
-					<text class="cu-tag bg-green" @click="joinCompanyEvent()">点击加入公司</text>
+					<text class="cu-tag bg-green round" @click="joinCompanyEvent()">点击加入公司</text>
 				</view>
 				<view class="flex justify-start" v-else>
 					<image :src="company.cover" style="width:35px;height:35px;margin-right:8px;
 					border-radius: 50%;
 					vertical-align: middle;"></image>
-					<view><text class="company">{{company.name || ''}}</text></view>
+					<view style="padding-top:3px;"><text class="company">{{company.name || ''}}</text></view>
 				</view>
 
 			</view>
@@ -18,7 +17,7 @@
 		<swiper class="screen-swiper square-dot"  :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in shopList" :key="index">
-				<image :src="item.url" mode="aspectFill"></image>
+				<image :src="item.url" mode="aspectFill" style="border-radius:8px;"></image>
 				
 			</swiper-item>
 		</swiper>
@@ -36,59 +35,100 @@
 		<view class="notice_container">
 			<view style="margin-bottom;10px;">
 				<view>
-					<view class="cu-bar bg-white solid-bottom">
+					<view class="cu-bar bg-white ">
 						<view class="action">
 							
 							<text class="card-title">销售技巧</text>
 						</view>
 						<view class="action">
-							<text class="card-more" @click="showMoreInfo('skill')">更多<text class="cuIcon-right" style="margin-left:4px;"></text></text>
+							<text class="card-more" @click="showMoreInfo('skill')">更多<text class="cuIcon-right" ></text></text>
 						</view>
 					</view>
-					<view class="flex justify-start align-center position_relative borderBottom" v-for="(item,index) in noticeList1" :key="index" @click="detailContent(item,'skill')" style="padding:23px 0 21px;;">
-						<view style="width:40%;margin-right:20px;">
-							<image :src="item.coverurl" mode="aspectFill" style="height:79px;border-radius: 10px;vertical-align: middle;"></image>
-						</view>
-						<view>
-							<view class="font-weight-bold font-size-big" style="margin-bottom:20rpx;">{{item.title}}</view>
-							<view class="font-size-small font-weight-normal color-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
-						</view>
-						<image src="../../../static/img/huizhi.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
+					<view v-if="noticeList1.length==0" style="text-align: center;padding:42px 0 68px;">
+						<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
+						<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 					</view>
+					
+					<view class="flex justify-start  position_relative borderBottom" v-for="(item,index) in noticeList1" :key="index" @click="detailContent(item,'skill')" style="padding:23px 0 25px;;width:100%;align-items:center"  v-if="noticeList1.length>0">
+						
+						
+						<view style="width:70%;margin-right:7px;">
+							<view class="font-weight-super font-weight-middle color-normal" style="margin-bottom:14rpx;">{{item.title}}</view>
+							<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">{{item.applyDate | formatTime('YMDHMS')}}</view>
+						</view>
+						<view style="width:29%;margin-right:15px;">
+							<image :src="item.coverurl" mode="aspectFill" style="
+							
+							height:79px;border-radius: 10px;vertical-align: middle;"></image>
+						</view>
+						
+						<image src="../../../static/img/huizhi1.png"  
+						style="right:15px;"
+						mode="aspectFill"
+						class="position_absolute operateImg" v-if="item.report==1"></image>
+					</view>
+					
+					
 				</view>
 			</view>
 		</view>
 		<view class="bg-white" style="margin-top:13px;padding-right:14px;
 	padding-left:18px;">
-			<view class="cu-bar bg-white solid-bottom" >
+			<view class="cu-bar bg-white " >
 				<view class="action">
-					
 					<text class="card-title">陈列案例</text>
 				</view>
 				<view class="action">
-					<text class="card-more" @click="showMoreInfo('example')">更多<text class="cuIcon-right" style="margin-left:4px;"></text></text>
+					<text class="card-more" @click="showMoreInfo('example')">更多<text class="cuIcon-right" ></text></text>
 				</view>
 			</view>
-			<view class="example-list borderBottom position_relative" style="padding:21px 0 18px;" v-for="(item,index) in noticeList2 " :key="index" @click="detailContent(item,'example')">
-				<image :src="item.coverurl"
-					  style="width:100%;height:41vw;border-radius: 10px;margin-bottom:13px;"></image>
-				<view class="example-item-title font-size-normal font-weight-bold" style="margin-bottom:2px;">{{item.title}}</view>
-				<view class="font-size-litter font-weight-normal color-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
-				<image src="../../../static/img/huizhi.png" class="operateImg position_absolute" style="top:18px;" v-if="item.report==1"></image>
+			
+			<view v-if="noticeList2.length==0" style="text-align: center;padding:42px 0 68px;">
+				<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
+				<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 			</view>
+			<view class="example-list borderBottom position_relative" style="padding:21px 0 18px;" v-for="(item,index) in noticeList2 " :key="index" @click="detailContent(item,'example')" v-if="noticeList2.length!=0">
+				<image :src="item.coverurl" mode="scaleToFill"
+					  style="width:100%;height:41vw;border-radius: 10px;margin-bottom:13px;"></image>
+				<view class=" font-weight-super font-weight-middle color-normal" style="margin-bottom:3px;">{{item.title}}</view>
+				<view class="font-size-small font-weight-normal" style="color: rgb(137, 136, 136)">{{item.applyDate | formatTime('YMDHMS')}}</view>
+				<image src="../../../static/img/huizhi1.png"  mode="aspectFill" class="operateImg position_absolute" style="top:20px;right:0;" v-if="item.report==1"></image>
+			</view>
+			
+			
 		</view>
 		<view class="cu-modal" :class="isShowJoinModal?'show':''">
-			<view class="cu-dialog">
-				<view class="padding-xl">
-					<text class="fontWeight500 font14 text-blue">{{shop.shopName}}</text>门店邀请你加入
+			
+			<view class="cu-dialog borderBottom">
+				<view class="cu-bar bg-white justify-end borderBottom">
+					<view class="content font-size-big font-weight-normal color-normal">提示</view>
 				</view>
-				<view class="cu-bar bg-white justify-around">
-					<view class="action btn">
-						<view style="padding:11px 38px;border-right:1px solid #EEEEED;" @click="hideModal('shop')">不同意</view>
-						<view style="padding:11px 38px;color:#42B0ED;" @click="aggressJoin()">同意</view>
+				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
+					{{shop.shopName}}</text>门店邀请你加入
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action flex justify-around" style="width:100%;">
+						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"   @click="hideModal('shop')">不同意</view>
+						<view style="width:50%;padding:12px;"  @click="aggressJoin()" class="text-blue">同意</view>
 					</view>
 				</view>
 			</view>
+			
+				<!-- <view class="cu-dialog borderBottom">
+					<view class="cu-bar bg-white justify-end">
+						<view class="content font-size-big font-weight-normal color-normal">提示</view>
+					</view>
+				</view>
+				<view class="padding-xl">
+					<text class="fontWeight500 font14 text-blue">{{shop.shopName}}</text>门店邀请你加入
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action flex justify-around" style="width:100%;">
+						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @click="hideModal('shop')">不同意</view>
+						<view style="width:50%;padding:12px;" @click="aggressJoin()" class="text-blue">同意</view>
+					</view>
+				</view> -->
+			
 		</view>
 		<view class="cu-modal" :class="isShowJoinCompany?'show':''">
 			<view class="cu-dialog">
@@ -99,7 +139,7 @@
 					<view class="flex justify-start">
 						<input type="text" 
 						v-model="eid"
-						placeholder="输入公司EID" style="border:1px solid #EEEEED;border-radius: 4px;padding:0px 55px 0 15px;"/> <text class="cu-tag bg-blue" style="margin-left:10px;border-radius: 4px;padding:0 15px" @click="searchCompany()">搜索</text>
+						placeholder="输入公司EID" style="border:1px solid #EEEEED;border-radius: 4px;padding:0px 55px 0 15px;font-size:12px;"/> <text class="cu-tag bg-blue " style="margin-left:10px;border-radius: 4px;padding:0 15px;" @click="searchCompany()">搜索</text>
 					</view>
 					
 					<view style="padding-left:6px; font-size:13px;" v-if="companyObj" >
@@ -116,7 +156,7 @@
 					</view>
 				</view>
 				
-				<view class="cu-bar bg-white justify-end">
+				<view class="cu-bar bg-white justify-end" style="margin-right:16px;">
 					<view class="action">
 						<button class="cu-btn line-green text-green" @tap="hideModal('company')">取消</button>
 						<button class="cu-btn bg-green margin-left" @tap="joinCompany()">确定</button>
@@ -125,17 +165,40 @@
 			</view>
 		</view>
 		
+		<view class="cu-modal" :class="modalName=='noEIDModal'?'show':''" @click.stop="hideModal('eid')">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">请输入EID</view>
+				</view>
+			</view>
+		</view>
+		
+		<view class="cu-modal" :class="modalName=='noSearch'?'show':''" @click.stop="hideModal('search')">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">请搜索公司</view>
+				</view>
+			</view>
+		</view>
+		<view class="cu-modal" :class="modalName=='exist'?'show':''" @click.stop="hideModal('exist')">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">工作关系已经存在,不能反复邀请或申请</view>
+				</view>
+			</view>
+		</view>
     </view>
 </template>
 <script>
-	var _this;
+
 	import uniGrid from '../../../components/uni-grid/uni-grid.vue'
 	import NAUIcard from '../../../components/NAUI-card/NAUI-card.vue'
-	import axbCheckBox from '../../../components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue'
+	import axbCheckBox from '../../../components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue';
+	import {mapState,mapMutations} from 'vuex'
 	export default{
+		computed:mapState(['userInfo']),
 		data(){
 			return{
-				userInfo:'',
 				eid:'',
 				companyObj:'',
 				dotStyle: false,
@@ -169,12 +232,12 @@
 				shop:{
 					shopID:'',
 					shopName:''
-				}
+				},
+				modalName:'',
+				
 			}
 		},
-		computed:{
-
-		},
+		
 		methods:{
 			//获得代办数量
 			getTodoList(){
@@ -192,50 +255,63 @@
 					offset:0,
 					type:0
 				},res=>{
+					let array1=[],array2=[]
 					res.forEach(item=>{
 						if(item.type==1){
-							this.noticeList1.push(item)
+							array1.push(item)
 						}else if(item.type==2){
-							this.noticeList2.push(item)
+							array2.push(item)
 						}
 					})
+					this.noticeList1=Array.from(new Set(array1));
+					this.noticeList2=Array.from(new Set(array2));
+					
+					
 					
 				})
 			},
 			//加入公司
 			joinCompany(){
-				if(!this.companyObj.id){
-					uni.showToast({
-						title:'请搜索公司',
-						icon:'none'
-					})
+				if(!this.companyObj){
+					this.modalName='noSearch'
 				}else{
-					uni.getStorage({
-						key:'userInfo',
-						success: (res) => {
-							this.$ajax('ApplyOrInvite2Join',{
-								user:res.data.id,
-								org:this.companyObj.id
-							},res=>{
-								uni.showToast({
-									title:'结果将会发您手机，请注意查收',
-									icon:'none'
-								});
-								this.hideModal('company');
-							})
+						this.$ajax('ApplyOrInvite2Join',{
+						user:this.userInfo.id,
+						org:this.companyObj.id
+					},res=>{
+						if(res==-31){
+							this.modalName='exist';
+							this.hideModal('company');
+						}else{
+						uni.showToast({
+							title:'等待同意中',
+							icon:'none'
+						});
+						this.hideModal('company');
+						uni.setStorage({
+								key:'showJoin',
+								data:false
+						})
+								
 						}
+						
 					})
+					
 				}
 				
 			},
 			//搜素公司
 			searchCompany(){
+				if(!this.eid){
+					this.modalName='noEIDModal'
+				}else{
+					this.$ajax('Customer',{
+						eid:this.eid
+					},res=>{
+						this.companyObj=res
+					})
+				}
 				
-				this.$ajax('Customer',{
-					eid:this.eid
-				},res=>{
-					this.companyObj=res
-				})
 			},
 			showWorkClick(){
 				uni.navigateTo({
@@ -263,36 +339,27 @@
 			},
 			//同意加入门店
 			aggressJoin(){
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						this.$ajax('JoinOrg',{
-							user:res.data.id
-						},res=>{
-							uni.showToast({
-								title:'您已成功加入该门店',
-								icon:'none'
-							})
-							this.isShowJoinModal=false;
-							this.$ajax('RefreshOnlineUser',{},userInfo=>{
-								this.userInfo=userInfo;
-								this.company={
-									name:userInfo.ownerName,
-									cover:userInfo.ownerLogoUrl
-								}
-								uni.setStorage({
-									key:'userInfo',
-									data:userInfo,
-									success: (data) => {
-										
-									}
-								})
-								
-							})
-							
-						})
-					}
+				this.$ajax('JoinOrg',{
+					user:this.userInfo.id
+				},res=>{
+					uni.showToast({
+						title:'您已成功加入该门店',
+						icon:'none'
+					})
+					this.isShowJoinModal=false;
+					this.$ajax('RefreshOnlineUser',{},userInfo=>{
+						this.userInfo=userInfo;
+						this.company={
+							name:this.userInfo.ownerName,
+							cover:this.userInfo.ownerLogoUrl
+						}
+						this.getTodoList();
+						this.showArticles()
+						
+					})
+					
 				})
+				
 			},
 			toNoticeContent(item){
 				this.noticeID=id;
@@ -316,8 +383,11 @@
 			hideModal(type){
 				if(type=='company'){
 					this.isShowJoinCompany=false;
+					
 				}else if(type=='shop'){
 					this.isShowJoinModal=false;
+				}else if(type=='eid' || type=='search' || type=='exist'){
+					this.modalName=null;
 				}
 				
 			},
@@ -376,84 +446,61 @@
 			getShopInfo(id){
 				this.$ajax('ProprietorShop',{id:id},res=>{
 					this.shop.shopName=res.name;
-					console.log(this.shop)
+					
 				})
-			}
+			},
+			...mapMutations(['login'])
+		
 		},
 		components:{
 			axbCheckBox,
 			uniGrid,
 			NAUIcard
 		},
-		onShow(){
-			uni.getStorage({
-				key:'userInfo',
-				success: (res) => {
-					this.userInfo=res.data
-							// console.log(this.userInfo)
-					 if(res.data.owner!=0 && res.data.status==3){
-							this.isShowJoinModal=true;
-							this.shop.shopID=res.data.department;
-							this.getShopInfo(this.shop.shopID)
-					}else if(res.data.owner==0 && res.data.status==2){
-								
-							this.isShowJoinCompany=true;//显示EID
-					}else{
-							this.company={
-								name:res.data.ownerName,
-								cover:res.data.ownerLogoUrl
-							}
+		
+		onLoad(){
+			console.log('jjjjjj')
+			this.companyObj=null;
+			this.eid='';
+			
+			console.log(this.userInfo)
+			
+			if(this.userInfo.owner!=0 && this.userInfo.status==3){
+					this.isShowJoinModal=true;
+					this.shop.shopID=this.userInfo.department;
+					this.getShopInfo(this.shop.shopID)
+			}else if(this.userInfo.owner==0 && this.userInfo.status==2 ){
+					this.isShowJoinCompany=true;//显示EID
+			}else{
+					this.company={
+						name:this.userInfo.ownerName,
+						cover:this.userInfo.ownerLogoUrl
 					}
-				}
-			})
-			// this.$ajax('RefreshOnlineUser',{},res=>{
-			// 	console.log('2222',res)
-			// 	this.userInfo=res;
-			// 	if(this.userInfo.owner!=0 && this.userInfo.status==3){
-			// 		this.isShowJoinModal=true;
-			// 		this.shop.shopID=this.userInfo.department;
-			// 		this.getShopInfo(this.shop.shopID)
-			// 	}else if(this.userInfo.owner==0 && this.userInfo.status==2){
-			// 		
-			// 		this.isShowJoinCompany=true;//显示EID
-			// 	}else{
-			// 		this.company={
-			// 			name:this.userInfo.ownerName,
-			// 			cover:this.userInfo.ownerLogoUrl
-			// 		}
-			// 		this.getTodoList()
-			// 		this.showArticles();
-			// 	}
-			// })
-			// uni.getStorage({
-			// 	key:'userInfo',
-			// 	success: (res) => {
-			// 		console.log('lllll')
-			// 		this.userInfo=res.data
-			// 		// console.log(this.userInfo)
-			// 		 if(res.data.owner!=0 && res.data.status==3){
-			// 			this.isShowJoinModal=true;
-			// 			this.shop.shopID=res.data.department;
-			// 			this.getShopInfo(this.shop.shopID)
-			// 		}else if(res.data.owner==0 && res.data.status==2){
-			// 			
-			// 			this.isShowJoinCompany=true;//显示EID
-			// 		}else{
-			// 			this.company={
-			// 				name:res.data.ownerName,
-			// 				cover:res.data.ownerLogoUrl
-			// 			}
-			// 		}
-			// 		
-			// 	}
-			// })
+					
+			}
+		},
+		onShow(){
+			this.getTodoList()
+			this.showArticles();
+				this.$ajax('RefreshOnlineUser',{},res=>{
+					if(res.status==1){
+						this.login(res);
+						 this.company={
+							name:this.userInfo.ownerName,
+							cover:this.userInfo.ownerLogoUrl
+						}
+					}
+				})
+			
+			 
 		},
 		
 	}
 </script>
 <style scoped>
+	
 	.operateImg{
-		width:37px;height:37px;top:22px;left:0;
+		width:37px;height:37px;top:23px;
 	}
 	.notice-tag{
 		position: absolute;
@@ -484,13 +531,13 @@
 	bottom:38px;
 }
 .index-container{
-	padding:54px 14px 9px 18px;
+	padding:54px 14px 15px 18px;
 
 }
 .notice_container{
 	margin-top:13px;
 	background:#fff;
-	padding-top:12px;
+	
 	padding-right:14px;
 	padding-left:18px;
 	
@@ -509,8 +556,10 @@
 	.notice_content{}
 .operateItem{
 	padding-top:16px;
+	padding-left:10px;
+	padding-right:9px;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 }
 .location{
 	font-weight:400;
@@ -547,12 +596,12 @@ line-height:25px;
 	background:#fff;
 }
 .operate-title{
-	height:20px;
+	
 font-size:14px;
 
 font-weight:400;
 color:rgba(42,42,42,1);
-line-height:20px;
+
 }
 .card-title{
 	font-size:18px;
@@ -580,7 +629,9 @@ color:rgba(137,136,136,1);
 	background:#fff;
 	
 }
-
+.cu-bar .action:last-child{
+	margin-right:0;
+}
 .padding-xl{
 	font-size:15px;
 	font-family:PingFangSC-Regular;

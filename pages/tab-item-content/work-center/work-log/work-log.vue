@@ -2,85 +2,166 @@
 	<view >
 
 	<view class="flex text-center">
-		<view class="cu-item flex-sub font-size-big bg-white borderBottom" :class="index==TabCur?'text-orange cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect($event)" :data-id="index" style="padding:9px  0;">
-			{{item}}
+		<view class="cu-item flex-sub font-size-big bg-white borderBottom" :class="item.id==TabCur?'borderBottomRed cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(item)" :data-id="index" style="padding:9px  0;">
+			{{item.name}}
 		</view>
 	</view>
-		<view v-if="TabCur==0">
-			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px">
+		<view v-if="list">
+			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px" >
 				<view class="user flex justify-start">
-					<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
+					<image :src="userInfo.headurl" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;border-radius: 50%;"></image>
 					<view class="user-info">
 						<view  style="margin-bottom:4px;">
 							<text class="user-name">{{userInfo.name}}</text>
 						</view>
-						<view class="work-date  tag-name">{{item.title}}</view>
+						<!-- <view class="work-date  tag-name">{{item.title}}</view> -->
+						<view class="work-date ">{{item.rptdate | formatTime('YMDHMS')}}</view>
 					</view>
 				</view>
 				<view class="work-content">
-					<text class="user-name ellipsis-2">{{item.summary}}</text>
+					<view>
+						<text class="user-name ellipsis-2 font-size-normal font-weight-normal color-normal">{{item.summary}}</text>
+					</view>
+					<view v-if="item.files">
+						<view class="bg-white " style="padding:16px 0;">
+				<view class="grid col-4 grid-square">
+					<view class="bg-img" v-for="(item,index) in item.files" :key="index" :style="[{ backgroundImage:'url(' + item.url + ')' }]"></view>
+				</view>
+			</view>
+					</view>
+				</view>
+				<view class="share-content flex justify-start">
+					<view class="font-size-small font-weight-normal" style="margin-right:34px;" @click.stop="operateLog(item,'comment')">
+						<image src="../../../../static/img/work/log/pinglun.png" style="width:20px;height:19px;vertical-align: middle;"></image>
+						<text style="margin-left:10px;color:rgba(92,99,127,1);">{{item.comments}}</text>
+					</view>
+					<view class="font-size-small font-weight-normal" style="margin-right:34px;"  @click.stop="operateLog(item,'share')">
+						<image src="../../../../static/img/work/log/fenxiang.png" style="width:20px;height:19px;vertical-align: middle;"></image>
+						<text style="margin-left:10px;color:rgba(92,99,127,1);">{{item.forwards}}</text>
+					</view>
+					<view class="font-size-small font-weight-normal"   @click.stop="operateLog(item,'praise')">
+						<image src="../../../../static/img/work/log/dianzan.png" style="width:20px;height:19px;vertical-align: middle;" v-if="item.isLiker!=1"></image>
+						<image src="../../../../static/img/work/log/dianzan_color.png" style="width:20px;height:19px;vertical-align: middle;" v-else></image>
+						<text style="margin-left:10px;color:rgba(92,99,127,1);">{{item.likes}}</text>
+					</view>
 				</view>
 			</view>
 		</view>
-		<view v-if="TabCur==1">
-
+		<view v-else>
+			<LxEmpty></LxEmpty>
 		</view>
-		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
-		<view class="cu-load bg-gray over" v-if="isFinish"></view>
+
+
+
+
 		<image src="../../../../static/icon/add.png"
-				style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==1"></image>
+				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2"></image>
+				<uni-load-more :contentText="content" :status="loading" :showIcon="true"></uni-load-more>
 	</view>
 </template>
 
 <script>
+	import LxEmpty from '../../../../lx_components/lx-empty.vue';
+	import uniLoadMore from '../../../../components/uni-load-more.vue'
+	import {mapState} from 'vuex'
 	export default {
+		computed:mapState(['userInfo']),
         data() {
 			return {
 				page:0,
 				list:[],
-				userInfo:'',
+
 				isLoading:false,
 				isFinish:false,
-				tabList:['工作汇报','日常日志'],
-				TabCur:0,
+				tabList:[{id:1,name:'工作回执'},{id:2,name:'工作日志'}],
+				TabCur:1,
+				content:{
+					contentdown: "",
+					contentrefresh: "正在加载...",
+					contentnomore: "没有更多数据了"
+				},
+				loading:'more',
+				avatar:''
 			}
+		},
+		components:{
+			LxEmpty,
+			uniLoadMore
+		},
+		onPullDownRefresh(){
+			this.getList()
 		},
 		onReachBottom(){
 			this.page++;
-			this.isLoading=true;
-			setTimeout(()=>{
-				this.$ajax('WorkReportsByShop',{
-				     zone:-1,
-					 brand:0,
-					 offset:this.$utils.getOffset(this.page)
-				},res=>{
-					if(res==''){
-                        this.isLoading=false;
-                        setTimeout(()=>{
-                            this.isFinish=true;
-                        },600)
+			this.$ajax('WorkReportsByShop',{
+			     zone:-1,
+				 brand:0,
+				 offset:this.$utils.getOffset(this.page)
+			},res=>{
+				if(res==''){
+					setTimeout(()=>{
+							this.loading='noMore'
+					},900)
 
-                    }else{
+			    }else{
+					setTimeout(()=>{
 						res.forEach(item=>{
 							this.list=this.list.concat(item);
 						})
+						this.loading='loading'
+					},900)
 
-					}
-				})
-			},500)
 
+				}
+			})
 
 		},
         onLoad(){
 			this.getList();
-			this.getUserInfo();
-			this.$fire.on('logRefresh',res=>{
-				console.log(res)
+
+			uni.getStorage({
+				key:'logo',
+				success: (res) => {
+					console.log(res)
+					if(res.data.resurl){
+						this.avatar=res.data.resurl;
+					}
+
+				}
 			})
         },
 		methods: {
-			tabSelect(event){
-				this.TabCur=event.currentTarget.dataset.id;
+			operateLog(item,type){
+				switch(type){
+					case 'comment':
+					uni.navigateTo({
+						url:`../log-detail/log-detail?id=${item.id}&type=article`
+					})
+					break;
+					case 'share':
+					this.$ajax('ForwardWorkReportByShop',{id:item,id},res=>{
+						uni.showToast({
+							title:'分享成功',
+							icon:'none'
+						})
+					})
+					break;
+					case 'praise':
+					console.log(item)
+					item.likes+=1;
+					this.$ajax('LikeWorkReportByShop',{
+						id:item.id
+					},res=>{
+						uni.showToast({
+							title:'点赞成功',
+							icon:'none'
+						})
+					})
+					break;
+				}
+			},
+			tabSelect(item){
+				this.TabCur=item.id;
 				this.getList()
 
 			},
@@ -92,28 +173,29 @@
 			},
 			//查看详情
 			itemDetail(event){
-				uni.navigateTo({
-					url:`../log-detail/log-detail?id=${event.id}`
-				})
+				if(event.type==1){
+					uni.navigateTo({
+						url:`../log-detail/log-detail?id=${event.id}&type=article`
+					})
+				}else if(event.type==2){
+					uni.navigateTo({
+						url:`../log-detail/log-detail?id=${event.id}&type=log`
+					})
+				}
+				
 			},
 			//获取列表数据
 			getList(){
 			    this.$ajax('WorkReportsByShop',{
                      zone:-1,
 					 brand:0,
+					 type:this.TabCur,
 					 offset:this.$utils.getOffset(this.page)
 				},res=>{
 					 this.list = res;
 				})
 			},
-			getUserInfo(){
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						this.userInfo=res.data;
-					}
-				})
-			}
+
 		}
 	}
 </script>
@@ -137,7 +219,7 @@
 	.work-item{
 
 
-		padding:18px 12px 13px 17px;
+		padding:18px 12px 13px 15px;
 		background: #fff;
 	}
 	.user-info{
@@ -145,24 +227,24 @@
 		margin-bottom:8px;
 		.user-name{
 			font-size:15px;
-			font-family:PingFangSC-Medium;
+
 			font-weight:500;
 			color:rgba(42,42,42,1);
 		}
 		.work-date{
 			font-size:13px;
-			font-family:PingFangSC-Regular;
+
 			font-weight:400;
 			color:rgba(164,164,164,1);
 		}
 	}
 	.work-content{
-		margin-bottom:8px;
+		margin-bottom:15px;
 	}
 	.tag-name{
 		display: inline-block;
 		font-size:10px;
-		font-family:PingFangSC-Regular;
+
 		font-weight:400;
 		color:rgba(42,42,42,1);
 		padding:2px 8px;

@@ -1,325 +1,263 @@
-
 <template>
-	<view class="bg-white">
-		<view class="flex text-center" style="padding:10px;">
-				<view class="cu-item flex-sub font-size-big font-weight-normal"
-				:class="index==TabCur?'text-orange cur':''"
+	<view>
+		<view class="flex text-center bg-white borderBottom" >
+				<view class="cu-item flex-sub font-size-normal font-weight-normal" style="padding:10px;"
+				:class="index==TabCur?' cur  borderBottomRed':''"
 				v-for="(item,index) in titleList" :key="index"
 				@click="tabSelect($event)" :data-id="index">
 					{{item.name}}
 				</view>
 		</view>
-		<view v-show="TabCur==0" >
-				<view class="cu-card dynamic" :class="isCard?'no-card':''">
-					<view class="cu-list menu-avatar comment solids-top">
-						<view class="cu-item" style="margin-top:20rpx;margin-right:15px;margin-left:15px;border-radius: 10px;" v-for="(item,index) in todoList" :key="index">
-							<view class="content">
-								<view class="text-grey">
-									<text class="lg text-gray cuIcon-notification " style="color:#1296DB"></text>
-									<text style="margin-left:20rpx;font-size:13px;">{{item.content}}</text>
-								</view>
-								<view class="margin-top-sm flex justify-between">
-									<view>
-										{{item.occtime | formatTime('YMDHMS')}}
-									</view>
-									<view
-											class="cu-tag  round"
-											:class="{
-												'bg-gradual-blue':item.type==noticeType.resignWork || item.type==noticeType.editWork || item.type==noticeType.newApplyCopy,
-												'bg-blue':item.type==noticeType.distributeWork || item.type==noticeType.point,
-												'bg-green':item.type==noticeType.agressWork || item.type==noticeType.agressDelay || item.type==noticeType.shenqiPass,
-												'bg-purple':item.type==noticeType.passCheck || item.type==noticeType.checkFinish,
-												'bg-gradual-red':item.type==noticeType.refuseWork || item.type==noticeType.unpassCheck || item.type==noticeType.unagressDelay|| item.type==noticeType.applyRefuse,
-												'bg-pink':item.type==noticeType.unSign,
-												'bg-orange':item.type==noticeType.applyCheck || item.type==noticeType.applyDelay || item.type==noticeType.applyEnd|| item.type==noticeType.applyShenpi,
-												'bg-red':item.type==noticeType.deleteWork
-												}"
-											>{{item.type|todoType}}
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-		
-		</view>
 
-		<view v-show="TabCur==1">
-			
-				<view class="cu-card dynamic" :class="isCard?'no-card':''">
-					<view class="cu-list menu-avatar comment solids-top">
-						<view class="cu-item" style="margin-top:20rpx;margin-right:15px;margin-left:15px;border-radius: 10px;" v-for="(item,index) in todoList" :key="index">
-							<view class="content">
-								<view class="text-grey">
-									<text class="lg text-gray cuIcon-notification " style="color:#1296DB"></text>
-									<text style="margin-left:20rpx;font-size:13px;">{{item.content}}</text>
-								</view>
-								<view class="margin-top-sm flex justify-between">
-										<view>
-											{{item.occtime | formatTime('YMDHMS')}}
-										</view>
-										<view
-										class="cu-tag  round"
-										:class="{
-											'bg-gradual-blue':item.type==noticeType.resignWork || item.type==noticeType.editWork || item.type==noticeType.newApplyCopy,
-											'bg-blue':item.type==noticeType.distributeWork || item.type==noticeType.point,
-											'bg-green':item.type==noticeType.agressWork || item.type==noticeType.agressDelay || item.type==noticeType.shenqiPass,
-											'bg-purple':item.type==noticeType.passCheck || item.type==noticeType.checkFinish,
-											'bg-gradual-red':item.type==noticeType.refuseWork || item.type==noticeType.unpassCheck || item.type==noticeType.unagressDelay|| item.type==noticeType.applyRefuse,
-											'bg-pink':item.type==noticeType.unSign,
-											'bg-orange':item.type==noticeType.applyCheck || item.type==noticeType.applyDelay || item.type==noticeType.applyEnd|| item.type==noticeType.applyShenpi,
-											'bg-red':item.type==noticeType.deleteWork
-											}"
-										>{{item.type|todoType}}</view>
+		<view class="notice-container">
+
+			<view v-if="TabCur==0">
+				<view v-if="todoList.length>0">
+					<view style="margin-bottom:25px;" v-for="(item,index) in todoList" :key="index">
+						<view class="text-center" style="margin-bottom:13px;">
+							<view class="font-size-small font-weight-normal text-white" >
+								<text style="background:rgba(0,0,0,0.1);padding:2px 8px 2px 9px;border-radius: 4px;;">{{item.occtime | formatTime('YMDHMS')}}</text>
+							</view>
+						</view>
+						<view class="flex justify-start">
+							<image src="../../../../static/img/notice/daiban.png" style="width:45px;height:45px;margin-right:15px;vertical-align: middle;width:14%"></image>
+							<view style="width:86%;">
+								<view class="font-size-litter font-weight-normal color-placeholder" style="margin-bottom:8px;">通知</view>
+								<view class="notice-desc">
+									<!-- <view class="font-size-big font-weight-normal  text-blue" style="margin-bottom:6px;">通知</view> -->
+									<view>{{item.content}}</view>
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-			
-		</view>
-			
-			<view v-show="TabCur==2">
-				
-					<view class="cu-card dynamic" :class="isCard?'no-card':''">
-						<view class="cu-list menu-avatar comment solids-top">
-							<view class="cu-item" style="margin-top:20rpx;margin-right:15px;margin-left:15px;border-radius: 10px;" v-for="(item,index) in todoList" :key="index" @click="checkNoticeItem(item)">
-								<view class="content">
-									<view class="text-grey">
-										<text class="lg text-gray cuIcon-notification " style="color:#1296DB"></text>
-										<text style="margin-left:20rpx;font-size:13px;">{{item.title}}</text>
-									</view>
-									<view class="margin-top-sm">
-										<view style="height:50px;overflow: hidden;">
-												{{item.message}}
-										</view>
-									</view>
-									<view class="margin-top-sm flex justify-between">
-										<view  style="font-size:13px;">{{item.pubdate | formatTime('YMDHMS')}}</view>
-										<view>{{item.senderName}}</view>
-									</view>
+				<view v-else>
+					<lx-empty></lx-empty>
+				</view>
+
+
+
+
+			</view>
+
+			<view v-if="TabCur==1">
+
+				<view v-if="todoList.length>1">
+					<view style="margin-bottom:25px;" v-for="(item,index) in todoList" :key="index">
+						<view class="text-center" style="margin-bottom:13px;">
+							<view class="font-size-small font-weight-normal text-white" >
+								<text style="background:rgba(0,0,0,0.1);padding:2px 8px 2px 9px;border-radius: 4px;;">{{item.occtime | formatTime('YMDHMS')}}</text>
+							</view>
+						</view>
+						<view class="flex justify-start">
+							<image src="../../../../static/img/notice/dongtai.png" style="width:45px;height:45px;margin-right:15px;vertical-align: middle;width:14%"></image>
+							<view style="width:86%;">
+								<view class="font-size-litter font-weight-normal color-placeholder" style="margin-bottom:8px;">{{item.type|todoType}}</view>
+								<view class="notice-desc">
+									<view class="font-size-big font-weight-normal  text-blue" style="margin-bottom:6px;">{{item.type|todoType}}</view>
+									<view>{{item.content}}</view>
 								</view>
 							</view>
 						</view>
 					</view>
-			
+				</view>
+				<view v-else>
+					<lx-empty></lx-empty>
+				</view>
 			</view>
-			<view class="cu-load bg-gray loading" v-if="loadingType==2"></view>
-			<view class="cu-load bg-gray over" v-if="loadingType==4"></view>
-			
+			<view v-if="TabCur==2">
+				<view v-if="todoList.length>1">
+					<view style="margin-bottom:25px;" v-for="(item,index) in todoList" :key="index">
+						<view class="text-center" style="margin-bottom:13px;">
+							<view class="font-size-small font-weight-normal text-white" >
+								<text style="background:rgba(0,0,0,0.1);padding:2px 8px 2px 9px;border-radius: 4px;;">{{item.applyDate | formatTime('YMDHMS')}}</text>
+							</view>
+						</view>
+						<view class="flex justify-start">
+							<image src="../../../../static/img/notice/dongtai.png" style="width:45px;height:45px;margin-right:15px;vertical-align: middle;width:14%"></image>
+							<view style="width:86%;">
+								<view class="font-size-litter font-weight-normal color-placeholder" style="margin-bottom:8px;"><!-- {{item.title}} --></view>
+								<view class="notice-desc">
+									<view class="font-size-big font-weight-normal  text-blue" style="margin-bottom:6px;">{{item.title}}</view>
+									<view>{{item.message}}</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view v-else>
+					<lx-empty></lx-empty>
+				</view>
+			</view>
+		</view>
+		<uni-load-more :contentText="content" :showIcon="true" :status="loading" ></uni-load-more>
 	</view>
 </template>
-
 <script>
-	export default {
-		data() {
-			return {
-				loadingType:0,
-				noticeList:[],
-				todoList:[],
+	import LxEmpty from "../../../../lx_components/lx-empty.vue";
+	import uniLoadMore from "../../../../components/uni-load-more.vue"
+	import {mapState} from 'vuex'
+	export default{
+	    computed:mapState(['userInfo']),
+		data(){
+			return{
 				TabCur: 0,
-				scrollLeft: 0,
-				isCard: false,
 				titleList:[{name:'待办通知'},{name:'动态通知'},{name:'公司公告'}],
-				noticeType:{},
+				todoList:[],
 				page:1,
-
-			};
-		},
-		onLoad(){
-			this.switchTabCur(0);
-			this.noticeType=this.$store.state.noticeType
-		},
-		onPullDownRefresh:function() {
-			this.switchTabCur(this.TabCur)
-		},
-		onReachBottom(){
-			this.loadingType=2;
-			this.page++;
-			setTimeout(()=>{
-				if(this.TabCur==0){
-					//我的通知
-					this.$ajax('EventFlows',{
-						account:1,
-						contract:0,
-						status:1,
-						catalog:this.$store.state.notice.todo,
-						psize:-1,
-						offset:this.$utils.getOffset(this.page)
-					},res=>{
-						if(res==''){
-							this.loadingType=4;
-						}else{
-							this.loadingType!=2
-							res.forEach(item=>{
-								this.todoList=this.todoList.concat(item)
-							})
-						}
-						
-					})
-				}else if(this.TabCur==1){
-					//我的待办
-					this.$ajax('EventFlows',{
-						account:1,
-						contract:0,
-						status:0,
-						catalog:this.$store.state.notice.info,
-						offset:this.$utils.getOffset(this.page)
-					},res=>{
-						if(res==''){
-							this.loadingType=4;
-						}else{
-							this.loadingType!=2
-							res.forEach(item=>{
-								this.todoList=this.todoList.concat(item)
-							})
-						}
-					})
-				}else if(this.TabCur==2){
-					this.$ajax('Messages',{offset:this.$utils.getOffset(this.page)},res=>{
-						if(res==''){
-								this.loadingType=4;
-							}else{
-								this.loadingType!=2
-								res.forEach(item=>{
-									this.todoList=this.todoList.concat(item)
-								})
-							}
-				
-					})
-				}
-			},1000)
-			
-		},
-		methods: {
-			checkNoticeItem(item){
-				uni.navigateTo({
-					url:"../notice-item/notice-item?id="+item.id
-				})
-			},
-			tabSelect(e) {
-				this.TabCur = e.currentTarget.dataset.id;
-				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-				this.switchTabCur(this.TabCur)
-			},
-			IsCard(e) {
-				this.isCard = e.detail.value
-			},
-			switchTabCur(index){
-				if(index==0){
-					//我的通知
-					this.$ajax('EventFlows',{
-						account:1,
-						contract:0,
-						status:1,
-						catalog:this.$store.state.notice.todo,
-						psize:-1,
-						offset:0
-					},res=>{
-						this.todoList=res
-					})
-				}else if(index==1){
-					//我的待办
-					this.$ajax('EventFlows',{
-						account:1,
-						contract:0,
-						status:0,
-						catalog:this.$store.state.notice.info,
-						offset:0
-					},res=>{
-						this.todoList=res;
-					})
-				}else if(index==2){
-					this.$ajax('Messages',{offset:0},res=>{
-						console.log(res)
-						this.todoList=res;
-					})
-				}
+				content:{
+					contentdown: "",
+					contentrefresh: "正在加载...",
+					contentnomore: "没有更多数据了"
+				},
+				loading:'more'
 			}
 		},
-		
+		components:{
+			LxEmpty,
+			uniLoadMore
+		},
+		onLoad(){
+
+			this.switchTabCur(this.TabCur);
+		},
+		onPullDownRefresh(){
+			//下拉刷新
+
+			setTimeout(()=>{
+
+				uni.stopPullDownRefresh()
+			},800)
+			this.switchTabCur(this.TabCur);
+		},
+		onReachBottom(){
+			this.page++;
+
+			switch(Number(this.TabCur)){
+				case 0:
+				//我的通知
+                    this.$ajax('EventFlows',{
+                        account:this.userInfo.id,
+                        contract:0,
+                        status:1,
+                        catalog:this.$store.state.notice.todo,
+                        psize:-1,
+                        offset:this.$utils.getOffset(this.page),
+                    },res=>{
+                        if(res==''){
+                            setTimeout(()=>{
+                                this.loading='noMore'
+                            },900)
+                        }else {
+                            setTimeout(()=>{
+                                res.forEach(item=>{
+                                    this.todoList=this.todoList.concat(item);
+                                })
+                                this.loading='loading'
+                            },900)
+
+                        }
+                    },false);
+
+				break;
+				case 1:
+				//我的待办
+
+				this.$ajax('EventFlows',{
+					account:1,
+					contract:0,
+					status:0,
+					catalog:this.$store.state.notice.info,
+					offset:this.$utils.getOffset(this.page),
+				},res=>{
+					if(res==''){
+						setTimeout(()=>{
+							this.loading='noMore'
+						},900)
+					}else {
+						setTimeout(()=>{
+							res.forEach(item=>{
+								this.todoList=this.todoList.concat(item);
+							})
+							this.loading='loading'
+						},900)
+
+					}
+				});
+				break;
+				case 2:
+				this.$ajax('Messages',{offset:this.$utils.getOffset(this.page)},res=>{
+					if(res==''){
+						setTimeout(()=>{
+							this.loading='noMore'
+						},900)
+					}else {
+						setTimeout(()=>{
+							res.forEach(item=>{
+								this.todoList=this.todoList.concat(item);
+							})
+							this.loading='loading'
+						},900)
+
+					}
+				})
+			}
+		},
+		methods:{
+			tabSelect(e) {
+				this.TabCur = e.currentTarget.dataset.id;
+				this.switchTabCur(this.TabCur)
+			},
+			switchTabCur(index){
+
+				switch(Number(index)){
+					case 0:
+                        this.$ajax('EventFlows',{
+                            account:this.userInfo.id,
+                            contract:0,
+                            status:1,
+                            catalog:this.$store.state.notice.todo,
+                            psize:-1,
+                            offset:0
+                        },res=>{
+                            this.todoList=res
+                        },false)
+					break;
+					case 1:
+                        this.$ajax('EventFlows',{
+                            account:this.userInfo.id,
+                            contract:0,
+                            status:1,
+                            catalog:this.$store.state.notice.info,
+                            offset:0
+                        },res=>{
+                            this.todoList=res;
+                        },false)
+					break;
+					case 2:
+
+					this.$ajax('Messages',{offset:0},res=>{
+						this.todoList=res;
+					})
+					break;
+				}
+
+			}
+		}
 	}
 </script>
-
 <style lang="less">
-	
-	.cu-card.dynamic{
-		background:#e7ebed;
+	page{
+		background:#F7F7F7;
 	}
-	.nav{
-		white-space:normal !important
-	}
-	.cu-list.menu-avatar.comment>.cu-item{
-		padding:16px;
-	}
-	.unSign{
-		background:#8c8c8c
-	}
-	.distributeWork{
-		background:#5cdbd3
-	}
-	.agressWork{
-		background:#096dd9
-	}
-	.refuseWork{
-		background:#ff7a45
-	}
-	.applyCheck{
-		background:#9254de
-	}
-	.passCheck{
-		background:#52c41a
-	}
-	.unpassCheck{
-		background:#f5222d
-	}
-	.applyDelay{
-		background:#d46b08
-	}
-
-	.applyEnd{
-		background:#ffa940
-	}
-	.agressDelay{
-		background:#614700
-	}
-	.unagressDelay{
-		background:#612500
-	}
-	.endWork{
-		background:#002329
-	}
-	.unagreeEndWork{
-		background:#ad8b00
-	}
-	.deleteWork{
-		background:#cf1322
-	}
-
-
-	.resignWork{
-		background:#69c0ff
-	}
-	.editWork{
-		background:#14B4F2
-	}
-	.shenpiPass{
-		background:#14B4F2
-	}
-	.applyRefuse{
-		background:#14B4F2
-	}
-	.unagreeEndWork{
-		background:#14B4F2
-	}
-	.newApplyCopy{
-		background:#14B4F2
-	}
-	.checkFinish{
-		background:#7cb305
-	}
-	.myRed{
-		background-color: #5cdbd3
+	.notice-container{
+		padding-top:20px;
+		padding-left:17px;
+		padding-right:41px;
+		.notice-desc{
+			background:rgba(255,255,255,1);
+			border-radius:4px;
+			padding:10px 13px 15px 12px;
+		}
 	}
 </style>
-

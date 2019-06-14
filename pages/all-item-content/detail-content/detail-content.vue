@@ -5,22 +5,26 @@
 				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
 			</block>
 			<block slot="content">
-				<view class="font-size-big font-weight-bold">详情内容</view>
+				<view class=" font-weight-bold" style="font-size:18px;margin-bottom:14px;">详情内容</view>
 			</block>
 			<block slot="right">
-				<text class="text-blue" style="font-size:13px;" @click="writeLog()" v-if="itemInfo.report==1">编写汇报</text>
+				<text class="text-blue font-size-small font-weight-normal"  @click="writeLog()" v-if="itemInfo.report==1">编写汇报</text>
 			</block>
 		</cu-custom>
 		<view class="container borderTop bg-white">
-			<view class="title">{{itemInfo.title}}</view>
-			<view class="desc flex justify-between  font-weight-normal" style="padding:10px 0;">
-				<view class="font-size-normal">{{itemInfo.applierName}}</view>
-				<view class="font-size-litter color-normal">
-					{{itemInfo.applyDate | formatTime('YMDHMS')}}
+			<view class="font-size-big color-normal font-weight-bold" >{{itemInfo.title}}</view>
+			<view class="desc flex justify-between  font-weight-normal" style="margin:14px 0 27px 0;">
+				<view class="font-size-normal font-weight-normal color-normal">
+					<text class="font-size-small font-weight-normal" style="color:rgba(24,111,148,1);margin-right:15px;">{{itemInfo.applierName}}</text>
+					<!-- <text style="margin:0 5px;"></text> -->
+					<text style="color:rgba(137,136,136,1);" class="font-size-small font-weight-normal">{{itemInfo.applyDate | formatTime('YMDHMS')}}</text>
 				</view>
+				<!-- <view class="font-size-litter color-normal">
+					{{itemInfo.applyDate | formatTime('YMDHMS')}}
+				</view> -->
 			</view>
-			<view>
-				<image :src="itemInfo.coverurl" style="width:100%;height:130px;border-radius: 15px;margin-bottom:10px;"></image>
+			<view  v-if="type=='example'">
+				<image :src="itemInfo.coverurl" style="width:100%;max-height:170px;margin-bottom:10px;border-radius: 8px;"></image>
 			</view>
 			<view class="detail">
 				<view class="content" v-html="itemInfo.summary"  v-if="type=='example'"></view>
@@ -59,7 +63,6 @@
 			}
 		},
 		onLoad(option){
-			console.log(option);
 			if(option){
 				this.getItemInfo(option.id)
 				this.type=option.type;
@@ -95,7 +98,9 @@
 		width:100%
 	}
 	.content >>> img{
-        max-width: 100%;
+        width: 100%;
+		
+		border-radius: 8px;
     }
 	.content >>> pre {
 		white-space: pre-wrap;

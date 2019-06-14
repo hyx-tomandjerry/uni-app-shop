@@ -9,12 +9,12 @@
 				<view class="flex justify-start position_relative send-info borderBottom">
 					<view class="send-tag" >寄</view>
 					<view><input type="text" placeholder="请填写/添加寄件人信息" class="inputStyle"></view>
-					<text class="cuIcon-right position_absolute right-icon"></text>
+					<text class="cuIcon-right position_absolute right-icon" @click="chooseSender('send')"></text>
 				</view>
 				<view class="flex justify-start position_relative send-info borderBottom">
 					<view class="receive-tag" >收</view>
 					<view><input type="text" placeholder="请填写/添加收件人信息" class="inputStyle"></view>
-					<text class="cuIcon-right position_absolute right-icon"></text>
+					<text class="cuIcon-right position_absolute right-icon"  @click="chooseSender('receive')"></text>
 				</view>
 			</view>
 		</view>
@@ -204,6 +204,13 @@
 			
 		},
 		methods:{
+			chooseSender(item){
+				if(item=='send'){
+					
+				}else if(item=='receive'){
+					
+				}
+			},
 			tabSelect(index){
 				this.TabCur=index;
 			},

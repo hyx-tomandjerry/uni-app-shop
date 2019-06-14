@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="flex text-center bg-white">
-			<view class="cu-item flex-sub" :class="index==TabCur?'borderBottomRed':''" v-for="(item,index) in tabList" 
+			<view class="cu-item flex-sub" :class="index==TabCur?'borderBottomRed':''" v-for="(item,index) in tabList"
 				:key="index" @tap="tabSelect(index)" :data-id="index">
 				<text >{{tabList[index]}}</text>
 			</view>
@@ -24,7 +24,7 @@
 					<text class="tag-name">工作日志</text>
 				</view>
 			</view>
-			
+
 			<view class="work-item" @click="itemDetail(TabCur)">
 				<view class="user flex justify-start">
 					<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
@@ -42,7 +42,7 @@
 					<text class="tag-name">工作日志</text>
 				</view>
 			</view>
-			
+
 			<view class="work-item" @click="itemDetail(TabCur)">
 				<view class="user flex justify-start">
 					<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
@@ -60,7 +60,7 @@
 					<text class="tag-name">工作日志</text>
 				</view>
 			</view>
-			
+
 			<view class="work-item">
 				<view class="user flex justify-start">
 					<image src="../../../../static/img/avatar.jpg" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;"></image>
@@ -100,11 +100,11 @@
 					<text class="tag-name">工作日志</text>
 				</view>
 			</view>
-			
+
 			<image src="../../../../static/icon/add.png"
-			style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createWork(TabCur)"></image>
+			style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork(TabCur)"></image>
 		</view>
-		
+
 		<view v-if="TabCur==1">
 			<text>叫快递</text>
 		</view>
@@ -123,20 +123,20 @@
 								<image src="../../../../static/icon/shop.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">门店名称:</text> 包你满意门店
 							</view>
-			
-			
+
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/time.png" class="img20 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修时间:</text> 2019/2/10
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/client.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修人:</text> TomAndJerry  <text class="text-blue" style="margin:0 5px;">|</text> 18838280488
 							</view>
 						</view>
 					</view>
-			
+
 					<view class="list-item" @click="itemDetail(TabCur)">
 						<view class=" flex justify-between">
 							<view class="list-item-title">热水器维修</view>
@@ -149,20 +149,20 @@
 								<image src="../../../../static/icon/shop.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">门店名称:</text> 包你满意门店
 							</view>
-			
-			
+
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/time.png" class="img20 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修时间:</text> 2019/2/10
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/client.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修人:</text> TomAndJerry  <text class="text-blue" style="margin:0 5px;">|</text> 18838280488
 							</view>
 						</view>
 					</view>
-			
+
 					<view class="list-item" @click="itemDetail(TabCur)">
 						<view class=" flex justify-between">
 							<view class="list-item-title">热水器维修</view>
@@ -175,24 +175,24 @@
 								<image src="../../../../static/icon/shop.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">门店名称:</text> 包你满意门店
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/time.png" class="img20 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修时间:</text> 2019/2/10
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/client.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修人:</text> TomAndJerry  <text class="text-blue" style="margin:0 5px;">|</text> 18838280488
 							</view>
-			
+
 							<view class="comment flex justify-between" style="border-top:1px solid rgba(238, 238, 237, 1);padding-top:10px;">
 								<view></view>
 								<view class='cu-tag line-red' >删除</view>
 							</view>
 						</view>
 					</view>
-			
+
 					<view class="list-item" @click="itemDetail(TabCur)">
 						<view class=" flex justify-between">
 							<view class="list-item-title">热水器维修</view>
@@ -205,19 +205,19 @@
 								<image src="../../../../static/icon/shop.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">门店名称:</text> 包你满意门店
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/time.png" class="img20 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修时间:</text> 2019/2/10
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/client.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修人:</text> TomAndJerry  <text class="text-blue" style="margin:0 5px;">|</text> 18838280488
 							</view>
 						</view>
 					</view>
-			
+
 					<view class="list-item" @click="itemDetail(TabCur)">
 						<view class=" flex justify-between">
 							<view class="list-item-title">热水器维修</view>
@@ -230,33 +230,33 @@
 								<image src="../../../../static/icon/shop.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">门店名称:</text> 包你满意门店
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/time.png" class="img20 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修时间:</text> 2019/2/10
 							</view>
-			
+
 							<view class="list-content-item">
 								<image src="../../../../static/icon/client.png" class="img18 marginRight10" style="vertical-align:middle;" ></image>
 								<text style="margin-right:5px;">报修人:</text> TomAndJerry  <text class="text-blue" style="margin:0 5px;">|</text> 18838280488
 							</view>
-			
+
 							<view class="comment flex justify-between" style="border-top:1px solid rgba(238, 238, 237, 1);padding-top:10px;">
 								<view></view>
 								<view class='cu-tag line-blue' >查看评价</view>
 							</view>
 							<image src="../../../../static/icon/add.png"
-							style="position:fixed;right:12px;bottom:45px;width:68px;height:68px;z-index:100;" @click.stop="createWork(TabCur)"></image>
+							style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork(TabCur)"></image>
 						</view>
-			
-			
+
+
 					</view>
-			
+
 				</scroll-view>
-			
+
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -354,7 +354,7 @@
 			font-weight:400;
 			color:rgba(42,42,42,1);
 			margin-bottom:10px;
-	
+
 		}
 	}
 	.marginRight10{
@@ -362,11 +362,11 @@
 	}
 	.lineHeight18{
 		line-height:18px;
-	
+
 	}
 	.lineHeight20{
 		line-height: 20px;
-	
+
 	}
 	.list-content-item{
 		font-size:14px;
@@ -374,5 +374,5 @@
 		color:rgba(137,136,136,1);
 		margin-bottom:12px;
 	}
-	
+
 </style>

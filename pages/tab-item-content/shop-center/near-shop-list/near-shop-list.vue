@@ -2,7 +2,7 @@
 
  <template>
  	<view>
-		<view class="shop-content bg-white">
+		<view class="shop-content bg-white" v-if="shopList.length>0">
 			<scroll-view scroll-y="true" >
 				<view class="shop-list-item" v-for="(item,index) in shopList"
 					:class="{'bg-gray':shopIndex==item.id}"
@@ -26,7 +26,10 @@
 				</view>
 			</scroll-view>
 		</view>
-		
+		<view v-else>
+			<lx-empty></lx-empty>
+
+		</view>
 		<view v-if="type=='express'" style="position:fixed;bottom:0px;width:100%">
 			<!-- <view v-if="cat=='send' || cat=='distribute_send'">
 				<view class="cu-btn" style="width:100%;background:lightgray;" @click="searchMore()">搜索更多</view> -->
@@ -42,9 +45,9 @@
 				<view class="cu-btn" style="width:50%;background:lightgray;" @click="chooseStore()">选择仓库</view>
 			</view>
 		</view>
-		
+
 		<view class="cu-modal" :class="isShow?'show':''" @tap="hideModal()">
-			
+
 			<view class="cu-dialog" @tap.stop="">
 				<view style="padding:10px 0;">选择收件人</view>
 				<radio-group class="block" @change="RadioChange($event)">
@@ -52,8 +55,8 @@
 						<view class="cu-item" v-for="(item,index) in shopMaleList" :key="index">
 							<label class="flex justify-between align-center flex-sub">
 								<view class="flex-sub">{{item.name}} <text style="margin:0px 10px;color:blue;font-size:14px">|</text>{{item.account}}</view>
-								<radio class="round" 
-								:class="radio=='radio' + item.id?'checked':''" 
+								<radio class="round"
+								:class="radio=='radio' + item.id?'checked':''"
 								:checked="radio=='radio' + item.id?true:false"
 								 :value="'radio' + item.id"></radio>
 							</label>
@@ -65,7 +68,10 @@
  	</view>
  </template>
  <script>
+	 import LxEmpty from '../../../../lx_components/lx-empty.vue'
+	 import {mapState} from 'vuex'
  	export default{
+		computed:mapState(['userInfo']),
  		data(){
  			return{
 				shopList:[],
@@ -81,12 +87,12 @@
  			}
  		},
  		components:{
-
+			LxEmpty
  		},
  		onLoad(options){
 			this.type=options.type;
 			this.cat=options.cat;
-			
+
 			this.getNearShopList()
  		},
 		methods:{
@@ -121,26 +127,21 @@
 			},
  		    getNearShopList(){
 				if(this.cat=='receive' || this.cat=='distribute'){
-					uni.getStorage({
-						key:'userInfo',
-						success: (res) => {
-							 this.$ajax('IntraCityShops',{
-							   shop:res.data.id
-							},res=>{
-							    this.shopList=res
-							})
-						}
-					})
-					
+                    this.$ajax('IntraCityShops',{
+                        shop:this.userInfo.id
+                    },res=>{
+                        this.shopList=res
+                    })
+
 				}else{
 					this.$ajax('MyShops',{
 					    address:''
 					},res=>{
 					    this.shopList=res
-						
+
 					})
 				}
-                
+
 			},
 			getShopMaleInfo(id){
 				this.$ajax('ShopSalesmen',{shop:id},res=>{
@@ -183,7 +184,7 @@
 						})
 					},500)
 				}
-				
+
 			}
 		}
  	}

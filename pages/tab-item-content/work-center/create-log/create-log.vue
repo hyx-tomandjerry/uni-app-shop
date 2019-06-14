@@ -1,13 +1,13 @@
 <template>
 	<view class="create-log">
 		<view class="create-log-content">
-			<!--<view class="cu-form-group">-->
-				<!--<view class="log-title"><text class="text-red">*</text>选择门店</view>-->
-				<!--<view>-->
-					<!--<text>{{shopItem.name}}</text>-->
-					<!--<text class="cuIcon-right" style="font-size:14px;margin-left:6px;" @click="toChooseShop()"></text>-->
-				<!--</view>-->
-			<!--</view>-->
+			<view class="cu-form-group" v-if="type=='log'">
+				<view class="log-title"><text class="text-red">*</text>选择门店</view>
+				<view>
+					<text>{{shopItem.name}}</text>
+					<text class="cuIcon-right" style="font-size:16px;margin-left:6px;color:#898888" @click="toChooseShop()"></text>
+				</view>
+			</view>
 
 			<view class="cu-form-group" v-if="type=='article'">
 				<view class="log-title"><text class="text-red">*</text>文章编号</view>
@@ -20,11 +20,15 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="log-title"><text class="text-red">*</text>汇报标题</view>
-				<input placeholder="汇报标题" v-model="log.title">
+				<input placeholder="请输入您的内容标题" v-model="log.title" class="font-size-normal font-weight-normal"
+				:class="{
+					'text-black':log.title,
+					'color-placeholder':!log.title
+				}">
 			</view>
 
 			<view class="cu-form-group create-log-textarea">
-				<textarea  v-model="log.summary" maxlength="1000"   placeholder="请输入汇报内容.."></textarea>
+				<textarea  v-model="log.summary" maxlength="1000"   placeholder="请输入汇报内容.." class="font-size-small font-weight-normal"></textarea>
 				<!--<textarea maxlength="-1" :disabled="modalName!=null" @input="textareaAInput" placeholder="多行文本输入框"></textarea>-->
 				<text class="create-log-num">1000字以内</text>
 			</view>
@@ -32,7 +36,7 @@
 
 		<view class="img-content margin-top-13">
 			<view class="cu-bar bg-white margin-top">
-				<view class="action text-grey" style="font-size:12px;">
+				<view class="action color-normal font-size-small font-weight-normal" >
 					上传附件
 				</view>
 				<view class="action">
@@ -42,8 +46,8 @@
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
 					<view class="padding-xs bg-img" :style="[{backgroundImage:'url(' + imgList[index] +')'}]" v-for="(item,index) in imgList"
-					 :key="index" @tap="ViewImage()" :data-url="imgList[index]">
-						<view class="cu-tag bg-red" @tap.stop="DelImg()" :data-index="index">
+					 :key="index" @tap="ViewImage(index)" :data-url="imgList[index]">
+						<view class="cu-tag bg-red" @tap.stop="DelImg(index)" :data-index="index">
 							<text class='cuIcon-close'></text>
 						</view>
 					</view>
@@ -66,7 +70,9 @@
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	export default {
+	    computed:mapState(['userInfo']),
 		data() {
 			return {
 				log:{
@@ -80,23 +86,25 @@
 				ArticleInfo:'',
 				article:'',
 				token:'',
-				type:''
+				type:'',
+
 			}
 		},
 		onLoad(options){
 			console.log(options)
 			this.type=options.type;
 			this.getUploadToken()
-			
-			
+
+
 			if(options){
 				if(options.id){
 					this.article = options.id;
 					this.getArticleInfo(options.id)
 				}
-				
+
 			}
 			this.$fire.on('shop',res=>{
+				console.log(res)
 				this.getShopInfo(res.shopID)
 			})
 		},
@@ -109,39 +117,73 @@
 						icon:'none'
 					})
 				}else{
-				    uni.getStorage({
-				    	key:'userInfo',
-						success: (res) => {
-							this.$ajax('NewWorkReportByShop',{
-								reporter:res.data.id,
-							    title:this.log.title,
-							    article:this.type=='article'?this.article:'',
-							    summary:this.log.summary,
-							    files:this.files?this.files.join(','):'',
-							},res=>{
-							    uni.showToast({
-							        title:'新建工作汇报成功',
-							        icon:'none'
-							    });
-							    setTimeout(()=>{
-									uni.navigateBack({
-										delta:1,
-										success:(res)=>{
-											 this.$fire.fire('logRefresh','111')
-										}
-									})
-							      
-							    },500)
+					if(this.type=='article'){
+                        this.$ajax('NewWorkReportByShop',{
+                            reporter:this.userInfo.id,
+                            title:this.log.title,
+
+                            type:1,
+                            article:this.type=='article'?this.article:'',
+                            summary:this.log.summary,
+                            files:this.files?this.files.join(','):'',
+                        },res=>{
+                            uni.showToast({
+                                title:'新建工作汇报成功',
+                                icon:'none'
+                            });
+                            setTimeout(()=>{
+                                uni.navigateBack({
+                                    delta:1,
+                                    success:(res)=>{
+                                        this.$fire.fire('logRefresh','111')
+                                    }
+                                })
+
+                            },500)
+                        })
+					}else if(this.type=='log'){
+						console.log(this.shopItem)
+						if(!this.shopItem){
+							uni.showToast({
+								title:'请选择门店进行汇报',
+								icon:'none'
 							})
+						}else{
+                            this.$ajax('NewWorkReportByShop',{
+                                reporter:this.userInfo.id,
+                                title:this.log.title,
+                                shop:this.shopItem?this.shopItem.id:'',
+                                type:2,
+                                article:this.type=='article'?this.article:'',
+                                summary:this.log.summary,
+                                files:this.files?this.files.join(','):'',
+                            },res=>{
+                                uni.showToast({
+                                    title:'新建工作汇报成功',
+                                    icon:'none'
+                                });
+                                setTimeout(()=>{
+                                    uni.navigateBack({
+                                        delta:1,
+                                        success:(res)=>{
+                                            this.$fire.fire('logRefresh','111')
+                                        }
+                                    })
+
+                                },500)
+                            })
+
 						}
-				    })
-                    
+					}
+
+
 				}
 			},
 			//获得门店信息
 			getShopInfo(id){
 				this.$ajax('ProprietorShop',{id:id},res=>{
 					this.shopItem=res;
+					console.log(this.shopItem)
 				})
 			},
 			//获得文章的信息
@@ -178,41 +220,36 @@
 							} else {
 									this.imgList = res.tempFilePaths
 							}
-							uni.getStorage({
-								key:'userInfo',
-								success: (info) => {
-									for(var i=0;i<res.tempFilePaths.length;i++){
-										var  uploadTask=uni.uploadFile({
-											url:this.$store.state.uploadHostUrl+this.token,
-											filePath:tempFilePaths[i],
-											name:'file',
-											formData:{
-												'x:type':this.$store.state.doc.workReportShop,
-												'x:owner': info.data.owner,
-												'x:creator': info.data.id,
-											},
-											success: (uploadFileRes) => {
-												let res=JSON.parse(uploadFileRes.data);
-												console.log(this.files)
-												this.files.push(res.data);
-											}
-										});
-										uploadTask.onProgressUpdate((res)=>{
-											if(res.progress==100){
-												uni.showToast({
-													title:'上传成功',
-													icon:'none'
-												})
-											}
-										},(error)=>{
-											uni.showToast({
-												title:'上传失败',
-												icon:'none'
-											})
-										})
-									}
-								}
-							})
+                            for(var i=0;i<res.tempFilePaths.length;i++){
+                                var  uploadTask=uni.uploadFile({
+                                    url:this.$store.state.uploadHostUrl+this.token,
+                                    filePath:tempFilePaths[i],
+                                    name:'file',
+                                    formData:{
+                                        'x:type':this.$store.state.doc.workReportShop,
+                                        'x:owner': this.userInfo.owner,
+                                        'x:creator': this.userInfo.id,
+                                    },
+                                    success: (uploadFileRes) => {
+                                        let res=JSON.parse(uploadFileRes.data);
+                                        console.log(this.files)
+                                        this.files.push(res.data);
+                                    }
+                                });
+                                uploadTask.onProgressUpdate((res)=>{
+                                    if(res.progress==100){
+                                        uni.showToast({
+                                            title:'上传成功',
+                                            icon:'none'
+                                        })
+                                    }
+                                },(error)=>{
+                                    uni.showToast({
+                                        title:'上传失败',
+                                        icon:'none'
+                                    })
+                                })
+                            }
 
 
 
@@ -238,9 +275,10 @@
 						confirmText: '确定',
 						success: res => {
 							if (res.confirm) {
+								console.log(event)
 								this.imgList.splice(event, 1);
 								this.$ajax('RemoveFiles',{
-									id:this.files[event],
+									files:this.files[event],
 								},res=>{
 									this.files.splice(event,1)
 									uni.showToast({
@@ -274,10 +312,10 @@
 		/*text-align: right;*/
 	/*}*/
 	.log-title{
-		font-size:12px;
+		font-size:15px;
 		font-family:PingFangSC-Regular;
 		font-weight:400;
-		color:gray
+		color:#2A2A2A
 	}
 	.img-content{
 		background:#fff;
