@@ -1,5 +1,19 @@
 <template>
 	<view>
+		<cu-custom :isBack="true">
+			<block slot="left">
+				<text class="cuIcon-back" style="font-size:20px" @click="goBack()"></text>
+			</block>
+			<block slot="content">
+				<view class="font-size-big font-weight-bold">录入门店</view>
+			</block>
+			<block slot="right">
+				
+				<view class="font-size-small font-weight-normal text-blue"   @click="choseCategory()" >
+					确定
+				</view>
+			</block>
+		</cu-custom>
 		<view class="content">
 			<view class="nav">
 				<view class="nav-left">
@@ -28,7 +42,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="choseBtn" @click="choseCategory()">确定</view>
+		<!-- <view class="choseBtn" @click="choseCategory()">确定</view> -->
 	</view>
 </template>
 
@@ -56,9 +70,11 @@
 			uniTag
 		},
 		methods:{
+			
 			goBack(){
-				uni.reLaunch({
-					url:'../record-shop/record-shop?bigID='+this.repairObj.bigID+'&bigName='+this.repairObj.bigName+"&subID="+this.repairObj.subID+"&subName="+this.repairObj.subName
+				uni.showToast({
+					title:'请选择门店类别',
+					icon:'none'
 				})
 			},
 			scroll(e){

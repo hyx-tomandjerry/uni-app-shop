@@ -120,6 +120,7 @@
 <style lang="less">
 	page{
 		background:#fff;
+		height:100%;
 	}
 	.tab-content{
 		padding-top:16px;

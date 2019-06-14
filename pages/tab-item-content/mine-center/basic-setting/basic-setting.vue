@@ -15,37 +15,44 @@
 			</block>
 		</cu-custom>
 		<view class="info-container bg-white">
-			<view class="user-info-item-log flex justify-between position_relative borderBottom">
+			<view class="user-info-item-log flex justify-between position_relative borderBottom" @click="uploadAvatar()">
 				<view class="font-weight-normal font-size-normal" style="line-height:47px;">头像</view>
-				<view>
+				<view >
 					<image 
-					@click.stop.prevent="uploadAvatar()"
+					
 					class="coverUrl"
-					v-if="avatar" :src="avatar.resurl"></image>
-					<image 
-					@click.stop.prevent="uploadAvatar()"
-					class="coverUrl"
-					v-else
+					v-if="userInfo.headurl"
 					:src="userInfo.headurl" ></image>
 				</view>
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:27px;" ></text>
 			</view>
-			<view class="user-info-item flex justify-between borderBottom position_relative">
-				<view class="font-weight-normal font-size-normal" style="line-height:47px;">昵称</view>
-				<input type="text" placeholder="请输入昵称" v-model="userInfo.name" class="text-right" style="padding-right:10px;padding-top:7px;">
-				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:15px;" ></text>
+			
+			<view class="cu-form-group position_relative">
+				<view class=" font-size-normal font-weight-normal">昵称</view>
+				<input placeholder="请输入昵称"  style="text-align:right;margin-right:5px;" class="font-size-normal font-weight-normal text-black" v-model="userInfo.name"></input>
+				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:14px;" ></text>
 			</view>
-			<view class="user-info-item flex justify-between borderBottom position_relative">
+			<view class="cu-form-group position_relative">
+				<view class=" font-size-normal font-weight-normal">账号</view>
+				<input placeholder="请输入账号"  style="text-align:right;margin-right:5px;" class="font-size-normal font-weight-normal text-black" v-model="userInfo.mobile"></input>
+				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:14px;" ></text>
+			</view>
+			<!-- <view class="user-info-item flex justify-between borderBottom position_relative">
 				<view class="font-weight-normal font-size-normal" style="line-height:47px;">账号</view>
 				<input type="text" placeholder="请输入昵称" v-model="userInfo.mobile" class="text-right" style="padding-right:10px;padding-top:7px;">
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;" ></text>
-			</view>
+			</view> -->
 		</view>
 		<view class="extra-container bg-white" >
-			<view class="user-info-item flex justify-between borderBottom position_relative" @click="changeGender()">
+			<view class="user-info-item flex justify-between borderBottom position_relative" >
 				<view class="font-weight-normal font-size-normal" style="line-height:47px;">性别</view>
-				<text  style="line-height:40px;margin-right:10px;">{{userInfo.gender==1?'男':'女'}}</text>
+				<!-- <text  style="line-height:40px;margin-right:10px;">{{userInfo.gender==1?'男':'女'}}</text> -->
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;" ></text>
+				<view class="uni-list-cell-db" style="margin-top:10px;margin-right:7px;">
+				    <picker @change="bindPickerChange($event)" :value="radio" :range="sexList">
+				        <view class="uni-input">{{sexList[radio]}}</view>
+				    </picker>
+				</view>
 			</view>
 			<view class="user-info-item flex justify-between borderBottom position_relative"  @click="onShowDatePicker('date')">
 				<view class="font-weight-normal font-size-normal" style="line-height:47px;">出生日期</view>
@@ -54,32 +61,17 @@
 					<text  v-else>{{userInfo.birthday | formatTime('YMD') || ''}}</text>
 					
 				</view>
-				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;" ></text>
+				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;"  ></text>
 			</view>
-			<view class="user-info-item flex justify-between borderBottom position_relative" @click="writeMotto()">
+			<!-- <view class="user-info-item flex justify-between borderBottom position_relative" @click="writeMotto()">
 				<view class="font-weight-normal font-size-normal" style="line-height:47px;">签名</view>
 				<text  style="line-height:40px;margin-right:10px;">{{userInfo.motto||''}}</text>
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;" ></text>
-			</view>
+			</view> -->
 		</view>
 		
-		<view class="cu-modal" :class="isChangeSex?'show':''" @tap="hideModal()">
-			<view class="cu-dialog" @tap.stop="">
-				<radio-group class="block" @change="RadioChange($event)">
-					<view class="cu-list menu text-left">
-						<view class="cu-item" v-for="(item,index) in sexList" :key="index">
-							<label class="flex justify-between align-center flex-sub">
-								<view class="flex-sub">{{item}}</view>
-								<radio class="round" 
-								:class="radio=='radio' + (index+1)?'checked':''" 
-								:checked="radio=='radio' + (index+1)?true:false"
-								 :value="'radio' + (index+1)"></radio>
-							</label>
-						</view>
-					</view>
-				</radio-group>
-			</view>
-		</view>
+	
+		
 		
 		 <mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true"
 		@confirm="onSelected($event)" @cancel="onSelected($event)"
@@ -88,91 +80,99 @@
 </template>
 <script>
 	import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
+	import {mapState,mapMutations} from 'vuex'
 	export default{
+		computed:mapState(['userInfo']),
 		data(){
 			return{
 				isShow:true,
 				value: '',
 				type: 'rangetime',
 				radio:0,
-				sexList:['男','女'],
+				sexList:['女','男'],
 				isChangeSex:false,
-				userInfo:{},
+				userInfo1:{},
 				token:'',//上传头像的token
 				avatar:'',
 				birthday:'',
 				showPicker:false,
 				showBir:false,
 				coverID:'',
+				index: 0,
 			}
 		},
 		components:{
 			MxDatePicker
 		},
 		methods:{
+			...mapMutations(['login']),
+			bindPickerChange(event){
+				
+				this.radio=event.detail.value;
+				
+			},
 			//获得上传图片的token
 			getUploadToken(){
 				this.$ajax('UploadToken',{},res=>{
 					this.token=res;
 				})
 			},
-			//上传头像
 			uploadAvatar(){
+				
 				uni.chooseImage({
 					count:1,
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
 						const tempFilePaths=res.tempFilePaths;
-						this.coverList = res.tempFilePaths
-						uni.getStorage({
-							key:'userInfo',
-							success: (res) => {
-								const uploadTask=uni.uploadFile({
-									url:this.$store.state.uploadHostUrl+this.token,
-									filePath:tempFilePaths[0],
-									name:'file',
-									formData:{
-										'x:type':11,
-										'x:owner': res.data.owner,
-										'x:creator': res.data.id,
-									},
-									success: (uploadFileRes) => {
-								
-										let res=JSON.parse(uploadFileRes.data)
-										this.coverID=res.data;
-										this.getAvater(this.coverID)
-									}
-								});
-								uploadTask.onProgressUpdate((res)=>{
-									if(res.progress==100){
-										uni.showToast({
-											title:'上传成功',
+						this.coverList = res.tempFilePaths;
+						const uploadTask=uni.uploadFile({
+								url:this.$store.state.uploadHostUrl+this.token,
+								filePath:tempFilePaths[0],
+								name:'file',
+								formData:{
+									'x:type':11,
+									'x:owner':this.userInfo? this.userInfo.owner:'',
+									'x:creator': this.userInfo? this.userInfo.id:'',
+									'x:target':this.userInfo? this.userInfo.id:''
+								},
+								success: (uploadFileRes) => {
+									console.log(uploadFileRes)
+									let FileRes=JSON.parse(uploadFileRes.data)
+									
+									this.coverID=FileRes.data;
+									
+									this.getAvater(this.coverID)
+								}
+							});
+							uploadTask.onProgressUpdate((resProgress)=>{
+								setTimeout(()=>{
+									 if(resProgress.progress==100){
+									 	uni.showToast({
+									 		title:'上传成功',
 											icon:'none'
 										})
-										
-									}
+									 }
+									
+								},400)
 								
-								},(error)=>{
-									uni.showToast({
-										title:'上传失败',
-										icon:'none'
-									})
+									
+							},(error)=>{
+								uni.showToast({
+									title:'上传失败',
+									icon:'none'
 								})
-							}
-						})
-						
-						
+							})
 					}
 				})
 			},
 			//获得头像图片
 			getAvater(id){
 				this.$ajax('File',{id:id},res=>{
-					this.avatar=res;
+					this.userInfo.headurl=res.resurl;
 					uni.setStorage({
 						key:'logo',
-						data:this.avatar
+						data:this.userInfo.headurl
 					})
 				})
 			},
@@ -191,21 +191,17 @@
 				}
 			
 			},
-			RadioChange(e) {
-				this.radio = e.detail.value.substr(5,1);
-				this.userInfo.gender=this.radio
-			},
-			hideModal(){
-				this.isChangeSex=false;
-			},
+			
+			
 			goBack(){
 				uni.navigateBack({
-					delta:1
+					delta:1,
+					success:(res)=>{
+						
+					}
 				})
 			},
-			changeGender(){
-				this.isChangeSex=true;
-			},
+			
 			 onShowDatePicker(type){//显示
 			  this.type = type;
 			  this.showPicker = true;
@@ -216,7 +212,10 @@
 				uni.getStorage({
 					key:'logo',
 					success: (res) => {
-						this.avatar=res.data
+						if(this.userInfo){
+							this.userInfo.headurl=res.data
+						}
+						
 					}
 				})
 			},
@@ -225,7 +224,7 @@
 					gender:this.radio,
 					mobile:this.userInfo.mobile,
 					name:this.userInfo.name,
-					motto:this.userInfo.motto,
+					// motto:this.userInfo.motto,
 					birthday:this.birthday
 				},res=>{
 					uni.showToast({
@@ -236,12 +235,23 @@
 			}
 		},
 		onLoad(){
-			this.getUploadToken();
-			this.getUserInfoAvatar()
-			this.$ajax('RefreshOnlineUser',{},res=>{
-				this.userInfo=res;
-				
+			uni.getStorage({
+				key:'logo',
+				success: (res) => {
+					if(res){
+						uni.removeStorage({
+							key:'logo'
+						})
+					}
+				}
 			})
+			this.getUploadToken();
+			this.getUserInfoAvatar();
+			this.$ajax('RefreshOnlineUser',{},res=>{
+				this.login(res);
+				this.radio=this.userInfo?this.userInfo.gender:1;
+			})
+			
 			this.$fire.on('motto',res=>{
 				if(res){
 					this.userInfo.motto=res;
@@ -256,6 +266,7 @@
 	}
 	.info-container,.extra-container{
 		border-top:1px solid #EEEEED;
+		
 		.user-info-item{
 			padding:2px 26px 2px 14px;
 		}
@@ -268,5 +279,8 @@
 				vertical-align: middle
 			}
 		}
+	}
+	uni-picker .uni-picker-content{
+		height:100px !important;
 	}
 </style>

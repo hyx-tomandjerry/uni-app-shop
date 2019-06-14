@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="order_content">
-			<scroll-view scroll-y="true" class="page show" >
+			
 				<view class="operaterInfo flex justify-between" 
 					v-show="repaitItem.status==$store.state.repairStatus.finish">
 					<!-- 未处理状态不可见 -->
@@ -128,8 +128,14 @@
 					<view class="repair-detail-title" >
 						<text>报修附件</text>
 					</view>
-					<view  style="padding-top:13px;padding-bottom:12px;">
-						<uni-grid :options="avatar" @click="viewImg()"></uni-grid>
+					<view  style="padding-top:13px;padding-bottom:12px;" v-if="repaitItem.files">
+						<view class="bg-white padding">
+							<view class="grid col-4 grid-square">
+								<view class="bg-img" v-for="(item,index) in repaitItem.files" :key="index" :style="[{ backgroundImage:'url(' + item.url + ')' }]"
+									@click="viewImg(index)"
+								></view>
+							</view>
+						</view>
 							<!-- <view class=" flex justify-start">
 								<image v-for="(item,index) in repaitItem.files" :key="index" :src="item.url" style="width:78px;height:78px;margin-right:12px;" @click="viewImg(item)"></image> -->
 								<!-- <view class="bg-img" v-for="(item,index) in repaitItem.files" :key="index"
@@ -139,7 +145,7 @@
 			
 					</view>
 				</view>
-			</scroll-view>
+			
 			<view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white">
@@ -241,7 +247,7 @@
 			hideModal(){
 				this.modalName=''
 			},
-			viewImg(){
+			viewImg(index){
 				let imgList=[];
 				this.repaitItem.files.forEach(item=>{
 					if(item.postfix){
@@ -249,7 +255,8 @@
 					}
 				})
 				uni.previewImage({
-					urls: imgList
+					urls: imgList,
+					current:index
 				})
 				
 			},
@@ -268,7 +275,7 @@
 						})
 					}
 					
-					console.log(this.avatar)
+					
 				})
 				// uni.request({
 				// 	url:this.$store.state.url+'ServiceOrder',

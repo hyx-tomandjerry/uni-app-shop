@@ -7,7 +7,7 @@
 	<view>
 		<!-- 选择地址展示 -->
 		<view @tap="showAddress">
-			<text v-if="coname" style="font-size:13px;">{{coname}} - {{ctname}} - {{csname}}</text>
+			<text v-if="coname" style="font-size:13px;" class="text-black">{{coname}} - {{ctname}} - {{csname}}</text>
 			<text v-else class="cuIcon-right" style="font-size:20px;color:rgba(42,42,42,1)"></text>
 		</view>
 		<!-- 选择地址模态框 -->

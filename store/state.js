@@ -1,12 +1,14 @@
 export default {
     appKey:null,//存储服务器发送给客户端的sessionkey
     hostUrl:'http://192.168.10.22/services',
-    // url:'http://192.168.10.58:8080/blade/services?f=',
-    url:'http://192.168.10.22/services?f=',
+    url:'http://192.168.10.58:8080/blade/services?f=',
+    // url:'http://192.168.10.22/services?f=',
     uploadHostUrl:'http://up.qiniup.com?token=',
     userInfo:null,
     statusHeight:44,
+	ownerType:4,
     IMSDKAPPID:1400132581,
+	hasLogin:false,//判断是否登录
     loginInfo:'',//聊天信息
     constants:{
         brand_type:29,//品牌类别
@@ -18,6 +20,22 @@ export default {
 
     },
     shoperType:4,
+	//经营类别
+	runCatalog : {
+		direct:2,
+		agent:3,
+		join:4,
+		trusteeship:5,
+		joint:6
+	},
+
+	runCatalogZn :{
+		2:'直营店',
+		3:'代理商',
+		4:'加盟店',
+		5:'托管店',
+		6:'合资店',
+	},
     expressList:[
         {name:'申通快递',id:1,img:'../../../../../static/icon/express/shentong.png'},
         {name:'圆通快递',id:2,img:'../../../../../static/icon/express/yuantong.png'},
@@ -177,14 +195,12 @@ export default {
         30:'#7cb305',
     },
     repairStatusZn:{
-        0:'全部',
         1:'未处理',
         2:'处理中',
         3:'无效',
         4:'已完成'
     },
     repairStatus:{
-        'all':0,
         'untreated':1,
         'treating':2,
         'refuse':3,

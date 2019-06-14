@@ -6,17 +6,19 @@
 				<view class="font-size-big font-weight-bold">{{title}}</view>
 			</block>
 		</cu-custom>
-		<view class="more-content borderTop">
+		<view class="more-content borderTop" v-if="skillList.length>0">
+			
 			<view v-if="value=='skill'">
 				<view class="flex justify-start align-center borderBottom position_relative" v-for="(item,index) in skillList" :key="index"  @click="checkItemInfo(item)" style="padding:23px 18px 21px 14px;">
-					<view style="width:40%;margin-right:20px;">
-						<image :src="item.coverurl" mode="aspectFill" style="height:79px;border-radius: 10px;;"></image>
-					</view>
-					<view>
+					
+					<view style="width:71%">
 						<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.title}} </view>
 						<view class="font-size-litter font-weight-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
 					</view>
-					<image src="../../../static/img/huizhi.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
+					<view style="width:29%;">
+						<image :src="item.coverurl" mode="aspectFill" style="height:79px;border-radius: 10px;;"></image>
+					</view>
+					<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
 				</view>
 			</view>
 			<view class="cu-card case" v-show="value=='example'"  style="margin:7px;border-radius: 10px;">
@@ -28,14 +30,17 @@
 				</view>
 			</view>
 		</view>
+		<view v-else>
+			<LxEmpty></LxEmpty>
+		</view>
 
-		<view class="cu-load bg-gray loading" v-if="isLoading"></view>
-		<view class="cu-load bg-gray over" v-if="isFinish"></view>
+		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
 	</view>
 </template>
 
 <script>
-	import headTab from '../../../components/head-tab.vue'
+	import LxEmpty from '../../../lx_components/lx-empty.vue';
+	import uniLoadMore from '../../../components/uni-load-more.vue'
 	export default{
 		data(){
 			return{
@@ -46,39 +51,50 @@
 				isLoading:false,
 				isFinish:false,
 				page:1,
+				content:{
+					contentdown: "",
+					contentrefresh: "正在加载...",
+					contentnomore: "没有更多数据了"
+				},
+				loading:'more'
 			}
 		},
 		components:{
-			headTab
+			LxEmpty,
+			uniLoadMore
+			
+		},
+		onPullDownRefresh(){
+			setTimeout(()=>{
+				uni.stopPullDownRefresh();
+			},800)
+			this.getArticleList()
 		},
 		onReachBottom(){
-			console.log('到达底部')
+		
 			this.page++;
-			setTimeout(()=>{
-				this.$ajax('MyArticles',{
-					type:this.value=='skill'?1:2,
-					offset:this.$utils.getOffset(this.page)
-				},res=>{
-					this.isLoading=true;
-					if(res==''){
-						this.isLoading=false;
-						setTimeout(()=>{
-								this.isFinish=true;
-						},600)
-
-					}else{
+			this.$ajax('MyArticles',{
+				type:this.value=='skill'?1:2,
+				offset:this.$utils.getOffset(this.page)
+			},res=>{
+				
+				if(res==''){
+					
+					setTimeout(()=>{
+							this.loading='noMore'
+					},900)
+			
+				}else{
+					setTimeout(()=>{
 						res.forEach(item=>{
 							this.skillList.concat(item)
-							// if(this.value=='skill'&& item.type==1){
-							// 	this.skillList.concat(item)
-							// }else if(this.value=='example' && item.type==2){
-							// 	this.skillList.concat(item)
-							// }
 						})
-					}
-
-				})
-			},500)
+						this.loading='loading'
+					},900)
+					
+				}
+			
+			})
 
 		},
 		methods:{
@@ -99,13 +115,6 @@
 					offset:this.$utils.getOffset(this.page)
 				},res=>{
 					this.skillList=res;
-					// res.forEach(item=>{
-					// 	if(this.value=='skill'&& item.type==1){
-					// 		this.skillList.push(item)
-					// 	}else if(this.value=='example' && item.type==2){
-					// 		this.skillList.push(item)
-					// 	}
-					// })
 				})
 			}
 		},
@@ -127,11 +136,14 @@
 </script>
 
 <style lang="less">
+	page{
+		background:#fff;
+	}
 	.operateImg{
 		width:37px;
 		height:37px;
-		top:21px;
-		left:14px;
+		top:22px;
+		right:18px;
 	}
 	page{
 		background:#fff;

@@ -1,5 +1,20 @@
 <template>
 	<view>
+		
+		<cu-custom :isBack="true">
+			<block slot="left">
+				<text class="cuIcon-back" style="font-size:20px" @click="goBack()"></text>
+			</block>
+			<block slot="content">
+				<view class="font-size-big font-weight-bold">新增报修</view>
+			</block>
+			<block slot="right">
+				
+				<view class="font-size-small font-weight-normal text-blue"   @click="choseRepair()" >
+					确定
+				</view>
+			</block>
+		</cu-custom>
 		<view class="content">
 			<view class="nav">
 				<view class="nav-left">
@@ -26,7 +41,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="choseBtn" @click="choseRepair()">确定</view>
+		<!-- <view class="choseBtn" @click="choseRepair()">确定</view> -->
 	</view>
 </template>
 
@@ -56,6 +71,11 @@
 			uniTag
 		},
 		methods:{
+			goBack(){
+				uni.navigateBack({
+					delta:1,
+				})
+			},
 			choseRepair(){
 				uni.navigateBack({
 					delta:1,

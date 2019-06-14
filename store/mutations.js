@@ -11,10 +11,23 @@ export default {
     setLoginInfo(state,loginInfo){
         state.loginInfo=loginInfo
     },
-    setImInfo (state, data) {
-        state.imInfo = data
+    setImInfo (state, imInfo) {
+        state.imInfo = imInfo
     },
-    setChatWith (state, data) {
-        state.chatWith = data
+    login(state,provider){
+        state.hasLogin=true;
+        state.userInfo=provider;
+        uni.setStorage({
+            key:'userInfo',
+            data:provider
+        })
+    },
+    logout(state){
+        //退出登录
+        state.hasLogin=false;
+        state.userInfo={};
+        uni.removeStorage({
+            key:'userInfo',
+        })
     }
 }

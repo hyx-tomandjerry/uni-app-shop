@@ -1,41 +1,118 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	 {
-	 	    "path" : "pages/login-design/login/login",
-	 	    "style": {
-	 	      "navigationBarTitleText": "门店助手"
-	 	    }
-	 	  },
+
+{
+  	    "path" : "pages/login-design/login/login",
+  	    "style": {
+  	      "navigationStyle":"custom",
+  	      "app-plus":{
+  	      	"titleNView":false
+  	      }
+ 
+  	    }
+  	  },
+	  {
+	  	     "path" : "pages/tab-item/index/index",
+	  	     "style" : {
+	  					"navigationStyle":"custom",
+	  					"app-plus":{
+	  						"titleNView":false
+	  					}
+	  
+	  				  }
+	  	 },
+ {
+	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
+	          "style" : {
+	          	"navigationStyle":"custom",
+	          	"app-plus":{
+	          		"titleNView":false
+	          	}
+	          }
+	      },
+	
 		  {
-		       "path" : "pages/tab-item/index/index",
-		       "style" : {
-		  				"navigationStyle":"custom",
-		  				"app-plus":{
-		  					"titleNView":false
-		  				}
+		              "path" : "pages/tab-item-content/notice-center/notice-index/notice-index",
+		              "style" : {
+		  				"navigationBarTitleText": "通知",
+		  				"enablePullDownRefresh": true,
+		  				"navigationBarBackgroundColor":"#fff"
+		  			}
+		          },
+		  {
+		        "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
+		        "style" : {
+		    		"navigationStyle":"custom",
+		    		"app-plus":{
+		    			"titleNView":false
+		    		}
+		    	}
+		    },
 
-		  			  }
-		   },
 	{
-	      "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
-	      "style" : {
-	  		"navigationStyle":"custom",
-	  		"app-plus":{
-	  			"titleNView":false
-	  		}
-	  	}
-	  },
+	    "path" : "pages/tab-item-content/work-center/express-center/create-express/create-express",
+	    "style" : {
+	   	"navigationStyle":"custom",
+	   	"app-plus":{
+	   		"titleNView":false
+	   	}
+	   }
+	},
+	{
+	    "path" : "pages/tab-item-content/work-center/express-center/express-list/express-list",
+	    "style" : {
+			"navigationBarTitleText": "寄件记录",
+			"enablePullDownRefresh": true
+		}
+	},
+
+
+		  {
+		      "path" : "pages/tab-item-content/mine-center/basic-setting/basic-setting",
+		      "style" : {
+		  		"navigationStyle":"custom",
+		  		"app-plus":{
+		  			"titleNView":false
+		  		}
+		  	}
+		  },
+	{
+	    "path" : "pages/tab-item/mine/mine",
+	    "style" : {
+			"navigationBarTitleText": "我的"
+		}
+	},
+
+	{
+	    "path" : "pages/login-design/reset-password/reset-password",
+		 "style": {
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
+			}
+		}
+
+	},
+
+	
 
 
 
-
-
-	 {
-	     "path" : "pages/tab-item/mine/mine",
+	{
+	     "path" : "pages/tab-item-content/shop-center/create-order/create-order",
 	     "style" : {
-	 		"navigationBarTitleText": "我的"
-	 	}
+	 				"navigationBarTitleText": "新增报修"
+	 		}
 	 },
+
+
+
+
+
+
+
+
+
 	 {
 	     "path" : "pages/tab-item-content/shop-center/search-more-shop/search-more-shop",
 	     "style" : {
@@ -49,24 +126,8 @@
 	  	}
 	  },
 
-	  {
-	      "path" : "pages/tab-item-content/work-center/express-center/create-express/create-express",
-	      "style" : {
-	     	"navigationStyle":"custom",
-	     	"app-plus":{
-	     		"titleNView":false
-	     	}
-	     }
-	  },
-	   {
-	       "path" : "pages/tab-item-content/mine-center/basic-setting/basic-setting",
-	       "style" : {
-	   		"navigationStyle":"custom",
-	   		"app-plus":{
-	   			"titleNView":false
-	   		}
-	   	}
-	   },
+
+
 
 	{
 	      "path" : "pages/tab-item-content/mine-center/suggestion-list/suggestion-list",
@@ -89,6 +150,7 @@
 	{
 	    "path" : "pages/all-item-content/index-more/index-more",
 	    "style" : {
+			"enablePullDownRefresh": true,
 			"navigationStyle":"custom",
 			"app-plus":{
 				"titleNView":false
@@ -107,7 +169,8 @@
 			"navigationStyle":"custom",
 			"app-plus":{
 				"titleNView":false
-			}
+			},
+			"enablePullDownRefresh":true
 		}
 	},
 	{
@@ -142,12 +205,7 @@
 	   		}
 	   	}
 	   },
-		 {
-	          "path" : "pages/tab-item-content/shop-center/create-order/create-order",
-	          "style" : {
-	      					"navigationBarTitleText": "新增报修"
-	      				}
-	      },
+
 		  {
 	         "path" : "pages/tab-item-content/shop-center/record-shop/record-shop",
 	         "style" : {
@@ -155,12 +213,7 @@
 	     	}
 	     },
 
-		 {
-	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
-	          "style" : {
-	      		"navigationBarTitleText": "新增报修"
-	      	}
-	      },
+		
 
 		  {
 	          "path" : "pages/tab-item-content/mine-center/input-code/input-code",
@@ -192,12 +245,14 @@
 		 {
 	          "path" : "pages/tab-item-content/shop-center/near-shop-list/near-shop-list",
 	           "style": {
+				   "enablePullDownRefresh":true,
 	             "navigationBarTitleText": "选择门店"
 	          }
 	      },
 		   {
 		      "path" : "pages/tab-item-content/shop-center/shop-center",
 		      "style": {
+				"enablePullDownRefresh":true,
 		  		"navigationBarTitleText": "报修记录"
 		  	}
 		  },
@@ -217,17 +272,8 @@
 		}
 
 	},
-	{
-	    "path" : "pages/login-design/reset-password/reset-password",
-		 "style": {
-			"navigationStyle":"custom",
-			"app-plus":{
-				"titleNView":false
-			}
-		}
 
-	}
-        ,{
+ {
             "path" : "pages/tab-item-content/shop-center/clerk-list/clerk-list",
             "style" : {
 				"navigationBarTitleText": "店员列表"
@@ -294,8 +340,11 @@
         ,{
             "path" : "pages/tab-item-content/shop-center/category-item/category-item",
             "style" : {
-				"navigationBarTitleText": "选择类别"
-			}
+            	"navigationStyle":"custom",
+            	"app-plus":{
+            		"titleNView":false
+            	}
+            }
         }
         ,{
             "path" : "pages/tab-item-content/message-center/group-list/group-list",
@@ -313,7 +362,8 @@
         ,{
             "path" : "pages/tab-item-content/work-center/work-log/work-log",
             "style" : {
-				"navigationBarTitleText": "工作汇报"
+				"navigationBarTitleText": "工作汇报",
+				"enablePullDownRefresh": true
 			}
         }
 
@@ -351,13 +401,7 @@
             	}
             }
         }
-        ,{
-            "path" : "pages/tab-item-content/work-center/express-center/express-list/express-list",
-            "style" : {
-				"navigationBarTitleText": "快递订单记录",
-				"enablePullDownRefresh": true
-			}
-        }
+
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/create-distribute/create-distribute",
             "style" : {
@@ -370,13 +414,7 @@
 				  "navigationBarTitleText": "订单详情"
 			}
         }
-        ,{
-            "path" : "pages/tab-item-content/notice-center/notice-index/notice-index",
-            "style" : {
-				"navigationBarTitleText": "通知公告",
-				"enablePullDownRefresh": true
-			}
-        }
+        
         ,{
             "path" : "pages/tab-item-content/notice-center/notice-item/notice-item",
             "style" : {
@@ -386,6 +424,7 @@
 				}
 			}
         }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

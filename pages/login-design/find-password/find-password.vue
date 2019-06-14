@@ -1,17 +1,19 @@
 <template>
 	<view>
 		<view class="findPwd-container">
-			<view class="fintPwd-title font-weight-super">密码找回</view>
+			<view class="font-size-supper font-weight-super text-black">密码找回</view>
 		</view>
 		<view class="findPwd-info">
 			<view class="findPwd-info-item flex justify-start borderBottom">
-				<text class="cuIcon-mobile text-grey" style="font-size:22px;margin-right:16px;padding-left:8px;"></text>
-				<input type="text" placeholder="请输入手机号" v-model="designer.mobile"  class="findPwd-info-item-input font-size-big font-weight-normal" style="width:80%" @blur="checkTelEvent(designer.mobile)">
+				<!-- <text class="cuIcon-mobile text-grey" style="font-size:22px;margin-right:16px;padding-left:8px;"></text> -->
+				<image src="../../../static/icon/common/phone.png" style="width:14px;height:20px;margin-right:22px;vertical-align: middle;margin-top:2px;"></image>
+				<input type="text" placeholder="请输入手机号" v-model="designer.mobile"  class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="checkTelEvent(designer.mobile)">
 			</view>
 			
 			<view class="findPwd-info-item flex justify-start borderBottom">
-				<text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:8px;"></text>
-				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode" class="findPwd-info-item-input font-size-big font-weight-normal" style="width:80%">
+				<!-- <text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:8px;"></text> -->
+				<image src="../../../static/icon/common/email.png" style="width:21px;height:15px;margin-right:22px;vertical-align: middle;margin-top:6px;"></image>
+				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
 				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
@@ -23,7 +25,7 @@
 			</view>
 			
 		</view>
-		<view class="copyright">
+		<view class="copyright font-size-mini color-normal font-weight-normal">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 	</view>
@@ -108,30 +110,27 @@
 	}
 	.copyright{
 		margin-top:170px;
-		margin-left:36px;
-		font-size:12px;
-		font-weight:400;
-		color:rgba(137,136,136,1);
+		margin-left:59px;
 	}
 		.findPwd-container{
 			padding:102px 15px 17px 22px;
 		
-			.fintPwd-title{
-				font-size:30px;
-			}
+			// .fintPwd-title{
+			// 	font-size:30px;
+			// }
 			
 		}
 		.findPwd-info{
-			padding-top:62px;
+			padding-top:51px;
 			padding-left:15px;
 			padding-right:12px;
 			margin-bottom:34px;
 			.findPwd-info-item{
-				padding:16px 0 16px 0;
+				padding:26px 0 16px 0;
 			}
-			.findPwd-info-item-input{
-				color:rgba(185,185,185,1);
-			}
+			// .findPwd-info-item-input{
+			// 	color:rgba(185,185,185,1);
+			// }
 			.btn-area{
 				padding:2px 11px;
 				background:rgba(66,176,237,1);
@@ -151,7 +150,6 @@
 		}
 		.design-submit{
 			margin-top:31px;
-			padding-right:12px;
-			padding-left:15px;
+			
 		}
 </style>

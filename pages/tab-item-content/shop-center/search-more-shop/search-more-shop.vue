@@ -153,7 +153,7 @@
 					this.$ajax('ChooseShop',{shop:item.id},res=>{
 						setTimeout(()=>{
 							uni.navigateBack({
-								delta:2,
+								delta:1,
 								// success:(res)=>{
 								// 	this.$fire.fire('chooseShop',{
 								// 		shopID:item.id

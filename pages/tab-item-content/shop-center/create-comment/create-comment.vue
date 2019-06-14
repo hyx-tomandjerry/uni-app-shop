@@ -6,8 +6,8 @@
 				<uni-grid :options="filesList" v-if="filesList" @click="viewImg()"></uni-grid>
 			</view>
 			<view class="repair-desc" style="background:rgba(247,247,247,1);">
-				<textarea  placeholder="报修前的样子....." 
-				maxlength="200" 
+				<textarea  placeholder="报修前的样子....."
+				maxlength="200"
 				v-model="repaitItem.summary"/>
 			</view>
 			<view class="title">维修后</view>
@@ -26,12 +26,12 @@
 					</view>
 				</view>
 			</view>
-			
+
 			<view class="repair-desc" style="background:rgba(247,247,247,1);">
 				<textarea  placeholder="请输入服务评价" maxlength="200" v-model="summary"/>
 			</view>
 		</view>
-		
+
 		<view class="comment-content">
 			<view class="comment-title">感谢您的评价</view>
 			<view class="comment-title-desc">我们会根据您的评价持续优化服务</view>
@@ -44,7 +44,7 @@
 				</view>
 				<text class="detail">{{detail1}}</text>
 			</view>
-			
+
 			<view class="startInfo bg-white flex justify-start">
 				<view class="start-title">准时到达：</view>
 				<view class="starts-wrapper">
@@ -61,20 +61,22 @@
 			</view>
 		</view>
 		<view class="btn-area" v-if="!repaitItem">
-			<button 
+			<button
 			@click="createComment()"
-			style="background:rgba(66,176,237,1); 
+			style="background:rgba(66,176,237,1);
 border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
-	
+
 	import uniGrid from '../../../../components/uni-grid/uni-grid.vue'
-	import myIssue  from '../../../../components/start/App.vue'
+	import myIssue  from '../../../../components/start/App.vue';
+	import {mapState} from 'vuex'
 	export default{
+	    computed:mapState(['userInfo']),
 		data(){
 			return{
 					filesList:[],
@@ -109,13 +111,13 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 				uni.previewImage({
 					urls: array
 				})
-				
+
 			},
 			//获得订单信息
 			getOrderInfo(id){
-				
+
 				this.$ajax('ServiceOrder',{id:id},res=>{
-					
+
 					this.repaitItem=res
 					console.log(this.repaitItem)
 					this.summary=this.repaitItem.comment;
@@ -126,16 +128,16 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 						res.files.forEach(item=>{
 							if(item.postfix){
 								this.filesList.push({
-									
+
 									image:item.url,
 									text:''
 								})
 							}
-							
-							
+
+
 						})
 					}
-					
+
 				})
 				// uni.request({
 				// 	url:this.$store.state.url+'ServiceOrder',
@@ -151,7 +153,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 				// })
 			},
 		ChooseImage(event) {
-			
+
 			uni.chooseImage({
 				count:9,
 				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -163,45 +165,39 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 					} else {
 							this.imgList = res.tempFilePaths
 					}
-					uni.getStorage({
-						key:'userInfo',
-						success: (info) => {
-						
-							for(var i=0;i<res.tempFilePaths.length;i++){
-								var  uploadTask=uni.uploadFile({
-									url:this.$store.state.uploadHostUrl+this.token,
-									filePath:tempFilePaths[i],
-									name:'file',
-									formData:{
-										'x:type':this.$store.state.constants.serviceorder_file,
-										'x:owner': info.data.owner,
-										'x:creator': info.data.id,
-									},
-									success: (uploadFileRes) => {
-										let res=JSON.parse(uploadFileRes.data);
-										this.files.push(res.data);
-									}
-								});
-								uploadTask.onProgressUpdate((res)=>{
-									if(res.progress==100){
-										uni.showToast({
-											title:'上传成功',
-											icon:'none'
-										})
-									}
-								},(error)=>{
-									uni.showToast({
-										title:'上传失败',
-										icon:'none'
-									})
-								})
-							}
-						}
-					})
-					
-					
-			
-			
+                    for(var i=0;i<res.tempFilePaths.length;i++){
+                        var  uploadTask=uni.uploadFile({
+                            url:this.$store.state.uploadHostUrl+this.token,
+                            filePath:tempFilePaths[i],
+                            name:'file',
+                            formData:{
+                                'x:type':this.$store.state.constants.serviceorder_file,
+                                'x:owner': this.userInfo.owner,
+                                'x:creator': this.userInfo.id,
+                            },
+                            success: (uploadFileRes) => {
+                                let res=JSON.parse(uploadFileRes.data);
+                                this.files.push(res.data);
+                            }
+                        });
+                        uploadTask.onProgressUpdate((res)=>{
+                            if(res.progress==100){
+                                uni.showToast({
+                                    title:'上传成功',
+                                    icon:'none'
+                                })
+                            }
+                        },(error)=>{
+                            uni.showToast({
+                                title:'上传失败',
+                                icon:'none'
+                            })
+                        })
+                    }
+
+
+
+
 				}
 			})
 		},
@@ -252,12 +248,12 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 					url:this.$store.state.url+'UploadToken',
 					success: (res) => {
 						this.token=res.data.data
-			
+
 					}
 				})
 			},
 			selected(n,type){
-				
+
 				this.flag=true;
 				if(type=='service'){
 					this.cur1=n;
@@ -295,7 +291,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 						this.detail3='不满意';
 					}
 				}
-				
+
 			},
 			createComment(){
 				this.$ajax('NewServiceOrderComments',{
@@ -327,7 +323,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 				// 		timely:this.cur2,
 				// 		quality:this.cur3,
 				// 		files:this.files?this.files.join(','):''
-				// 		
+				//
 				// 	},
 				// 	success: (res) => {
 				// 		uni.showToast({
@@ -350,7 +346,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 			this.getOrderInfo(option.orderID);
 			console.log(this.repaitItem)
 		}
-		
+
 	}
 </script>
 
@@ -431,7 +427,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 		background-image: url('../../../../static/icon/start/pingjia_color.png');
 	}
 	.btn-area{
-		
+
 		padding:39px 13px 23px 14px;
 		background:#fff;
 	}
