@@ -1,8 +1,8 @@
 export default {
     appKey:null,//存储服务器发送给客户端的sessionkey
     hostUrl:'http://192.168.10.22/services',
-    url:'http://192.168.10.58:8080/blade/services?f=',
-    // url:'http://192.168.10.22/services?f=',
+    // url:'http://192.168.10.58:8080/blade/services?f=',
+    url:'http://192.168.10.22/services?f=',
     uploadHostUrl:'http://up.qiniup.com?token=',
     userInfo:null,
     statusHeight:44,
@@ -270,11 +270,8 @@ export default {
         session: 'xml_session',       // token验证
         im: 'xml_im',       // im信息
     },
-    imInfo:{},
+    imInfo:null,
     method:{
-        setImInfo:'setImInfo',
-        setImStore:'setImStore',
-        setChatWith:'setChatWith'
-    },
-    chatWith:null
+        setImInfo:'setImInfo'
+    }
 }
