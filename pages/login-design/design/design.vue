@@ -38,6 +38,10 @@
 				'bg-blue':designer.name
 				}" @click="designerSubmit()" :disabled="isInput">注册</button>
 		</view>
+		<view class="font-size-small font-weight-normal  color-normal" style="padding-left:15px;margin-top:9px;">
+			
+			<text>已有账号？</text><text style="color:#42B0ED" @click="toLogin()">登录</text>
+		</view>
 		<view class="copyright font-size-mini font-weight-normal color-normal">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
@@ -66,6 +70,11 @@
 			
 		},
 		methods:{
+			toLogin(){
+				uni.navigateTo({
+					url:'../login/login'
+				})
+			},
 			designerSubmit(){
 				if(!this.designer.name || !this.designer.mobile || !this.designer.token){
 					uni.showToast({

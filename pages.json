@@ -1,14 +1,14 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-{
-            "path" : "pages/login-design/design_company/design_company",
-            "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
+	{
+	    "path" : "pages/tab-item-content/work-center/personnel-center/personnel-index/personnel-index",
+	    "style" : {
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
 			}
-        },
+		}
+	},
 {
   	    "path" : "pages/login-design/login/login",
   	    "style": {
@@ -19,6 +19,16 @@
  
   	    }
   	  },
+{
+            "path" : "pages/login-design/design_company/design_company",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        },
+
 	  {
 	  	     "path" : "pages/tab-item/index/index",
 	  	     "style" : {
@@ -432,6 +442,7 @@
 				}
 			}
         }
+        
         
         
     ],

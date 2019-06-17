@@ -50,9 +50,13 @@
 
 		<view class="comment-content bg-white">
 			<view class="color-normal font-size-big font-weight-middle">评价（{{selectItem.likers?selectItem.likers.length:0}}）</view>
-			<view class="comment-item borderBottom flex justify-start" v-for="(item,index) in commentList" :key="index">
+			
+			
+			
+			
+			<view class="comment-item borderBottom flex justify-start" v-for="(item,index) in commentList" :key="index" @click="chatClick(item)">
 				<view style="width:10%;margin-right:12px;">
-					<image :src="item.extprops"  style="width:43px;height:43px;border-radius: 50%;"></image>
+					<image :src="item.extprops"  style="width:45px;height:43px;border-radius: 50%;"></image>
 				</view>
 				<view style="width:89%;">
 					<view class="font-weight-normal font-size-small " style="color:rgba(41,85,117,1);">{{item.posterName}}</view>
@@ -67,20 +71,11 @@
 					style="width:15px;height:15px;position: absolute;right:30px;"></image>
 				</view>
 			</view>
-			<view class="comment-item borderBottom flex justify-start position_relative">
-				<view style="width:10%;margin-right:12px;">
-					<image src="../../../../static/img/avatar.jpg"  style="width:43px;height:43px;border-radius: 50%;"></image>
-				</view>
-				<view style="width:89%;">
-					<view class="font-weight-normal font-size-small " style="color:rgba(41,85,117,1);">乐观的崽儿</view>
-					<view class=" font-weight-normal font-size-litter color-placeholder" style="margin-bottom:7px;">2019-8-7</view>
-					<view class="font-size-normal font-weight-normal color-normal">大咖，你的报告也太详细了吧！</view>
-				</view>
-				<view>
-					<image src="../../../../static/icon/garbage.png"
-					style="width:15px;height:15px;position: absolute;right:30px;"></image>
-				</view>
-			</view>
+			
+			
+			
+			
+			
 		</view>
 		
 		
@@ -96,8 +91,8 @@
 		
 		<view class="chat-comment flex justify-start " style="position:fixed;bottom:0px;z-index:100;width:100%">
 			
-				<input type="text" placeholder="写评论......" style="background:rgba(238,238,237,1);
-border-radius:15px;padding-left:18px;width:70%;" class="font-size-litter font-weight-normal" @click="inputMsgClick()" v-model="inputMsg">
+				<input type="text" :placeholder="placeMsg" style="background:rgba(238,238,237,1);
+border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-weight-normal" @click="inputMsgClick()" v-model="inputMsg">
 				<view v-if="showInput">
 					<image :src="selectItem.isLiker==1?'../../../../static/img/work/log/dianzan_color.png':'../../../../static/img/work/log/dianzan.png'" style="width:19px;height:19px;vertical-align: middle;margin: 0 8px 0 17px;" @click="praise()"></image>
 					<text>{{selectItem.likes}}</text>
@@ -105,7 +100,7 @@ border-radius:15px;padding-left:18px;width:70%;" class="font-size-litter font-we
 					<text>{{selectItem.forwards}}</text>
 				</view>
 				<view v-else>
-					<view  style="background:#3dcfff;color:#fff;padding:5px 15px;border-radius: 8px;margin-left:30px;" @click="sendMsg()"> 发表</view>
+					<view  style="background:#3dcfff;color:#fff;padding:5px 15px;border-radius: 8px;margin-left:50px;" @click="sendMsg()"> 发表</view>
 				</view>
 			
 		</view>
@@ -126,7 +121,8 @@ border-radius:15px;padding-left:18px;width:70%;" class="font-size-litter font-we
 				modalName:'',
 				showInput:true,
 				inputMsg:'',
-				commentList:[]
+				commentList:[],
+				placeMsg:''
               
 			}
 		},
@@ -142,13 +138,33 @@ border-radius:15px;padding-left:18px;width:70%;" class="font-size-litter font-we
 			
 		},
 		methods: {
+			chatClick(item){
+				if(item.poster!=this.userInfo.id){
+					this.showInput=false;
+					this.placeMsg=`回复${item.posterName}`
+					this.$ajax('LeaveCommentByShop',{
+						id:this.id,
+						receiver:item.poster,
+						content:this.inputMsg
+					},res=>{
+						this.commentListClick();
+						uni.showToast({
+							title: '回复成功',
+							icon:'none'
+						});
+						this.inputMsg=''
+					})
+				}
+				
+			},
 			//删除评论
 			delCommentClick(id){
 				this.$ajax('RemoveCommentByShop',{
 					id:id,
-					workreport:this.selectItem.id,
+					workreport:this.id,
 					
 				},res=>{
+					this.commentListClick()
 					uni.showToast({
 						title:'删除评论成功',
 						icon:'none'
@@ -158,7 +174,7 @@ border-radius:15px;padding-left:18px;width:70%;" class="font-size-litter font-we
 			//查看评论内容
 			commentListClick(){
 				this.$ajax('CommentsByShop',{
-					workreport:this.selectItem.id,
+					workreport:this.id,
 					
 				},res=>{
 					this.commentList=res;
@@ -167,18 +183,21 @@ border-radius:15px;padding-left:18px;width:70%;" class="font-size-litter font-we
 			sendMsg(){
 				console.log(this.inputMsg)
 				this.$ajax('LeaveCommentByShop',{
-					id:this.selectItem.id,
-					receiver:this.userInfo.id,
+					id:this.id,
+					receiver:0,
 					content:this.inputMsg
 				},res=>{
-					uni.uni.showToast({
+					this.commentListClick();
+					uni.showToast({
 						title: '评论成功',
 						icon:'none'
 					});
+					this.inputMsg=''
 				})
 			},
 			inputMsgClick(){
 				this.showInput=false;
+				this.placeMsg=`写评论`
 			},
 			praise(){
 				if(this.selectItem.isLiker==1){
@@ -189,12 +208,14 @@ border-radius:15px;padding-left:18px;width:70%;" class="font-size-litter font-we
 				}else{
 					this.selectItem.likes+=1;
 					this.$ajax('LikeWorkReportByShop',{
-						id:this.selectItem.id
+						id:this.id
 					},res=>{
+						
 						uni.showToast({
 							title:'点赞成功',
 							icon:'none'
 						})
+						
 					})
 				}
 			},

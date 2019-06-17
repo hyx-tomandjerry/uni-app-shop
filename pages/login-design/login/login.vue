@@ -50,13 +50,13 @@
 				<view class="cu-bar justify-center" style="background:rgba(247,248,253,1)">
 					<view class="font-weight-bold" style="font-size:19px;color:rgba(51,51,51,1);">注册类型</view>
 				</view>
-				<view class=" flex ">
-					<view class="resign-item" style="padding:28px 20px  38px ;border-right:1px solid #EEEEED" @click="resignOperate('alone')">
-						<image src="../../../static/img/resign/alone.png" style="width:40px;height:40px;vertical-align: middle;margin-right:10px;"></image>
+				<view class=" flex " style="margin-top:9px;margin-bottom:20px;">
+					<view class="resign-item" style="border-right:1px solid #EEEEED;padding:10px 40px 10px 20px;" @click="resignOperate('alone')">
+						<image src="../../../static/img/resign/alone.png" style="width:35px;height:35px;vertical-align: middle;margin-right:10px;"></image>
 						<text class="font-size-small font-weight-bold text-blue">个人注册</text>
 					</view>
-					<view class="resign-item" style="padding:28px 20px  38px 22px;"  @click="resignOperate('company')">
-						<image src="../../../static/img/resign/company.png" style="width:40px;height:40px;vertical-align: middle;margin-right:10px;"></image>
+					<view class="resign-item"  @click="resignOperate('company')" style="padding:10px 20px 10px 20px;">
+						<image src="../../../static/img/resign/company.png" style="width:35px;height:35px;vertical-align: middle;margin-right:10px;"></image>
 						<text class="font-size-small font-weight-bold text-blue">代理商注册</text>
 					</view>
 				</view>
@@ -109,11 +109,16 @@
 			resignOperate(type){
 				switch(type){
 					case 'alone':
+					this.hideModal()
 					uni.navigateTo({
 						url:'../design/design'
 					})
 					break;
 					case 'company':
+					this.hideModal()
+					uni.navigateTo({
+						url:'../design_company/design_company'
+					})
 					break;
 				}
 			},
@@ -281,6 +286,9 @@
 </script>
 
 <style lang="less">
+	.cu-dialog{
+		min-width:331px;
+	}
 		page{
 			background:#fff;
 		}

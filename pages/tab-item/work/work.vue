@@ -22,6 +22,13 @@
 					我的报修
 				</view>
 			</view>
+			<view class="tab-item" style="background:rgba(227,243,237,1);"  @click="showItem('employee')">
+				<image src="../../../static/img/work/tab/repair.png" 
+				style="width:43px;height:43px;"></image>
+				<view class="font-weight-normal font-size-big">
+					行政人事
+				</view>
+			</view>
 		</view>
 		
 		
@@ -91,7 +98,10 @@
 								case 'repair':
 								uni.navigateTo({
 									url:'../../tab-item-content/shop-center/shop-center?type=alone'
-								})
+								});
+								break;
+								case 'employee':
+								
 							}
 						}
 					}
