@@ -25,7 +25,7 @@
 					<view v-if="item.files">
 						<view class="bg-white " style="padding:16px 0;">
 				<view class="grid col-4 grid-square">
-					<view class="bg-img" v-for="(item,index) in item.files" :key="index" :style="[{ backgroundImage:'url(' + item.url + ')' }]"></view>
+					<view class="bg-img" v-for="(img,index) in item.files" :key="index" :style="[{ backgroundImage:'url(' + img.url + ')' }]"></view>
 				</view>
 			</view>
 					</view>
@@ -118,25 +118,18 @@
 		},
         onLoad(){
 			this.getList();
-
-			uni.getStorage({
-				key:'logo',
-				success: (res) => {
-					console.log(res)
-					if(res.data.resurl){
-						this.avatar=res.data.resurl;
-					}
-
-				}
-			})
         },
+		onShow(){
+			this.getList();
+		},
 		methods: {
 			operateLog(item,type){
 				switch(type){
 					case 'comment':
-					uni.navigateTo({
-						url:`../log-detail/log-detail?id=${item.id}&type=article`
-					})
+					this.itemDetail(item)
+					// uni.navigateTo({
+					// 	url:`../log-detail/log-detail?id=${item.id}&type=article`
+					// })
 					break;
 					case 'share':
 					this.$ajax('ForwardWorkReportByShop',{id:item,id},res=>{
@@ -173,6 +166,7 @@
 			},
 			//查看详情
 			itemDetail(event){
+				
 				if(event.type==1){
 					uni.navigateTo({
 						url:`../log-detail/log-detail?id=${event.id}&type=article`

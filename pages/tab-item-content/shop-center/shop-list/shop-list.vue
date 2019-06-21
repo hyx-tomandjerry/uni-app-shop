@@ -44,6 +44,7 @@
 			<LxEmpty></LxEmpty>
 		</view>
 		<image src="../../../../static/icon/add.png"
+		v-if="userInfo.ownerType==shoperObj.ownerType && userInfo.type==shoperObj"
 		style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click="showModal($event)" data-target="RadioModal"></image>
 		
 		<view class="cu-modal bottom-modal" :class="modalName=='RadioModal'?'show':''" @tap="hideModal()" style="background:rgba(255,255,255,0.8);">
@@ -110,7 +111,9 @@
 <script>
 	import LxEmpty from '../../../../lx_components/lx-empty.vue';
 	import uniLoadMore from '../../../../components/uni-load-more.vue'
+	import {mapState} from 'vuex'
 	export default {
+		computed:mapState(['shoperObj','userInfo']),
 		data() {
 			return {
 				content:{

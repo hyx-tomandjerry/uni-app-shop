@@ -51,6 +51,12 @@ Vue.filter('operateZn',(value)=>{
 	if(!value) return ''
 	return store.state.runCatalogZn[value]
 })
+
+//成员状态
+Vue.filter('userStatusPipe',(value)=>{
+	if(!value) return ''
+	return store.state.userStatusZn[value]
+})
 Vue.prototype.format=function(value,type){
 				var dataTime="";
 				var data = new Date();  

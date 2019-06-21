@@ -12,12 +12,12 @@
 		</view>
 			<view v-if="repairList.length>0">
 				<view class="order_content position_relative" >
-					<view class="list-item"  v-for="(item,index) in repairList" :key="index"  @click="orderDetail(item)">
+					<view class="list-item"  v-for="(item,index) in repairList" :key="index" >
 							<view class=" flex justify-between">
 								<view class="list-item-title">{{item.catalogName}}</view>
 								<view>
-									
-									<view class='cu-tag radius bg-red' 
+
+									<view class='cu-tag radius bg-red'
 									:class="{
 									'bg-gradual-orange':item.status==repairStatus.untreated,
 									'bg-blue':item.status==repairStatus.treating,
@@ -27,31 +27,34 @@
 								</view>
 							</view>
 							<view class="list-content">
-								<view class="list-content-item">
-									<image src="../../../static/icon/shop.png" class="shopImg " style="vertical-align:middle;" ></image>
-									<text style="margin-right:5px;">门店名称:</text> {{item.shopname}}
+								<view @click="orderDetail(item)">
+									<view class="list-content-item">
+										<image src="../../../static/icon/shop.png" class="shopImg " style="vertical-align:middle;" ></image>
+										<text style="margin-right:5px;">门店名称:</text> {{item.shopname}}
+									</view>
+
+
+									<view class="list-content-item">
+										<image src="../../../static/icon/time.png" class="shopImg" style="vertical-align:middle;" ></image>
+										<text style="margin-right:5px;">预约时间:</text> {{item.appointdate| formatTime('YMD')}}
+									</view>
+
+									<view class="list-content-item">
+										<image src="../../../static/icon/client.png" class="shopImg " style="vertical-align:middle;" ></image>
+										<text style="margin-right:5px;">报修人:</text> {{item.creatorName}}  <text class="text-blue" style="margin:0 5px;">|</text> {{item.creatorMobile}}
+									</view>
 								</view>
-				
-				
-								<view class="list-content-item">
-									<image src="../../../static/icon/time.png" class="shopImg" style="vertical-align:middle;" ></image>
-									<text style="margin-right:5px;">预约时间:</text> {{item.appointdate| formatTime('YMD')}}
-								</view>
-				
-								<view class="list-content-item">
-									<image src="../../../static/icon/client.png" class="shopImg " style="vertical-align:middle;" ></image>
-									<text style="margin-right:5px;">报修人:</text> {{item.creatorName}}  <text class="text-blue" style="margin:0 5px;">|</text> {{item.creatorMobile}}
-								</view>
+
 								<view class="list-content-item"
 								 style="border-top:1px solid #EEEEED;padding-top:10px;text-align:right;margin-bottom:7px;" >
-								
+
 								<text v-if="item.status==repairStatus.untreated"
 								  class="cu-tag line-blue" @click.prevent="operateOrder(item,'edit')">修改订单</text>
-								 
+
 									<text v-if="item.status==repairStatus.finish && !item.comment"
 									 class="cu-tag line-blue" @click.prevent="operateOrder(item,'createComment')">进行评价</text>
-									<!-- <text v-if="item.status==repairStatus.refuse"
-									  class="cu-tag line-red" @click.prevent="delOrder(item)">删除订单</text> -->
+									<text v-if="item.status==repairStatus.refuse"
+									  class="cu-tag line-red"  @click.prevent="operateOrder(item,'delete')">删除订单</text>
 									  <text v-if="item.status==repairStatus.refuse"
 									    class="cu-tag line-blue" @click.prevent="operateOrder(item,'again')">重新派单</text>
 									   <text v-if="item.status==repairStatus.finish"
@@ -59,7 +62,7 @@
 								</view>
 							</view>
 						</view>
-						
+
 				</view>
 			</view>
 			<view v-else>
@@ -68,6 +71,23 @@
 		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
 		<image src="../../../static/icon/add.png"
 				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createRepair()"></image>
+
+			<view class="cu-modal" :class="modalName=='DialogModal'?'show':''">
+			<view class="cu-dialog ">
+				<view class="cu-bar bg-white justify-end borderBottom">
+					<view class="content font-size-big font-weight-normal color-normal">提示</view>
+				</view>
+				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
+					确定删除该订单?
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action flex justify-around" style="width:100%;">
+						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal()">取消</view>
+						<view style="width:50%;padding:12px;"  @tap="delOrder()" class="text-blue">确定</view>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -88,7 +108,7 @@
 					{id:2,name:"处理中",value:'unfinish',status:this.$store.state.repairStatus.treating},
 					{id:3,name:"无效",value:'during',status:this.$store.state.repairStatus.refuse},
 					{id:4,name:"已完成",value:'refuse',status:this.$store.state.repairStatus.finish},
-					
+
 				],
 				TabCur:1,
 				repairList:[],
@@ -99,8 +119,10 @@
 					contentrefresh: "正在加载...",
 					contentnomore: "没有更多数据了"
 				},
-				loading:'more'
-				
+				loading:'more',
+				modalName:'',
+				selectItem:{}
+
 			}
 		},
 		onPullDownRefresh(){
@@ -108,11 +130,11 @@
 			this.getRepairList(this.TabCur)
 		},
 		onReachBottom(){
-			
+
 			this.page++;
 			this.loading='loading';
 			setTimeout(()=>{
-				
+
 				if(this.type=='all'){
 						this.$ajax('ServiceOrders',{
 						catalog:-1,
@@ -131,7 +153,7 @@
 								})
 							}
 					})
-					
+
 				}else if(this.type=='alone'){
 					this.$ajax('ServiceOrdersBySalesman',{
 						catalog:-1,
@@ -139,23 +161,20 @@
 						offset:this.$utils.getOffset(this.page),
 						creator:this.userInfo.id
 						},res=>{
-						if(res==''){
-							this.isLoading=false;
-							setTimeout(()=>{
-									this.isFinish=true;
-							},200)
-							
-							
-						}else{
-							res.forEach(item=>{
-								this.repairList.concat(item)
-							})
-						}
+                        if(res==''){
+                            setTimeout(()=>{
+                                this.loading='noMore'
+                            },600)
+                        }else{
+                            res.forEach(item=>{
+                                this.repairList.concat(item)
+                            })
+                        }
 					})
 				}
-				
-				
-				
+
+
+
 			},1000)
 		},
 		components:{
@@ -163,6 +182,9 @@
 			uniLoadMore
 		},
 		methods:{
+			hideModal(){
+				this.modalName=null;
+			},
 			operateOrder(item,type){
 				switch(type){
 					case 'edit':
@@ -190,11 +212,17 @@
 						url:'./create-comment/create-comment?orderID='+item.id+'&type=check'
 					})
 					break;
+					case 'delete':
+					console.log('kkkkk')
+					this.modalName='DialogModal';
+					this.selectItem=item;
+					//删除订单
+					break;
 				}
 			},
 			//重新派单
 			againCreate(item){
-				
+
 				uni.navigateTo({
 					url:'./create-order/create-order?id='+item.id
 				})
@@ -205,8 +233,15 @@
 					url:'./create-comment/create-comment?orderID='+item.id+'&type=check'
 				})
 			},
-			delOrder(item){
-				
+			delOrder(){
+				this.hideModal()
+				this.$ajax('RemoveServiceOrder ',{id:this.selectItem.id},res=>{
+					uni.showToast({
+						title:'删除订单成功',
+						icon:'none'
+					})
+					this.getRepairList(this.TabCur)
+				})
 			},
 			// 查看报修记录详情
 			orderDetail(item){
@@ -236,11 +271,11 @@
 					url:'./create-comment/create-comment?orderID='+item.id+'&type=create'
 				})
 			},
-				
+
 			//报修列表
 			getRepairList(status){
 				if(this.type=='all'){
-					
+
 					this.$ajax('ServiceOrders',{
 						catalog:-1,
 						status:status,
@@ -259,11 +294,11 @@
 						this.repairList=res
 					})
 				}
-				
-				
-			
+
+
+
 			},
-			
+
 		},
 		onShow(){
 			this.page=1;
@@ -281,8 +316,8 @@
 </script>
 
 <style lang="less">
-	
-	
+
+
 	.shopImg{
 		width:18px;
 		height:18px;

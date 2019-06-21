@@ -1,12 +1,22 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	
+	 {
+		     "path" : "pages/tab-item/index/index",
+		     "style" : {
+						"navigationStyle":"custom",
+						"app-plus":{
+							"titleNView":false
+						}
+	
+					  }
+		 },
 	{
 	    "path" : "pages/tab-item-content/work-center/personnel-center/personnel-index/personnel-index",
-	    "style" : {
-			"navigationStyle":"custom",
-			"app-plus":{
-				"titleNView":false
-			}
+	    "style":{
+			"navigationBarTitleText": "组织结构",
+			"navigationBarBackgroundColor":"#42B0ED",
+			"navigationBarTextStyle":"white"
 		}
 	},
 {
@@ -29,16 +39,7 @@
 			}
         },
 
-	  {
-	  	     "path" : "pages/tab-item/index/index",
-	  	     "style" : {
-	  					"navigationStyle":"custom",
-	  					"app-plus":{
-	  						"titleNView":false
-	  					}
-	  
-	  				  }
-	  	 },
+	 
  {
 	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
 	          "style" : {
@@ -145,7 +146,15 @@
 	  },
 
 
-
+{
+	    "path" : "pages/tab-item-content/work-center/personnel-center/personnel-inner/personnel-inner",
+	    "style" : {
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
+			}
+		}
+	},
 
 	{
 	      "path" : "pages/tab-item-content/mine-center/suggestion-list/suggestion-list",
@@ -445,6 +454,47 @@
         
         
         
+        ,{
+            "path" : "pages/tab-item-content/work-center/receipt-shop-list/receipt-shop-list",
+            "style" : {
+				"navigationBarTitleText": "选择门店",
+				"enablePullDownRefresh":true
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/personnel-member-list/personnel-member-list",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/add-member/add-member",
+            "style" : {"navigationBarTitleText": "添加员工"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/department-list/department-list",
+            "style" : {"navigationBarTitleText": "选择部门"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/add-department/add-department",
+            "style" : {"navigationBarTitleText": "添加部门"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/manager-list/manager-list",
+            "style" : {"navigationBarTitleText": "内部员工"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/mine-center/company-setting/company-setting",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

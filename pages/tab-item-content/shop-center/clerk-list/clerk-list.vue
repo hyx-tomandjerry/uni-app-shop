@@ -24,7 +24,7 @@
 				</view>
 				<view >
 					<view class="  font-size-big font-weight-normal color-normal" style="margin-bottom:4px;" >
-						{{shopItem.name || ''}} <text v-if="shopItem.brandName" style="margin-left:6px;" class="text-blue">({{shopItem.brandName}})</text> 
+						{{shopItem.name || ''}} <text v-if="shopItem.brandName" style="margin-left:6px;font-size:13px;" class="text-blue">({{shopItem.brandName}})</text> 
 					</view>
 					
 					<view class="  font-size-small font-weight-normal color-placeholder flex justify-start" style="margin-bottom:4px;">

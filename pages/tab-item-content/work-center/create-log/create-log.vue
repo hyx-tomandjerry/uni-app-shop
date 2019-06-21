@@ -1,7 +1,7 @@
 <template>
 	<view class="create-log">
 		<view class="create-log-content">
-			<view class="cu-form-group" v-if="type=='log'">
+			<view class="cu-form-group" >
 				<view class="log-title"><text class="text-red">*</text>选择门店</view>
 				<view>
 					<text>{{shopItem.name}}</text>
@@ -63,7 +63,7 @@
 			</view> -->
 		</view>
 
-		<view  class="create-log-bottom">
+		<view  class="create-log-bottom" style="position:fixed;bottom:0;">
 			<button type="default" @click="createLog()">提交</button>
 		</view>
 	</view>
@@ -87,15 +87,13 @@
 				article:'',
 				token:'',
 				type:'',
-
+				shopID:[],//用于存放回执门店的id
 			}
 		},
 		onLoad(options){
 			console.log(options)
 			this.type=options.type;
 			this.getUploadToken()
-
-
 			if(options){
 				if(options.id){
 					this.article = options.id;
@@ -105,7 +103,17 @@
 			}
 			this.$fire.on('shop',res=>{
 				console.log(res)
-				this.getShopInfo(res.shopID)
+				this.shopItem={
+					id:res.shopID,
+					name:res.shopName
+				};
+			});
+			this.$fire.on('articleShop',res=>{
+				console.log(res)
+				this.shopItem={
+					id:res.id,
+					name:res.name
+				};
 			})
 		},
 		methods: {
@@ -121,7 +129,7 @@
                         this.$ajax('NewWorkReportByShop',{
                             reporter:this.userInfo.id,
                             title:this.log.title,
-
+							 shop:this.shopItem?this.shopItem.id:'',
                             type:1,
                             article:this.type=='article'?this.article:'',
                             summary:this.log.summary,
@@ -179,24 +187,41 @@
 
 				}
 			},
-			//获得门店信息
-			getShopInfo(id){
-				this.$ajax('ProprietorShop',{id:id},res=>{
-					this.shopItem=res;
-					console.log(this.shopItem)
-				})
-			},
+			
 			//获得文章的信息
 			getArticleInfo(id){
 				this.$ajax('Article',{id:id},res=>{
 					this.ArticleInfo=res;
+					
+				})
+			},
+			//获得要回值的门店
+			getReturnShop(id){
+				this.$ajax('ShopsByReport',{
+					user:this.userInfo.id,
+					id:id
+				},res=>{
+					if(res){
+						res.forEach(item=>{
+							this.shopID.push(item.id)
+						})
+						console.log(this.shopID.join(','))
+					}
+					
 				})
 			},
 			//选择门店
 			toChooseShop(){
-				uni.navigateTo({
-					url:"../../shop-center/search-more-shop/search-more-shop?cat=log"
-				})
+				if(this.type=='article'){
+					uni.navigateTo({
+						url:"../receipt-shop-list/receipt-shop-list?id="+this.ArticleInfo.id
+					})
+				}else if(this.type=='log'){
+					uni.navigateTo({
+						url:"../../shop-center/search-more-shop/search-more-shop?cat=log"
+					})
+				}
+				
 			},
             //获得上传token
             getUploadToken(){

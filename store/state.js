@@ -6,7 +6,14 @@ export default {
     uploadHostUrl:'http://up.qiniup.com?token=',
     userInfo:null,
     statusHeight:44,
-	ownerType:4,
+	replacerObj:{
+		ownerType:4,
+		type:1
+	},
+	shoperObj:{
+		ownerType:2,
+		type:4
+	},
     IMSDKAPPID:1400132581,
 	hasLogin:false,//判断是否登录
     loginInfo:'',//聊天信息
@@ -19,7 +26,6 @@ export default {
         shopCover:29,//门店头像
 
     },
-    shoperType:4,
 	//经营类别
 	runCatalog : {
 		direct:2,
@@ -214,17 +220,19 @@ export default {
     },
     userStatusZn:{
         1:'正常',
-        2:'无业',
-        3:'邀请中',
-        4:'申请中',
-        5:'离职'
+        2:'未邀请',
+        3:'邀请中待确认',
+        4:'申请加入中',
+        5:'离职',
+		6:'被拒绝',
     },
     userStatus:{
         'normal':1,
         'free':2,
         'inviting':3,
         'applying':4,
-        'quit':5
+        'quit':5,
+		'refuse':6
     },
     province:'',//省份
     address:'',//详细地址

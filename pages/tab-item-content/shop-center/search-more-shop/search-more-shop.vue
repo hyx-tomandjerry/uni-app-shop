@@ -144,7 +144,8 @@
 							delta:1,
 							success:(res)=>{
 								this.$fire.fire('shop',{
-									shopID:item.id
+									shopID:item.id,
+									shopName:item.name
 								})
 							}
 						})

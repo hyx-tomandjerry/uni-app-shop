@@ -15,7 +15,7 @@
 			
 			<view class="log-user flex justify-start font-size-normal font-weight-normal">
 				<view style="margin-right:14px;">
-					<image :src="selectItem.headurl?selectItem.headurl:'../../../../static/img/avatar.jpg'"
+					<image :src="selectItem.headurl?selectItem.headurl:userInfo.headurl"
 					 style="width:45px;height:45px;border-radius: 50%;vertical-align: middle;"></image>
 				</view>
 				<view style="padding-top:4px;">
@@ -105,6 +105,23 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			
 		</view>
 		
+		
+		<view class="cu-modal" :class="modalName=='deleteModal'?'show':''">
+			<view class="cu-dialog ">
+				<view class="cu-bar bg-white justify-end borderBottom">
+					<view class="content font-size-big font-weight-normal color-normal">提示</view>
+				</view>
+				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
+					确定要退出登录吗?
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action flex justify-around" style="width:100%;">
+						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal()">取消</view>
+						<view style="width:50%;padding:12px;"  @tap="confirmDel()" class="text-blue">确定</view>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -122,12 +139,13 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 				showInput:true,
 				inputMsg:'',
 				commentList:[],
-				placeMsg:''
+				placeMsg:'',
+				deleteID:''
               
 			}
 		},
         onLoad(params){
-			
+			console.log(params)
 			if(params){
 				this.id = params.id;
 				this.type=params.type;
@@ -138,6 +156,19 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			
 		},
 		methods: {
+			confirmDel(){
+				this.$ajax('RemoveCommentByShop',{
+					id:this.deleteID,
+					workreport:this.id,
+					
+				},res=>{
+					this.commentListClick()
+					uni.showToast({
+						title:'删除评论成功',
+						icon:'none'
+					})
+				})
+			},
 			chatClick(item){
 				if(item.poster!=this.userInfo.id){
 					this.showInput=false;
@@ -159,17 +190,8 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			},
 			//删除评论
 			delCommentClick(id){
-				this.$ajax('RemoveCommentByShop',{
-					id:id,
-					workreport:this.id,
-					
-				},res=>{
-					this.commentListClick()
-					uni.showToast({
-						title:'删除评论成功',
-						icon:'none'
-					})
-				})
+				this.deleteModal=true;
+				this.deleteID=id;
 			},
 			//查看评论内容
 			commentListClick(){

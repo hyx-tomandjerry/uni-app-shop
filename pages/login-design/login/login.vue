@@ -45,17 +45,17 @@
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 
-		<view class="cu-modal" :class="modalName=='resignModal'?'show':''">
+		<view class="cu-modal" :class="modalName=='resignModal'?'show':''" @click="hideModal()">
 			<view class="cu-dialog bg-white">
 				<view class="cu-bar justify-center" style="background:rgba(247,248,253,1)">
 					<view class="font-weight-bold" style="font-size:19px;color:rgba(51,51,51,1);">注册类型</view>
 				</view>
 				<view class=" flex " style="margin-top:9px;margin-bottom:20px;">
-					<view class="resign-item" style="border-right:1px solid #EEEEED;padding:10px 40px 10px 20px;" @click="resignOperate('alone')">
+					<view class="resign-item" style="border-right:1px solid #EEEEED;padding:10px 20px 10px 20px;" @click="resignOperate('alone')">
 						<image src="../../../static/img/resign/alone.png" style="width:35px;height:35px;vertical-align: middle;margin-right:10px;"></image>
-						<text class="font-size-small font-weight-bold text-blue">个人注册</text>
+						<text class="font-size-small font-weight-bold text-blue">销售人员注册</text>
 					</view>
-					<view class="resign-item"  @click="resignOperate('company')" style="padding:10px 20px 10px 20px;">
+					<view class="resign-item"  @click="resignOperate('company')" style="padding:10px 15px 10px 20px;">
 						<image src="../../../static/img/resign/company.png" style="width:35px;height:35px;vertical-align: middle;margin-right:10px;"></image>
 						<text class="font-size-small font-weight-bold text-blue">代理商注册</text>
 					</view>
@@ -74,7 +74,7 @@
 	    mapMutations
 	} from 'vuex';
 	export default{
-		computed: mapState(['hasLogin','userInfo']),
+		computed: mapState(['hasLogin','userInfo','replacerObj','shoperObj']),
 		data(){
 			return{
 				designer:{
@@ -165,18 +165,10 @@
 						user:this.designer.account,
 						token:this.designer.token
 					},res=>{
-
-						if(res.type!=this.$store.state.ownerType){
-							uni.showToast({
-								title: `您的账号无法在“门店助手”登录`,
-								mask: false,
-								icon:'none',
-								duration: 1500
-							})
-						}else{
-                            // this.$store.commit('setUserInfo',res)
+						if((res.type==this.replacerObj.type && res.ownerType==this.replacerObj.ownerType) ||
+						(res.type==this.shoperObj.type && res.ownerType==this.shoperObj.ownerType)){
 							this.login(res);
-                            im.webimLogin()
+							im.webimLogin()
 							console.log(this.userInfo)
 							this.isInput=true;
 							uni.showToast({
@@ -186,100 +178,21 @@
 							setTimeout(()=>{
 								uni.switchTab({
 									url:'../../tab-item/index/index',
-
+							
 								})
 							},500)
-							// uni.setStorage({
-							// 	key: 'userInfo',
-							// 	data: res,
-							// 	success: (data) => {
-							// 		this.isInput=true;
-							// 		uni.showToast({
-							// 			title:'登录成功',
-							// 			icon:'none'
-							// 		})
-							//
-							// 		setTimeout(()=>{
-							// 			uni.switchTab({
-							// 				url:'../../tab-item/index/index',
-							//
-							// 			})
-							// 		},500)
-							// 	}
-							// });
-
+						}else{
+							uni.showToast({
+								title: `您的账号无法在“门店助手”登录`,
+								mask: false,
+								icon:'none',
+								duration: 1500
+							})
 						}
-
 					},false)
 				}
 			},
-			// loginEvent(){
-			// 	uni.getStorage({
-			// 		key:'userInfo',
-			// 		success: (res) => {
-			//
-			// 			uni.removeStorage({
-			// 				key:'userInfo'
-			// 			})
-			// 		},
-			// 		fail: () => {
-			//
-			// 			if(!this.designer.account || !this.designer.token){
-			// 				uni.showToast({
-			// 					title: '请输入账号或密码',
-			// 					icon:'none'
-			// 				});
-			// 			}else{
-			// 				this.$ajax('Login',{
-			// 					user:this.designer.account,
-			// 					token:this.designer.token
-			// 				},res=>{
-			// 					if(res.code == -1){
-			// 						uni.showToast({
-			// 							title: `账号或者密码错误`,
-			// 							mask: false,
-			// 							icon:'none',
-			// 							duration: 1500
-			// 						})
-			//
-			// 					}else{
-			// 						if(res.type!=4){
-			// 							uni.showToast({
-			// 								title: `您的账号无法在“门店助手”登录`,
-			// 								mask: false,
-			// 								icon:'none',
-			// 								duration: 1500
-			// 							})
-			// 						}else{
-			//
-			// 							uni.setStorage({
-			// 								key: 'userInfo',
-			// 								data: res,
-			// 								success: (data) => {
-			// 									this.isInput=true;
-			// 									uni.showToast({
-			// 										title:'登录成功',
-			// 										icon:'none'
-			// 									})
-			//
-			// 									setTimeout(()=>{
-			// 										uni.switchTab({
-			// 											url:'../../tab-item/index/index',
-			//
-			// 										})
-			// 									},500)
-			// 								}
-			// 							});
-			//
-			//
-			// 						}
-			// 					}
-			// 				},false)
-			// 			}
-			// 		}
-			// 	})
-			//
-			// }
+			
 			 ...mapMutations(['login'])
 		}
 	}

@@ -92,7 +92,7 @@
 						token:this.designer.token,
 						mobile:this.designer.mobile,
 						gender:1,
-						type:this.$store.state.shoperType,
+						type:this.$store.state.shoperObj.type,
 						vcode:this.designer.vcode,
 					},res=>{
 						this.isInput=true;

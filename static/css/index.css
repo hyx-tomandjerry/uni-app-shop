@@ -42,7 +42,7 @@
 		position:relative
 	}
 	.color-normal{
-		color:#898888;
+		color:rgba(42,42,42,1);
 	}
 	.borderTop{
 		border-top:1px solid #EEEEED
@@ -55,4 +55,10 @@
 	}
 	.color-placeholder{
 		color:rgba(185,185,185,1);
+	}
+	.margin-bottom-normal{
+		margin-bottom:13px;
+	}
+	.explain-color{
+		color:#2A2A2A
 	}

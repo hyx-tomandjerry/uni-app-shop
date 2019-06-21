@@ -23,10 +23,10 @@
 					{{itemInfo.applyDate | formatTime('YMDHMS')}}
 				</view> -->
 			</view>
-			<view  v-if="type=='example'">
+			<view >
 				<image :src="itemInfo.coverurl" style="width:100%;max-height:170px;margin-bottom:10px;border-radius: 8px;"></image>
 			</view>
-			<view class="detail">
+			<view class="detail"  @click="showImg($event)" >
 				<view class="content" v-html="itemInfo.summary"  v-if="type=='example'"></view>
 				<view class="content" v-html="itemInfo.summary"   v-if="type=='skill'"></view>
 			</view>
@@ -46,6 +46,10 @@
 			}
 		},
 		methods: {
+			showImg(event){
+				console.log(document.getElementsByClassName('content'))
+				
+			},
 			writeLog(){
 				uni.navigateTo({
 					url:"../../tab-item-content/work-center/create-log/create-log?id="+this.itemInfo.id+'&type=article'

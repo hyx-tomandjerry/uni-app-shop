@@ -60,8 +60,9 @@
 	</view>
 </template>
 <script>
-
+	import {mapState} from 'vuex'
 	export default{
+		computed:mapState(['replacerObj','shoperObj']),
 		data(){
 			return{
 				isShow:false,
@@ -116,9 +117,8 @@
 						contactor:this.company.contactor,
 						telephone:this.company.mobile,
 						alias:this.company.alias,
-						type:this.$store.state.shoperType,
 						vcode:this.company.vcode,
-						type:this.$store.state.ownerType
+						type:this.shoperObj.type
 					},res=>{
 						this.isInput=true;
 						uni.showToast({

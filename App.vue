@@ -50,16 +50,14 @@ import {mapState,mapMutations} from 'vuex';
 			uni.getStorage({
 				key:'userInfo',
 				success: (res) => {
-					if(res.data){
-						uni.switchTab({
-							url:'./pages/tab-item/index/index'
-						})
-						
-					}else{
-						uni.navigateTo({
-							url:'./pages/login-design/login/login'
-						})
-					}
+					uni.switchTab({
+						url:'./pages/tab-item/index/index'
+					})
+				},
+				fail: () => {
+					uni.navigateTo({
+						url:'./pages/login-design/login/login'
+					})
 				}
 			})
 			// if(!this.hasLogin){
@@ -82,6 +80,8 @@ import {mapState,mapMutations} from 'vuex';
 	page{
 		font-family:PingFangSC-Medium;
 		color:rgba(42,42,42,1);
+		font-weight: 400;
+		font-size:14px;
 	}
 
 

@@ -2039,7 +2039,7 @@ button.icon.lg {
 }
 
 .cu-custom .cu-bar .content {
-	width: calc(100% - 440upx);
+	width: calc(100% - 360upx);
 }
 
 /* #ifdef MP-ALIPAY */

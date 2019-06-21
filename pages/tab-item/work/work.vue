@@ -1,68 +1,12 @@
 <template>
 	<view>
-		<view class="tab-content bg-white text-center">
-			<view class="tab-item" style="background:rgba(239,249,251,1);" @click="showItem('log')">
-				<image src="../../../static/img/work/tab/work.png" 
-				style="width:43px;height:43px;"></image>
-				<view class="font-weight-normal font-size-big">
-					工作日志
-				</view>
+		<view class="flex justify-around" style="width:100%;flex-wrap: wrap;padding-top:10px;">
+			<view style="width:45%;position:relative" v-for="(item,index) in tabImg" :key="index" @click="showItem(item.type)">
+				<image :src="item.url" mode="" style="height:168px"></image>
+				<text class="position_absolute font-size-big font-weight-bold text-white" style="bottom:48px;left:59px;">{{item.text}}</text>
 			</view>
-			<view class="tab-item" style="background:rgba(252,237,236,1);" @click="showItem('express')">
-				<image src="../../../static/img/work/tab/express.png" 
-				style="width:43px;height:43px;"></image>
-				<view class="font-weight-normal font-size-big">
-					快递包裹
-				</view>
-			</view>
-			<view class="tab-item" style="background:rgba(227,243,237,1);"  @click="showItem('repair')">
-				<image src="../../../static/img/work/tab/repair.png" 
-				style="width:43px;height:43px;"></image>
-				<view class="font-weight-normal font-size-big">
-					我的报修
-				</view>
-			</view>
-			<view class="tab-item" style="background:rgba(227,243,237,1);"  @click="showItem('employee')">
-				<image src="../../../static/img/work/tab/repair.png" 
-				style="width:43px;height:43px;"></image>
-				<view class="font-weight-normal font-size-big">
-					行政人事
-				</view>
-			</view>
+			
 		</view>
-		
-		
-		<!-- <view class="box" style="position:fixed;bottom:0px;width:100%;">
-			<view class="cu-bar tabbar bg-white">
-				<view class="action" style="padding-top:5px;" @click="showIndexClick()">
-					<view class="cuIcon-cu-image">
-						<image src="../../../static/img/tab_img/shouye.png"></image>
-						
-					</view>
-					<view class="text-gray">首页</view>
-				</view>
-				<view class="action" style="padding-top:5px;">
-					<view class="cuIcon-cu-image" @click="showMessageClick()">
-						<image src="../../../static/img/tab_img/xiaoxi.png" ></image>
-						<view class="cu-tag badge">99</view>
-					</view>
-					<view class="text-gray">消息</view>
-				</view>
-					<view class="action" style="padding-top:5px;">
-					<view class="cuIcon-cu-image" >
-						<image src="../../../static/img/tab_img/gongzuo_color.png" ></image>
-					</view>
-					<view class="text-blue">工作</view>
-				</view>
-				<view class="action" style="padding-top:5px;" @click="showMineClick()">
-					<view class="cuIcon-cu-image">
-						
-						<image src="../../../static/img/tab_img/mine.png"></image>
-					</view>
-					<view class="text-gray">我的</view>
-				</view>
-			</view>
-		</view> -->
 	</view>
 </template>
 
@@ -70,7 +14,12 @@
 	export default {
 		data() {
 			return {
-				
+				tabImg:[
+					{type:'log',url:'../../../static/img/work/tab/construct.png',text:'工作日志'},
+					{type:'express',url:'../../../static/img/work/tab/express.png',text:'快递包裹'},
+					{type:'repair',url:'../../../static/img/work/tab/repair.png',text:'我的报修'},
+					{type:'employee',url:'../../../static/img/work/tab/construct.png',text:'组织结构'},
+				]
 			}
 		},
 		methods: {
@@ -101,6 +50,9 @@
 								});
 								break;
 								case 'employee':
+								uni.navigateTo({
+									url:'../../tab-item-content/work-center/personnel-center/personnel-index/personnel-index'
+								})
 								
 							}
 						}

@@ -1,7 +1,7 @@
 <template>
     <view >
 		<view class="index-container">
-			<view>
+			<view v-if="userInfo.ownerType==shoperObj.ownerType && userInfo.type==shoperObj.type">
 				<view v-if="userInfo.owner==0 && userInfo.status==2">
 					<text class="cu-tag bg-green round" @click="joinCompanyEvent()">点击加入公司</text>
 				</view>
@@ -13,7 +13,16 @@
 				</view>
 
 			</view>
-
+			
+			<view v-if="userInfo.ownerType==replacerObj.ownerType && userInfo.type==replacerObj.type">
+				
+				<view class="flex justify-start" >
+					<image :src="company.cover?company.cover:'../../../static/img/default.png'" style="width:35px;height:35px;margin-right:8px;
+					border-radius: 50%;
+					vertical-align: middle;"></image>
+					<view style="padding-top:3px;"><text class="company">{{company.name || ''}}</text></view>
+				</view>
+			</view>
 		<swiper class="screen-swiper square-dot"  :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in shopList" :key="index">
@@ -131,36 +140,49 @@
 			
 		</view>
 		<view class="cu-modal" :class="isShowJoinCompany?'show':''">
+			<view class="position_absolute" style="z-index:100;" :class="{
+				'noActive':!companyObj,
+				'active':companyObj
+			}"  @click="hideModal('company')">
+				<image src="../../../static/img/record-close.png" style="width:26px;height:26px;"></image>
+			</view>
 			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end" style="border-bottom:1px solid #EEEEED">
-					<view class="content">选择公司</view>
+				<view class="cu-bar bg-white justify-end " style="border-bottom:1px solid #EEEEED">
+					<view class="content font-size-big  font-weight-normal color-normal ">选择公司</view>
+					<!-- <image src="../../../static/img/record-close.png" style="width:26px;height:26px;position:absolute;right:0;z-index:9999;top:0;" @click="hideModal('company')"></image> -->
 				</view>
 				<view class="padding-xl text-left">
-					<view class="flex justify-start">
+					<view class="flex justify-start borderBottom" style="padding-bottom:10px;">
 						<input type="text" 
 						v-model="eid"
-						placeholder="输入公司EID" style="border:1px solid #EEEEED;border-radius: 4px;padding:0px 55px 0 15px;font-size:12px;"/> <text class="cu-tag bg-blue " style="margin-left:10px;border-radius: 4px;padding:0 15px;" @click="searchCompany()">搜索</text>
+						placeholder="输入公司EID" style="border:none;border-radius: 4px;padding:0px 55px 0 15px;font-size:14px;"/>
+						<text class="cu-tag bg-blue " style="margin-left:10px;border-radius: 13px;padding:0 15px;font-size:12px;" @click="searchCompany()">搜索</text>
 					</view>
 					
-					<view style="padding-left:6px; font-size:13px;" v-if="companyObj" >
-						<view style="padding-top:8px;" >公司名称 : <text style="margin-left:10px;" class="text-blue font-weight-bold">{{companyObj.name}}</text></view>
-						<view  style="padding-top:8px;" >
-							联系人 : <text style="margin-left:3px;">{{companyObj.contactor}}</text>
+					<view style="padding:20px 0 0 21px;" v-if="companyObj" class="font-size-small font-weight-normal">
+						<view >
+							<text style="color:#898888">公司名称 : </text>
+							<text style="margin-left:10px;color:#2A2A2A" class=" font-weight-bold">{{companyObj.name}}</text></view>
+						<view >
+							<text style="color:#898888">	联系人 : </text>
+						<text style="margin-left:3px;color:#2A2A2A">{{companyObj.contactor}}</text>
 							
 						</view>
-						<view   style="padding-top:8px;" >
-							联系电话 : <text style="margin-left:3px;">{{companyObj.telephone}}</text>
+						<view  >
+							<text style="color:#898888">联系电话 :</text>
+							 <text style="margin-left:3px;color:#2A2A2A">{{companyObj.telephone}}</text>
 						</view>
-						<view  style="padding-top:8px;font-size:12px;" >公司地址 : {{companyObj.provinceName || ''}}{{companyObj.cityName || ''}} {{companyObj.districtName ||''}}{{companyObj.address ||''}}</view>
+						<view >
+							
+						<text style="color:#898888;">地址 : </text>
+						
+						<text style="color:#2A2A2A;font-size: 12px;">{{companyObj.provinceName || ''}}{{companyObj.cityName || ''}} {{companyObj.districtName ||''}}{{companyObj.address ||''}}</text></view>
 						
 					</view>
 				</view>
 				
-				<view class="cu-bar bg-white justify-end" style="margin-right:16px;">
-					<view class="action">
-						<button class="cu-btn line-green text-green" @tap="hideModal('company')">取消</button>
-						<button class="cu-btn bg-green margin-left" @tap="joinCompany()">确定</button>
-					</view>
+				<view  style="padding:0 13px 14px 13px;" >
+					<view  style="width:100%;background:#42B0ED;border:1px solid #EEEEED;padding:4px 0 5px;border-radius: 8px;" @tap="joinCompany()" class="font-size-small text-white" >确定</view>
 				</view>
 			</view>
 		</view>
@@ -196,7 +218,7 @@
 	import axbCheckBox from '../../../components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue';
 	import {mapState,mapMutations} from 'vuex'
 	export default{
-		computed:mapState(['userInfo']),
+		computed:mapState(['userInfo','replacerObj','shoperObj','userStatus']),
 		data(){
 			return{
 				eid:'',
@@ -457,27 +479,43 @@
 			uniGrid,
 			NAUIcard
 		},
-		
+		onShow(){
+			
+		},
 		onLoad(){
-			console.log('jjjjjj')
+			
 			this.companyObj=null;
 			this.eid='';
-			
-			console.log(this.userInfo)
-			
-			if(this.userInfo.owner!=0 && this.userInfo.status==3){
-					this.isShowJoinModal=true;
-					this.shop.shopID=this.userInfo.department;
-					this.getShopInfo(this.shop.shopID)
-			}else if(this.userInfo.owner==0 && this.userInfo.status==2 ){
-					this.isShowJoinCompany=true;//显示EID
-			}else{
+			this.getTodoList()
+			this.showArticles();
+		
+			if(this.userInfo){
+				if(this.userInfo.ownerType==this.shoperObj.ownerType && this.userInfo.type==this.shoperObj.type){
+					//店长店员
+					if(this.userInfo.owner!=0 && this.userInfo.status==this.userStatus.inviting){
+							this.isShowJoinModal=true;
+							this.shop.shopID=this.userInfo.department;
+							this.getShopInfo(this.shop.shopID)
+					}else if(this.userInfo.owner==0 && this.userInfo.status==this.userStatus.free ){
+							this.isShowJoinCompany=true;//显示EID
+					}else{
+							this.company={
+								name:this.userInfo.ownerName,
+								cover:this.userInfo.ownerLogoUrl
+							}
+							
+					}
+				}else if(this.userInfo.ownerType==this.replacerObj.ownerType && this.userInfo.type==this.replacerObj.type){
+					console.log('合作商')
 					this.company={
 						name:this.userInfo.ownerName,
 						cover:this.userInfo.ownerLogoUrl
 					}
-					
+					console.log(this.company)
+				}
+				
 			}
+			
 		},
 		onShow(){
 			this.getTodoList()
@@ -498,7 +536,12 @@
 	}
 </script>
 <style scoped>
-	
+	.active{
+		right:66px;top:213px;
+	}
+	.noActive{
+		right:66px;top:268px;
+	}
 	.operateImg{
 		width:37px;height:37px;top:23px;
 	}
@@ -583,8 +626,9 @@ line-height:25px;
 }
 
 .cu-bar .content{
-	line-height:44px;
-	height:44px;
+	font-size:15px;
+	font-weight: 400;
+	color:rgba(42,42,42,1)
 }
 .card-swiper{
 	height:120px !important;
@@ -627,7 +671,11 @@ color:rgba(137,136,136,1);
 }
 .cu-dialog{
 	background:#fff;
+	max-width:263px;
 	
+}
+.cu-bar{
+	min-height:42px;
 }
 .cu-bar .action:last-child{
 	margin-right:0;
@@ -637,7 +685,8 @@ color:rgba(137,136,136,1);
 	font-family:PingFangSC-Regular;
 	font-weight:400;
 	color:rgba(42,42,42,1);
-	border-bottom:1px solid #EEEEED;
+	padding:28px 16px 0px 13px;
+	margin-bottom:17px;
 }
 
 .btn{

@@ -34,7 +34,7 @@
 			</view>
 			<view class="cu-form-group position_relative">
 				<view class=" font-size-normal font-weight-normal">账号</view>
-				<input placeholder="请输入账号"  style="text-align:right;margin-right:5px;" class="font-size-normal font-weight-normal text-black" v-model="userInfo.mobile"></input>
+				<input placeholder="请输入账号"  style="text-align:right;margin-right:5px;" class="font-size-normal font-weight-normal text-black" v-model="userInfo.mobile" @blur="checkTelEvent(userInfo.mobile)"></input>
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:14px;" ></text>
 			</view>
 			<!-- <view class="user-info-item flex justify-between borderBottom position_relative">
@@ -105,7 +105,16 @@
 			MxDatePicker
 		},
 		methods:{
+		
 			...mapMutations(['login']),
+				checkTelEvent(event){
+				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event))){
+					uni.showToast({
+						title:'电话号码不存在',
+						icon:'none'
+					})
+				}
+			},
 			bindPickerChange(event){
 				
 				this.radio=event.detail.value;
