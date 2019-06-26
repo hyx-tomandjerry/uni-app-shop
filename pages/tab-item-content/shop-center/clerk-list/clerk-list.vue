@@ -98,14 +98,14 @@
 
 
 		<view class="cu-modal" :class="isShow?'show':''" >
-			<view class="position_absolute" style="right:65px;top:248px;z-index:100;" @click="hideModal()">
+			<!-- <view class="position_absolute" style="right:65px;z-index:100;" @click="hideModal()">
 				<image src="../../../../static/img/record-close.png" style="width:26px;height:26px;"></image>
-			</view>
+			</view> -->
 			<view class="cu-dialog">
 				
 				<view class=" bg-white justify-end borderBottom" style="padding:14px 0 8px;">
 					<view class=" font-weight-bold font-size-small color-normal">{{shopItem.name}}({{shopItem.brandName}})</view>
-					
+					<text class="cuIcon-close font-size-big position_absolute" style="right:10px;" @click="hideModal()"></text>
 				</view>
 				<view style="padding-bottom:20px" class="bg-white">
 						

@@ -16,6 +16,8 @@ import {ajax} from './common/http.js'
 Vue.prototype.$ajax=ajax;
 import utils from './common/utils'
 Vue.prototype.$utils=utils;
+
+
 //管道
 Vue.filter('repairStatus',function(value){
 	if(!value) return ''
@@ -47,6 +49,11 @@ Vue.filter('shopStatusColor',(value)=>{
 	if(!value) return ''
 	return store.state.shopStatusColor[value];
 })
+
+Vue.filter('shopTypeFilter',(value)=>{
+	if(!value) return ''
+	return store.state.shopType[value];
+})
 Vue.filter('operateZn',(value)=>{
 	if(!value) return ''
 	return store.state.runCatalogZn[value]
@@ -57,6 +64,8 @@ Vue.filter('userStatusPipe',(value)=>{
 	if(!value) return ''
 	return store.state.userStatusZn[value]
 })
+
+
 Vue.prototype.format=function(value,type){
 				var dataTime="";
 				var data = new Date();  

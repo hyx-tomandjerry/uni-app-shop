@@ -46,6 +46,7 @@
 								</view>
 
 								<view class="list-content-item"
+								v-if="userInfo.type==shoperObj.type"
 								 style="border-top:1px solid #EEEEED;padding-top:10px;text-align:right;margin-bottom:7px;" >
 
 								<text v-if="item.status==repairStatus.untreated"
@@ -69,7 +70,7 @@
 				<lx-empty></lx-empty>
 			</view>
 		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
-		<image src="../../../static/icon/add.png"
+		<image src="../../../static/icon/add.png" v-if="userInfo.type==shoperObj.type"
 				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createRepair()"></image>
 
 			<view class="cu-modal" :class="modalName=='DialogModal'?'show':''">
@@ -96,7 +97,7 @@
 	import uniLoadMore from '../../../components/uni-load-more.vue'
 	import {mapState} from 'vuex'
 	export default{
-		computed:mapState(['userInfo']),
+		computed:mapState(['userInfo','shoperObj']),
 		data(){
 			return{
 				repairStatus:this.$store.state.repairStatus,
@@ -316,7 +317,9 @@
 </script>
 
 <style lang="less">
-
+	page{
+		background:#fff;
+	}
 
 	.shopImg{
 		width:18px;

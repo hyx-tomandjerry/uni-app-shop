@@ -404,12 +404,6 @@
             }
         }
         ,{
-            "path" : "pages/tab-item-content/mine-center/cut-image/cut-image",
-            "style" : {
-				"navigationBarTitleText": "图片裁剪"
-			}
-        }
-        ,{
             "path" : "pages/tab-item-content/mine-center/write-motto/write-motto",
             "style" : {
 				"navigationStyle":"custom",
@@ -494,6 +488,23 @@
 					"titleNView":false
 				}
 			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/mine-center/company_approve/company_approve",
+            "style" : {"navigationBarTitleText": "公司认证"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/personnel-member-info/personnel-member-info",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/set-department/set-department",
+            "style" : {"navigationBarTitleText": "设置部门"}
         }
     ],
 	"globalStyle": {

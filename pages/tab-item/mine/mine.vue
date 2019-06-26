@@ -2,7 +2,7 @@
 	<view >
 		<view style="position:relative;">
 			
-			<view class="header-content flex justify-between" v-if="userInfo.ownerType==shoperObj.ownerType && userInfo.type==shoperObj.type">
+			<view class="header-content flex justify-between" v-if=" userInfo && (userInfo.type==shoperObj.type)">
 				<view class="flex justify-start" @click="operateItem('user')">
 					<image :src="userInfo.headurl"
 						v-if="userInfo.headurl"
@@ -21,7 +21,7 @@
 			</view>
 			
 			
-			<view class="header-content flex justify-between" v-if="userInfo.ownerType==replacerObj.ownerType && userInfo.type==replacerObj.type">
+			<view class="header-content flex justify-between" v-if="userInfo && (userInfo.type==replacerObj.type)">
 				<view class="flex justify-start" @click="operateItem('user')">
 					<image :src="userInfo.headurl"
 						v-if="userInfo.headurl"
@@ -39,7 +39,7 @@
 				</view>
 			</view>
 				<view class="list-content">
-					<view class="list-content-item flex justify-start" v-if="userInfo.ownerType==replacerObj.ownerType && userInfo.type==replacerObj.type" @click="operateItem('company')">
+					<view class="list-content-item flex justify-start" v-if=" userInfo && userInfo.type==replacerObj.type" @click="operateItem('company')">
 						<image src="../../../static/img/mine/company.png" class="img28"></image>
 						<view class="list-content-item-title" >
 							<text>公司设置</text>
@@ -53,14 +53,14 @@
 						</view>
 						<text class="cuIcon-right color-normal" style="position: absolute;right:20px;font-size:18px;"></text>
 					</view>
-					<view class="list-content-item flex justify-start" v-if="userInfo.ownerType==shoperObj.ownerType && userInfo.type==shoperObj.type" @click="operateItem('password')">
+					<view class="list-content-item flex justify-start" v-if=" userInfo && userInfo.type==shoperObj.type" @click="operateItem('password')">
 						<image src="../../../static/img/mine/set.png" class="img28"></image>
 						<view class="list-content-item-title" >
 							<text>修改密码</text>
 						</view>
 						<text class="cuIcon-right color-normal" style="position: absolute;right:20px;font-size:18px;"></text>
 					</view>
-					<view class="list-content-item flex justify-start" v-if="userInfo.ownerType==replacerObj.ownerType && userInfo.type==replacerObj.type" @click="operateItem('realName')">
+					<view class="list-content-item flex justify-start" v-if=" userInfo && userInfo.type==replacerObj.type" @click="operateItem('realName')">
 						<image src="../../../static/img/mine/renzhen.png" class="img28"></image>
 						<view class="list-content-item-title" >
 							<text>实名认证</text>
@@ -109,7 +109,7 @@
 	} from 'vuex';
 	import popModal from '../../../components/popmodal.vue'
 	export default{
-		computed: mapState(['hasLogin','userInfo','replacerObj','shoperObj']),
+		computed: mapState(['hasLogin','userInfo','replacerObj','shoperObj','userStatus']),
 		data(){
 			return{
 				avatar:'',
@@ -129,14 +129,14 @@
 		methods:{
 			...mapMutations(['logout','login']),
 			//获得头像
-			getUserInfoAvatar(){
-				uni.getStorage({
-					key:'logo',
-					success: (res) => {
-						this.userInfo.headerUrl=res.data
-					}
-				})
-			},
+			// getUserInfoAvatar(){
+			// 	uni.getStorage({
+			// 		key:'logo',
+			// 		success: (res) => {
+			// 			this.userInfo.headerUrl=res.data
+			// 		}
+			// 	})
+			// },
 			hideModal(type){
 				this.isQuit=false;
 				if(type=='agree'){
@@ -156,10 +156,13 @@
 						})
 						break;
 						case 'realName':
+						uni.navigateTo({
+							url:'../../tab-item-content/mine-center/company_approve/company_approve'
+						})
 						break;
 						case 'user':
 						//基本设置
-						if(this.userInfo.status!=1){
+						if(this.userInfo.status!=this.userStatus.normal){
 							uni.showToast({
 								title:'您没有操作的权限',
 								icon:'none'
@@ -173,7 +176,7 @@
 						break;
 						case 'password':
 						//修改密码
-						if(this.userInfo.status!=1){
+						if(this.userInfo.status!=this.userStatus.normal){
 							uni.showToast({
 								title:'您没有操作的权限',
 								icon:'none'
@@ -186,7 +189,7 @@
 						
 						break;
 						case 'eidt':
-						if(this.userInfo.status!=1){
+						if(this.userInfo.status!=this.userStatus.normal){
 							uni.showToast({
 								title:'您没有操作的权限',
 								icon:'none'
@@ -208,8 +211,11 @@
 		},
 		
 		onLoad(){
-			this.getUserInfoAvatar();
-
+			console.log(this.userInfo)
+			// this.getUserInfoAvatar();
+			// this.$ajax('RefreshOnlineUser',{},res=>{
+			// 	this.userInfo=res;
+			// })
 
 		}
 	}

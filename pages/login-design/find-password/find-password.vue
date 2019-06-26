@@ -1,19 +1,19 @@
 <template>
-	<view>
+	<view class="position_relative">
 		<view class="findPwd-container">
 			<view class="font-size-supper font-weight-super text-black">密码找回</view>
 		</view>
 		<view class="findPwd-info">
 			<view class="findPwd-info-item flex justify-start borderBottom">
-				<!-- <text class="cuIcon-mobile text-grey" style="font-size:22px;margin-right:16px;padding-left:8px;"></text> -->
 				<image src="../../../static/icon/common/phone.png" style="width:14px;height:20px;margin-right:22px;vertical-align: middle;margin-top:2px;"></image>
-				<input type="text" placeholder="请输入手机号" v-model="designer.mobile"  class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="checkTelEvent(designer.mobile)">
+				<input type="text" placeholder="请输入手机号" v-model="designer.mobile"  class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="checkTelEvent(designer.mobile)"  @focus="hideTabbar()" maxlength="11">
+				<text class="text-gray">{{designer.mobile.length}}/11</text>
 			</view>
 			
 			<view class="findPwd-info-item flex justify-start borderBottom">
 				<!-- <text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:8px;"></text> -->
 				<image src="../../../static/icon/common/email.png" style="width:21px;height:15px;margin-right:22px;vertical-align: middle;margin-top:6px;"></image>
-				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
+				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="showTabbar()">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
 				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
@@ -25,7 +25,10 @@
 			</view>
 			
 		</view>
-		<view class="copyright font-size-mini color-normal font-weight-normal">
+		<view class=" font-size-small color-normal" style="margin-top:9px;padding-left:15px;">
+			<view @click="toLogin()">已有账号?<text style="color:#42B0ED;margin-left:9px;" >登录</text></view>
+		</view>
+		<view class="copyright font-size-mini color-normal font-weight-normal" v-if="tabbar">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 	</view>
@@ -40,12 +43,26 @@
 				},
 				isSend:false,
 				num:60,
+				tabbar:true,
+				windowHeight:''
 			}
 		},
 		components:{
 			
 		},
 		methods:{
+			toLogin(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
+			showTabbar(){
+				console.log('jjjj')
+				this.tabbar=true;
+			},
+			hideTabbar(){
+				this.tabbar=false;
+			},
 			checkTelEvent(event){
 				if(event){
 					if(!(/^1[34578]\d{9}$/.test(event))){ 
@@ -61,12 +78,14 @@
 				}
 			},
 			toNextPage(){
+				
 				if(!this.designer.mobile || !this.designer.vcode){
 					uni.showToast({
 						title:'请完善基本信息',
 						icon:'none'
 					})
 				}else{
+					
 					uni.navigateTo({
 						url:'../reset-password/reset-password?mobile='+this.designer.mobile+'&vcode='+this.designer.vcode
 					})
@@ -100,7 +119,18 @@
 			},
 		},
 		onLoad(){
-			
+			uni.getSystemInfo({
+				success: (res) => {
+					this.windowHeight=res.windowHeight;
+				}
+			})
+			uni.onWindowResize((res)=>{
+				if(res.size.windowHeight<this.windowHeight){
+					this.tabbar=false;
+				}else{
+					this.tabbar=true;
+				}
+			})
 		},
 	}
 </script>
@@ -109,8 +139,9 @@
 		background: #fff;
 	}
 	.copyright{
-		margin-top:170px;
-		margin-left:59px;
+		position:fixed;
+		left:59px;
+		bottom:17px;
 	}
 		.findPwd-container{
 			padding:102px 15px 17px 22px;
@@ -124,7 +155,7 @@
 			padding-top:51px;
 			padding-left:15px;
 			padding-right:12px;
-			margin-bottom:34px;
+			
 			.findPwd-info-item{
 				padding:26px 0 16px 0;
 			}

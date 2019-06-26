@@ -7,8 +7,9 @@
 			<block slot="content">
 				<view class=" font-weight-bold" style="font-size:18px;margin-bottom:14px;">详情内容</view>
 			</block>
-			<block slot="right">
-				<text class="text-blue font-size-small font-weight-normal"  @click="writeLog()" v-if="itemInfo.report==1">编写汇报</text>
+			<block slot="right" v-if="userInfo.type==shoperObj.type">
+				<text class="text-blue font-size-small font-weight-normal"  @click="writeLog()"
+				 v-if="itemInfo.report==1">编写汇报</text>
 			</block>
 		</cu-custom>
 		<view class="container borderTop bg-white">
@@ -37,7 +38,9 @@
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	export default{
+		computed:mapState(['userInfo','shoperObj']),
 		data(){
 			return{
 				itemInfo:{},

@@ -1,5 +1,5 @@
 <template>
-	<view class="login_container">
+	<view class="login_container position_relative">
 
 		<view class="title">
 			<view class="font-size-supper font-weight-super" >登录</view>
@@ -9,14 +9,14 @@
 			<view class="login-form-item flex justify-start borderBottom">
 				<!-- <text class="cuIcon-people text-gray" style="font-size:22px;margin-right:13px;"></text> -->
 				<image src="../../../static/icon/common/client.png" style="width:24px;height:24px;margin-right:15px;vertical-align: middle;"></image>
-				<input type="text" placeholder="请输入账号" v-model="designer.account" style="width:78%;" class="font-size-big font-weight-normal" :class="designer.account?'text-black':'color-placeholder'">
+				<input type="text" placeholder="请输入账号" v-model="designer.account" style="width:78%;" class="font-size-big font-weight-normal" :class="designer.account?'text-black':'color-placeholder'" @focus="hideTabbar()" maxlength="11">
 				<text class="text-gray">{{designer.account.length}}/11</text>
 			</view>
 			<view class="login-form-item flex justify-start borderBottom position_relative">
 				<!-- <text class="cuIcon-lock text-gray" style="font-size:22px;margin-right:13px;"></text> -->
 				<image src="../../../static/icon/common/lock.png" style="width:24px;height:24px;margin-right:15px;vertical-align: middle;"></image>
-				<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
-				<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)" v-else v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
+				<input type="text" placeholder="请输入密码"  @blur="showTabbar()" v-if="isShowPwd" v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
+				<input type="password" placeholder="请输入密码" @blur="showTabbar()" v-else v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
 
 				<image src="../../../static/icon/eye_open.png"
 					v-if="isShowPwd"
@@ -41,7 +41,7 @@
 			</view>
 			<view class="font-size-normal font-weight-normal color-normal" @click="toFindPassword()">忘记密码?</view>
 		</view>
-		<view class="copyright">
+		<view class="copyright " v-if="tabbar">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 
@@ -74,7 +74,7 @@
 	    mapMutations
 	} from 'vuex';
 	export default{
-		computed: mapState(['hasLogin','userInfo','replacerObj','shoperObj']),
+		computed: mapState(['hasLogin','userInfo','replacerObj','shoperObj','user']),
 		data(){
 			return{
 				designer:{
@@ -83,20 +83,34 @@
 				},
 				isShowPwd:false,//显示密码
 				isInput:false,
-				modalName:''
+				modalName:'',
+				tabbar:true,//用于键盘，
+				windowHeight:''
 			}
 		},
 		components:{
 			popModal
 		},
+		onShow(){
+			console.log(this.user)
+			this.designer={
+				account:this.user.account,
+				token:this.user.token
+			}
+		},
 		onLoad(){
-
-			// uni.getStorage({
-			// 	key:'userInfo',
-			// 	success: (res) => {
-			// 		uni.clearStorage();
-			// 	}
-			// })
+			uni.getSystemInfo({
+				success: (res) => {
+					this.windowHeight=res.windowHeight;
+				}
+			})
+			uni.onWindowResize((res)=>{
+				if(res.size.windowHeight<this.windowHeight){
+					this.tabbar=false;
+				}else{
+					this.tabbar=true;
+				}
+			})
 			this.$fire.on('login',res=>{
 					this.inInput=false;
 					this.designer.account=res.account;
@@ -106,6 +120,13 @@
 
 		},
 		methods:{
+			
+			showTabbar(){
+				this.tabbar=true;
+			},
+			hideTabbar(){
+				this.tabbar=false;
+			},
 			resignOperate(type){
 				switch(type){
 					case 'alone':
@@ -125,19 +146,19 @@
 			hideModal(){
 				this.modalName=null;
 			},
-			checkPwdEvent(event){
-				if(event){
-					var reg=/^[a-zA-Z0-9]{6,12}$/;
-					if(reg.test(event)==false){
-						uni.showToast({
-							title:'密码不能含有非法字符，长度在6-12之间',
-							icon:'none'
-						})
-						return false;
-					}
-
-				}
-			},
+// 			checkPwdEvent(event){
+// 				if(event){
+// 					var reg=/^[a-zA-Z0-9]{6,12}$/;
+// 					if(reg.test(event)==false){
+// 						uni.showToast({
+// 							title:'密码不能含有非法字符，长度在6-12之间',
+// 							icon:'none'
+// 						})
+// 						return false;
+// 					}
+// 
+// 				}
+// 			},
 			showPwd(){
 
 				this.isShowPwd=!this.isShowPwd;
@@ -165,15 +186,18 @@
 						user:this.designer.account,
 						token:this.designer.token
 					},res=>{
-						if((res.type==this.replacerObj.type && res.ownerType==this.replacerObj.ownerType) ||
-						(res.type==this.shoperObj.type && res.ownerType==this.shoperObj.ownerType)){
+						if((res.type==this.shoperObj.type) || (res.type==this.replacerObj.type)){
 							this.login(res);
 							im.webimLogin()
-							console.log(this.userInfo)
+							
 							this.isInput=true;
 							uni.showToast({
 								title:'登录成功',
 								icon:'none'
+							})
+							this.setAccount({
+								account:this.designer.account,
+								token:this.designer.token
 							})
 							setTimeout(()=>{
 								uni.switchTab({
@@ -193,7 +217,7 @@
 				}
 			},
 			
-			 ...mapMutations(['login'])
+			 ...mapMutations(['login','setAccount'])
 		}
 	}
 </script>
@@ -262,11 +286,13 @@
 // 			}
 // 		}
 		.copyright{
-			margin-top:173px;
-			margin-left:36px;
+			
+			left:59px;
 			font-size:12px;
 			font-weight:400;
 			color:rgba(137,136,136,1);
+			position:fixed;
+			bottom:17px;
 		}
 		// .cu-form-group>uni-text{
 		// 	font-size:14px;

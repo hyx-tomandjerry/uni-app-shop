@@ -14,6 +14,13 @@ export default {
     setImInfo (state, imInfo) {
         state.imInfo = imInfo
     },
+	setAccount(state,param){
+		state.user=param,
+		uni.setStorage({
+			key:'account',
+			data:param
+		})
+	},
     login(state,provider){
         state.hasLogin=true;
         state.userInfo=provider;

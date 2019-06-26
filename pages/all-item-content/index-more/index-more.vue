@@ -18,7 +18,7 @@
 					<view style="width:29%;">
 						<image :src="item.coverurl" mode="aspectFill" style="height:79px;border-radius: 10px;;"></image>
 					</view>
-					<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
+					<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
 				</view>
 			</view>
 			<view class="cu-card case" v-show="value=='example'"  style="margin:7px;border-radius: 10px;">
@@ -26,7 +26,7 @@
 					<image :src="item.coverurl" mode="aspectFill" style="width:100%;height:109px;border-radius: 10px;margin-bottom:13px;"></image>
 					<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.title}}</view>
 					<view class="font-size-litter font-weight-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
-					<image src="../../../static/img/huizhi.png"  class="position_absolute operateImg" v-if="item.report==1"></image>
+					<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
 				</view>
 			</view>
 		</view>
@@ -41,7 +41,9 @@
 <script>
 	import LxEmpty from '../../../lx_components/lx-empty.vue';
 	import uniLoadMore from '../../../components/uni-load-more.vue'
+	import {mapState} from 'vuex'
 	export default{
+		computed:mapState(['report']),
 		data(){
 			return{
 				exampleList:[],

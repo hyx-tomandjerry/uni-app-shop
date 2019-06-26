@@ -232,7 +232,8 @@
 				if(this.repaitItem){
 					this.$ajax('SetServiceOrder',{
 						id:this.repaitItem.id,
-					    catalog:this.repairObj.subID?this.repairObj.subID:this.repairObj.bigID,
+					    // catalog:this.repairObj.subID?this.repairObj.subID:this.repairObj.bigID,
+						detail:this.repairObj.subID?this.repairObj.subID:this.repairObj.bigID,
 					    creator:this.userInfo.id,
 					    // shop:this.repaitItem.shop,
 					    appointdate:this.designer.date?this.designer.date:this.format(this.repaitItem.appointdate,'YMD'),

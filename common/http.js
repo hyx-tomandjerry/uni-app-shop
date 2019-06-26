@@ -2,7 +2,7 @@ import store from '../store/index'
 const errorText = require('./errorText')
 const ajax=(api,param,resp,reqCache=true)=>{
 	if(reqCache){
-		
+	
 		uni.getStorage({
 			key:'userInfo',
 			success: (res) => {
@@ -24,10 +24,10 @@ const ajax=(api,param,resp,reqCache=true)=>{
 				httpMethod(api,param,baseParam,resp)
 			},
 			fail:()=>{
-                uni.showToast({
-                    title:`请求错误`,
-                    icon:'none'
-                })
+                // uni.showToast({
+                //     title:`请求错误`,
+                //     icon:'none'
+                // })
 			}
 		})
 	}else{

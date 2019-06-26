@@ -1,8 +1,8 @@
 <template>
     <view >
 		<view class="index-container">
-			<view v-if="userInfo.ownerType==shoperObj.ownerType && userInfo.type==shoperObj.type">
-				<view v-if="userInfo.owner==0 && userInfo.status==2">
+			<view v-if="userInfo && (userInfo.type==shoperObj.type)">
+				<view v-if="userInfo.status==userStatus.free">
 					<text class="cu-tag bg-green round" @click="joinCompanyEvent()">点击加入公司</text>
 				</view>
 				<view class="flex justify-start" v-else>
@@ -14,9 +14,10 @@
 
 			</view>
 			
-			<view v-if="userInfo.ownerType==replacerObj.ownerType && userInfo.type==replacerObj.type">
+			<view v-if=" userInfo && (userInfo.type==replacerObj.type)">
 				
 				<view class="flex justify-start" >
+					
 					<image :src="company.cover?company.cover:'../../../static/img/default.png'" style="width:35px;height:35px;margin-right:8px;
 					border-radius: 50%;
 					vertical-align: middle;"></image>
@@ -101,12 +102,13 @@
 					  style="width:100%;height:41vw;border-radius: 10px;margin-bottom:13px;"></image>
 				<view class=" font-weight-super font-weight-middle color-normal" style="margin-bottom:3px;">{{item.title}}</view>
 				<view class="font-size-small font-weight-normal" style="color: rgb(137, 136, 136)">{{item.applyDate | formatTime('YMDHMS')}}</view>
-				<image src="../../../static/img/huizhi1.png"  mode="aspectFill" class="operateImg position_absolute" style="top:20px;right:0;" v-if="item.report==1"></image>
+				<image src="../../../static/img/huizhi1.png"  mode="aspectFill" class="operateImg position_absolute" style="top:20px;right:0;" v-if="item.report==report"></image>
 			</view>
 			
 			
 		</view>
-		<view class="cu-modal" :class="isShowJoinModal?'show':''">
+		
+		<!-- <view class="cu-modal" :class="isShowJoinModal?'show':''">
 			
 			<view class="cu-dialog borderBottom">
 				<view class="cu-bar bg-white justify-end borderBottom">
@@ -122,34 +124,12 @@
 					</view>
 				</view>
 			</view>
-			
-				<!-- <view class="cu-dialog borderBottom">
-					<view class="cu-bar bg-white justify-end">
-						<view class="content font-size-big font-weight-normal color-normal">提示</view>
-					</view>
-				</view>
-				<view class="padding-xl">
-					<text class="fontWeight500 font14 text-blue">{{shop.shopName}}</text>门店邀请你加入
-				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action flex justify-around" style="width:100%;">
-						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @click="hideModal('shop')">不同意</view>
-						<view style="width:50%;padding:12px;" @click="aggressJoin()" class="text-blue">同意</view>
-					</view>
-				</view> -->
-			
-		</view>
+		</view> -->
 		<view class="cu-modal" :class="isShowJoinCompany?'show':''">
-			<view class="position_absolute" style="z-index:100;" :class="{
-				'noActive':!companyObj,
-				'active':companyObj
-			}"  @click="hideModal('company')">
-				<image src="../../../static/img/record-close.png" style="width:26px;height:26px;"></image>
-			</view>
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end " style="border-bottom:1px solid #EEEEED">
 					<view class="content font-size-big  font-weight-normal color-normal ">选择公司</view>
-					<!-- <image src="../../../static/img/record-close.png" style="width:26px;height:26px;position:absolute;right:0;z-index:9999;top:0;" @click="hideModal('company')"></image> -->
+					<text class="cuIcon-close font-size-big position_absolute"  style="right:10px;" @click="hideModal('company')"></text>
 				</view>
 				<view class="padding-xl text-left">
 					<view class="flex justify-start borderBottom" style="padding-bottom:10px;">
@@ -209,6 +189,14 @@
 				</view>
 			</view>
 		</view>
+		
+		<view class="cu-modal" :class="modalName=='company'?'show':''" @click.stop="hideModal('exist')">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">该公司是装修公司，不能加入</view>
+				</view>
+			</view>
+		</view>
     </view>
 </template>
 <script>
@@ -218,13 +206,13 @@
 	import axbCheckBox from '../../../components/axb-checkbox_v2.0/components/axb-checkbox/axb-checkbox.vue';
 	import {mapState,mapMutations} from 'vuex'
 	export default{
-		computed:mapState(['userInfo','replacerObj','shoperObj','userStatus']),
+		computed:mapState(['userInfo','userStatus','replacerObj','shoperObj','report','companyType']),
 		data(){
 			return{
 				eid:'',
 				companyObj:'',
-				dotStyle: false,
-				cardCur:0,
+				// dotStyle: false,
+				// cardCur:0,
 				shopList:[
 					{id:0,url:"../../../static/img/shop-img/shop1.jpg"},
 					{id:1,url:"../../../static/img/shop-img/shop2.jpg"},
@@ -237,9 +225,9 @@
 					name:'',
 					cover:''
 				},//公司名称
-				isShowJoinModal:false,//是否加入门店
+				// isShowJoinModal:false,//是否加入门店
 				isShowJoinCompany:false,//是否加入公司
-				current:1,
+				current:0,
 				noticeList1:[],
 				noticeList2:[],
 				options:[
@@ -256,6 +244,7 @@
 					shopName:''
 				},
 				modalName:'',
+				
 				
 			}
 		},
@@ -330,59 +319,46 @@
 					this.$ajax('Customer',{
 						eid:this.eid
 					},res=>{
-						this.companyObj=res
+						if(res.type!=this.companyType){
+							this.modalName='company'
+						}else{
+							this.companyObj=res
+						}
+						
 					})
 				}
 				
 			},
-			showWorkClick(){
-				uni.navigateTo({
-					url:'../work/work'
-				})
-			},
-			showMessageClick(){
-				uni.navigateTo({
-					url:'../message/message'
-				})
-			},
-			showMineClick(){
-				uni.navigateTo({
-					url:'../mine/mine'
-				})
-			},
-			DotStyle(e) {
-				this.dotStyle = e.detail.value
-			},
-			change(e){
-				this.current=e.detail.current;
-			},
-			radioChangeType(e){
-				// console.log(e)
-			},
+			// DotStyle(e) {
+			// 	this.dotStyle = e.detail.value
+			// },
+			// change(e){
+			// 	this.current=e.detail.current;
+			// },
 			//同意加入门店
-			aggressJoin(){
-				this.$ajax('JoinOrg',{
-					user:this.userInfo.id
-				},res=>{
-					uni.showToast({
-						title:'您已成功加入该门店',
-						icon:'none'
-					})
-					this.isShowJoinModal=false;
-					this.$ajax('RefreshOnlineUser',{},userInfo=>{
-						this.userInfo=userInfo;
-						this.company={
-							name:this.userInfo.ownerName,
-							cover:this.userInfo.ownerLogoUrl
-						}
-						this.getTodoList();
-						this.showArticles()
-						
-					})
-					
-				})
-				
-			},
+			// aggressJoin(){
+			// 	this.$ajax('JoinOrg',{
+			// 		user:this.userInfo.id
+			// 	},res=>{
+			// 		uni.showToast({
+			// 			title:'您已成功加入该门店',
+			// 			icon:'none'
+			// 		})
+			// 		this.isShowJoinModal=false;
+			// 		this.$ajax('RefreshOnlineUser',{},userInfo=>{
+			// 			this.userInfo=userInfo;
+			// 			this.company={
+			// 				name:this.userInfo.ownerName,
+			// 				cover:this.userInfo.ownerLogoUrl
+			// 			}
+			// 			this.getTodoList();
+			// 			this.showArticles()
+			// 			
+			// 		})
+			// 		
+			// 	})
+			// 	
+			// },
 			toNoticeContent(item){
 				this.noticeID=id;
 				uni.navigateTo({
@@ -413,9 +389,9 @@
 				}
 				
 			},
-			cardSwiper(e) {
-				this.cardCur = e.detail.current
-			},
+			// cardSwiper(e) {
+			// 	this.cardCur = e.detail.current
+			// },
 			detailContent(item,type){
 				
 					uni.navigateTo({
@@ -423,13 +399,13 @@
 					})
 			},
 			//加入门店
-			toJoinShop(){
-				uni.navigateTo({
-					url:'../../tab-item-content/shop-center/join-shop/join-shop'
-				})
-			},
+			// toJoinShop(){
+			// 	uni.navigateTo({
+			// 		url:'../../tab-item-content/shop-center/join-shop/join-shop'
+			// 	})
+			// },
 			showOperateItem(event){
-				if(this.userInfo.status!=1){
+				if(this.userInfo.status!=this.userStatus.normal){
 					uni.showToast({
 						title:'您没有操作的权限',
 						icon:'none'
@@ -465,12 +441,12 @@
 				}
 				
 			},
-			getShopInfo(id){
-				this.$ajax('ProprietorShop',{id:id},res=>{
-					this.shop.shopName=res.name;
-					
-				})
-			},
+			// getShopInfo(id){
+			// 	this.$ajax('ProprietorShop',{id:id},res=>{
+			// 		this.shop.shopName=res.name;
+			// 		
+			// 	})
+			// },
 			...mapMutations(['login'])
 		
 		},
@@ -479,56 +455,86 @@
 			uniGrid,
 			NAUIcard
 		},
-		onShow(){
+		onReady(){
 			
 		},
 		onLoad(){
-			
+			console.log('onload')
 			this.companyObj=null;
 			this.eid='';
 			this.getTodoList()
 			this.showArticles();
-		
-			if(this.userInfo){
-				if(this.userInfo.ownerType==this.shoperObj.ownerType && this.userInfo.type==this.shoperObj.type){
-					//店长店员
-					if(this.userInfo.owner!=0 && this.userInfo.status==this.userStatus.inviting){
-							this.isShowJoinModal=true;
-							this.shop.shopID=this.userInfo.department;
-							this.getShopInfo(this.shop.shopID)
-					}else if(this.userInfo.owner==0 && this.userInfo.status==this.userStatus.free ){
-							this.isShowJoinCompany=true;//显示EID
-					}else{
-							this.company={
-								name:this.userInfo.ownerName,
-								cover:this.userInfo.ownerLogoUrl
-							}
-							
-					}
-				}else if(this.userInfo.ownerType==this.replacerObj.ownerType && this.userInfo.type==this.replacerObj.type){
-					console.log('合作商')
-					this.company={
-						name:this.userInfo.ownerName,
-						cover:this.userInfo.ownerLogoUrl
-					}
-					console.log(this.company)
-				}
-				
-			}
+		// 
+		// 	if(this.userInfo){
+		// 		if(this.userInfo.type==this.shoperObj.type){
+		// 			//店长店员
+		// 			// if(this.userInfo.owner!=0 && this.userInfo.status==3){
+		// 			// 		this.isShowJoinModal=true;
+		// 			// 		this.shop.shopID=this.userInfo.department;
+		// 			// 		this.getShopInfo(this.shop.shopID)
+		// 			// }else
+		// 			 if(this.userInfo.owner==0 && this.userInfo.status==this.userStatus.free ){
+		// 					console.log('jjjjjj')
+		// 					this.isShowJoinCompany=true;//显示EID
+		// 					console.log(this.isShowJoinCompany)
+		// 			}else{
+		// 					this.company={
+		// 						name:this.userInfo.ownerName,
+		// 						cover:this.userInfo.ownerLogoUrl
+		// 					}
+		// 					
+		// 			}
+		// 		}else if(this.userInfo.type==this.replacerObj.type){
+		// 			this.company.name=this.userInfo.ownerName;
+		// 			this.company.cover=this.userInfo.ownerLogoUrl	
+		// 		}
+		// 		
+		// 	}
 			
 		},
 		onShow(){
+			console.log('onShow')
 			this.getTodoList()
 			this.showArticles();
-				this.$ajax('RefreshOnlineUser',{},res=>{
-					if(res.status==1){
-						this.login(res);
-						 this.company={
-							name:this.userInfo.ownerName,
-							cover:this.userInfo.ownerLogoUrl
-						}
+			if(this.userInfo){
+				if(this.userInfo.type==this.shoperObj.type){
+					
+					if(this.userInfo.owner==0 && this.userInfo.status==this.userStatus.free ){
+							if(this.current==0){
+								this.isShowJoinCompany=true;//显示EID
+								this.current+=1;
+							}
+								
+					}else{
+						console.log('kk')
+							this.$ajax('RefreshOnlineUser',{},res=>{
+								if(res.status==this.userStatus.normal){
+									this.login(res);
+									 this.company={
+										name:this.userInfo.ownerName,
+										cover:this.userInfo.ownerLogoUrl
+									}
+								}
+							})
+							
 					}
-				})
+					
+				}else if(this.userInfo.type==this.replacerObj.type){
+					console.log('kkkkk')
+						this.$ajax('Customer',{
+							id:this.userInfo.owner
+						},res=>{
+							this.company={
+								name:res.name,
+								cover:res.logourl
+							}
+							console.log(this.company)
+						})
+				
+				}
+			}
+			
+				
 			
 			 
 		},
@@ -540,7 +546,7 @@
 		right:66px;top:213px;
 	}
 	.noActive{
-		right:66px;top:268px;
+		right:66px;top:213px;
 	}
 	.operateImg{
 		width:37px;height:37px;top:23px;
@@ -626,9 +632,10 @@ line-height:25px;
 }
 
 .cu-bar .content{
-	font-size:15px;
+	font-size:12px;
 	font-weight: 400;
-	color:rgba(42,42,42,1)
+	color:rgba(42,42,42,1);
+	width:calc(100%-84px)
 }
 .card-swiper{
 	height:120px !important;

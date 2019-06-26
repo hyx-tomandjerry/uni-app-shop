@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view  class="position_relative">
 		<view class="design-container">
 			<view class=" font-weight-super font-size-supper" style="margin-bottom:4px;">注册</view>
 			<view class="color-normal font-weight-normal font-size-normal">您好！欢迎来到乐象工程管家</view>
@@ -7,7 +7,7 @@
 		<view class="design-info">
 			<view class="design-info-item flex justify-start borderBottom">
 				<text class="cuIcon-people text-grey" style="font-size:22px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="请输入姓名" v-model="designer.name" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
+				<input type="text" placeholder="请输入姓名" v-model="designer.name" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @focus="hideTabbar()">
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom">
@@ -18,16 +18,26 @@
 			
 			<view class="design-info-item flex justify-start borderBottom position_relative">
 				<text class="cuIcon-lock text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="密码长度6-12位，英文和数字组成" v-model="designer.token" class="color-placeholder font-size-big font-weight-normal" @blur="checkPwdEvent(designer.token)" style="width:80%">
-				<text class="cuIcon-close position_absolute"  
+				<!-- <input type="password" placeholder="密码长度6-12位，英文和数字组成" v-model="designer.token" class="color-placeholder font-size-big font-weight-normal" @blur="checkPwdEvent(designer.token)" style="width:80%"> -->
+				<!-- <text class="cuIcon-close position_absolute"  
 				style="right:19px;top:23px;font-size:20px;" 
 				@click="clearPwd()"
-				v-if="designer.token"></text>
+				v-if="designer.token"></text> -->
+				<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
+				<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)" v-else v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
+				<image src="../../../static/icon/eye_open.png"
+					v-if="isShowPwd"
+					@click="showPwd()"
+				 style="width:44rpx;height:44rpx;position: absolute;right:38px;top:18px;" ></image>
+				 <image src="../../../static/icon/eye.png"  style="width:44rpx;height:44rpx;position: absolute;right:38px;top:18px;"
+				 	v-else
+				 	@click="showPwd()"
+				  ></image>
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom position_relative">
 				<text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="请输入验证码" v-model="designer.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
+				<input type="text" placeholder="请输入验证码" v-model="designer.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="hideTabbar()">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
 				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
@@ -42,7 +52,7 @@
 			
 			<text>已有账号？</text><text style="color:#42B0ED" @click="toLogin()">登录</text>
 		</view>
-		<view class="copyright font-size-mini font-weight-normal color-normal">
+		<view class="copyright font-size-mini font-weight-normal color-normal" v-if="tabbar">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 		
@@ -63,20 +73,52 @@
 				num:60,
 				isSend:false,
 				modalName:'',
-				isInput:false
+				isInput:false,
+				isShowPwd:false,
+				isRightTel:true,
+				tabbar:true,//用于键盘，
+				windowHeight:''
 			}
 		},
 		components:{
 			
 		},
+		onLoad(){
+			uni.getSystemInfo({
+				success: (res) => {
+					this.windowHeight=res.windowHeight;
+				}
+			})
+			uni.onWindowResize((res)=>{
+				if(res.size.windowHeight<this.windowHeight){
+					this.tabbar=false;
+				}else{
+					this.tabbar=true;
+				}
+			})
+		},
 		methods:{
+			showTabbar(){
+				this.tabbar=true;
+			},
+			hideTabbar(){
+				this.tabbar=false;
+			},
+			showPwd(){
+				this.isShowPwd=!this.isShowPwd;
+			},
 			toLogin(){
 				uni.navigateTo({
 					url:'../login/login'
 				})
 			},
 			designerSubmit(){
-				if(!this.designer.name || !this.designer.mobile || !this.designer.token){
+				if(!this.isRightTel){
+					uni.showToast({
+						title:'电话号码不存在',
+						icon:'none'
+					})
+				}else if(!this.designer.name || !this.designer.mobile || !this.designer.token){
 					uni.showToast({
 						title:'请完善基本信息',
 						icon:'none'
@@ -91,7 +133,7 @@
 						name:this.designer.name,
 						token:this.designer.token,
 						mobile:this.designer.mobile,
-						gender:1,
+						gender:this.$store.state.genderZn.man,
 						type:this.$store.state.shoperObj.type,
 						vcode:this.designer.vcode,
 					},res=>{
@@ -115,7 +157,6 @@
 				}
 			},
 			sendCode(){
-				console.log(this.designer.mobile)
 				if(!this.designer.mobile){
 					uni.showToast({
 						title:'请输入手机号',
@@ -163,13 +204,14 @@
 						title:'电话号码不存在',
 						icon:'none'
 					})
-					return false
-				} 
+					this.isRightTel=false;
+					
+				} else {
+					this.isRightTel=true;
+				}
 			}
-		},
-		onLoad(){
-			
-		},
+		}
+		
 	}
 </script>
 <style lang="less" >
@@ -177,8 +219,9 @@
 		background:#fff;
 	}
 	.copyright{
-		margin-top:100px;
-		margin-left:59px;
+		position:fixed;
+		bottom:17px;
+		left:59px;
 		
 	}
 	.design-container{

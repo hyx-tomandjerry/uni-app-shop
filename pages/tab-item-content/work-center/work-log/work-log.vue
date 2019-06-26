@@ -1,15 +1,16 @@
 <template>
 	<view >
-
-	<view class="flex text-center">
+	
+	<view class="flex text-center" v-if="userInfo.type==shoperObj.type">
 		<view class="cu-item flex-sub font-size-big bg-white borderBottom" :class="item.id==TabCur?'borderBottomRed cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(item)" :data-id="index" style="padding:9px  0;">
 			{{item.name}}
 		</view>
 	</view>
-		<view v-if="list">
+		<view v-if="list.length>0">
 			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px" >
 				<view class="user flex justify-start">
-					<image :src="userInfo.headurl" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;border-radius: 50%;"></image>
+					<image :src="userInfo.headurl?userInfo.headurl:'../../../../static/img/default.png'" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;border-radius: 50%;"></image>
+					
 					<view class="user-info">
 						<view  style="margin-bottom:4px;">
 							<text class="user-name">{{userInfo.name}}</text>
@@ -50,12 +51,8 @@
 		<view v-else>
 			<LxEmpty></LxEmpty>
 		</view>
-
-
-
-
 		<image src="../../../../static/icon/add.png"
-				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2"></image>
+				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2 && userInfo.type==shoperObj.type "></image>
 				<uni-load-more :contentText="content" :status="loading" :showIcon="true"></uni-load-more>
 	</view>
 </template>
@@ -65,7 +62,7 @@
 	import uniLoadMore from '../../../../components/uni-load-more.vue'
 	import {mapState} from 'vuex'
 	export default {
-		computed:mapState(['userInfo']),
+		computed:mapState(['userInfo','shoperObj']),
         data() {
 			return {
 				page:0,
@@ -96,6 +93,7 @@
 			this.$ajax('WorkReportsByShop',{
 			     zone:-1,
 				 brand:0,
+				  type:this.userInfo.type==this.shoperObj?this.TabCur:'',
 				 offset:this.$utils.getOffset(this.page)
 			},res=>{
 				if(res==''){
@@ -183,7 +181,7 @@
 			    this.$ajax('WorkReportsByShop',{
                      zone:-1,
 					 brand:0,
-					 type:this.TabCur,
+					 type:this.userInfo.type==this.shoperObj?this.TabCur:'',
 					 offset:this.$utils.getOffset(this.page)
 				},res=>{
 					 this.list = res;
@@ -195,7 +193,7 @@
 </script>
 
 <style lang="less">
-
+	
 	.empty-middle{
 		position: absolute;
 		transform: translateY(-50%);

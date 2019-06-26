@@ -90,15 +90,12 @@
 				type: 'rangetime',
 				radio:0,
 				sexList:['女','男'],
-				isChangeSex:false,
-				userInfo1:{},
 				token:'',//上传头像的token
-				avatar:'',
 				birthday:'',
 				showPicker:false,
 				showBir:false,
 				coverID:'',
-				index: 0,
+				
 			}
 		},
 		components:{
@@ -179,10 +176,6 @@
 			getAvater(id){
 				this.$ajax('File',{id:id},res=>{
 					this.userInfo.headurl=res.resurl;
-					uni.setStorage({
-						key:'logo',
-						data:this.userInfo.headurl
-					})
 				})
 			},
 			writeMotto(){
@@ -200,8 +193,6 @@
 				}
 			
 			},
-			
-			
 			goBack(){
 				uni.navigateBack({
 					delta:1,
@@ -210,30 +201,16 @@
 					}
 				})
 			},
-			
 			 onShowDatePicker(type){//显示
 			  this.type = type;
 			  this.showPicker = true;
 			  this.value = this[type];
-			},
-			//获得头像
-			getUserInfoAvatar(){
-				uni.getStorage({
-					key:'logo',
-					success: (res) => {
-						if(this.userInfo){
-							this.userInfo.headurl=res.data
-						}
-						
-					}
-				})
 			},
 			setUserInfo(){
 				this.$ajax('SetProfile',{
 					gender:this.radio,
 					mobile:this.userInfo.mobile,
 					name:this.userInfo.name,
-					// motto:this.userInfo.motto,
 					birthday:this.birthday
 				},res=>{
 					uni.showToast({
@@ -244,27 +221,10 @@
 			}
 		},
 		onLoad(){
-			uni.getStorage({
-				key:'logo',
-				success: (res) => {
-					if(res){
-						uni.removeStorage({
-							key:'logo'
-						})
-					}
-				}
-			})
 			this.getUploadToken();
-			this.getUserInfoAvatar();
 			this.$ajax('RefreshOnlineUser',{},res=>{
 				this.login(res);
 				this.radio=this.userInfo?this.userInfo.gender:1;
-			})
-			
-			this.$fire.on('motto',res=>{
-				if(res){
-					this.userInfo.motto=res;
-				}
 			})
 		},
 	}

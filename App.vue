@@ -3,7 +3,7 @@
 import {mapState,mapMutations} from 'vuex';
 	import Vue from 'vue'
 	export default {
-		computed:mapState(['hasLogin','userInfo']),
+		computed:mapState(['hasLogin','userInfo','replacerObj','shoperObj',]),
 		data(){
 			return{
 
@@ -15,15 +15,6 @@ import {mapState,mapMutations} from 'vuex';
 		methods:{
 			
 		},
-// 		filters:{
-// 			repairStatus(value){
-// 				return this.$store.state.repairStatusZn[value]
-// 			},
-// 			repairStatusColor(value){
-// 				return this.$store.state.repairStatusColor[value]
-// 			},
-// 
-// 		},
 		onLaunch() {
 			uni.getSystemInfo({
 						success: function(e) {
@@ -50,9 +41,12 @@ import {mapState,mapMutations} from 'vuex';
 			uni.getStorage({
 				key:'userInfo',
 				success: (res) => {
-					uni.switchTab({
-						url:'./pages/tab-item/index/index'
-					})
+					if(res){
+						uni.switchTab({
+							url:'./pages/tab-item/index/index'
+						})
+					}
+					
 				},
 				fail: () => {
 					uni.navigateTo({
@@ -60,15 +54,7 @@ import {mapState,mapMutations} from 'vuex';
 					})
 				}
 			})
-			// if(!this.hasLogin){
-			// 	uni.switchTab({
-			// 		url:'./pages/tab-item/index/index'
-			// 	})
-			// }else{
-			// 	uni.navigateTo({
-			// 		url:'./pages/login-design/login/login'
-			// 	})
-			// }
+			
 		}
 	}
 </script>

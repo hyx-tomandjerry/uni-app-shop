@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view  class="position_relative">
 		<view class="design-container">
 			<view class=" font-weight-super font-size-supper position_relative" style="margin-bottom:4px;">
 				<text style="height:6px;background:rgba(66,176,237,1);width:20%" ></text>
@@ -10,7 +10,7 @@
 		<view class="design-info">
 			<view class="design-info-item flex justify-start borderBottom">
 				<image src="../../../static/img/resign/name.png" style="width:25px;height:25px;vertical-align: middle;margin-right:12px;"></image>
-				<input type="text" placeholder="请输入企业名称" v-model="company.name" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
+				<input type="text" placeholder="请输入企业名称" v-model="company.name" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @focus="hideTabbar()">
 			</view>
 			<view class="design-info-item flex justify-start borderBottom">
 				<image src="../../../static/img/resign/shortname.png" style="width:25px;height:25px;vertical-align: middle;margin-right:12px;"></image>
@@ -38,7 +38,7 @@
 			
 			<view class="design-info-item flex justify-start borderBottom position_relative">
 				<text class="cuIcon-mail text-grey" style="font-size:27px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="请输入验证码" v-model="company.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
+				<input type="text" placeholder="请输入验证码" v-model="company.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="showTabbar()">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
 				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
@@ -53,7 +53,7 @@
 			<view>已有账号？<text style="color:rgba(66,176,237,1);" @click="operateClickEvent('login')">登录</text></view>
 			<view  style="color:rgba(66,176,237,1);"  @click="operateClickEvent('resign')">前往个人注册</view>
 		</view>
-		<view class="copyright font-size-mini font-weight-normal color-normal">
+		<view class="copyright font-size-mini font-weight-normal color-normal" v-if="tabbar">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 		
@@ -77,13 +77,21 @@
 				num:60,
 				isSend:false,
 				modalName:'',
-				isInput:false
+				isInput:false,
+				tabbar:true,//用于键盘，
+				windowHeight:''
 			}
 		},
 		components:{
 			
 		},
 		methods:{
+			showTabbar(){
+				this.tabbar=true;
+			},
+			hideTabbar(){
+				this.tabbar=false;
+			},
 			operateClickEvent(type){
 				switch(type){
 					case 'login':
@@ -202,8 +210,9 @@
 		background:#fff;
 	}
 	.copyright{
-		margin-top:58px;;
-		margin-left:59px;
+		position:fixed;
+		bottom:17px;
+		left:59px;
 		
 	}
 	.design-container{

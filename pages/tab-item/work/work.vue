@@ -1,17 +1,30 @@
 <template>
 	<view>
 		<view class="flex justify-around" style="width:100%;flex-wrap: wrap;padding-top:10px;">
-			<view style="width:45%;position:relative" v-for="(item,index) in tabImg" :key="index" @click="showItem(item.type)">
-				<image :src="item.url" mode="" style="height:168px"></image>
-				<text class="position_absolute font-size-big font-weight-bold text-white" style="bottom:48px;left:59px;">{{item.text}}</text>
+			<view style="width:45%;position:relative" @click="showItem('log')">
+				<image src="../../../static/img/work/tab/construct.png" mode="" style="height:168px"></image>
+				<text class="position_absolute font-size-big font-weight-bold text-white" style="bottom:48px;left:59px;">工作日志</text>
 			</view>
-			
+			<view style="width:45%;position:relative" @click="showItem('express')">
+				<image src="../../../static/img/work/tab/express.png" mode="" style="height:168px"></image>
+				<text class="position_absolute font-size-big font-weight-bold text-white" style="bottom:48px;left:59px;">快递包裹</text>
+			</view>
+			<view style="width:45%;position:relative" @click="showItem('repair')">
+				<image src="../../../static/img/work/tab/repair.png" mode="" style="height:168px"></image>
+				<text class="position_absolute font-size-big font-weight-bold text-white" style="bottom:48px;left:59px;">我的报修</text>
+			</view>
+			<view style="width:45%;position:relative" @click="showItem('employee')" v-if="userInfo.type==replacerObj.type">
+				<image src="../../../static/img/work/tab/construct.png" mode="" style="height:168px"></image>
+				<text class="position_absolute font-size-big font-weight-bold text-white" style="bottom:48px;left:59px;">组织结构</text>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	export default {
+		computed:mapState(['userInfo','userStatus','replacerObj']),
 		data() {
 			return {
 				tabImg:[
@@ -24,57 +37,38 @@
 		},
 		methods: {
 			showItem(type){
-				uni.getStorage({
-					key:'userInfo',
-					success: (res) => {
-						if(res.data.status!=1){
-							uni.showToast({
-								title:'您没有该权限',
-								icon:'none'
-							})
-						}else{
-							switch(type){
-								case 'log':
-								uni.navigateTo({
-									url:'../../tab-item-content/work-center/work-log/work-log'
-								});
-								break;
-								case 'express':
-								uni.navigateTo({
-									url:'../../tab-item-content/work-center/express-center/express-index/express-index'
-								});
-								break;
-								case 'repair':
-								uni.navigateTo({
-									url:'../../tab-item-content/shop-center/shop-center?type=alone'
-								});
-								break;
-								case 'employee':
-								uni.navigateTo({
-									url:'../../tab-item-content/work-center/personnel-center/personnel-index/personnel-index'
-								})
-								
-							}
-						}
+				if(this.userInfo.status!=this.userStatus.normal){
+					uni.showToast({
+						title:'您没有该权限',
+						icon:'none'
+					})
+				}else{
+					switch(type){
+						case 'log':
+						uni.navigateTo({
+							url:'../../tab-item-content/work-center/work-log/work-log'
+						});
+						break;
+						case 'express':
+						uni.navigateTo({
+							url:'../../tab-item-content/work-center/express-center/express-index/express-index'
+						});
+						break;
+						case 'repair':
+						uni.navigateTo({
+							url:'../../tab-item-content/shop-center/shop-center?type=alone'
+						});
+						break;
+						case 'employee':
+						uni.navigateTo({
+							url:'../../tab-item-content/work-center/personnel-center/personnel-index/personnel-index'
+						})
+						
 					}
-				})
+				}
 				
-			},
-			showMineClick(){
-				uni.navigateTo({
-					url:'../mine/mine'
-				})
-			},
-			showMessageClick(){
-				uni.navigateTo({
-					url:'../message/message'
-				})
-			},
-			showIndexClick(){
-				uni.navigateTo({
-					url:'../index/index'
-				})
-			},
+				
+			}
 		}
 	}
 </script>

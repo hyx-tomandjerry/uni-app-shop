@@ -62,3 +62,11 @@
 	.explain-color{
 		color:#2A2A2A
 	}
+	.color-regular{
+		color:rgba(137,136,136,1);
+	}
+	.text-ellipse{
+		overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+	}

@@ -6,8 +6,8 @@
 		<view class="login_form">
 			<view class="login-form-item borderBottom flex justify-start position_relative">
 				<view class="cuIcon-lock text-gray" style="font-size:23px;margin-right:21px;"></view>
-				<input type="password" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-if="isShowPwd" @blur="checkPwdEvent(designer.pwd)">
-				<input type="text" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)">
+				<input type="password" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-if="isShowPwd" @blur="checkPwdEvent(designer.pwd)" @focus="hideTabbar()">
+				<input type="text" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" @focus="hideTabbar()">
 				<image
 				v-if="isShowPwd"
 				@click="showPwd('pwd')"
@@ -24,7 +24,7 @@
 			<view class="login-form-item borderBottom flex justify-start position_relative">
 				<view class="cuIcon-lock text-gray" style="font-size:23px;margin-right:21px;"></view>
 				<input type="password" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(designer.pwd)">
-				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)">
+				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" >
 				
 				
 				<image
@@ -51,7 +51,7 @@
 
 		</view>
 
-		<view class="copyright">
+		<view class="copyright" v-if="tabbar">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
 		</view>
 	</view>
@@ -69,17 +69,37 @@
 					confirmPwd:'',
 					mobile:'',
 					vcode:''
-				}
+				},
+				tabbar:true,//用于键盘，
+				windowHeight:''
             }
         },
         components:{
 
         },
         onLoad(options){
+			uni.getSystemInfo({
+				success: (res) => {
+					this.windowHeight=res.windowHeight;
+				}
+			})
+			uni.onWindowResize((res)=>{
+				if(res.size.windowHeight<this.windowHeight){
+					this.tabbar=false;
+				}else{
+					this.tabbar=true;
+				}
+			})
 			this.designer.mobile=options.mobile;
 			this.designer.vcode=options.vcode
         },
 		methods:{
+			showTabbar(){
+				this.tabbar=true;
+			},
+			hideTabbar(){
+				this.tabbar=false;
+			},
 			showPwd(type){
 				if(type=='pwd'){
 						this.isShowPwd=!this.isShowPwd;
@@ -88,6 +108,7 @@
 				}
 			},
 			resetPassword(){
+				this.showTabbar()
 				if(!this.designer.pwd || !this.designer.confirmPwd){
 					uni.showToast({
 						title:'请输入密码',
@@ -201,12 +222,12 @@
 		}
 	}
 	.copyright{
-		margin-top:180px;
-		margin-left:36px;
-		font-size:12px;
-
-		font-weight:400;
-		color:rgba(137,136,136,1);
+left:59px;
+			font-size:12px;
+			font-weight:400;
+			color:rgba(137,136,136,1);
+			position:fixed;
+			bottom:17px;
 	}
 	.cu-form-group>uni-text{
 		font-size:14px;
