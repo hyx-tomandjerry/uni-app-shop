@@ -1,0 +1,585 @@
+<template>
+	<view>
+		<view class="header-content flex justify-between bg-white bg-white">
+			<view><text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text></view>
+			<view><text class="header-title">新增报修</text></view>
+			<view></view>
+		</view>
+		<view class="location">
+			<view class="cu-list menu sm-border">
+							<view class="cu-item" style="padding:16px 10px 20px 19px;">
+								<view class="flex justify-start">
+									<view style="padding-top:5px;">
+										<image src="../../../../static/icon/addRepairDingwei.png" style="width:24px;height:30px;vertical-align: middle;margin-right:8px;"></image>
+									</view>
+									<view>
+										<view  class="shopname" >{{shop.name}}</view>
+										<view class="shopadress"
+										>{{shop.address}}</view>
+									</view>
+								</view>
+								<view class="cuIcon-right" @click="showNearShopList()"></view>
+							</view>
+						</view>
+		</view>
+		<view class="form-content">
+			<form>
+				<scroll-view scroll-y class="page show">
+					<view  class=" cu-list menu menuBorder  sm-border  margin-top">
+						<view class="cu-item "  style="margin-bottom:20rpx;">
+							<view class="content padding-tb-sm">
+								<view>
+
+								</view>
+								<view class="text-gray text-sm">
+									<view class="cu-form-group ">
+										<view class="title text-black" style="font-size:24rpx;"><text class="text-red" style="margin-right:4rpx;">*</text>报修人</view>
+										<input placeholder="请输入报修人"  @blur="inputName($event)" v-model="designer.name"></input>
+									</view>
+
+									<view class="cu-form-group">
+										<view class="title text-black" style="font-size:24rpx;"><text class="text-red" style="margin-right:4rpx;">*</text>联系电话</view>
+										<input name="telphone" placeholder="联系方式" @blur="inputTel($event)" v-model="designer.telephone"></input>
+									</view>
+
+									<view class="cu-form-group">
+										<view class="title text-black" style="font-size:24rpx;">
+											<text class="text-red" style="margin-right:4rpx;">*</text>上门时间
+										</view>
+										<view @click="onShowDatePicker('date')" >
+											<text class="dateStyle">{{designer.date ||'选择日期'}}</text>
+
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+
+						<view>
+							<text class=" text-blue margin-right-xs" style="font-size:13px;color:rgba(137,136,136,1);margin-top:9px;padding-left:14px;">维修明细</text>
+							<view class="cu-item " style="margin-top:6px;">
+								<view class="content padding-tb-sm">
+
+									<view style="display: flex;justify-content: space-between;">
+									</view>
+									<view >
+										<view class="cu-form-group ">
+											<view class="title text-black" style="font-size:24rpx;"><text class="text-red" style="margin-right:4rpx;">*</text>维修类别</view>
+											<view @click="showRepairItem()">
+												<text style="font-size:13px;">{{repair.bigName || ''}}</text>
+												<text class="cuIcon-right" ></text>
+
+											</view>
+										</view>
+										<view class="cu-form-group" style="border-bottom:1px solid rgba(238,238,237,1);">
+											<view class="title text-black" style="font-size:14px;"><text class="text-red" style="margin-right:4rpx;">*</text>维修项</view>
+											<text style="margin-left:100rpx;font-size:13px;">{{repair.subName || ''}}</text>
+										</view>
+
+										<view>
+											<view class="title text-black bg-white" style="font-size:14px;padding-left:12px;padding-top:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>报修描述</view>
+											<view>
+												<view class="cu-form-group">
+
+													<textarea maxlength="200"   v-model="repair.summary" placeholder="报修描述输入..." style="font-size:14px;"></textarea>
+												</view>
+											</view>
+										</view>
+
+										<view class="cu-bar bg-white" style="border-top:1px solid rgba(238,238,237,1);">
+
+											<view class="title text-black" style="font-size:24rpx;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
+										</view>
+										<view class="cu-form-group">
+											<view class="grid col-4 grid-square flex-sub">
+												<view class="padding-xs bg-img" :style="[{backgroundImage:'url(' + imgList[index] +')'}]" v-for="(item,index) in imgList"
+													  :key="index" @tap="ViewImage(item)" :data-url="imgList[index]">
+													<view class="cu-tag bg-red" @tap.stop="DelImg(index)" :data-index="index">
+														<text class='cuIcon-close'></text>
+													</view>
+												</view>
+												<view class="padding-xs solids" @tap="ChooseImageEvent()" v-if="imgList.length<4">
+													<text class='cuIcon-cameraadd'></text>
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+
+						<view v-for="(item,index) in itemComponents" :key="index" style="margin-top:9px;">
+							<view class="flex justify-between" style="padding-right:10px;">
+								<text class=" text-blue margin-right-xs" style="font-size:13px;color:rgba(137,136,136,1);padding-left:14px;">维修明细({{num}})</text>
+								<text class="text-red" @click="delComponent(index)">删除</text>
+							</view>
+
+							<view class="cu-item " style="margin-top:6px;">
+								<view class="content padding-tb-sm">
+
+									<view style="display: flex;justify-content: space-between;">
+									</view>
+									<view >
+										<view class="cu-form-group ">
+											<view class="title text-black" style="font-size:24rpx;"><text class="text-red" style="margin-right:4rpx;">*</text>维修类别</view>
+											<view @click="showRepairItem()">
+												<text style="font-size:13px;">{{repair.bigName || ''}}</text>
+												<text class="cuIcon-right" ></text>
+											</view>
+										</view>
+										<view class="cu-form-group" style="border-bottom:1px solid rgba(238,238,237,1);">
+											<view class="title text-black" style="font-size:14px;"><text class="text-red" style="margin-right:4rpx;">*</text>维修项</view>
+											<text style="margin-left:100rpx;font-size: 13px;">{{repair.subName || ''}}</text>
+										</view>
+
+										<view>
+											<view class="title text-black bg-white" style="font-size:14px;padding-left:12px;padding-top:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>报修描述</view>
+											<view>
+												<view class="cu-form-group">
+
+													<textarea maxlength="200"   v-model="repair.summary" placeholder="报修描述输入..." style="font-size:14px;"></textarea>
+												</view>
+											</view>
+										</view>
+
+										<view class="cu-bar bg-white" style="border-top:1px solid rgba(238,238,237,1);">
+
+											<view class="title text-black" style="font-size:24rpx;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
+										</view>
+										<view class="cu-form-group">
+											<view class="grid col-4 grid-square flex-sub">
+												<view class="padding-xs bg-img" :style="[{backgroundImage:'url(' + imgList[index] +')'}]" v-for="(item,index) in imgList"
+													  :key="index" @tap="ViewImage(item)" :data-url="imgList[index]">
+													<view class="cu-tag bg-red" @tap.stop="DelImg(index)" :data-index="index">
+														<text class='cuIcon-close'></text>
+													</view>
+												</view>
+												<view class="padding-xs solids" @tap="ChooseImageEvent()" v-if="imgList.length<4">
+													<text class='cuIcon-cameraadd'></text>
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<!--<view style="border-top:1px solid rgba(238,238,237,1);height:53px;height:53px;text-align: center;line-height:53px;background:#fff;">-->
+						<!--<text class="addItem" @click="addRepairItem()"> +添加报修内容</text>-->
+					<!--</view>-->
+					<view >
+						<button class="cu-btn block bg-green margin-tb-sm lg" @click="createOrder()">提交</button>
+					</view>
+				</scroll-view>
+			</form>
+		</view>
+		 <mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true"
+		@confirm="onSelected($event)" @cancel="onSelected($event)"
+		 />
+	</view>
+</template>
+<script>
+	var qiniu=require('qiniu-js');
+	import uniIcon from '../../../../components/uni/uni-icon/uni-icon.vue'
+	import amap from '../../../../common/amap-wx.js'
+	import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
+	export default{
+		props:[
+
+		],
+		data(){
+			return{
+				showPicker: false,
+				 value: '',
+				index:-1,
+				  imgList: [],
+				  itemComponents:[],
+				  num:1,
+				  amapPlugin:null,//地图组件
+				  key:'4c523fb1857f99ba7f2d683d9e88ec1e',//地图key
+				  shop:{
+					  name:'',
+					  address:'',
+					  id:''
+				  },
+				  designer:{
+					  name:'',
+					  telephone:'',
+					  date:'',
+
+				  },
+				  repair:{
+					  subID:'',
+					  subName:'',
+					  bigName:'',
+                      summary:'',
+				  },
+				 files:[],
+				 type: 'rangetime',
+
+			}
+		},
+		components:{
+			uniIcon,
+			MxDatePicker
+
+
+		},
+		getOpenDate(){
+			var date=new Date();
+			return this.format(date,'YMD')
+		},
+		onLoad(option){
+			if(option){
+				console.log(option)
+				this.shop.id=option.shopID;
+				this.shop.name=option.shopName;
+				this.shop.address=option.shopAddress
+			}
+			if(this.$store.state.userInfo){
+				this.designer.name=this.$store.state.userInfo.name;
+				this.designer.telephone=this.$store.state.userInfo.mobile;
+				uni.setStorage({
+					key:'name',
+					data:this.$store.state.userInfo.name,
+				})
+				uni.setStorage({
+					key:'telephone',
+					data:this.$store.state.userInfo.mobile,
+				})
+			}
+			
+		},
+		methods:{
+			goBack(){
+				uni.navigateTo({
+					url:'../shop-list/shop-list'
+				})
+			},
+			inputTel(event){
+				uni.setStorage({
+					key:'telephone',
+					data:event.detail.value
+				})
+			},
+			inputName(event){
+				uni.setStorage({
+					key:'name',
+					data:event.detail.value
+				})
+			},
+			onSelected(e) {//选择
+			    this.showPicker = false;
+			    if(e) {
+			        this[this.type] = e.value;
+			        this.designer.date=e.value;
+					uni.setStorage({
+						key:'time',
+						data:e.value
+					})
+			    }
+			},
+			 onShowDatePicker(type){//显示
+			    this.type = type;
+			    this.showPicker = true;
+			    this.value = this[type];
+			},
+			getRegeoInfo(){
+				uni.showLoading({
+					title:'获取位置中...'
+				});
+				this.amapPlugin.getRegeo({
+					success:(data)=>{
+						this.$store.commit('setProvince',data[0].regeocodeData.addressComponent.province);
+						this.$store.commit('setAddress',data[0].regeocodeData.formatted_address);
+						uni.request({
+							url:this.$store.state.url+'NearestShops',
+							data:{
+								// owner:this.$store.state.userInfo.owner,
+								// userId:this.$store.state.userInfo.id,
+								owner:18,
+								userId:49,
+								address:`${data[0].regeocodeData.addressComponent.province}${data[0].regeocodeData.formatted_address}`,
+								size:8
+							},
+							success: (res) => {
+								this.shop.name=res.data.data[0].name;
+								this.shop.address=res.data.data[0]['provinceName']+res.data.data[0]['cityName']+res.data.data[0]['districtName'];
+								this.shop.id=res.data.data[0].id;
+								console.log(this.shop)
+
+							}
+						})
+						uni.hideLoading();
+					},
+					fail:(res)=>{
+
+						uni.hideLoading();
+					}
+				})
+			},
+			//显示最近门店列表
+			showNearShopList(){
+				uni.navigateTo({
+					url:"../near-shop-list/near-shop-list?shopAddress="+this.shop.address
+				})
+			},
+
+			//显示维修列表
+			showRepairItem(){
+				uni.navigateTo({
+					url:'../repair-item/repair-item'
+				})
+			},
+			//添加报修内容
+			addRepairItem(){
+                this.num++;
+                this.itemComponents.push({
+
+                })
+			},
+			ChooseImageEvent() {
+				uni.chooseImage({
+					count: 9, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success: (res) =>{
+						if (this.imgList.length != 0) {
+							this.imgList = this.imgList.concat(res.tempFilePaths)
+						} else {
+							this.imgList = res.tempFilePaths
+						}
+							
+						var putExtra={
+							params:{
+								// 'x:owner': this.$store.state.userInfo.owner,
+								// 'x:creator': this.$store.state.userInfo.id,
+								owner:18,
+								userId:49,
+								'x:type':this.$store.state.constants.serviceorder_file,
+							}
+						}
+			
+						var config={
+							 useCdnDomain: false
+						}
+						for(var i=0;i<res.tempFilePaths.length;i++){
+							var observer=qiniu.upload(res.tempFilePaths[i],'oaks'+res.tempFilePaths[i].split('/')+Math.random()*1000000+'.jpg', this.token, putExtra, config);
+							var subscription = observer.subscribe(
+							  ()=>{
+			
+							  },
+							  ()=>{
+			
+							  },
+							  (res)=>{
+									this.files.push(res.data)
+									if(this.files.length===this.imgList.length){
+										uni.showToast({
+											title:'上传成功',
+											icon:'success'
+										})
+									}
+							  }
+							);
+						}
+			
+					},
+				})
+			},
+			ViewImage(e) {
+				uni.previewImage({
+					urls: this.imgList,
+					current: e
+				});
+			},
+			DelImg(event) {
+				uni.showModal({
+					content: '确定删除？',
+					cancelText: '取消',
+					confirmText: '确定',
+					success: res => {
+						if (res.confirm) {
+							this.imgList.splice(event, 1);
+							uni.request({
+								url:this.$store.state.url+'RemoveFiles',
+								data:{
+									id:this.files[event],
+									owner:18,
+									userId:49,
+									// owner:this.$store.state.userInfo.owner,
+									// userId:this.$store.state.userInfo.id
+								},
+								success: (res) => {
+									this.files.splice(event,1)
+									uni.showToast({
+										title:'删除成功',
+										icon:'none'
+									})
+								}
+							})
+						}
+					}
+				})
+			},
+			textareaAInput(e) {
+				this.textareaAValue = e.detail.value
+			},
+			//删除组件
+			delComponent(index){
+			    console.log(index)
+                this.itemComponents.splice(index,1);
+                if(this.num>1){
+                    this.num--;
+                }
+			},
+			delRepairItem(index){
+				//删除组件
+				this.itemComponents.splice(index,1)
+			},
+			//提交报修
+			createOrder(){
+				var file=''
+				if(this.files.length>0){
+					file=this.files.join(',');
+				}
+				console.log(this.designer.date)
+				if(!this.repair.subID){
+					uni.showToast({
+						title:'请选择报修类别',
+						icon:'none'
+					})
+				}else if(!this.repair.summary){
+					uni.showToast({
+						title:'请输入报修描述',
+						icon:'none'
+					})
+				}else{
+                    uni.request({
+                        url:this.$store.state.url+'NewServiceOrder',
+                        data:{
+                            // owner:this.$store.state.userInfo.owner,
+							owner:18,
+							userId:49,
+                            catalog:this.repair.subID,
+                            // creator:this.$store.state.userInfo.id,
+							creator:49,
+							// creator:49,
+                            shop:65,
+                            // shop:65,
+                            appointdate:this.designer.date?this.designer.date:this.getOpenDate,
+                            summary:this.repair.summary,
+                            files:file,
+                            contractor:this.designer.name?this.designer.name:this.$store.state.userInfo.name,
+                            telephone:this.designer.telephone?this.designer.telephone:this.$store.state.userInfo.mobile
+
+                        },success: (res) => {
+                            uni.showToast({
+                                title:'新增报修成功',
+                                icon:'success'
+                            });
+                            setTimeout(()=>{
+                                uni.navigateTo({
+                                    url:'../shop-center'
+                                })
+								uni.clearStorage()
+                            },500)
+                        }
+                    })
+				}
+
+
+
+			},
+			//获得上传token
+			getUploadToken(){
+				uni.request({
+					url:this.$store.state.url+'UploadToken',
+					success: (res) => {
+						this.token=res.data.data
+
+					}
+				})
+			}
+		},
+
+
+	}
+</script>
+<style lang="less">
+	uni-input input{
+		font-size:12px;
+	}
+	.header-content{
+			padding:15px 14px;
+			border-bottom:1px solid #EEEEED;
+			.header-title{
+				font-size:16px;
+				font-family:PingFangSC-Semibold;
+				font-weight:600;
+				color:rgba(42,42,42,1);
+			}
+			.headers-submit{
+				font-size:14px;
+				font-family:PingFangSC-Regular;
+				font-weight:400;
+				color:rgba(66,176,237,1);
+			}
+		}
+		.cu-form-group uni-textarea{
+			background:rgba(247,247,247,1);
+			padding-top:8px;
+			padding-left:11px;
+		}
+		.addItem{
+			font-size:15px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(66,176,237,1);
+		}
+		.padding-tb-sm{
+			padding:0;
+		}
+		.del{
+			font-size:13px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(66,176,237,1);
+		}
+		.shopname{
+			font-size:15px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(42,42,42,1);
+			margin-bottom:3px;
+		}
+		.shopadress{
+			font-size:14px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:rgba(137,136,136,1);
+		}
+		.test{
+		    text-align: center;
+		    padding: 10px 0;
+		}
+		button{
+		    margin: 20upx;
+		    font-size: 28upx;
+		}
+		.cu-form-group uni-input{
+			text-align:right
+		}
+		.dateStyle{
+			font-size:13px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:gray;
+		}
+		.cu-list.menu>.cu-item .content{
+			font-size:16px;
+			font-family:PingFangSC-Regular;
+			font-weight:400;
+			color:gray;
+		}
+</style>
