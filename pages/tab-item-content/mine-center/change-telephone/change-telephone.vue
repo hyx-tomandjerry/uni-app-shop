@@ -104,7 +104,7 @@
 
 <style lang="less">
 	page{
-		background: ghostwhite;
+		background:rgba(247,247,247,1);
 	}
 	.tel-content{
 		text-align:center;

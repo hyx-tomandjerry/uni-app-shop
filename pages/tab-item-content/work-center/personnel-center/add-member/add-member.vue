@@ -1,62 +1,65 @@
 <template>
 	<view class="position_relative">
-		<view class="borderTop bg-white member-info font-size-small font-weight-normal margin-bottom-normal">
-			<view class="member-info-item flex justify-between borderBottom">
-				<view class="explain-color font-size-small "><text class="text-red">*</text>姓名</view>
-				<input type="text" placeholder="请输入"  class="color-placeholder text-right" v-model="member.name">
-			</view>
-			<view class="member-info-item flex justify-between borderBottom">
-				<view class="explain-color font-size-small "><text class="text-red">*</text>手机号</view>
-				<input type="text" placeholder="请输入" class="color-placeholder text-right" v-model="member.mobile" @blur="checkTelEvent(member.mobile)">
-			</view>
-			<view class="member-info-item flex justify-between borderBottom" @click="chooseDepartment()">
-				<view class="explain-color font-size-small ">部门</view>
-				<view>
-					<text>{{department.name || ''}}</text>
-					<text class="cuIcon-right" style="font-size:14px;"></text>
+		<view style="min-height:520px;">
+			<view class="borderTop bg-white member-info font-size-small font-weight-normal margin-bottom-normal">
+				<view class="member-info-item flex justify-between borderBottom">
+					<view class="explain-color font-size-small "><text class="text-red">*</text>姓名</view>
+					<input type="text" placeholder="请输入"  class="color-placeholder text-right" v-model="member.name">
+				</view>
+				<view class="member-info-item flex justify-between borderBottom">
+					<view class="explain-color font-size-small "><text class="text-red">*</text>手机号</view>
+					<input type="text" placeholder="请输入" class="color-placeholder text-right" v-model="member.mobile" @blur="checkTelEvent(member.mobile)">
+				</view>
+				<view class="member-info-item flex justify-between borderBottom" @click="chooseDepartment()">
+					<view class="explain-color font-size-small ">部门</view>
+					<view>
+						<text>{{department.name || ''}}</text>
+						<text class="cuIcon-right" style="font-size:14px;"></text>
+					</view>
+				</view>
+				<view class="member-info-item flex justify-between borderBottom">
+					<view class="explain-color font-size-small "><text class="text-red"></text>职位</view>
+					<input type="text" placeholder="请输入" v-model="member.job" class="color-placeholder text-right">
 				</view>
 			</view>
-			<view class="member-info-item flex justify-between borderBottom">
-				<view class="explain-color font-size-small "><text class="text-red"></text>职位</view>
-				<input type="text" placeholder="请输入" v-model="member.job" class="color-placeholder text-right">
+
+			<view class="bg-white member-info font-size-small font-weight-normal">
+				<view class="member-info-item flex justify-between borderBottom position_relative" style="padding-bottom:10px;">
+					<view class="explain-color font-size-small ">性别</view>
+					<text class="cuIcon-right  text-gray position_absolute" style="font-size:18px;right:10px;top:12px;" ></text>
+					<view class="uni-list-cell-db" style="margin-top:-3px;margin-right:17px;">
+						<picker @change="bindPickerChange($event)" :value="radio" :range="sexList">
+							<view class="uni-input">{{sexList[radio]}}</view>
+						</picker>
+					</view>
+				</view>
+				<view class="member-info-item flex justify-between borderBottom">
+					<view class="explain-color font-size-small ">身份证号</view>
+					<input type="text" placeholder="请输入" class="color-placeholder text-right" v-model="member.idCard" @blur="checkTelEvent(member.mobile)">
+				</view>
+				<view class="member-info-item flex justify-between borderBottom position_relative"
+					  style="padding-bottom:10px;"
+					  @click="onShowDatePicker('date','birthday')">
+					<view class="explain-color font-size-small ">出生日期</view>
+					<view  style="margin-top:-3px;margin-right:17px;">
+						{{member.birthday || '' }}
+					</view>
+					<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;"  ></text>
+				</view>
+				<view class="member-info-item flex justify-between borderBottom position_relative"
+					  style="padding-bottom:10px;"
+					  @click="onShowDatePicker('date','time')">
+					<view class="explain-color font-size-small ">入职时间</view>
+					<view  style="margin-top:-3px;margin-right:17px;">
+						{{member.joinTime || '' }}
+					</view>
+					<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;"  ></text>
+				</view>
 			</view>
 		</view>
-		
-		<view class="bg-white member-info font-size-small font-weight-normal">
-			<view class="member-info-item flex justify-between borderBottom position_relative" style="padding-bottom:10px;">
-				<view class="explain-color font-size-small ">性别</view>
-				<text class="cuIcon-right  text-gray position_absolute" style="font-size:18px;right:10px;top:12px;" ></text>
-				<view class="uni-list-cell-db" style="margin-top:-3px;margin-right:17px;">
-				    <picker @change="bindPickerChange($event)" :value="radio" :range="sexList">
-				        <view class="uni-input">{{sexList[radio]}}</view>
-				    </picker>
-				</view>
-			</view>
-			<view class="member-info-item flex justify-between borderBottom">
-				<view class="explain-color font-size-small ">身份证号</view>
-				<input type="text" placeholder="请输入" class="color-placeholder text-right" v-model="member.idCard" @blur="checkTelEvent(member.mobile)">
-			</view>
-			<view class="member-info-item flex justify-between borderBottom position_relative" 
-			  style="padding-bottom:10px;"
-			  @click="onShowDatePicker('date','birthday')">
-				<view class="explain-color font-size-small ">出生日期</view>
-				<view  style="margin-top:-3px;margin-right:17px;">
-					{{member.birthday || '' }}
-				</view>
-				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;"  ></text>
-			</view>
-			<view class="member-info-item flex justify-between borderBottom position_relative" 
-			 style="padding-bottom:10px;"
-			 @click="onShowDatePicker('date','time')">
-				<view class="explain-color font-size-small ">入职时间</view>
-				<view  style="margin-top:-3px;margin-right:17px;">
-					{{member.joinTime || '' }}
-				</view>
-				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;"  ></text>
-			</view>
-		</view>
+
 		 <mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true" @confirm="onSelected($event)" @cancel="onSelected($event)"  />
-		 <view style="position:fixed;bottom:10px;padding:0 15px;width:100%;text-align: center;">
+		 <view style="padding:0 15px;width:100%;text-align: center;">
 			<button class="cu-btn block bg-blue  lg" @click="addMember()" :disabled="loading">确定</button>
 		 </view>
 	</view>

@@ -60,23 +60,16 @@
 				})
 			},
 			getManagerList(){
-				uni.request({
-					url:this.$store.state.url+'Users',
-					data:{
-						userId:1,
-						session:'315dd9006e7249ad85292b089a8d5030',
-						owner:16,
-						team:-1,
-						status:-1,
-						offset:this.$utils.getOffset(this.page),
-						type:1,
-						key:''
-					},
-					success: (res) => {
-						console.log(res.data.data)
-						this.managerList=res.data.data
-					}
+				this.$ajax('Users',{
+					team:-1,
+					status:-1,
+					offset:this.$utils.getOffset(this.page),
+					type:1,
+					key:''
+				},res=>{
+					this.managerList=res;
 				})
+
 			}
 		},
 		onLoad(){
@@ -87,7 +80,7 @@
 
 <style lang="less">
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	.manager-item{
 		

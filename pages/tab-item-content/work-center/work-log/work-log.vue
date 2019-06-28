@@ -9,11 +9,11 @@
 		<view v-if="list.length>0">
 			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px" >
 				<view class="user flex justify-start">
-					<image :src="userInfo.headurl?userInfo.headurl:'../../../../static/img/default.png'" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;border-radius: 50%;"></image>
+					<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;border-radius: 50%;"></image>
 					
 					<view class="user-info">
 						<view  style="margin-bottom:4px;">
-							<text class="user-name">{{userInfo.name}}</text>
+							<text class="user-name">{{item.reporterName}}</text>
 						</view>
 						<!-- <view class="work-date  tag-name">{{item.title}}</view> -->
 						<view class="work-date ">{{item.rptdate | formatTime('YMDHMS')}}</view>
@@ -53,7 +53,7 @@
 		</view>
 		<image src="../../../../static/icon/add.png"
 				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2 && userInfo.type==shoperObj.type "></image>
-				<uni-load-more :contentText="content" :status="loading" :showIcon="true"></uni-load-more>
+				<uni-load-more :contentText="content" :status="loading" :showIcon="true" ></uni-load-more>
 	</view>
 </template>
 
@@ -93,7 +93,7 @@
 			this.$ajax('WorkReportsByShop',{
 			     zone:-1,
 				 brand:0,
-				  type:this.userInfo.type==this.shoperObj?this.TabCur:'',
+				  type:this.TabCur,
 				 offset:this.$utils.getOffset(this.page)
 			},res=>{
 				if(res==''){
@@ -181,7 +181,7 @@
 			    this.$ajax('WorkReportsByShop',{
                      zone:-1,
 					 brand:0,
-					 type:this.userInfo.type==this.shoperObj?this.TabCur:'',
+					 type:this.TabCur,
 					 offset:this.$utils.getOffset(this.page)
 				},res=>{
 					 this.list = res;
@@ -193,7 +193,9 @@
 </script>
 
 <style lang="less">
-	
+	page{
+		background:rgba(247,247,247,1);
+	}
 	.empty-middle{
 		position: absolute;
 		transform: translateY(-50%);

@@ -231,7 +231,7 @@
 		margin-bottom:13px;
 		border-radius:4px;
 		.header-title{
-			font-size:17px;
+			font-size:16px;
 			font-family:PingFangSC-Regular;
 			font-weight:600;
 			color:rgba(42,42,42,1);

@@ -5,11 +5,11 @@
 				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
 			</block>
 			<block slot="content"><text class="title">汇报详情</text></block>
-			<block slot="right" v-if="type=='log'">
-				<image src="../../../../static/icon/garbage.png"
-				@click="deleteLog()"
-				style="width:15px;height:15px;"></image>
-			</block>
+			<!--<block slot="right" v-if="type=='log'">-->
+				<!--<image src="../../../../static/icon/garbage.png"-->
+				<!--@click="deleteLog()"-->
+				<!--style="width:15px;height:15px;"></image>-->
+			<!--</block>-->
 		</cu-custom>
 		<view class="log-content borderTop bg-white">
 			
@@ -56,7 +56,7 @@
 			
 			<view class="comment-item borderBottom flex justify-start" v-for="(item,index) in commentList" :key="index" @click="chatClick(item)">
 				<view style="width:10%;margin-right:12px;">
-					<image :src="item.extprops"  style="width:45px;height:43px;border-radius: 50%;"></image>
+					<image :src="item.extprops?item.extprops:'../../../../static/img/default.png'"  style="width:45px;height:43px;border-radius: 50%;"></image>
 				</view>
 				<view style="width:89%;">
 					<view class="font-weight-normal font-size-small " style="color:rgba(41,85,117,1);">{{item.posterName}}</view>
@@ -79,15 +79,33 @@
 		</view>
 		
 		
-		<view class="cu-modal" :class="modalName=='Image'?'show':''">
+		<!-- <view class="cu-modal" :class="modalName=='Image'?'show':''">
 			<view class="cu-dialog" @tap="hideModal()">
 				<view class="bg-img" :style="[{ backgroundImage:'url(' + imgItem.url + ')' }]" style="min-height:200px;">
-					
+					<view class="cu-bar justify-end text-white">
+						<view class="action" @tap="hideModal">
+							<text class="cuIcon-close "></text>
+						</view>
+					</view>
 				</view>
 				
 			</view>
-		</view>
+		</view> -->
 		
+		<view class="cu-modal" :class="modalName=='Image'?'show':''" @click="hideModal()">
+			<view class="cu-dialog">
+				<view class="bg-img" :style="[{ backgroundImage:'url(' + imgItem.url+ ')' }]" style="min-height:200px;">
+					<view class="cu-bar justify-end text-white">
+						<view class="action" @tap="downImg()">
+							<text class="cuIcon-down " style="font-size:20px;"></text>
+						</view>
+					</view>
+				</view>
+				<!-- <view class="cu-bar bg-white">
+					<view class="action margin-0 flex-sub  solid-left" @tap="hideModal">我知道了</view>
+				</view> -->
+			</view>
+		</view>
 		
 		<view class="chat-comment flex justify-start " style="position:fixed;bottom:0px;z-index:100;width:100%">
 			
@@ -112,7 +130,7 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 					<view class="content font-size-big font-weight-normal color-normal">提示</view>
 				</view>
 				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
-					确定要退出登录吗?
+					确定要删除吗?
 				</view>
 				<view class="cu-bar bg-white justify-end">
 					<view class="action flex justify-around" style="width:100%;">
@@ -122,11 +140,21 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 				</view>
 			</view>
 		</view>
+		
+		<view class="cu-modal" :class="modalName=='download'?'show':''"  @click="hideModal()()">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class=" content" style="font-size:12px;">下载成功</view>
+				</view>
+		
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	import {mapState} from 'vuex';
+	import downloader from '../../../../common/img-downloader.js'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
@@ -156,6 +184,23 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			
 		},
 		methods: {
+			downImg(){
+				 uni.getImageInfo({
+					 src:this.imgItem.url,
+					 success:(res)=>{
+						let promise=downloader.load(res.path,res.path);
+						promise.then(([err, res])=>{ 
+							console.log(res)
+							console.log(res.statusCode)//下载结果 
+							if(res){
+								console.log('下载成功')
+								this.modalName='download';
+								// this.hideModal()
+							}            // err 和 res 只会有一个存在，另一个为null  
+						});
+					 }
+				 })
+			},
 			confirmDel(){
 				this.$ajax('RemoveCommentByShop',{
 					id:this.deleteID,
@@ -242,7 +287,10 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 				}
 			},
 			hideModal(){
-				this.modalName=null;
+				if(this.modalName){
+					this.modalName=null;
+				}
+				
 			},
 			viewImg(item){
 				this.modalName='Image';

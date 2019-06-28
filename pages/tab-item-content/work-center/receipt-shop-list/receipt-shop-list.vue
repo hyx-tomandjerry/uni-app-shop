@@ -1,10 +1,13 @@
 <template>
 	<view>
-		<view class="shop-list bg-white">
+		<view class="shop-list bg-white" v-if="shopList.length>0">
 			<view class="shop-list-item font-size-normal font-weight-normal borderBottom " v-for="(item,index) in shopList" :key="index">
 				<image :src="TabCur==item.id?'../../../../static/icon/xuanze.png':'../../../../static/icon/duihao.png'" style="width:20px;height:20px;vertical-align: middle;" @click="chooseShop(item)"></image>
 				<text style="margin-left:10px;">{{item.name}}</text>
 			</view>
+		</view>
+		<view v-else>
+			<LxEmpty></LxEmpty>
 		</view>
 		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
 	</view>
@@ -13,6 +16,7 @@
 <script>
 	import {mapState} from 'vuex'
 	import uniLoadMore from '../../../../components/uni-load-more.vue'
+	import LxEmpty from '../../../../lx_components/lx-empty.vue'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
@@ -30,7 +34,8 @@
 			}
 		},
 		components:{
-			uniLoadMore
+			uniLoadMore,
+			LxEmpty
 		},
 		onReachBottom(){
 			this.page++;
@@ -63,17 +68,15 @@
 		methods: {
 			chooseShop(shop){
 				this.TabCur=shop.id;
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:1,
-						success:()=>{
-							this.$fire.fire('articleShop',{
-								id:this.TabCur,
-								name:shop.name
-							})
-						}
-					})
-				},800)
+				uni.navigateBack({
+					delta:1,
+					success:()=>{
+						this.$fire.fire('articleShop',{
+							id:this.TabCur,
+							name:shop.name
+						})
+					}
+				})
 				
 			},
 			//获得要回值的门店
@@ -103,7 +106,7 @@
 
 <style lang="less">
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	.shop-list{
 		padding:10px 15px;

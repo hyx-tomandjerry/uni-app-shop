@@ -128,7 +128,7 @@
 					if(this.type=='article'){
                         this.$ajax('NewWorkReportByShop',{
                             reporter:this.userInfo.id,
-                            title:this.log.title,
+                            name:this.log.title,
 							 shop:this.shopItem?this.shopItem.id:'',
                             type:1,
                             article:this.type=='article'?this.article:'',
@@ -159,7 +159,7 @@
 						}else{
                             this.$ajax('NewWorkReportByShop',{
                                 reporter:this.userInfo.id,
-                                title:this.log.title,
+                                name:this.log.title,
                                 shop:this.shopItem?this.shopItem.id:'',
                                 type:2,
                                 article:this.type=='article'?this.article:'',

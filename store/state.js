@@ -1,8 +1,8 @@
 export default {
     appKey:null,//存储服务器发送给客户端的sessionkey
     hostUrl:'http://192.168.10.22/services',
-    // url:'http://192.168.10.186:8080/blade/services?f=',
-    url:'http://192.168.10.22/services?f=',
+    url:'http://192.168.10.186:8080/blade/services?f=',
+    // url:'http://192.168.10.22/services?f=',
     uploadHostUrl:'http://up.qiniup.com?token=',
     userInfo:null,
     statusHeight:44,
@@ -18,6 +18,10 @@ export default {
 		1:'男',
 		2:'女'
 	},
+    //外部联系人
+    companyObj:{
+      type:3
+    },
 	genderZn:{
 		'man':1,
 		'woman':2
@@ -142,11 +146,15 @@ export default {
 	//门店状态
 	shopType:{
 		1:'新开门店',
-		2:'原有门店'
+		2:'原有门店',
+		3:'原位重装',
+		4:'移位重装',
 	},
 	shopTypeZn:{
 		'new':1,
-		'origin':2
+		'origin':2,
+		'again':3,
+		'remove':4
 	},
     noticeType:{
         'unSign':0,

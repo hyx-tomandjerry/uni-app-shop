@@ -328,53 +328,7 @@
 		margin-right:15px;
 		margin-left:10px;
 	}
-	// .shopImg{
-	// 	width:103px;
-	// 	height:79px;
-	// 	margin-right:17px;
-	// }
-// 	.noManagePic{
-// 		width:95px !important;
-// 		height:71px !important;
-// 		margin-right:17px;
-// 		border-radius:6px;
-// 	}
-// 	.shop-name{
-// 		font-size:16px;
-// 		font-family:'PingFangSC-Regular';
-// 		font-weight:400;
-// 		color:rgba(42,42,42,1);
-// 		margin-bottom:6px;
-// 
-// 	}
-// 	.shop-desc{
-// 		font-size:14px;
-// 		display: flex;
-// 		font-weight:400;
-// 		color:rgba(137,136,136,1);
-// 		margin-bottom:4px;
-// 	}
-	// .img15{
-	// 	width:15px;
-	// 	height:19px;
-	// 	vertical-align: middle;
-	// 	margin-right:5px;
-	// }
-	// .record-shop{
-	// 	font-size:17px;
-	// 	font-family:'PingFangSC-Regular';
-	// 	font-weight:400;
-	// 	color:rgba(255,255,255,1);
-	// }
-	// .noManager{
-	// 	margin-top:10px;
-	// }
-	// .ellipse{
-	// 	width:80%;
-	// 	overflow: hidden;
-	// 	text-overflow: ellipsis;
-	// 	white-space: nowrap;
-	// }
+
 	.shop-tag{
 		border-radius: 5px;font-size:12px;margin-right:6px;
 	}

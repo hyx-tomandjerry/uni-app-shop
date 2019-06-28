@@ -72,6 +72,6 @@
 
 <style lang="less">
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 </style>

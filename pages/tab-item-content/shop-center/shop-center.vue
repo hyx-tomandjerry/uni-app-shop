@@ -69,7 +69,7 @@
 			<view v-else>
 				<lx-empty></lx-empty>
 			</view>
-		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
+		<uni-load-more :contentText="content" :showIcon="true" :status="loading" color="rgb(39, 134, 245)"></uni-load-more>
 		<image src="../../../static/icon/add.png" v-if="userInfo.type==shoperObj.type"
 				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createRepair()"></image>
 
@@ -318,7 +318,7 @@
 
 <style lang="less">
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 
 	.shopImg{

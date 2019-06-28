@@ -10,7 +10,7 @@
 						<text  class="font-size-normal font-weight-normal">{{shop.name}}</text>
 					</view>
 					<view v-if="!repaitItem">
-						<text class="cuIcon-right color-normal position_absolute" style="font-size:20px;right:17px;bottom:10px;" @click="toNearShopList()">
+						<text class="cuIcon-right  position_absolute color-placeholder" style="font-size:16px;right:17px;bottom:14px;" @click="toNearShopList()">
 						</text>
 					</view>
 				</view>
@@ -32,8 +32,8 @@
 						<text class="text-red" style="margin-right:4rpx;">*</text>上门日期
 					</view>
 					<view @click="onShowDatePicker('date')" >
-						<view class="dateStyle" v-if="designer.date" style="margin-right:20px;">{{ designer.date}}</view>
-						<view><text class="cuIcon-right position_absolute color-normal" style="font-size:20px;right:17px;bottom:10px;"></text></view>
+						<view class="dateStyle color-normal" v-if="designer.date" style="margin-right:20px;">{{ designer.date}}</view>
+						<view><text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:12px;"></text></view>
 					</view>
 				</view>
 			</view>
@@ -48,7 +48,7 @@
 							<text>{{repairObj.bigName}}</text>
 						</view>
 						<view >
-							<text class="cuIcon-right position_absolute color-normal" style="font-size:20px;right:17px;bottom:10px;" @click="toRepairItem()"></text>
+							<text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:12px;" @click="toRepairItem()"></text>
 						</view>
 					</view>
 				</view>
@@ -59,7 +59,7 @@
 					</view>
 					<view>
 						<view class="dateStyle" v-if="repairObj.subName" style="margin-right:20px;"><text >{{repairObj.subName}}</text></view>
-						<view ><text class="cuIcon-right position_absolute color-normal" style="font-size:20px;right:17px;bottom:10px;"></text></view>
+						<view ><text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:11px;"></text></view>
 					</view>
 				</view>
 				<view>

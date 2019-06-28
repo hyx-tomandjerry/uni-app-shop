@@ -63,7 +63,7 @@
 						
 						
 						<view style="width:70%;margin-right:7px;">
-							<view class="font-weight-super font-weight-middle color-normal" style="margin-bottom:14rpx;">{{item.title}}</view>
+							<view class="font-weight-super font-weight-middle color-normal" style="margin-bottom:14rpx;">{{item.name}}</view>
 							<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">{{item.applyDate | formatTime('YMDHMS')}}</view>
 						</view>
 						<view style="width:29%;margin-right:15px;">
@@ -100,7 +100,7 @@
 			<view class="example-list borderBottom position_relative" style="padding:21px 0 18px;" v-for="(item,index) in noticeList2 " :key="index" @click="detailContent(item,'example')" v-if="noticeList2.length!=0">
 				<image :src="item.coverurl" mode="scaleToFill"
 					  style="width:100%;height:41vw;border-radius: 10px;margin-bottom:13px;"></image>
-				<view class=" font-weight-super font-weight-middle color-normal" style="margin-bottom:3px;">{{item.title}}</view>
+				<view class=" font-weight-super font-weight-middle color-normal" style="margin-bottom:3px;">{{item.name}}</view>
 				<view class="font-size-small font-weight-normal" style="color: rgb(137, 136, 136)">{{item.applyDate | formatTime('YMDHMS')}}</view>
 				<image src="../../../static/img/huizhi1.png"  mode="aspectFill" class="operateImg position_absolute" style="top:20px;right:0;" v-if="item.report==report"></image>
 			</view>
@@ -192,8 +192,8 @@
 		
 		<view class="cu-modal" :class="modalName=='company'?'show':''" @click.stop="hideModal('exist')">
 			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content">该公司是装修公司，不能加入</view>
+				<view class=" bg-white justify-end" style="padding:8px ">
+					<view class="text-center">该公司是装修公司，不能加入</view>
 				</view>
 			</view>
 		</view>
@@ -266,6 +266,7 @@
 					offset:0,
 					type:0
 				},res=>{
+					console.log('kkkkk')
 					let array1=[],array2=[]
 					res.forEach(item=>{
 						if(item.type==1){
@@ -386,6 +387,9 @@
 					this.isShowJoinModal=false;
 				}else if(type=='eid' || type=='search' || type=='exist'){
 					this.modalName=null;
+					if(this.eid){
+						this.eid=''
+					}
 				}
 				
 			},
@@ -458,13 +462,12 @@
 		onReady(){
 			
 		},
-		onLoad(){
-			console.log('onload')
-			this.companyObj=null;
-			this.eid='';
-			this.getTodoList()
-			this.showArticles();
-		// 
+		// onLoad(){
+		// 	this.companyObj=null;
+		// 	this.eid='';
+		// 	this.getTodoList()
+		// 	this.showArticles();
+		//
 		// 	if(this.userInfo){
 		// 		if(this.userInfo.type==this.shoperObj.type){
 		// 			//店长店员
@@ -491,33 +494,49 @@
 		// 		
 		// 	}
 			
-		},
+		// },
 		onShow(){
-			console.log('onShow')
+			this.companyObj=null;
+			this.eid='';
 			this.getTodoList()
 			this.showArticles();
 			if(this.userInfo){
 				if(this.userInfo.type==this.shoperObj.type){
-					
-					if(this.userInfo.owner==0 && this.userInfo.status==this.userStatus.free ){
-							if(this.current==0){
-								this.isShowJoinCompany=true;//显示EID
-								this.current+=1;
-							}
-								
-					}else{
-						console.log('kk')
-							this.$ajax('RefreshOnlineUser',{},res=>{
-								if(res.status==this.userStatus.normal){
-									this.login(res);
-									 this.company={
-										name:this.userInfo.ownerName,
-										cover:this.userInfo.ownerLogoUrl
-									}
+						this.$ajax('RefreshOnlineUser',{},res=>{
+							console.log(res)
+							if(res.owner==0 && res.status==this.userStatus.free){
+								if(this.current==0){
+									this.isShowJoinCompany=true;//显示EID
+									this.current+=1;
 								}
-							})
-							
-					}
+							}else if(res.status==this.userStatus.normal){
+								this.login(res);
+								this.company={
+									name:res.ownerName,
+									cover:res.ownerLogoUrl
+								}
+							}
+						})
+					//
+					// if(this.userInfo.owner==0 && this.userInfo.status==this.userStatus.free ){
+					// 		if(this.current==0){
+					// 			this.isShowJoinCompany=true;//显示EID
+					// 			this.current+=1;
+					// 		}
+					//
+					// }else{
+					//
+					// 		this.$ajax('RefreshOnlineUser',{},res=>{
+					// 			if(res.status==this.userStatus.normal){
+					// 				this.login(res);
+					// 				 this.company={
+					// 					name:this.userInfo.ownerName,
+					// 					cover:this.userInfo.ownerLogoUrl
+					// 				}
+					// 			}
+					// 		})
+					//
+					// }
 					
 				}else if(this.userInfo.type==this.replacerObj.type){
 					console.log('kkkkk')
@@ -532,6 +551,10 @@
 						})
 				
 				}
+			}else {
+				uni.navigateTo({
+					url:'../../login-design/login/login'
+				})
 			}
 			
 				

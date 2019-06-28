@@ -248,7 +248,7 @@
 
 <style lang="less" >
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	.goods-name{
 		font-size:14px;margin-left:5px;font-weight:600

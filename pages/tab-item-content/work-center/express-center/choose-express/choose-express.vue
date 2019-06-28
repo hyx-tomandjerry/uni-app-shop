@@ -67,7 +67,7 @@
 
 <style lang="less" >
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	.express-list{
 		padding:30px 15px;

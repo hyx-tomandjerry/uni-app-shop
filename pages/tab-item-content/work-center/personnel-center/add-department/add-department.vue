@@ -1,28 +1,31 @@
 <template>
 	<view>
-		<view class="margin-top-13 department-content bg-white font-size-small font-weight-normal">
-			<view class="department-item flex justify-between borderBottom">
-				<view class="explain-color font-size-small "><text class="text-red">*</text>部门名称</view>
-				<input type="text" placeholder="请输入"  class="color-normal text-right" v-model="departmentObj.name">
-			</view>
-			<view class="department-item flex justify-between borderBottom" >
-				<view class="explain-color font-size-small "><text class="text-red">*</text>上级部门</view>
-				<view>
-					<text v-if="type=='first'">内部组织</text>
-					<text v-else>{{departmentObj.topName || ''}}</text>
-					<text class="cuIcon-right" style="font-size:18px;" ></text>
+		<view style="min-height:520px;">
+			<view class="margin-top-13 department-content bg-white font-size-small font-weight-normal">
+				<view class="department-item flex justify-between borderBottom">
+					<view class="explain-color font-size-small "><text class="text-red">*</text>部门名称</view>
+					<input type="text" placeholder="请输入"  class="color-normal text-right" v-model="departmentObj.name">
 				</view>
-			</view>
-			<view class="department-item flex justify-between borderBottom" @click="chooseOperate('manager')">
-				<view class="explain-color font-size-small ">负责人</view>
-				<view>
-					<text v-if="departmentObj.manager">{{departmentObj.manager }}</text>
-					<text v-else class="color-placeholder">请选择部门负责人(选填)</text>
-					<text class="cuIcon-right" style="font-size:18px;"></text>
+				<view class="department-item flex justify-between borderBottom" >
+					<view class="explain-color font-size-small "><text class="text-red">*</text>上级部门</view>
+					<view>
+						<text v-if="type=='first'">内部组织</text>
+						<text v-else>{{departmentObj.topName || ''}}</text>
+						<text class="cuIcon-right" style="font-size:18px;" ></text>
+					</view>
+				</view>
+				<view class="department-item flex justify-between borderBottom" @click="chooseOperate('manager')">
+					<view class="explain-color font-size-small ">负责人</view>
+					<view>
+						<text v-if="departmentObj.manager">{{departmentObj.manager }}</text>
+						<text v-else class="color-placeholder">请选择部门负责人(选填)</text>
+						<text class="cuIcon-right" style="font-size:18px;"></text>
+					</view>
 				</view>
 			</view>
 		</view>
-		<view style="position:fixed;bottom:10px;padding:0 15px;width:100%;text-align: center;">
+
+		<view style="padding:0 15px;width:100%;text-align: center;">
 			<button class="cu-btn block bg-blue  lg" @click="addDepartment()" :disabled="loading">确定</button>
 		</view>
 	</view>

@@ -141,7 +141,7 @@
 		}
 	}
 	page{
-		background:white
+		background:rgba(247,247,247,1);
 	}
 	uni-input{
 			text-align:right

@@ -12,7 +12,9 @@
 			
 			<view class="design-info-item flex justify-start borderBottom">
 				<text class="cuIcon-mobile text-grey" style="font-size:24px;margin-right:16px;margin-left:4px;"></text>
-				<input type="telephone" placeholder="请输入手机号" v-model="designer.mobile" class="color-placeholder font-size-big font-weight-normal" @blur="checkTelEvent(designer.mobile)" style="width:70%">
+				<input type="telephone" placeholder="请输入手机号"
+					   maxlength="11"
+					   v-model="designer.mobile" class="color-placeholder font-size-big font-weight-normal" @blur="checkTelEvent(designer.mobile)" style="width:70%">
 				<text  class="text-gray">{{designer.mobile.length}}/11</text>
 			</view>
 			

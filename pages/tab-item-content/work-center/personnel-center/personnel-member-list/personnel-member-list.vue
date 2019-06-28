@@ -66,7 +66,7 @@
 		</view>
 		
 		
-		<view class="flex font-size-small text-blue font-weight-middle" style="width:100%;background:#e7ebed;padding:10px 0;position:fixed;bottom:0;">
+		<view class="flex font-size-small text-blue font-weight-middle" style="width:100%;background:#f1f1f1;padding:10px 0;position:fixed;bottom:0;">
 			<view style="width:30%;text-align: center;" @click="operateMember('member')">添加成员</view>
 			<view style="width:30%;text-align: center;border-left:1px solid #EEEEED;border-right:1px solid #eee"  @click="operateMember('midDepartment')">添加子部门</view>
 			<view style="width:30%;text-align: center;"  @click="operateMember('department')">设置部门</view>
@@ -101,7 +101,7 @@
 			checkMemberInfo(item){
 				console.log(item)
 				uni.navigateTo({
-					url:'../personnel-member-info/personnel-member-info?id='+item.id
+					url:'../personnel-member-info/personnel-member-info?id='+item.id+'&type=member'
 				})
 			},
 			selectTab(item,index){
@@ -203,7 +203,7 @@
 		}
 	}
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	.normal{
 		background:#13BB83

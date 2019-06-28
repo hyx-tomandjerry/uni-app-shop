@@ -61,11 +61,8 @@
 		  {
 		        "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
 		        "style" : {
-		    		"navigationStyle":"custom",
-		    		"app-plus":{
-		    			"titleNView":false
-		    		}
-		    	}
+					"navigationBarTitleText": "快递包裹"
+				}
 		    },
 
 	{
@@ -505,6 +502,10 @@
         ,{
             "path" : "pages/tab-item-content/work-center/personnel-center/set-department/set-department",
             "style" : {"navigationBarTitleText": "设置部门"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/personnel-center/personnel-outer/personnel-outer",
+            "style" : {"navigationBarTitleText": "外部组织"}
         }
     ],
 	"globalStyle": {

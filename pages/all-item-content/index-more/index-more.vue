@@ -12,7 +12,7 @@
 				<view class="flex justify-start align-center borderBottom position_relative" v-for="(item,index) in skillList" :key="index"  @click="checkItemInfo(item)" style="padding:23px 18px 21px 14px;">
 					
 					<view style="width:71%">
-						<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.title}} </view>
+						<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.name}} </view>
 						<view class="font-size-litter font-weight-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
 					</view>
 					<view style="width:29%;">
@@ -24,7 +24,7 @@
 			<view class="cu-card case" v-show="value=='example'"  style="margin:7px;border-radius: 10px;">
 				<view v-for="(item,index) in skillList" :key="index" @click="checkItemInfo(item)" style="padding:23px 18px 21px 14px;" class="borderBottom position_relative">
 					<image :src="item.coverurl" mode="aspectFill" style="width:100%;height:109px;border-radius: 10px;margin-bottom:13px;"></image>
-					<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.title}}</view>
+					<view class="font-size-big font-weight-bold" style="margin-bottom:10px;">{{item.name}}</view>
 					<view class="font-size-litter font-weight-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
 					<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
 				</view>
@@ -139,7 +139,7 @@
 
 <style lang="less">
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	.operateImg{
 		width:37px;

@@ -18,14 +18,10 @@
 				<input type="text" placeholder="请输入密码"  @blur="showTabbar()" v-if="isShowPwd" v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
 				<input type="password" placeholder="请输入密码" @blur="showTabbar()" v-else v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
 
-				<image src="../../../static/icon/eye_open.png"
-					v-if="isShowPwd"
+				<image :src="isShowPwd?'../../../static/icon/eye_open.png':'../../../static/icon/eye.png'"
 					@click="showPwd()"
 				 style="width:44rpx;height:44rpx;position: absolute;right:44rpx;top:30px;" ></image>
-				<image src="../../../static/icon/eye.png"  style="width:44rpx;height:44rpx;position: absolute;right:44rpx;top:30px;"
-					v-else
-					@click="showPwd()"
-				 ></image>
+
 
 			</view>
 
@@ -39,7 +35,7 @@
 				}">登录</button>
 
 			</view>
-			<view class="font-size-normal font-weight-normal color-normal" @click="toFindPassword()">忘记密码?</view>
+			<view class="font-size-normal font-weight-normal color-normal" ><text @click="toFindPassword()">忘记密码?</text></view>
 		</view>
 		<view class="copyright " v-if="tabbar">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>

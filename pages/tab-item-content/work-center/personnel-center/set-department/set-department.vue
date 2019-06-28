@@ -1,15 +1,18 @@
 <template>
 	<view>
-		<view class="flex justify-between department-item bg-white align-center borderBottom">
-			<view class="explain-color"><text class="text-red" style="margin-top:4px;">*</text>部门名称</view>
-			<input type="text" placeholder="请输入部门名称" v-model="department.name" style="text-align: right;">
+		<view style="min-height:520px;">
+			<view class="flex justify-between department-item bg-white align-center borderBottom">
+				<view class="explain-color"><text class="text-red" style="margin-top:4px;">*</text>部门名称</view>
+				<input type="text" placeholder="请输入部门名称" v-model="department.name" style="text-align: right;">
+			</view>
+
+			<view class="flex justify-between department-item bg-white align-center borderBottom" @click="toManagerList()">
+				<view class="explain-color">负责人</view>
+				<view style="margin-right:8px;">{{department.manager}}</view>
+				<text class="cuIcon-right position_absolute font-size-big" style="right:10px;"></text>
+			</view>
 		</view>
-		
-		<view class="flex justify-between department-item bg-white align-center borderBottom" @click="toManagerList()">
-			<view class="explain-color">负责人</view>
-			<view style="margin-right:8px;">{{department.manager}}</view>
-			<text class="cuIcon-right position_absolute font-size-big" style="right:10px;"></text>
-		</view>
+
 		
 		<view class="submit-area bg-white" >
 			<view class="submit-btn text-white" @click="setDepartment()">保存</view>
@@ -77,8 +80,7 @@
 		padding:17px 19px 15px 17px;
 	}
 	.submit-area{
-		position: fixed;
-		bottom:0px;
+
 		width:100%;
 		padding:17px 15px;
 		.submit-btn{

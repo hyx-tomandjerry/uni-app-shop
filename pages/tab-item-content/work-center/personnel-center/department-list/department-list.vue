@@ -55,7 +55,7 @@
 
 <style lang="less">
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	.department-content{
 		padding:10px 15px;

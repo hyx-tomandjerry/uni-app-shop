@@ -159,7 +159,7 @@ border-radius:4px;margin-bottom:23px;"
 
 <style lang="less">
 	page{
-		background: #fff;
+		background:rgba(247,247,247,1);
 	}
 	.inputactive{
 		color:rgba(66,176,237,1)

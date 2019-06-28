@@ -415,7 +415,7 @@
 	.img55{width:55px;height:35px;}
 	.img75{width:75px;height:35px;}
 	page{
-		background:#fff;
+		background:rgba(247,247,247,1);
 	}
 	button .cu-tag {
 		position: absolute;

@@ -136,7 +136,7 @@
 </script>
 <style lang="less">
 	page{
-		background: #fff;
+		background:#fff;
 	}
 	.copyright{
 		position:fixed;

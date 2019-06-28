@@ -14,8 +14,8 @@
 				<view class="position_relative" style="width:88%;">
 					<input type="text" placeholder="搜素姓名或者手机号" style="background:rgba(247,247,247,1);
 					border-radius:17px;padding-bottom:4px;padding-left:52px;height:34px;padding-top:4px;">
-								<image src="../../../../../static/icon/inner-search.png" style="width:17px;height:17px;vertical-align: middle;position: absolute;left:22px;bottom:7px;"></image>
-								<image src="../../../../../static/icon/inner-close.png" style="width:17px;height:17px;vertical-align: middle;position: absolute;right:10px;bottom:7px;"></image>
+								<image src="../../../../../static/icon/inner-search.png" style="width:17px;height:17px;vertical-align: middle;position: absolute;left:22px;bottom:5px;"></image>
+								<image src="../../../../../static/icon/inner-close.png" style="width:17px;height:17px;vertical-align: middle;position: absolute;right:10px;bottom:5px;"></image>
 				</view>
 				<view class="font-size-small font-weight-normal color-placeholder" style="margin-left:6px;padding-top:6px;">搜索</view>
 			</view>
@@ -40,9 +40,10 @@
 				<view class="font-size-small color-normal borderBottom" style="padding:15px 10px;width:100%"><text style="margin-right:17px;">{{item.name}}</text><text>{{item.mobile}}</text></view>
 			</view>
 		</view>
-		<view class="flex font-size-small text-blue font-weight-middle" style="width:100%;background:#e7ebed;padding:10px 0;position:fixed;bottom:0;">
-			<view style="width:45%;text-align: center;" @click="operateMember('member')">添加成员</view>
+		<view class="flex font-size-small text-blue font-weight-middle" style="width:100%;background:#f1f1f1;padding:10px 0;position:fixed;bottom:0;">
 			<view style="width:45%;text-align: center;border-left:1px solid #EEEEED;border-right:1px solid #eee"  @click="operateMember('midDepartment')">添加子部门</view>
+			<view style="width:45%;text-align: center;" @click="operateMember('member')">添加成员</view>
+
 			<!-- <view style="width:30%;text-align: center;"  @click="operateMember('department')">设置部门</view> -->
 		</view>
 	</view>
@@ -69,7 +70,7 @@
 		methods: {
 			checkMemberInfo(item){
 				uni.navigateTo({
-					url:'../personnel-member-info/personnel-member-info?id='+item.id
+					url:'../personnel-member-info/personnel-member-info?id='+item.id+'&type=member'
 				})
 			},
 			operateMember(type){
