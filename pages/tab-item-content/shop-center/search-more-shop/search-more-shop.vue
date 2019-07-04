@@ -229,7 +229,7 @@
 </script>
 <style lang="less">
 		page{
-			background:rgba(247,247,247,1);
+			background:#fff;
 		}
 		.search-container{
 			padding:5px 15px;

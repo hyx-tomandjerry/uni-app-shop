@@ -19,12 +19,12 @@
 					 style="width:45px;height:45px;border-radius: 50%;vertical-align: middle;"></image>
 				</view>
 				<view style="padding-top:4px;">
-					<view class=" color-normal">{{selectItem.name || ''}}</view>
+					<view class=" color-normal">{{selectItem.reporterName || ''}}</view>
 					<view class="color-placeholder font-size-litter font-weight-normal">{{selectItem.rptdate | formatTime('YMDHMS')}}</view>
 				</view>
 			</view>
 			<view class="log-summary" >
-				<view  style="color:rgba(45,96,151,1);margin-bottom:4px;">{{selectItem.articleTitle}}</view>
+				<!--<view  style="color:rgba(45,96,151,1);margin-bottom:4px;">{{selectItem.name}}</view>-->
 				<view class="log-detail ">
 					{{selectItem.summary}}
 				</view>
@@ -37,14 +37,23 @@
 			</view>
 		</view>
 
-		<view class="article-content bg-white font-size-small font-weight-normal" v-if="type=='article'">
+		<view class="article-content bg-white font-size-small font-weight-normal" >
 			<view class="article-item flex justify-between borderBottom">
 				<view class="color-normal">文章标题</view>
-				<view style="color:rgba(137,136,136,1); " class="font-size-mini">{{selectItem.articleTitle}}</view>
+				<view style="color:rgba(137,136,136,1); " class="font-size-mini">{{selectItem.name}}</view>
 			</view>
-			<view class="article-item flex justify-between">
-				<view class="color-normal">文章编号</view>
-				<view style="color:rgba(137,136,136,1);">{{selectItem.articleSeq}}</view>
+			<view v-if="type=='article'">
+
+				<view class="article-item flex justify-between">
+					<view class="color-normal">文章编号</view>
+					<view style="color:rgba(137,136,136,1);">{{selectItem.articleSeq}}</view>
+				</view>
+			</view>
+			<view v-if="type=='log'">
+				<view class="article-item flex justify-between borderBottom">
+					<view class="color-normal">门店名称</view>
+					<view style="color:rgba(137,136,136,1); " class="font-size-mini">{{selectItem.shopName}}</view>
+				</view>
 			</view>
 		</view>
 

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view >
-			<view class="cu-form-group borderBottom position_relative">
+			<view class="cu-form-group borderBottom position_relative" @click="toNearShopList()">
 				<view class="title font-size-normal font-weight-normal" >
 					<text class="text-red" style="margin-right:4rpx;">*</text>选择门店
 				</view>
@@ -10,7 +10,7 @@
 						<text  class="font-size-normal font-weight-normal">{{shop.name}}</text>
 					</view>
 					<view v-if="!repaitItem">
-						<text class="cuIcon-right  position_absolute color-placeholder" style="font-size:16px;right:17px;bottom:14px;" @click="toNearShopList()">
+						<text class="cuIcon-right  position_absolute color-placeholder" style="font-size:16px;right:17px;bottom:14px;" >
 						</text>
 					</view>
 				</view>
@@ -27,11 +27,11 @@
 					<input placeholder="请输入联系方式" name="input" @blur="checkTelEvent($event)" style="text-align:right;"  class="font-size-normal font-weight-normal text-black" v-model="designer.telephone"></input>
 				</view>
 
-				<view class="cu-form-group position_relative">
+				<view class="cu-form-group position_relative"  @click="onShowDatePicker('date')">
 					<view class=" font-size-normal font-weight-normal" >
 						<text class="text-red" style="margin-right:4rpx;">*</text>上门日期
 					</view>
-					<view @click="onShowDatePicker('date')" >
+					<view >
 						<view class="dateStyle color-normal" v-if="designer.date" style="margin-right:20px;">{{ designer.date}}</view>
 						<view><text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:12px;"></text></view>
 					</view>
@@ -39,7 +39,7 @@
 			</view>
 			<view class="repair-item">维修明细</view>
 			<view class="repair-info">
-				<view class="cu-form-group position_relative">
+				<view class="cu-form-group position_relative" @click="toRepairItem()">
 					<view class=" font-size-normal font-weight-normal" >
 						<!--<text class="text-red" style="margin-right:4rpx;">*</text>-->
 						维修类别
@@ -49,7 +49,7 @@
 							<text>{{repairObj.bigName}}</text>
 						</view>
 						<view >
-							<text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:12px;" @click="toRepairItem()"></text>
+							<text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:12px;" ></text>
 						</view>
 					</view>
 				</view>

@@ -218,7 +218,7 @@
 						(注：重量以快递员称重为准，快件“虚胖”要按体积收费哦～)
 					</view>
 					<view>
-						<view class="font-size-big color-normal" style="margin-bottom:10px;">物品类型</view>
+						<view class="font-size-big color-normal text-left" style="margin-bottom:10px;">物品类型</view>
 						<view class="flex justify-around" style="margin-bottom:17px;" >
 							<view class="goods-type" v-for="(item,index) in goodType" :key="index"
 								  :class="{'bg-blue':goodsTypeTabCur==item.value,'text-white':goodsTypeTabCur==item.value}"
@@ -228,7 +228,7 @@
 						</view>
 					</view>
 					<view>
-						<view class="font-size-big color-normal" style="margin-bottom:10px;">备注</view>
+						<view class="font-size-big color-normal text-left" style="margin-bottom:10px;">备注</view>
 						<view class="flex justify-around" style="margin-bottom:17px;">
 							<view class="goods-type" v-for="(item,index) in goodSummary" :key="index" :class="{
 								'bg-blue':goodSummaryTabCur==item.value,
@@ -241,9 +241,9 @@
 
 					<view class="position_relative">
 						<textarea  cols="30" rows="10" v-model="goods.summary" placeholder="请输入包裹备注信息" maxlength="100"
-							class="goods-summary"
+							class="goods-summary text-left"
 						></textarea>
-						<image src="../../../../../static/icon/close.png" style="width:14px;height:14px;position:absolute;right:10px;top:10px;"></image>
+						<!--<image src="../../../../../static/icon/close.png" style="width:14px;height:14px;position:absolute;right:10px;top:10px;"></image>-->
 						<view style="position:absolute;right:10px;bottom:10px;"><text class="text-blue">{{goods.summary.length}}</text>/100</view>
 					</view>
 				</view>
@@ -363,7 +363,6 @@
 				})
 			},
 			chooseItemOperate(type,item){
-
 				switch(type){
 					case 'time':
 						this.timeTabCur=item.value;
@@ -434,14 +433,13 @@
 		},
 		onLoad(options){
 			if(options.type=='speed'){
-				this.title={name:'速递寄件',value:'speed'}
+				this.title={name:'速递寄件',value:'speed',catalog:1}
 			}else if(options.type=='logistics'){
-				this.title={name:'物流寄件',value:'logistics'}
+				this.title={name:'物流寄件',value:'logistics',catalog:2}
 			}else if(options.type=='local'){
-				this.title={name:'同城寄件',value:'local'}
+				this.title={name:'同城寄件',value:'local',catalog:3}
 			}
 			this.$fire.on('sendShop',result=>{
-
 				this.sendShop=result;
 			})
 			this.$fire.on('receiverShop',result=>{
@@ -580,7 +578,8 @@
 		border-radius:8px;
 		width:100%;
 		max-height:103px;
-		padding:4px 10px;
+		padding-left:10px;
+		padding-top:10px;
 		font-size:12px;
 	}
 	.time-info{

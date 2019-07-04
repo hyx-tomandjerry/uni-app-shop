@@ -6,9 +6,7 @@
 					<text class="cu-tag bg-green round" @click="joinCompanyEvent()">点击加入公司</text>
 				</view>
 				<view class="flex justify-start" v-else>
-					<image :src="company.cover" style="width:35px;height:35px;margin-right:8px;
-					border-radius: 50%;
-					vertical-align: middle;"></image>
+					<image :src="company.cover?company.cover:'../../../static/img/default.png'" class="companyImg"></image>
 					<view style="padding-top:3px;"><text class="company">{{company.name || ''}}</text></view>
 				</view>
 
@@ -18,10 +16,7 @@
 			
 				<view class="flex justify-start" >
 
-					<image :src="company.cover?company.cover:'../../../static/img/default.png'" style="width:35px;height:35px;margin-right:8px;
-
-					border-radius: 50%;
-					vertical-align: middle;"></image>
+					<image :src="company.cover?company.cover:'../../../static/img/default.png'" class="companyImg"></image>
 
 					<view style="padding-top:3px;"><text class="company">{{company.name || ''}}</text></view>
 				</view>
@@ -496,6 +491,7 @@
 									this.current+=1;
 								}
 							}else if(res.status==this.userStatus.normal){
+								console.log('jjjjjjjj')
 								this.login(res);
 								this.company={
 									name:res.ownerName,
@@ -551,6 +547,12 @@
 	}
 </script>
 <style scoped>
+	.companyImg{
+		width:35px;height:35px;margin-right:8px;
+
+		border-radius: 50%;
+		vertical-align: middle;
+	}
 	.active{
 		right:66px;top:213px;
 	}
