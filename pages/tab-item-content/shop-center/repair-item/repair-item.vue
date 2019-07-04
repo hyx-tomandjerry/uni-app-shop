@@ -1,69 +1,60 @@
 <template>
 	<view>
-		
-		<cu-custom :isBack="true">
-			<block slot="left">
-				<text class="cuIcon-back" style="font-size:20px" @click="goBack()"></text>
-			</block>
-			<block slot="content">
-				<view class="font-size-big font-weight-bold">新增报修</view>
-			</block>
-			<block slot="right">
-				
-				<view class="font-size-small font-weight-normal text-blue"   @click="choseRepair()" >
-					确定
-				</view>
-			</block>
-		</cu-custom>
 		<view class="content">
 			<view class="nav">
 				<view class="nav-left">
 					<scroll-view scroll-y :style="'height:'+height+'px'">
-						<view class="nav-left-item " @click="categoryClickMain(item,index)"
-						 :key="index" :class="index==categoryActive?'active':''" v-for="(item,index) in categoryList">
+						<view class="nav-left-item "
+							  @click="leftNavSelect(item)"
+							  :key="index"
+							  :class="item.id==leftNavTabCur?'active':''"
+							  v-for="(item,index) in repairTypeArray">
 							{{item.name}}
 						</view>
 					</scroll-view>
 				</view>
 				<view class="nav-right">
 					<scroll-view scroll-y :scroll-top="scrollTop" @scroll="scroll"
-					:style="'height:'+height+'px'" scroll-with-animation >
-						<uni-tag 
-						@click="categoryClickSub(item,index)"
-						:text="item.name"
-						 class="nav-right-item "
-						 style="text-align:center;width:55%;line-height:17px;"
-						:class="index==categorySubActive?'subActive':''"
-						 v-for="(item,index) in subCategoryList" :key="index">
+								 :style="'height:'+height+'px'" scroll-with-animation >
+						<uni-tag
+								@click="rightNavSelect(item)"
+								:text="item.name"
+								class="nav-right-item "
+								style="text-align:center;width:55%;line-height:17px;"
+								:class="index==categorySubActive?'subActive':''"
+								v-for="(item,index) in rightNavList" :key="index">
 							{{item.name}}
 						</uni-tag>
 					</scroll-view>
 				</view>
 			</view>
 		</view>
-		<!-- <view class="choseBtn" @click="choseRepair()">确定</view> -->
 	</view>
 </template>
 
 <script>
 	import uniTag from '../../../../components/uni/uni-tag/uni-tag.vue'
+	import {mapState} from 'vuex'
 	export default {
+		computed:mapState(['repairTypeZn','repairTypeArray','repairType']),
 		data(){
 			return{
-				categoryList:[],
-				subCategoryList: [],
+
+				rightNavList: [],
 				height:0,
-				categoryActive:0,
-				categorySubActive:1000,
+				// categoryActive:0,
+				// categorySubActive:1000,
+				leftNavTabCur:2,
 				scrollTop:0,
 				scrollHeight:0,
-				repairObj:{
-					bigID:'',//第一级的id
-					subID:'',//第二季的id
-					bigName:'',
-					subName:''
-				},
-				list:[]
+				leftNavItem:''
+				// repairObj:{
+				// 	bigID:'',//第一级的id
+				// 	subID:'',//第二季的id
+				// 	bigName:'',
+				// 	subName:''
+				// },
+				// list:[]
 
 			}
 		},
@@ -71,161 +62,111 @@
 			uniTag
 		},
 		methods:{
+			leftNavSelect(item){
+				this.leftNavTabCur=item.id;
+				this.leftNavItem=item;
+				this.getRepairList(item.id)
+			},
+			getRepairList(id){
+				this.rightNavList=[];
+				this.$ajax('ServiceCatalogs',{},res=>{
+					if(res){
+						res.forEach(item=>{
+							if(item.catalog==id){
+								this.rightNavList.push(item);
+							}
+						})
+
+					}
+				})
+			},
+			rightNavSelect(item){
+				uni.navigateBack({
+					delta:1,
+					success:(res)=>{
+						this.$fire.fire('repair',{
+							bigID:this.leftNavItem.id?this.leftNavItem.id:this.repairTypeArray[0].id,
+							bigName:this.leftNavItem.name?this.leftNavItem.name:this.repairTypeArray[0].name,
+							subID:item.id,
+							subName:item.name
+						})
+					}
+				})
+			},
 			goBack(){
 				uni.navigateBack({
 					delta:1,
 				})
 			},
-			choseRepair(){
-				uni.navigateBack({
-					delta:1,
-					success:(res)=>{
-						this.$fire.fire('repair',this.repairObj)
-					}
-				})
-			},
+			// choseRepair(){
+			// 	uni.navigateBack({
+			// 		delta:1,
+			// 		success:(res)=>{
+			// 			this.$fire.fire('repair',this.repairObj)
+			// 		}
+			// 	})
+			// },
 			scroll(e){
 				this.scrollHeight = e.detail.scrollHeight;
 			},
-			categoryClickMain(categroy, index) {
-				this.categoryActive = index;
-				this.categorySubActive=1000;//右边默认为第一个
-				this.subCategoryList = categroy.subCategoryList;
-				this.scrollTop = -this.scrollHeight*index;
-				this.repairObj={
-					bigName:categroy.obj.val,
-					bigID:categroy.obj.id,
-					subID:'',
-					subName:''
-				}
-				// console.log(this.repairObj)
-
-
-
-			},
-			categoryClickSub(categroy, index) {
-				this.categorySubActive = index;
-				this.scrollTop = -this.scrollHeight*index;
-				this.repairObj={
-					bigName:this.repairObj.bigName,
-					bigID:this.repairObj.bigID,
-					subID:categroy.obj.id,
-					subName:categroy.obj.val
-				}
-			},
-			getCategory() {
-				this.$ajax('ServiceCatalog',{},res=>{
-					this.list=res;
-					var bigArray=[],subArray=[];
-					res.forEach(item=>{
-						if(item.parent==0){
-							bigArray.push(item)
-						}else{
-							subArray.push(item);
-						}
-					})
-					if(subArray[0].id){
-						this.repairObj.subID=subArray[0].id;
-					}
-					for(var i=0;i<bigArray.length;i++){
-						var subList = [];
-						for(var j=0;j<subArray.length;j++){
-							if(subArray[j].parent==bigArray[i].id){
-								subList.push({"name":subArray[j].val,obj:subArray[j]})
-							}
-						}
-						this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
-					}
-					this.subCategoryList = this.categoryList[0].subCategoryList;
-					this.repairObj={
-						bigName:this.categoryList[0].obj.val,
-						bigID:this.categoryList[0].obj.id,
-						subID:'',
-						subName:''
-					}
-				},false)
-				// uni.getStorage({
-				// 	key:'userInfo',
-				// 	success: (res) => {
-				// 		this.$ajax('Constants',{
-				// 			owner:res.data.owner,
-				// 			type:this.$store.state.constants.repair_type,
-				// 			parent:-1,
-				// 			objects:1
-				// 		},res=>{
-				// 			this.list=res;
-				// 			var bigArray=[],subArray=[];
-				// 			res.forEach(item=>{
-				// 				if(item.parent==0){
-				// 					bigArray.push(item)
-				// 				}else{
-				// 					subArray.push(item);
-				// 				}
-				// 			})
-				// 			this.repairObj.subID=subArray[0].id;
-				// 			for(var i=0;i<bigArray.length;i++){
-				// 				var subList = [];
-				// 				for(var j=0;j<subArray.length;j++){
-				// 					if(subArray[j].parent==bigArray[i].id){
-				// 						subList.push({"name":subArray[j].val,obj:subArray[j]})
-				// 					}
-				// 				}
-				// 				this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
-				// 			}
-				// 			this.subCategoryList = this.categoryList[0].subCategoryList;
-				// 			this.repairObj={
-				// 				bigName:this.categoryList[0].obj.val,
-				// 				bigID:this.categoryList[0].obj.id,
-				// 				subID:'',
-				// 				subName:''
-				// 			}
-				// 		})
-				// 	}
-				// })
-				// uni.request({
-				// 	url:this.$store.state.url+'Constants',
-				// 	data:{
-				// 		owner:18,
-				// 		type:this.$store.state.constants.repair_type,
-				// 		parent:-1,
-				// 		objects:1
-				// 	},
-				// 	success: (res) => {
-				// 		this.list=res.data.data
-				// 		var bigArray=[],subArray=[];
-				// 		res.data.data.forEach(item=>{
-				// 			if(item.parent==0){
-				// 				bigArray.push(item)
-				// 			}else{
-				// 				subArray.push(item);
-				// 			}
-				// 		})
-				// 		this.repairObj.subID=subArray[0].id;
-				// 		for(var i=0;i<bigArray.length;i++){
-				// 			var subList = [];
-				// 			for(var j=0;j<subArray.length;j++){
-				// 				if(subArray[j].parent==bigArray[i].id){
-				// 					subList.push({"name":subArray[j].val,obj:subArray[j]})
-				// 				}
-				// 			}
-				// 			this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
-				// 		}
-				// 		this.subCategoryList = this.categoryList[0].subCategoryList;
-				// 		
-				// 		this.repairObj={
-				// 			bigName:this.categoryList[0].obj.val,
-				// 			bigID:this.categoryList[0].obj.id,
-				// 			subID:'',
-				// 			subName:''
-				// 		}
-				// 		
-				// 	}
-				// })
-
-			}
+			// categoryClickMain(categroy, index) {
+			// 	this.categoryActive = index;
+			// 	this.categorySubActive=1000;//右边默认为第一个
+			// 	this.subCategoryList = categroy.subCategoryList;
+			// 	this.scrollTop = -this.scrollHeight*index;
+			// 	this.repairObj={
+			// 		bigName:categroy.obj.val,
+			// 		bigID:categroy.obj.id,
+			// 		subID:'',
+			// 		subName:''
+			// 	}
+			//
+			// },
+			// categoryClickSub(categroy, index) {
+			// 	this.categorySubActive = index;
+			// 	this.scrollTop = -this.scrollHeight*index;
+			// 	this.repairObj={
+			// 		bigName:this.repairObj.bigName,
+			// 		bigID:this.repairObj.bigID,
+			// 		subID:categroy.obj.id,
+			// 		subName:categroy.obj.val
+			// 	}
+			// },
+			// getCategory() {
+			// 	this.$ajax('ServiceCatalogs',{},res=>{
+			// 		this.list=res;
+			// 		var bigArray=[],subArray=[];
+			// 		res.forEach(item=>{
+			// 			if(item.parent==0){
+			// 				bigArray.push(item)
+			// 			}else{
+			// 				subArray.push(item);
+			// 			}
+			// 		})
+			// 		if(subArray[0]&& subArray[0].id){
+			// 			this.repairObj.subID=subArray[0].id;
+			// 		}
+			// 		for(var i=0;i<bigArray.length;i++){
+			// 			var subList = [];
+			// 			for(var j=0;j<subArray.length;j++){
+			// 				if(subArray[j].parent==bigArray[i].id){
+			// 					subList.push({"name":subArray[j].val,obj:subArray[j]})
+			// 				}
+			// 			}
+			// 			this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
+			// 		}
+			// 		this.subCategoryList = this.categoryList[0]? this.categoryList[0].subCategoryList:[];
+			// 		this.repairObj={
+			// 			bigName:this.categoryList[0]?this.categoryList[0].obj.val:'',
+			// 			bigID:this.categoryList[0]?this.categoryList[0].obj.id:'',
+			// 			subID:'',
+			// 			subName:''
+			// 		}
+			// 	})
+			// }
 		},
 		onLoad:function(){
-			this.getCategory()
+			this.getRepairList(this.leftNavTabCur);
 			uni.getSystemInfo({
 				success: res => {
 					this.height = res.screenHeight;

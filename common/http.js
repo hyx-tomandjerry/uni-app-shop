@@ -44,11 +44,11 @@ const httpMethod = (api,param,baseParam,resp)=>{
 			'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
 		},
 		success: (res) => {
-			if(res.statusCode==200){
+			if(res.statusCode===200){
                 if (res.data.code === 0) {
                     resp(res.data.data)
-                } else if(res.data.code==-31) {
-					 resp(res.data.data)
+                } else if(res.data.code===-31 || res.data.code===-1) {
+					 resp(res.data.code)
                     
                 }else{
 					switchCode(res.data.code.toString());

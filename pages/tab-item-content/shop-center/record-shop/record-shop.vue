@@ -484,7 +484,7 @@
                         icon:'none'
                     })
                 }else{
-                    this.$ajax('NewProprietorShop',{
+                    this.$ajax('NewChainShop',{
                         manager:this.userInfo.id,
                         brand:this.category.id,
                         name:this.shop.name,

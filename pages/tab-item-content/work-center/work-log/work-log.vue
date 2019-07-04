@@ -78,7 +78,8 @@
 					contentnomore: "没有更多数据了"
 				},
 				loading:'more',
-				avatar:''
+				avatar:'',
+				isLike:0,
 			}
 		},
 		components:{
@@ -139,15 +140,26 @@
 					break;
 					case 'praise':
 					console.log(item)
-					item.likes+=1;
-					this.$ajax('LikeWorkReportByShop',{
-						id:item.id
-					},res=>{
+
+					this.isLike+=1;
+					console.log(this.isLike)
+					if(this.isLike==1){
+						item.likes+=1;
+						this.$ajax('LikeWorkReportByShop',{
+							id:item.id
+						},res=>{
+							uni.showToast({
+								title:'点赞成功',
+								icon:'none'
+							})
+						})
+					}else{
 						uni.showToast({
-							title:'点赞成功',
+							title:'不要重复点赞',
 							icon:'none'
 						})
-					})
+					}
+
 					break;
 				}
 			},

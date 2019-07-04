@@ -42,7 +42,7 @@
 			width: 100%;
 			text-align: center;
 			image{
-				width: 60%;
+				width: 100%%;
 			}
 		}
 		&-description{

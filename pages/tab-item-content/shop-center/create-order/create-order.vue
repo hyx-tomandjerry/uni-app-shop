@@ -41,7 +41,8 @@
 			<view class="repair-info">
 				<view class="cu-form-group position_relative">
 					<view class=" font-size-normal font-weight-normal" >
-						<text class="text-red" style="margin-right:4rpx;">*</text>维修类别
+						<!--<text class="text-red" style="margin-right:4rpx;">*</text>-->
+						维修类别
 					</view>
 					<view>
 						<view class="dateStyle" v-if="repairObj.bigName" @click="toRepairItem()" style="margin-right:20px;">
@@ -55,10 +56,12 @@
 
 				<view class="cu-form-group position_relative">
 					<view class=" font-size-normal font-weight-normal" >
-						<text class="text-red" style="margin-right:4rpx;">*</text>维修项
+						<!--<text class="text-red" style="margin-right:4rpx;">*</text>-->
+						维修项
 					</view>
 					<view>
 						<view class="dateStyle" v-if="repairObj.subName" style="margin-right:20px;"><text >{{repairObj.subName}}</text></view>
+
 						<view ><text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:11px;"></text></view>
 					</view>
 				</view>
@@ -178,6 +181,7 @@
 					subID:result.subID,
 					subName:result.subName
 				}
+				console.log(this.repairObj)
 				if(this.repaitItem){
 					this.repairObj.summary=this.repaitItem.summary;
 				}
@@ -216,7 +220,7 @@
 					summary:this.repaitItem.summary?this.repaitItem.summary:''
 					};
 					if(this.repaitItem.files){
-						console.log('jjjjj')
+						
 						this.repaitItem.files.forEach(item=>{
 
 							this.imgList.push(item.url);
@@ -233,7 +237,8 @@
 					this.$ajax('SetServiceOrder',{
 						id:this.repaitItem.id,
 					    // catalog:this.repairObj.subID?this.repairObj.subID:this.repairObj.bigID,
-						detail:this.repairObj.subID?this.repairObj.subID:this.repairObj.bigID,
+						detail:this.repairObj.subID?this.repairObj.subID:'',
+						type:this.repairObj.bigID?this.repairObj.bigID:'',
 					    creator:this.userInfo.id,
 					    // shop:this.repaitItem.shop,
 					    appointdate:this.designer.date?this.designer.date:this.format(this.repaitItem.appointdate,'YMD'),
@@ -285,7 +290,8 @@
 					}else{
 					
 					    this.$ajax('NewServiceOrder',{
-					        catalog:this.repairObj.subID?this.repairObj.subID:this.repairObj.bigID,
+					        catalog:this.repairObj.subID?this.repairObj.subID:'',
+							type:this.repairObj.bigID?this.repairObj.bigID:'',
 					        creator:this.userInfo.id,
 					        shop:this.shop.id,
 					        appointdate:this.designer.date?this.designer.date:this.getOpenDate,
@@ -312,7 +318,7 @@
 			},
 			//获得门店信息
 			getShopInfo(id){
-				this.$ajax('ProprietorShop',{id:id},res=>{
+				this.$ajax('ChainShop',{id:id},res=>{
 					this.shop=res;
 				})
 			},

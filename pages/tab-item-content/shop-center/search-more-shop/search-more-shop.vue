@@ -179,7 +179,7 @@
 				})
 			},
 			chooseBrand(id){
-				this.$ajax('ProprietorShops',{
+				this.$ajax('ChainShops',{
 					brand:id,
 					offset:0,
 					zone:-1,
@@ -201,7 +201,7 @@
 					districtName:event.district
 				}
 				this.isChoseCity=true;
-				this.$ajax('ProprietorShops',{
+				this.$ajax('ChainShops',{
 					brand:this.category?this.category.id:0,
 					offset:0,
 					zone:-1,

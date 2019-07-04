@@ -15,7 +15,7 @@
 					<image src="../../../static/img/work/tab/repair.png" style="width:38px;height:38px;"></image>
 					<view class="font-size-big ">我的报修</view>
 				</view>
-				<view style="background:#FFF4D1;" class="tab-item" @click="showItem('employee')" v-if="userInfo.type==replacerObj.type">
+				<view style="background:#FFF4D1;" class="tab-item" @click="showItem('employee')" v-if="userInfo.type===replacerObj.type">
 					<image src="../../../static/img/work/tab/personnel.png" style="width:38px;height:38px;"></image>
 					<view class="font-size-big ">组织结构</view>
 				</view>

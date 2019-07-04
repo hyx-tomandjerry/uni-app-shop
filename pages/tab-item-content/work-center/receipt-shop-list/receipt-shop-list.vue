@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<view class="shop-list bg-white" v-if="shopList.length>0">
+		<view class="shop-list bg-white borderTop" v-if="shopList.length>0">
 			<view class="shop-list-item font-size-normal font-weight-normal borderBottom " v-for="(item,index) in shopList" :key="index">
 				<image :src="TabCur==item.id?'../../../../static/icon/xuanze.png':'../../../../static/icon/duihao.png'" style="width:20px;height:20px;vertical-align: middle;" @click="chooseShop(item)"></image>
 				<text style="margin-left:10px;">{{item.name}}</text>
 			</view>
 		</view>
-		<view v-else>
+		<view v-else class="borderTop">
 			<LxEmpty></LxEmpty>
 		</view>
 		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>

@@ -10,35 +10,50 @@
 		<view class="design-info">
 			<view class="design-info-item flex justify-start borderBottom">
 				<image src="../../../static/img/resign/name.png" style="width:25px;height:25px;vertical-align: middle;margin-right:12px;"></image>
-				<input type="text" placeholder="请输入企业名称" v-model="company.name" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @focus="hideTabbar()">
+				<input type="text" placeholder="请输入企业名称" v-model="company.name"
+					   :class="company.name?'explain-color':'color-placeholder'"
+					   class=" font-size-big font-weight-normal" style="width:80%" @focus="hideTabbar()">
 			</view>
 			<view class="design-info-item flex justify-start borderBottom">
 				<image src="../../../static/img/resign/shortname.png" style="width:25px;height:25px;vertical-align: middle;margin-right:12px;"></image>
-				<input type="text" placeholder="请输入企业简称" v-model="company.alias" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
+				<input type="text" placeholder="请输入企业简称" v-model="company.alias"
+					   :class="company.alias?'explain-color':'color-placeholder'"
+					   class="font-size-big font-weight-normal" style="width:80%">
 			</view>
 			<view class="design-info-item flex justify-start borderBottom">
-				<text class="cuIcon-people text-grey" style="font-size:27px;margin-right:10px;"></text>
-				<input type="text" placeholder="请输入姓名" v-model="company.contactor" class="color-placeholder font-size-big font-weight-normal" style="width:80%">
+				<text class="cuIcon-people " style="font-size:27px;margin-right:10px;color:#656565"></text>
+				<input type="text" placeholder="请输入姓名" v-model="company.contactor"
+					   :class="company.contactor?'explain-color':'color-placeholder'"
+					   class=" font-size-big font-weight-normal" style="width:80%">
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom">
-				<text class="cuIcon-mobile text-grey" style="font-size:27px;margin-right:16px;margin-left:4px;"></text>
-				<input type="telephone" placeholder="请输入手机号" v-model="company.mobile" class="color-placeholder font-size-big font-weight-normal" @blur="checkTelEvent(company.mobile)" style="width:70%">
+				<text class="cuIcon-mobile " style="font-size:27px;margin-right:9px;color:#656565"></text>
+				<input type="telephone" placeholder="请输入手机号" v-model="company.mobile"
+					   :class="company.mobile?'explain-color':'color-placeholder'"
+					   class=" font-size-big font-weight-normal" @blur="checkTelEvent(company.mobile)" style="width:70%">
 				<text  class="text-gray">{{company.mobile.length}}/11</text>
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom position_relative">
-				<text class="cuIcon-lock text-grey" style="font-size:27px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="密码长度6-12位，英文和数字组成" v-model="company.token" class="color-placeholder font-size-big font-weight-normal" @blur="checkPwdEvent(company.token)" style="width:80%">
-				<text class="cuIcon-close position_absolute"  
-				style="right:19px;top:23px;font-size:20px;" 
-				@click="clearPwd()"
-				v-if="company.token"></text>
+				<text class="cuIcon-lock " style="font-size:27px;margin-right:9px;color:#656565"></text>
+				<input type="password" placeholder="密码长度6-12位，英文和数字组成" v-model="company.token"
+					   :class="company.token?'explain-color':'color-placeholder'"
+					   class="font-size-big font-weight-normal" @blur="checkPwdEvent(company.token)" style="width:80%">
+				<image :src="isShowPwd?'../../../static/icon/eye_open.png':'../../../static/icon/eye.png'"
+					   @click="showPwd()"
+					   style="width:22px;height:22px;position: absolute;right:38px;top:18px;" ></image>
+				<!--<text class="cuIcon-close position_absolute"  -->
+				<!--style="right:19px;top:23px;font-size:20px;" -->
+				<!--@click="clearPwd()"-->
+				<!--v-if="company.token"></text>-->
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom position_relative">
-				<text class="cuIcon-mail text-grey" style="font-size:27px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="请输入验证码" v-model="company.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="showTabbar()">
+				<text class="cuIcon-mail " style="font-size:27px;margin-right:9px;color:#656565"></text>
+				<input type="text" placeholder="请输入验证码" v-model="company.vcode"
+					   :class="company.vcode?'explain-color':'color-placeholder'"
+					   class=" font-size-big font-weight-normal" style="width:80%" @blur="showTabbar()">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
 				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
@@ -79,13 +94,17 @@
 				modalName:'',
 				isInput:false,
 				tabbar:true,//用于键盘，
-				windowHeight:''
+				windowHeight:'',
+				isShowPwd:false
 			}
 		},
 		components:{
 			
 		},
 		methods:{
+			showPwd(){
+				this.isShowPwd=!this.isShowPwd;
+			},
 			showTabbar(){
 				this.tabbar=true;
 			},

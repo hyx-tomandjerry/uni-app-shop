@@ -19,7 +19,7 @@
 					 style="width:45px;height:45px;border-radius: 50%;vertical-align: middle;"></image>
 				</view>
 				<view style="padding-top:4px;">
-					<view class=" color-normal">{{selectItem.title || ''}}</view>
+					<view class=" color-normal">{{selectItem.name || ''}}</view>
 					<view class="color-placeholder font-size-litter font-weight-normal">{{selectItem.rptdate | formatTime('YMDHMS')}}</view>
 				</view>
 			</view>
@@ -212,6 +212,7 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 						title:'删除评论成功',
 						icon:'none'
 					})
+					this.modalName=null;
 				})
 			},
 			chatClick(item){
@@ -235,7 +236,8 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			},
 			//删除评论
 			delCommentClick(id){
-				this.deleteModal=true;
+				console.log('kkkkk')
+				this.modalName='deleteModal';
 				this.deleteID=id;
 			},
 			//查看评论内容

@@ -1,35 +1,39 @@
 <template>
 	<view>
-		<view class="container bg-white" >
-			<view class="flex justify-between " style="padding:5px 10px;border-bottom:1px solid #EEEEED">
+		<view class=" bg-white" >
+			<view class="flex justify-between address-item borderBottom">
 				<view style="border-right:1px solid #EEEEED;" >
-					<input type="text" placeholder="姓名名称(必填)" style="font-size:13px;" v-model="shop.name">
+					<view>收件人</view>
+					<view>
+						<input type="text" placeholder="姓名名称(必填)" style="font-size:13px;" v-model="shop.name">
+					</view>
 				</view>
 				<view>
+					<view>电话</view>
 					<input type="text" placeholder="手机号电话(必填)" style="font-size:13px;"
 					 :class="{'text-red':!isTel}"
 					 v-model="shop.telephone" @blur="checkTelEvent($event)">
 				</view>
 			</view>
-			<view class="flex justify-between" style="padding: 8px 10px;border-bottom:1px solid #EEEEED">
+			<view class="flex justify-between address-item borderBottom"  >
 				<view class="title" style="color:gray;font-size: 12px;" >选择所在城市</view>
 				<addressed @changes="childClick($event)"></addressed>
 			</view>
 			
-			<view style="padding: 8px 10px;border-bottom:1px solid #EEEEED">
+			<view class="address-item borderBottom">
 				<input type="text" placeholder="详细地址(详细到门牌,街道)" style="font-size:13px;" v-model="shop.address">
 			</view>
 			
-			<view class="flex justify-between">	
-				<view style="padding-top:5px;padding-left:10px;line-height:32px" @click="choosePayMent()">
-					<text class="cuIcon-roundcheck" style="margin-right:6px;color:#0081FF" v-if="shop.isPay" ></text>
-					<text class="cuIcon-round" style="margin-right:6px;color:#0081FF" v-else></text>
-					<text style="font-size:12px;">是否货到付款</text>
-				</view>
-				<view style="font-size:12px;padding: 8px 10px;color:lightgray;">
-					<text class="cuIcon-delete" style="font-size:13px;color:orange;margin-right:10px;"></text>清空当前信息
-				</view>
-			</view>
+			<!--<view class="flex justify-between">	-->
+				<!--<view style="padding-top:5px;padding-left:10px;line-height:32px" @click="choosePayMent()">-->
+					<!--<text class="cuIcon-roundcheck" style="margin-right:6px;color:#0081FF" v-if="shop.isPay" ></text>-->
+					<!--<text class="cuIcon-round" style="margin-right:6px;color:#0081FF" v-else></text>-->
+					<!--<text style="font-size:12px;">是否货到付款</text>-->
+				<!--</view>-->
+				<!--<view style="font-size:12px;padding: 8px 10px;color:lightgray;">-->
+					<!--<text class="cuIcon-delete" style="font-size:13px;color:orange;margin-right:10px;"></text>清空当前信息-->
+				<!--</view>-->
+			<!--</view>-->
 		</view>
 		
 		
@@ -94,7 +98,7 @@
 				}else{
 					setTimeout(()=>{
 						uni.navigateBack({
-							delta:2,
+							delta:1,
 							success:(res)=>{
 								this.$fire.fire('address',this.shop)
 							}
@@ -119,5 +123,7 @@
 </script>
 
 <style lang="less" >
-	
+	.address-item{
+		padding:16px 13px 13px 29px;
+	}
 </style>

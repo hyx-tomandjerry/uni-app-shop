@@ -15,12 +15,14 @@
 			</view>
 			
 			<view v-if=" userInfo && (userInfo.type==replacerObj.type)">
-				
+			
 				<view class="flex justify-start" >
-					
+
 					<image :src="company.cover?company.cover:'../../../static/img/default.png'" style="width:35px;height:35px;margin-right:8px;
+
 					border-radius: 50%;
 					vertical-align: middle;"></image>
+
 					<view style="padding-top:3px;"><text class="company">{{company.name || ''}}</text></view>
 				</view>
 			</view>
@@ -98,8 +100,11 @@
 				<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 			</view>
 			<view class="example-list borderBottom position_relative" style="padding:21px 0 18px;" v-for="(item,index) in noticeList2 " :key="index" @click="detailContent(item,'example')" v-if="noticeList2.length!=0">
-				<image :src="item.coverurl" mode="scaleToFill"
-					  style="width:100%;height:41vw;border-radius: 10px;margin-bottom:13px;"></image>
+				<div 	class="coverImg"
+						:style="[{ backgroundImage:'url(' + item.coverurl+ ')' }]"></div>
+
+				<!--<image :src="item.coverurl" mode="scaleToFill"-->
+					  <!--style="width:100%;height:41vw;border-radius: 10px;margin-bottom:13px;"></image>-->
 				<view class=" font-weight-super font-weight-middle color-normal" style="margin-bottom:3px;">{{item.name}}</view>
 				<view class="font-size-small font-weight-normal" style="color: rgb(137, 136, 136)">{{item.applyDate | formatTime('YMDHMS')}}</view>
 				<image src="../../../static/img/huizhi1.png"  mode="aspectFill" class="operateImg position_absolute" style="top:20px;right:0;" v-if="item.report==report"></image>
@@ -140,23 +145,31 @@
 					</view>
 					
 					<view style="padding:20px 0 0 21px;" v-if="companyObj" class="font-size-small font-weight-normal">
-						<view >
-							<text style="color:#898888">公司名称 : </text>
-							<text style="margin-left:10px;color:#2A2A2A" class=" font-weight-bold">{{companyObj.name}}</text></view>
-						<view >
-							<text style="color:#898888">	联系人 : </text>
-						<text style="margin-left:3px;color:#2A2A2A">{{companyObj.contactor}}</text>
+						<view class="flex justify-start company-info-item" >
+							<view class="company-info-desc">公司名称 : </view>
+							<view  class="company-info-content font-weight-bold">{{companyObj.name}}</view></view>
+						<view class="flex justify-start company-info-item">
+							<view class="company-info-desc">	联系人 : </view>
+						<view class="company-info-content ">{{companyObj.contactor}}</view>
 							
 						</view>
-						<view  >
-							<text style="color:#898888">联系电话 :</text>
-							 <text style="margin-left:3px;color:#2A2A2A">{{companyObj.telephone}}</text>
+						<view  class="flex justify-start company-info-item">
+							<view class="company-info-desc">联系电话 :</view>
+							 <view class="company-info-content ">{{companyObj.telephone}}</view>
 						</view>
-						<view >
+						<view class="flex justify-start company-info-item">
 							
-						<text style="color:#898888;">地址 : </text>
+							<view class="company-info-desc">地址 : </view>
 						
-						<text style="color:#2A2A2A;font-size: 12px;">{{companyObj.provinceName || ''}}{{companyObj.cityName || ''}} {{companyObj.districtName ||''}}{{companyObj.address ||''}}</text></view>
+							<view class="company-info-content ">
+							<view v-if="companyObj.provinceName || companyObj.cityName ||companyObj.districtName ">
+								{{companyObj.provinceName}}{{companyObj.cityName}} {{companyObj.districtName}}{{companyObj.address ||''}}
+							</view>
+							<view v-else>
+								暂未登记
+							</view>
+						</view>
+						</view>
 						
 					</view>
 				</view>
@@ -446,7 +459,7 @@
 				
 			},
 			// getShopInfo(id){
-			// 	this.$ajax('ProprietorShop',{id:id},res=>{
+			// 	this.$ajax(' ChainShop',{id:id},res=>{
 			// 		this.shop.shopName=res.name;
 			// 		
 			// 	})
@@ -462,39 +475,13 @@
 		onReady(){
 			
 		},
-		// onLoad(){
-		// 	this.companyObj=null;
-		// 	this.eid='';
-		// 	this.getTodoList()
-		// 	this.showArticles();
-		//
-		// 	if(this.userInfo){
-		// 		if(this.userInfo.type==this.shoperObj.type){
-		// 			//店长店员
-		// 			// if(this.userInfo.owner!=0 && this.userInfo.status==3){
-		// 			// 		this.isShowJoinModal=true;
-		// 			// 		this.shop.shopID=this.userInfo.department;
-		// 			// 		this.getShopInfo(this.shop.shopID)
-		// 			// }else
-		// 			 if(this.userInfo.owner==0 && this.userInfo.status==this.userStatus.free ){
-		// 					console.log('jjjjjj')
-		// 					this.isShowJoinCompany=true;//显示EID
-		// 					console.log(this.isShowJoinCompany)
-		// 			}else{
-		// 					this.company={
-		// 						name:this.userInfo.ownerName,
-		// 						cover:this.userInfo.ownerLogoUrl
-		// 					}
-		// 					
-		// 			}
-		// 		}else if(this.userInfo.type==this.replacerObj.type){
-		// 			this.company.name=this.userInfo.ownerName;
-		// 			this.company.cover=this.userInfo.ownerLogoUrl	
-		// 		}
-		// 		
-		// 	}
-			
-		// },
+		onLoad(){
+			this.companyObj=null;
+			this.eid='';
+			this.getTodoList()
+			this.showArticles();
+		},
+
 		onShow(){
 			this.companyObj=null;
 			this.eid='';
@@ -503,7 +490,6 @@
 			if(this.userInfo){
 				if(this.userInfo.type==this.shoperObj.type){
 						this.$ajax('RefreshOnlineUser',{},res=>{
-							console.log(res)
 							if(res.owner==0 && res.status==this.userStatus.free){
 								if(this.current==0){
 									this.isShowJoinCompany=true;//显示EID
@@ -539,7 +525,7 @@
 					// }
 					
 				}else if(this.userInfo.type==this.replacerObj.type){
-					console.log('kkkkk')
+				
 						this.$ajax('Customer',{
 							id:this.userInfo.owner
 						},res=>{
@@ -735,6 +721,21 @@ color:rgba(137,136,136,1);
 	padding:3px;
 	font-size:12px !important;
 }
+	.coverImg{
+		width:100%;height:143px;background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+		border-radius:6px;
+	}
+	.company-info-item{
+		margin-bottom:6px;
+	}
+	.company-info-desc{
+		color:#898888;width:30%;text-align:right
+	}
+	.company-info-content{
+		margin-left:5px;color:#2A2A2A;flex:1;text-align:left;
+	}
 </style>
 
 

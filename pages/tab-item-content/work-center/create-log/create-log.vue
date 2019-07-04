@@ -11,26 +11,24 @@
 
 			<view class="cu-form-group" v-if="type=='article'">
 				<view class="log-title"><text class="text-red">*</text>文章编号</view>
-				<input placeholder="文章编号" v-model="ArticleInfo.seq" disabled>
+				<input placeholder="文章编号" v-model="ArticleInfo.seq" disabled style="font-size:14px;">
 			</view>
 
 			<view class="cu-form-group" v-if="type=='article'">
-				<view class="log-title"><text class="text-red">*</text>文章标题</view>
-				<input placeholder="文章标题" v-model="ArticleInfo.title" disabled>
+				<view class="log-title" style="width:20%;"><text class="text-red">*</text>文章标题</view>
+				<input placeholder="文章标题" v-model="ArticleInfo.name" disabled style="font-size:14px;flex:1" class="text-ellipse">
 			</view>
 			<view class="cu-form-group">
 				<view class="log-title"><text class="text-red">*</text>汇报标题</view>
-				<input placeholder="请输入您的内容标题" v-model="log.title" class="font-size-normal font-weight-normal"
-				:class="{
-					'text-black':log.title,
-					'color-placeholder':!log.title
-				}">
+				<input placeholder="请输入您的内容标题" v-model="log.title" class="font-size-small font-weight-normal"
+					:class="log.title?'explain-color':'color-placeholder'">
 			</view>
 
-			<view class="cu-form-group create-log-textarea">
-				<textarea  v-model="log.summary" maxlength="1000"   placeholder="请输入汇报内容.." class="font-size-small font-weight-normal"></textarea>
-				<!--<textarea maxlength="-1" :disabled="modalName!=null" @input="textareaAInput" placeholder="多行文本输入框"></textarea>-->
-				<text class="create-log-num">1000字以内</text>
+			<view class="cu-form-group create-log-textarea position_relative">
+				<textarea  v-model="log.summary" maxlength="1000"   placeholder="请输入汇报内容.." class="font-size-small font-weight-normal"
+						   :class="log.summary?'explain-color':'color-placeholder'"
+						   style="background:rgba(247,247,247,1);border-radius:4px;padding-top:10px;padding-left:15px;min-height:100px;"></textarea>
+				<text class="create-log-num position_absolute" style="right:20px;bottom:40px;">1000字以内</text>
 			</view>
 		</view>
 

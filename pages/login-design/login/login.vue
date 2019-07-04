@@ -88,7 +88,6 @@
 			popModal
 		},
 		onShow(){
-			console.log(this.user)
 			this.designer={
 				account:this.user.account,
 				token:this.user.token
@@ -182,6 +181,8 @@
 						user:this.designer.account,
 						token:this.designer.token
 					},res=>{
+						console.log(res)
+
 						if((res.type==this.shoperObj.type) || (res.type==this.replacerObj.type)){
 							this.login(res);
 							im.webimLogin()
@@ -201,6 +202,13 @@
 							
 								})
 							},500)
+						}else if(res===-1){
+							uni.showToast({
+								title: `账号或者密码不正确`,
+								mask: false,
+								icon:'none',
+								duration: 1500
+							})
 						}else{
 							uni.showToast({
 								title: `您的账号无法在“门店助手”登录`,

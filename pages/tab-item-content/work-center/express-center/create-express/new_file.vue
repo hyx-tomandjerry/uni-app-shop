@@ -487,7 +487,7 @@
 			// },
 			//获得门店信息
 			getShopInfo(id,type){
-				this.$ajax('ProprietorShop',{id:id},res=>{
+				this.$ajax('ChainShop',{id:id},res=>{
 					if(type=='send'){
 						//寄件
 						this.shopItem=res;

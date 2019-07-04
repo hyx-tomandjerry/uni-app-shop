@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<view class="flex text-center bg-white borderBottom" >
+		<view class="flex text-center bg-white borderBottom borderTop" >
 				<view class="cu-item flex-sub font-size-normal font-weight-normal" style="padding:10px;"
-				:class="index==TabCur?' cur  borderBottomRed':''"
+				:class="index==TabCur?' cur  borderBottomRed text-red':''"
 				v-for="(item,index) in titleList" :key="index"
 				@click="tabSelect($event)" :data-id="index">
 					{{item.name}}

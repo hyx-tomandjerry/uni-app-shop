@@ -7,7 +7,7 @@
 				<view class="color-normal font-size-middle font-weight-bold" style="margin-right:8px;">{{shopItem.name || ''}}</view>
 				<view >
 
-					<text class="cu-tag shop-tag" style="background:#FFF1EB;color:#F2735B;margin-right:10px;">{{shopItem.type | shopTypeFilter}}</text>
+					<!--<text class="cu-tag shop-tag" style="background:#FFF1EB;color:#F2735B;margin-right:10px;">{{shopItem.type | shopTypeFilter}}</text>-->
 					<text  class="shop-tag  cu-tag" :class="{
 								'shop-business':shopItem.status==shopStatusZn.businessing,
 								'shop-execution':shopItem.status==shopStatusZn.ready,
@@ -29,15 +29,15 @@
 				</view>
 
 				<view class="flex justify-start color-normal align-center" style="margin-bottom:5px;">
-					<view>品牌名称 :</view><view class=" text-blue font-weight-bold" style="margin-left:10px;">{{shopItem.brandName || ''}}</view>
+					<view>品牌名称 :</view><view class=" text-blue font-weight-bold" style="margin-left:5px;">{{shopItem.brandName || ''}}</view>
 				</view>
 
 				<view class="flex justify-start color-normal align-center" >
-					<view class="flex justify-start" style="width:40%;">
-						<view>所属区域 :</view><view style="margin-left:10px;">{{shopItem.zoneName || ''}}</view>
+					<view class="flex justify-start" style="width:50%;">
+						<view style="width:40%">所属区域 :</view><view>{{shopItem.zoneName || '无'}}</view>
 					</view>
-					<view class="flex justify-start" v-if="shopItem.catalog">
-						<view>经营类别 :</view><view style="margin-left:10px;">{{shopItem.catalog |operateZn}}</view>
+					<view class="flex justify-start" v-if="shopItem.catalog" style="flex:1">
+						<view style="width:40%">经营类别 :</view><view >{{shopItem.catalog |operateZn}}</view>
 					</view>
 
 
@@ -82,7 +82,7 @@
 
 				</view>
 				<view style="margin-left:10px;margin-right:15px;">
-					{{item.name}}/{{item.account}}
+					{{item.name}}/{{item.account || '无'}}
 				</view>
 				<view>
 					<text class="cu-tag round" v-if="shopItem.manager==item.id && item.status==salemanStatus.normal"
@@ -101,7 +101,7 @@
 					</text>
 				</view>
 				<view style="position:absolute;right:12px;">
-					<view v-if="shopItem.manager==item.id"></view>
+					<view v-if="shopItem.manager==item.id || item.nickName=='manager'"></view>
 					<view v-else>
 						<image :src="item.isCheck?'../../../../static/icon/xuanze.png':'../../../../static/icon/weixuanze.png'"
 							   style="width:20px;height:20px;" @click="chooseMemberOperate(item)"></image>
@@ -478,7 +478,7 @@ border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text
 			},
 			//获得门店详情
 			checkShopDetail(id){
-				this.$ajax('ProprietorShop',{id:id},res=>{
+				this.$ajax('ChainShop',{id:id},res=>{
 					this.shopItem=res;
 				})
 				this.$ajax('ShopSalesmen',{shop:id},res=>{

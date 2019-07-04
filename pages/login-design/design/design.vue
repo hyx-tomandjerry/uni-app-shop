@@ -7,39 +7,39 @@
 		<view class="design-info">
 			<view class="design-info-item flex justify-start borderBottom">
 				<text class="cuIcon-people text-grey" style="font-size:22px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="请输入姓名" v-model="designer.name" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @focus="hideTabbar()">
+				<input type="text" placeholder="请输入姓名" v-model="designer.name"
+					   :class="designer.name?'explain-color':'color-placeholder'"
+					   class=" font-size-big font-weight-normal" style="width:80%" @focus="hideTabbar()">
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom">
 				<text class="cuIcon-mobile text-grey" style="font-size:24px;margin-right:16px;margin-left:4px;"></text>
 				<input type="telephone" placeholder="请输入手机号"
 					   maxlength="11"
-					   v-model="designer.mobile" class="color-placeholder font-size-big font-weight-normal" @blur="checkTelEvent(designer.mobile)" style="width:70%">
+					   v-model="designer.mobile"
+					   :class="designer.mobile?'explain-color':'color-placeholder'"
+					   class=" font-size-big font-weight-normal" @blur="checkTelEvent(designer.mobile)" style="width:70%">
 				<text  class="text-gray">{{designer.mobile.length}}/11</text>
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom position_relative">
 				<text class="cuIcon-lock text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
-				<!-- <input type="password" placeholder="密码长度6-12位，英文和数字组成" v-model="designer.token" class="color-placeholder font-size-big font-weight-normal" @blur="checkPwdEvent(designer.token)" style="width:80%"> -->
-				<!-- <text class="cuIcon-close position_absolute"  
-				style="right:19px;top:23px;font-size:20px;" 
-				@click="clearPwd()"
-				v-if="designer.token"></text> -->
-				<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
-				<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)" v-else v-model="designer.token" class="font-size-big font-weight-normal" :class="designer.token?'text-black':'color-placeholder'">
-				<image src="../../../static/icon/eye_open.png"
-					v-if="isShowPwd"
+
+				<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token"
+					   class="font-size-big font-weight-normal" :class="designer.token?'explain-color':'color-placeholder'">
+				<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)"
+					   v-else v-model="designer.token" class="font-size-big font-weight-normal"
+					   :class="designer.token?'explain-color':'color-placeholder'">
+				<image :src="isShowPwd?'../../../static/icon/eye_open.png':'../../../static/icon/eye.png'"
 					@click="showPwd()"
-				 style="width:44rpx;height:44rpx;position: absolute;right:38px;top:18px;" ></image>
-				 <image src="../../../static/icon/eye.png"  style="width:44rpx;height:44rpx;position: absolute;right:38px;top:18px;"
-				 	v-else
-				 	@click="showPwd()"
-				  ></image>
+				 style="width:22px;height:22px;position: absolute;right:38px;top:18px;" ></image>
 			</view>
 			
 			<view class="design-info-item flex justify-start borderBottom position_relative">
 				<text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="请输入验证码" v-model="designer.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="hideTabbar()">
+				<input type="text" placeholder="请输入验证码" v-model="designer.vcode"
+					   :class="designer.vcode?'explain-color':'color-placeholder'"
+					   class=" font-size-big font-weight-normal" style="width:80%" @blur="hideTabbar()">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
 				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
@@ -50,9 +50,10 @@
 				'bg-blue':designer.name
 				}" @click="designerSubmit()" :disabled="isInput">注册</button>
 		</view>
-		<view class="font-size-small font-weight-normal  color-normal" style="padding-left:15px;margin-top:9px;">
-			
-			<text>已有账号？</text><text style="color:#42B0ED" @click="toLogin()">登录</text>
+		<view class="font-size-small font-weight-normal  color-normal flex justify-between" style="padding-left:15px;margin-top:9px;padding-right:15px;">
+			<view>已有账号？<text style="color:rgba(66,176,237,1);" @click="operateClickEvent('login')">登录</text></view>
+			<view  style="color:rgba(66,176,237,1);"  @click="operateClickEvent('resign')">前往代理商注册</view>
+			<!--<text>已有账号？</text><text style="color:#42B0ED" @click="toLogin()">登录</text>-->
 		</view>
 		<view class="copyright font-size-mini font-weight-normal color-normal" v-if="tabbar">
 			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
@@ -109,10 +110,18 @@
 			showPwd(){
 				this.isShowPwd=!this.isShowPwd;
 			},
-			toLogin(){
-				uni.navigateTo({
-					url:'../login/login'
-				})
+			operateClickEvent(type){
+				switch(type){
+					case 'login':
+						uni.navigateTo({
+							url:'../login/login'
+						})
+						break;
+					case 'resign':
+						uni.navigateTo({
+							url:'../design_company/design_company'
+						})
+				}
 			},
 			designerSubmit(){
 				if(!this.isRightTel){

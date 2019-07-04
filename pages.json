@@ -43,10 +43,7 @@
  {
 	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
 	          "style" : {
-	          	"navigationStyle":"custom",
-	          	"app-plus":{
-	          		"titleNView":false
-	          	}
+	          	"navigationBarTitleText":"维修详情"
 	          }
 	      },
 	
@@ -77,7 +74,10 @@
 	{
 	    "path" : "pages/tab-item-content/work-center/express-center/express-list/express-list",
 	    "style" : {
-			"navigationBarTitleText": "寄件记录",
+			"navigationStyle":"custom",
+			"app-plus":{
+				"titleNView":false
+			},
 			"enablePullDownRefresh": true
 		}
 	},
@@ -413,10 +413,7 @@
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/choose-express/choose-express",
             "style" : {
-            	"navigationStyle":"custom",
-            	"app-plus":{
-            		"titleNView":false
-            	}
+				"navigationBarTitleText": "保价"
             }
         }
 
@@ -506,6 +503,35 @@
         ,{
             "path" : "pages/tab-item-content/work-center/personnel-center/personnel-outer/personnel-outer",
             "style" : {"navigationBarTitleText": "外部组织"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/express-shop-list/express-shop-list",
+            "style" : {"navigationBarTitleText": "寄件人信息"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/files-downLoad/files-downLoad",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/express-shop-man/express-shop-man",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/distribute-work-list/distribute-work-list",
+            "style" : {"navigationBarTitleText": "调拨任务","enablePullDownRefresh": true}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/distribute-order-item/distribute-order-item",
+            "style" : {"navigationBarTitleText": "调拨单详情"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/package-tracking/package-tracking",
+            "style" : {"navigationBarTitleText": "物流跟踪"}
         }
     ],
 	"globalStyle": {

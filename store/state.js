@@ -1,8 +1,8 @@
 export default {
     appKey:null,//存储服务器发送给客户端的sessionkey
     hostUrl:'http://192.168.10.22/services',
-    url:'http://192.168.10.186:8080/blade/services?f=',
-    // url:'http://192.168.10.22/services?f=',
+    // url:'http://192.168.10.186:8080/blade/services?f=',
+    url:'http://192.168.10.22/services?f=',
     uploadHostUrl:'http://up.qiniup.com?token=',
     userInfo:null,
     statusHeight:44,
@@ -62,56 +62,49 @@ export default {
 		5:'托管店',
 		6:'合资店',
 	},
-    expressList:[
-        {name:'申通快递',id:1,img:'../../../../../static/icon/express/shentong.png'},
-        {name:'圆通快递',id:2,img:'../../../../../static/icon/express/yuantong.png'},
-        {name:'中通快递',id:3,img:'../../../../../static/icon/xpress/zhongtong.png'},
-        {name:'韵达快递',id:4,img:'../../../../../static/icon/express/yunda.png'},
-        {name:'天天快递',id:5,img:'../../../../../static/icon/express/tiantian.png'},
-        {name:'汇通快递',id:6,img:'../../../../../static/icon/express/huitong.png'},
-        {name:'德邦快递',id:7,img:'../../../../../static/icon/express/debang.png'},
-        {name:'顺丰',id:8,img:'../../../../../static/icon/express/shunfeng.png'},
-    ],
-    logisticsList:[
-        {name:'顺丰速运',id:1,img:'../../../../../static/icon/express/shunfeng.png'},
-        {name:'圆通速递',id:2,img:'../../../../../static/icon/express/yuantong.png'},
-        {name:'申通快递',id:4,img:'../../../../../static/icon/express/shentong.png'},
-    ],
-    expressStatus:{
-        1:'待签收',
-        2:'已揽件',
-        3:'已签收'
-    },
-    expressStatusZn:{
-        'unSign':1,
-        'sign':2,
-        'finish':3
-    },
-    distributeStatus:{
-        1:'未处理',
-        2:'已转为订单'
-    },
-    distributeStatusZn:{
-        'unDeal':1,
-        'finish':2
-    },
+
+    // expressStatus:{
+    //     1:'待签收',
+    //     2:'已揽件',
+    //     3:'已签收'
+    // },
+    // expressStatusZn:{
+    //     'unSign':1,
+    //     'sign':2,
+    //     'finish':3
+    // },
+    // distributeStatus:{
+    //     1:'未处理',
+    //     2:'已转为订单'
+    // },
+    // distributeStatusZn:{
+    //     'unDeal':1,
+    //     'finish':2
+    // },
     //快递公司
-    expressZn:{
-        1:'申通快递',
-        2:'圆通快递',
-        3:'中通快递',
-        4:'韵达快递',
-        5:'天天快递',
-        6:'汇通快递',
-        7:'德邦快递',
-        8:'顺丰'
+    repairTypeZn: {
+        2:'灯具照明',
+        3:'电器设备',
+        4:'道具货架',
+        5:'商场设施',
+        6:'灯箱标识',
+        7:'其它类别',
     },
-    //物流公司
-    logisticsZn:{
-        1:'顺丰速运',
-        2:'圆通速递',
-        3:'远成物流',
-        4:'申通快递'
+    repairTypeArray:[
+        {name:'灯具照明',id:2},
+        {name:'电器设备',id:3},
+        {name:'道具货架',id:4},
+        {name:'商场设施',id:5},
+        {name:'灯箱标识',id:6},
+        {name:'其它类别',id:7},
+    ],
+    repairType:{
+        'light':'灯具照明',
+        'elect':'电器设备',
+        'building':'道具货架',
+        'square':'商场设施',
+        'lightBox':'灯箱标识',
+        'other':'其它类别',
     },
     notice:{
         todo:1,//代办

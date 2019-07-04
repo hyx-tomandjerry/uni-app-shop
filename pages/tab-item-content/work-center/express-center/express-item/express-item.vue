@@ -1,170 +1,93 @@
 <template>
 	<view>
-		<view class="sender-info">
-			
-			<view style="border-bottom:1px solid #EEEEED;padding-bottom:8px;margin-bottom:9px;" class="flex justify-start">
-				<view class="sender-tag bg-blue">寄</view>
-				<view>
-					<view>{{expressItem.fromshopName}}</view>
-					<view class="text-gray" style="font-size:12px;margin-top:4px;">{{expressItem.faddr}}</view>
-				</view>
-			</view>
-			<view style="padding-bottom:8px;" class="flex justify-start">
-				<view class="sender-tag bg-orange">收</view>
-				<view>
-					<view class="flex justify-start">
-						<view style="margin-right:6px;">{{expressItem.toshopName}}</view>
-						<view style="font-size:12px;color:gray" v-if="expressItem.receiverName &&expressItem.receiverMobile ">(<text>{{expressItem.receiverName}}</text> | <text>{{expressItem.receiverMobile}}</text>)</view>
+		<view class="item-container bg-white borderBottom">
+			<view class="item-title flex justify-between align-center">
+				<view class="flex justify-start align-center">
+					<image src="../../../../../static/img/work/express/other/BG.png"
+						   style="width:50px;height:46px;vertical-align: middle;margin-right:16px;"></image>
+					<view>
+						<view class="color-normal font-size-normal">京东快递</view>
+						<view class="font-size-litter " style="color:rgba(66,176,237,1);">71301609174859</view>
 					</view>
-					<view class="text-gray" style="font-size:12px;margin-top:4px;">{{expressItem.taddr}}</view>
 				</view>
+				<view>代取件</view>
 			</view>
 		</view>
-		
-		<view class="goods-info">
-			<view class="goods-name">商品信息</view>
-			<view class="goods-item flex justify-start">
-				<text class="goods-item-tag">商品名称</text>:<text class="goods-item-content">{{expressItem.name}}</text>
+		<view class="item-info-container borderBottom">
+			<view class="item-info-list flex justify-start align-center" >
+				<view class="color-placeholder font-size-normal" style="margin-right:27px;width:17%;">寄件类型</view>
+				<view class="color-normal font-size-normal">特快送</view>
 			</view>
-			<view class="goods-item flex justify-start" v-if="type=='express'">
-				<text class="goods-item-tag">商品重量</text>:<text class="goods-item-content">{{expressItem.weight}}kg</text>
+			<view class="item-info-list flex justify-start align-center" >
+				<view class="color-placeholder font-size-normal" style="margin-right:27px;width:17%;">寄件地址</view>
+				<view class="color-normal font-size-normal">宜家仓库02 13223451234（南风）</view>
 			</view>
-			<view class="goods-item flex justify-start">
-				<text class="goods-item-tag">商品数量</text>:<text  class="goods-item-content">{{expressItem.quantity}}件</text>
+			<view class="item-info-list flex justify-start align-center" >
+				<view class="color-placeholder font-size-normal" style="margin-right:27px;width:25%;"></view>
+				<view class="color-normal font-size-normal">上海 上海市 长宁区 金钟路658号东华 大学科技园4栋6层608室</view>
 			</view>
-			<view class="goods-item flex justify-start" v-if="expressItem.insprice && type=='express'" >
-				<text class="goods-item-tag">保价金额</text>:<text class="text-red goods-item-content" >{{expressItem.insprice}}元</text>
+			<view class="item-info-list flex justify-start align-center" >
+				<view class="color-placeholder font-size-normal" style="margin-right:27px;width:17%;">收件地址</view>
+				<view class="color-normal font-size-normal">宜家仓库02 13223451234（南风）</view>
+			</view>
+			<view class="item-info-list flex justify-start align-center" >
+				<view class="color-placeholder font-size-normal" style="margin-right:27px;width:25%;"></view>
+				<view class="color-normal font-size-normal">上海 上海市 长宁区 金钟路658号东华 大学科技园4栋6层608室</view>
+			</view>
+			<view class="item-info-list flex justify-start align-center" >
+				<view class="color-placeholder font-size-normal" style="margin-right:27px;width:17%;">是否到付</view>
+				<view class="color-normal font-size-normal">是</view>
+			</view>
+			<view class="item-info-list flex justify-start align-center" >
+				<view class="color-placeholder font-size-normal" style="margin-right:27px;width:17%;">包裹备注</view>
+				<view class="color-normal font-size-normal">无</view>
 			</view>
 		</view>
-		
-		<view class="goods-info">
-			<view class="goods-name">订单信息</view>
-			<view class="goods-item flex justify-start"  v-if="type=='express'">
-				<text class="goods-item-tag">预约上门时间</text>:<text class="goods-item-content text-red " style="font-weight: 600;">{{expressItem.appointdate}}</text>
+		<view class="item-info-time bg-white">
+			<view class="flex justify-start" style="margin-bottom:10px;">
+				<view class="font-size-normal color-placeholder" style="margin-right:27px;width:17%;">订单编号</view>
+				<view class="font-size-normal color-blue">789345672</view>
 			</view>
-			<view class="goods-item flex justify-start">
-				<text class="goods-item-tag">下单时间</text>:<text class="goods-item-content">{{expressItem.senddate | formatTime('YMDHMS')}}</text>
+			<view class="flex justify-start">
+				<view class="font-size-normal color-placeholder" style="margin-right:27px;width:17%;">下单时间</view>
+				<view class="font-size-normal color-blue">789345672</view>
 			</view>
-			<view class="goods-item flex justify-start"  v-if="type=='express'">
-				<text class="goods-item-tag">订单状态</text>:<text class=" goods-item-content"  style="padding:2px 3px;"
-				:class="{
-					'bg-orange' :expressItem.status==expressStatusColor.unSign,
-					'bg-blue' :expressItem.status==expressStatusColor.sign,
-					'bg-green' :expressItem.status==expressStatusColor.finish,
-				}">{{expressItem.status | expressStatusPipe}}</text>
-			</view>
-			<view class="goods-item flex justify-start" v-if="type=='distribute'">
-				<text class="goods-item-tag">订单状态</text>:<text class=" goods-item-content"  style="padding:2px 3px;"
-				:class="{
-					'bg-orange' :expressItem.status==distributeStatusColor.unDeal,
-					'bg-green' :expressItem.status==distributeStatusColor.finish,
-				}">{{expressItem.status | distributeStatusPipe}}</text>
-			</view>
-			<view class="goods-item flex justify-start" v-if="expressItem.summary">
-				<text class="goods-item-tag">订单备注</text>:<text  class="goods-item-content">{{expressItem.summary || ''}}</text>
-			</view>
-			
-		</view>
-		<view class="btn-area" v-if="type=='distribute'">
-			<text class="cu-tag line-blue" @click="transForExpress(expressItem.id)">转为速递订单</text>
-			<text class="cu-tag line-blue" @click="transForLogistic(expressItem.id)">转为物流订单</text>
 		</view>
 	</view>
 </template>
-
 <script>
-	export default {
-		data() {
-			return {
-				expressItem:'',
-				expressStatusColor:this.$store.state.expressStatusZn,
-				distributeStatusColor:this.$store.state.distributeStatusZn,
-				type:''
+	export default{
+		data(){
+			return{
+		
 			}
 		},
-		methods: {
-			transForLogistic(id){
-				//转为物流订单
-				uni.navigateTo({
-					url:'../create-express/create-express?type=2&&expressID='+id
-				})
-			},
-			transForExpress(id){
-				//转为速递订单
-				uni.navigateTo({
-					url:'../create-express/create-express?type=1&&expressID='+id
-				})
-			},
-			getExpressItemInfo(id,type){
-				if(type=='express'){
-					this.$ajax('Express',{id:id,way:1},res=>{
-						this.expressItem=res;
-						console.log(this.expressItem)
-					})
-				}else{
-					this.$ajax('Express',{id:id},res=>{
-						this.expressItem=res;
-						console.log(this.expressItem)
-					})
-				}
-				
-			}
+		components:{
+			
 		},
-		onLoad(options){
-			console.log(options)
-			//express(快递记录)，distribute(调拨记录),replace(代发记录)
-			if(options.id){
-				this.type=options.type
-				this.getExpressItemInfo(options.id,options.type)
-			}
-		}
+		onLoad(){
+			
+		},
 	}
 </script>
+<style lang="less">
+	.item-container{
+		.item-title{
+			padding:23px 26px 11px 15px;
+		}
 
-<style lang="less" >
-	page{
-		background:rgba(247,247,247,1);
 	}
-	.sender-info,.goods-info{
-		margin:10px;
-		padding:10px;
-		border:1px solid #EEEEED;
-		border-radius: 10px;
-		
-		.sender-tag{
-			width:20px;
-			height:20px;
-			line-height:20px;
-			text-align: center;
-			color:#ffff;
-			border-radius: 50%;
-			margin-right:10px;
-			margin-top:10px;
+	.item-info-container{
+		background:#fff;
+		padding-top:18px;
+		padding-left:21px;
+		.item-info-list{
+			margin-bottom:8px;
 		}
 	}
-	.goods-info{
-		.goods-name{
-			font-size:14px;
-			font-weight:600;
-			border-bottom:1px solid #EEEEED;
-			padding:5px 0;
-		}
-		.goods-item{
-			padding:8px 0;
-			.goods-item-tag{
-				font-size:13px;
-				margin-right:5px;
-				color:gray;
-			}
-			.goods-item-content{
-				font-size:14px;
-				margin-left:5px;
-			}
-		}
-	}
-	.btn-area{
-		width:100%;
-		text-align: right;
-		padding:10px;
+	.item-info-time{
+		padding-top:18px;
+		padding-left:21px;
+		padding-bottom:36px;
 	}
 </style>
