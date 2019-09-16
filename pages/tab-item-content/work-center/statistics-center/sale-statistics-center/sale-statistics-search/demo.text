@@ -1,0 +1,188 @@
+<template>
+	<view>
+		<cu-custom :isBack="true" >
+			<block slot="left">
+				<view class="font-size-back color-regular cuIcon-back" @click="goBack"></view>
+			</block>
+			<block slot="content">
+				<view class="font-weight-bold font-size-big">
+					筛选
+				</view>
+			</block>
+		</cu-custom>
+		<!--销售明星筛选-->
+		<view class="search-item borderTop" @click="selectStartDate('year')">
+			<view class="font-size-normal color-normal">年</view>
+			<view class="color-regular">{{year}}年<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text></view>
+		</view>
+		<view class="search-item borderTop" @click="selectStartDate('month')">
+			<view class="font-size-normal color-normal">月</view>
+			<view class="color-regular">{{month}}月<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text></view>
+		</view>
+		<view class="search-item borderTop" @click="selectArea" v-if="type=='area'">
+			<view class="font-size-normal color-normal">区域</view>
+			<view class="color-regular">
+				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text>
+			</view>
+		</view>
+
+		<view class="cu-modal bottom-modal" :class="modalName=='yearBottomModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-blue" @tap="hideModel">取消</view>
+					<view class="action text-green" @click="hideModel">确定</view>
+				</view>
+				<view >
+					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange" style="height:400px;">
+						<picker-view-column style="line-height:55px;">
+							<view class="item" v-for="(item,index) in years" :key="index">{{item}}年</view>
+						</picker-view-column>
+						
+					</picker-view>
+				</view>
+			</view>
+		</view>
+		<view class="cu-modal bottom-modal" :class="modalName=='MonthBottomModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-blue" @tap="hideModel">取消</view>
+					<view class="action text-green" @click="hideModel">确定</view>
+				</view>
+				<view >
+					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange" style="height:400px;">
+						<picker-view-column style="line-height:55px;">
+							<view class="item" v-for="(item,index) in months" :key="index">{{item}}月</view>
+						</picker-view-column>
+						<!-- <picker-view-column style="line-height:55px;">
+							<view class="item" v-for="(item,index) in days" :key="index">{{item}}日</view>
+						</picker-view-column> -->
+					</picker-view>
+				</view>
+			</view>
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	
+	export default {
+		data() {
+			const date = new Date()
+			const years = []
+			const year = date.getFullYear();
+			const endyear = date.getFullYear();
+
+			const months = []
+			const month = date.getMonth() + 1;
+			const endmonth = date.getMonth() + 1;
+			const days = []
+			const day = date.getDate();
+			const endday = date.getDate();
+			for (let i = 1990; i <= date.getFullYear()+10; i++) {
+				years.push(i)
+			}
+			for (let i = 1; i <= 12; i++) {
+				months.push(i)
+			}
+			for (let i = 1; i <= 31; i++) {
+				days.push(i)
+			}
+			return {
+				provinceList:[],
+				timeType:'',//判断是开始时间还是结束时间
+				modalName:'',
+				title: '',
+				years,
+				year,
+				months,
+				month,
+				days,
+				day,
+				value: [],
+				indicatorStyle: `height: ${Math.round(uni.getSystemInfoSync().screenWidth/(750/100))}px;`,
+				type:'',//用于区分门店，区域，公司
+				shopID:''
+			}
+		},
+		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta:1,
+					success:()=>{
+						this.$fire.fire('search',{
+							year:this.year?this.year:'',
+							month:this.month?this.month:''
+						})
+					}
+				})
+			},
+			//获得区域
+			getAreaList(){
+				this.$ajax('Departments',{
+					type:4,
+					parent:-1
+				},res=>{
+					console.log(res)
+				})
+			},
+			bindChange: function (e) {
+				const val = e.detail.value
+				console.log(val)
+				if(this.timeType=='year'){
+					this.year = this.years[val[0]]
+				}else if(this.timeType=='month'){
+					this.month = this.months[val[0]]
+				}
+
+
+			},
+			/*选择开始时间*/
+			selectStartDate(type){
+				this.timeType=type;
+				switch(type){
+					case 'year':
+					this.modalName='yearBottomModal';
+					break;
+					case 'month':
+					this.modalName='MonthBottomModal';
+					break;
+				}
+			},
+			hideModel(){
+				this.modalName=null;
+				uni.stopPullDownRefresh();
+
+			},
+			
+			
+			
+		},
+		components:{
+			
+		},
+		onLoad(params){
+			console.log(params)
+			if(params.type){
+				this.type=params.type;
+			}
+			if(params.id){
+				this.shopID=params.id;
+			}
+			this.getAreaList()
+
+		}
+	}
+</script>
+
+<style lang="less">
+	.search-item{
+		height:53px;
+		line-height:53px;
+		padding:0 12px;
+		background-color: #fff;
+		display:flex;
+		justify-content: space-between;
+		align-content: center;
+	}
+</style>

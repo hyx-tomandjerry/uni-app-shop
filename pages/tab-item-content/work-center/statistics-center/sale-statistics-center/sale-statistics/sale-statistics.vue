@@ -1,0 +1,963 @@
+<template>
+	<view class="borderTop">
+		<view class="countNumber-container margin-bottom-normal bg-white">
+			<view class="calendar-container flex justify-between" @click="onShowDatePicker('date')">
+				<view class="calendar-day "><text>{{timeObj.year}}.{{timeObj.month}}.{{timeObj.day}}</text></view>
+				<view class="calendar-img">
+					<image src="../../../../../../static/icon/icon-calendar.png"></image>
+				</view>
+			</view>
+			<view class="time-tab flex justify-start">
+				<view class="time-tab-item" v-for="(item,index) in timeTab"
+					  :key="index" @click="selectTab(item,'time')" :class="{'time-tab-active':timeTabCur==item.id}">
+					{{item.name}}
+				</view>
+			</view>
+			<div class="chart-container">
+				<view class="qiun-columns">
+					<view class="qiun-charts3">
+						<canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
+					</view>
+				</view>
+			</div>
+			<view class="aim-number justify-between flex"  style="padding:0 50px  24px 47px;">
+				<view class="shop-count text-center">
+					<view class="color-regular font-size-mini " style="margin-bottom:3px;width:100px;text-index:2em;">
+						<view>{{timeObj.year}}年</view>
+						<view>门店销售额(元)</view>
+					</view>
+					<view class="font-size-middle font-weight-bold " style=" font-family: DINAlternate;">￥{{shopfactPerform || 0}}</view>
+
+				</view>
+				<view class="alone-aim text-center">
+					<view class="color-regular font-size-mini " style="margin-bottom:3px;width:100px;text-index:2em;">
+						<view>{{timeObj.year}}年</view>
+						<view>门店目标(元)</view>
+					</view>
+					<view class="font-size-middle font-weight-bold ">￥{{shopAimPerform || 0}}</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="sale-trend-container margin-bottom-normal"  style="overflow: hidden;"
+			  :class="{ 'height3':showTabVal=='sale','height4':showTabVal!='sale'}">
+			<view class="sale-trend-title flex justify-between align-center">
+				<view class=" font-weight-bold font-size-big color-normal" style="height:30px;line-height:30px;">门店销售额趋势</view>
+				<view class="flex justify-start trend-tab"  >
+					<view  class="trend-tab-item"
+							:class="{'time-tab-active':showTabVal==item.val}"
+						  v-for="(item,index) in showTabList" :key="index" @click="selectTab(item,'show')">{{item.name}}</view>
+
+				</view>
+			</view>
+			<view>
+				<view v-if="showTabVal=='amount'">
+					<view v-if="timeTabVal=='day'">
+						<canvas canvas-id="canvasRing"
+								style="left:-32px;"
+								class="chartsRing" @touchstart="touchRing"></canvas>
+					</view>
+					<view v-else-if>
+						<canvas canvas-id="canvasMix"
+								id="canvasMix"
+								class="mix-charts"
+								disable-scroll=true
+								@touchstart="touchMix"
+								@touchmove="moveMix"
+								@touchend="touchEndMix"></canvas>
+					</view>
+
+				</view>
+				<view v-else-if="showTabVal=='sale'  ">
+					<canvas canvas-id="canvasRing"
+							style="left:-32px;"
+							class="chartsRing" @touchstart="touchRing"></canvas>
+				</view>
+			</view>
+
+		</view>
+		<!--年销售额趋势结束-->
+		<!--门店年销售额详情 start-->
+		<view class="year-sale-detail-container bg-white" >
+			<view class="sale-trend-title flex justify-between">
+				<view class=" font-weight-bold font-size-big color-normal">销售额详情</view>
+			</view>
+			<view v-if="showTabVal=='amount'">
+				<view v-if="timeTabVal=='day'">
+					<view class="year-sale-detail-item align-center position_relative" v-for="(item,index) in salemanList"
+						  
+						  :key="index" @click="checkSaleDetail(item)" :class="{'sale-active':saleTabCount==item.account}">
+						<img :src="item.extprops?item.extprops:'../../../../../../static/img/cute.jpg'" style="width:42px;height:42px;border-radius:50%; vertical-align: middle;">
+						<view style="width:100% ;padding-left:15px;"  >
+							<view class="detail-num flex justify-between">
+								<view  style="margin-top:6px;">
+									<view class="font-weight-bold">{{item.field}}</view>
+									<view>占比 <text class="color-red">{{item.pre || 0}}%</text></view>
+								</view>
+								<view class="font-family-num  font-size-middle font-weight-bold number-color">￥{{item.actual}}</view>
+							</view>
+							<view class="progress">
+								<view >
+									<view class="cu-progress round sm striped active" >
+										<view :class="{
+									'bg-red':(index+1)%1==0,
+									'bg-green':(index+1)%2==0,
+									'bg-color-yellow':(index+1)%3==0,
+									'bg-blue':(index+1)%4==0,
+									'bg-orange':(index+1)%5==0,
+									'bg-purple':(index+1)%6==0,
+
+
+								}" :style="[{'width':`${item.pre}%`}]"></view>
+									</view>
+								</view>
+
+							</view>
+						</view>
+					</view>
+				</view>
+				<view v-else-if>
+					<view class="year-sale-detail-item align-center position_relative" v-for="(item,index) in showList"
+						  :class="{'sale-active':saleTabCount==item.account}"
+						  :key="index" @click="checkSaleDetail(item)">
+						<view  style="width:42px;height:42px;border-radius:50%;background:rgba(66,176,237,1);color:#fff;line-height:42px;text-align: center;">
+							<text v-if="timeTabVal=='year'">{{index+1}}月</text>
+							<text v-if="timeTabVal=='month'">{{index+1}}</text>
+						</view>
+						<view style="width:100% ;padding-left:15px;"  >
+							<view class="detail-num flex justify-between">
+								<view  style="margin-top:6px;">
+									<view>
+										<text v-if="timeTabVal=='year'">月占比</text>
+										<text v-else-if="timeTabVal=='month'">天占比</text>
+										<text class="color-red">{{item.pre}}%</text>
+									</view>
+								</view>
+								<view class="font-family-num  font-size-middle font-weight-bold number-color">￥{{item.num}}</view>
+							</view>
+							<view class="progress">
+								<view >
+									<view class="cu-progress round sm striped active" >
+										<view :class="{
+									'bg-red':(index+1)%1==0,
+									'bg-green':(index+1)%2==0,
+									'bg-color-yellow':(index+1)%3==0,
+									'bg-blue':(index+1)%4==0,
+									'bg-orange':(index+1)%5==0,
+									'bg-purple':(index+1)%6==0,
+
+
+								}" :style="[{'width':`${item.pre}%`}]"></view>
+									</view>
+								</view>
+
+							</view>
+						</view>
+					</view>
+				</view>
+
+			</view>
+			<view v-if="showTabVal=='sale'">
+				<view class="year-sale-detail-item align-center position_relative" v-for="(item,index) in salemanList"
+					  :class="{'sale-active':saleTabCount==item.account}"
+					  :key="index" @click="checkSaleDetail(item)">
+					<img :src="item.extprops?item.extprops:'../../../../../../static/img/cute.jpg'" style="width:42px;height:42px;border-radius:50%; vertical-align: middle;">
+					<view style="width:100% ;padding-left:15px;"  >
+						<view class="detail-num flex justify-between">
+							<view  style="margin-top:6px;">
+								<view class="font-weight-bold">{{item.field || ''}}</view>
+								<view>占比 <text class="color-red">{{item.pre || 0}}%</text></view>
+							</view>
+							<view class="font-family-num  font-size-middle font-weight-bold number-color">￥{{item.actual}}</view>
+						</view>
+						<view class="progress">
+							<view >
+								<view class="cu-progress round sm striped active" >
+									<view :class="{
+									'bg-red':(index+1)%1==0,
+									'bg-green':(index+1)%2==0,
+									'bg-color-yellow':(index+1)%3==0,
+									'bg-blue':(index+1)%4==0,
+									'bg-orange':(index+1)%5==0,
+									'bg-purple':(index+1)%6==0,
+
+
+								}" :style="[{'width':`${item.pre}%`}]"></view>
+								</view>
+							</view>
+
+						</view>
+					</view>
+				</view>
+			</view>
+
+		</view>
+		<!--门店年销售额详情 start-->
+
+
+
+		<!--日历选择-->
+
+		<mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true"
+						@confirm="onSelected($event)" @cancel="onSelected($event)"
+		/>
+
+
+	</view>
+</template>
+
+<script>
+	import uCharts from '../../../../../../components/u-charts/u-charts.js'
+	import MxDatePicker from '../../../../../../components/uni/mx-datepicker/mx-datepicker.vue'
+	var canvaArcbar1=null;
+	var canvaRing=null;
+	var canvaMix =null;
+	export default {
+		data() {
+			return {
+				timeObj:{
+					year:new Date().getFullYear(),
+					month:new Date().getMonth()+1,
+					day:new Date().getDate()
+				},
+				timeTab:[
+					{name:'年',id:1,val:'year'},
+					{name:'月',id:2,val:'month'},
+					{name:'日',id:3,val:'day'},
+				],
+				timeTabCur:1,
+				timeTabVal:'year',
+				/*圆弧*/
+				cWidth3:'',//圆弧进度图
+				cHeight3:'',//圆弧进度图
+				arcbarWidth:'',//圆弧进度图，进度条宽度,此设置可使各端宽度一致
+				pixelRatio:1,
+				chartData: {
+					series: []
+				},
+				/*圆环图*/
+				cRingWidth:'',
+				cRingHeight:'',
+				serverData:'',
+				serverRingData: {
+					"series": []
+				},
+				/*混合图 start*/
+				cmixWidth:'',
+				cmixHeight:'',
+				/*混合图 end*/
+
+				value:'',
+				type: 'rangetime',
+				showPicker:false,
+				shopID:'',//门店id,
+				performItem:'',
+				shopAimPerform:'',//门店目标绩效
+				shopfactPerform:'',//门店实际绩效,
+				salemanList:[],//门店店员列表
+				saleTabCount:'',
+				showTabList:[
+					{val:'amount',name:'按销售额'},
+					{val:'sale',name:'按店员'}
+				],//按照什么显示
+				showTabVal:'amount',
+				mixChartData: {
+					"categories": [],
+					"series": []
+				},
+				//如果选择年，则为12个月
+				showList:[]
+			}
+		},
+		components:{MxDatePicker},
+		methods: {
+
+			/*根据日搜索*/
+			getPerformBySale(){
+				this.mixChartData.categories=[];
+				this.mixChartData.series=[];
+				let arr=[];
+				switch(this.timeTabVal){
+					case 'year':
+						this.$ajax('ShopYearlyPerformance',{
+							shop:this.shopID,
+							year:this.timeObj.year
+						},res=>{
+							if(res){
+								/*固定的 start*/
+								this.showList=[];
+								this.performItem=res;
+								this.shopfactPerform=res['aamount'];
+								this.shopAimPerform=res['expect'];
+								this.chartData.series=[
+									{
+										name: '销售占比',
+										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										color: '#2fc25b',
+									}
+								];
+								this.showArcbar("canvasArcbar1",this.chartData);
+								/*固定的 end*/
+								/*店员绩效 start*/
+								
+								if(res.salesmen.length>0){
+									res.salesmen.forEach(item=>{
+										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+									})
+								}
+								this.salemanList=res.salesmen?res.salesmen:[];
+								
+								this.serverRingData.series=[];
+								this.salemanList.forEach((item=>{
+									this.serverRingData.series.push({
+										name:item.field || 0,
+										data:item.actual || 0
+									})
+								}));
+								this.showRing("canvasRing",this.serverRingData)
+
+							}
+						})
+						break;
+					case 'month':
+						this.$ajax('ShopMonthlyPerformance',{
+							shop:this.shopID,
+							year:this.timeObj.year,
+							month:Number(this.timeObj.month)
+						},res=>{
+							if(res){
+								/*固定的 start*/
+								this.showList=[];
+								this.performItem=res;
+								this.shopfactPerform=res['actual'];
+								this.shopAimPerform=res['expect'];
+								this.chartData.series=[
+									{
+										name: '销售占比',
+										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										color: '#2fc25b',
+									}
+								];
+								console.log(this.chartData.series)
+								this.showArcbar("canvasArcbar1",this.chartData);
+								/*固定的 end*/
+								/*店员绩效 start*/
+								if(res.salesmen.length>0){
+									res.salesmen.forEach(item=>{
+										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+									})
+								}
+								this.salemanList=res.salesmen?res.salesmen:[];
+								this.serverRingData.series=[];
+								this.salemanList.forEach((item=>{
+									this.serverRingData.series.push({
+										name:item.field || 0,
+										data:item.actual || 0
+									})
+								}));
+								this.showRing("canvasRing",this.serverRingData)
+
+							}
+						})
+						break;
+					case 'day':
+						this.$ajax('ShopDailyPerformance',{
+							shop:this.shopID,
+							year:this.timeObj.year,
+							month:Number(this.timeObj.month),
+							day:Number(this.timeObj.day)
+						},res=>{
+							if(res){
+								/*固定的 start*/
+								this.performItem=res;
+								this.shopfactPerform=res['actual'];
+								this.shopAimPerform=res['expect'];
+								this.chartData.series=[
+									{
+										name: '销售占比',
+										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										color: '#2fc25b',
+									}
+								];
+								this.showArcbar("canvasArcbar1",this.chartData);
+								/*固定的 end*/
+								/*店员绩效 start*/
+								
+								if(res.salesmen.length>0){
+									res.salesmen.forEach(item=>{
+										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+									})
+								}
+								this.salemanList=res.salesmen?res.salesmen:[];
+								this.serverRingData.series=[];
+								this.salemanList.forEach((item=>{
+									this.serverRingData.series.push({
+										name:item.field || 0,
+										data:item.actual || 0
+									})
+								}));
+								this.showRing("canvasRing",this.serverRingData)
+
+							}
+						})
+						break;
+				}
+			},
+			/*根据年月搜索*/
+			getPerformByYear(){
+				/*年月日判断绩效*/
+				this.mixChartData.categories=[];
+				this.mixChartData.series=[];
+				let arr=[];
+				switch(this.timeTabVal){
+					case 'year':
+						this.$ajax('ShopYearlyPerformance',{
+							shop:this.shopID,
+							year:this.timeObj.year
+						},res=>{
+							if(res){
+								/*固定的 start*/
+								this.showList=[];
+								this.performItem=res;
+								this.shopfactPerform=res['aamount'];
+								this.shopAimPerform=res['expect'];
+								this.chartData.series=[
+									{
+										name: '销售占比',
+										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										color: '#2fc25b',
+									}
+								];
+								this.showArcbar("canvasArcbar1",this.chartData);
+								/*固定的 end*/
+								this.mixChartData.series=[]
+								for(var i =1;i<=12;i++){
+									this.mixChartData.categories.push(`${i}月`);
+									arr.push(res[`amonth${i}`]);
+									this.showList.push({
+										id:i,
+										name:`amonth${i}`,
+										num:res[`amonth${i}`],
+										pre:(res[`amonth${i}`]/(this.shopfactPerform || 1)).toFixed(2)
+									})
+									
+								}
+								this.mixChartData.series.push(
+										{
+											"name": "销售额",
+											"data": arr,
+											"type": "area",
+											"style": "curve"
+										}, {
+											"name": "销售额",
+											"data": arr,
+											"type": "line",
+											"style": "curve",
+											"color": "#1890ff"
+										}
+								);
+								this.showMix("canvasMix",this.mixChartData);
+							}
+						})
+						break;
+					case 'month':
+						this.$ajax('ShopMonthlyPerformance',{
+							shop:this.shopID,
+							year:this.timeObj.year,
+							month:Number(this.timeObj.month)
+						},res=>{
+							if(res){
+								/*固定的 start*/
+								this.showList=[];
+								this.performItem=res;
+								this.shopfactPerform=res['actual'];
+								this.shopAimPerform=res['expect'];
+								this.chartData.series=[
+									{
+										name: '销售占比',
+										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										color: '#2fc25b',
+									}
+								];
+							
+								this.showArcbar("canvasArcbar1",this.chartData);
+								/*固定的 end*/
+								this.mixChartData.series=[]
+								let days=new Date(this.timeObj.year,Number(this.timeObj.month),0).getDate();
+								for(var i =1;i<=days;i++){
+									this.mixChartData.categories.push(`${i}`);
+									arr.push(res[`aday${i}`]);
+									this.showList.push({
+										id:i,
+										name:`aday${1}`,
+										num:res[`aday${i}`],
+										pre:(res[`aday${i}`]/(this.shopfactPerform || 1)).toFixed(2)
+									})
+								}
+								this.mixChartData.series.push(
+										{
+											"name": "销售额",
+											"data": arr,
+											"type": "area",
+											"style": "curve"
+										}, {
+											"name": "销售额",
+											"data": arr,
+											"type": "line",
+											"style": "curve",
+											"color": "#1890ff"
+										}
+								);
+								this.showMix("canvasMix",this.mixChartData);
+							}
+						})
+						break;
+					case 'day':
+						
+						this.$ajax('ShopDailyPerformance',{
+							shop:this.shopID,
+							year:this.timeObj.year,
+							month:Number(this.timeObj.month),
+							day:Number(this.timeObj.day)
+						},res=>{
+							if(res){
+								/*固定的 start*/
+								this.showList=[];
+								this.performItem=res;
+								this.shopfactPerform=res['actual'];
+								this.shopAimPerform=res['expect'];
+								this.chartData.series=[
+									{
+										name: '销售占比',
+										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										color: '#2fc25b',
+									}
+								];
+								this.showArcbar("canvasArcbar1",this.chartData);
+								/*店员绩效 start*/
+								if(res.salesmen){
+									res.salesmen.forEach(item=>{
+										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+									})
+								}
+								this.salemanList=res.salesmen?res.salesmen:[];
+								this.serverRingData.series=[];
+								this.salemanList.forEach((item=>{
+									this.serverRingData.series.push({
+										name:item.field || 0,
+										data:item.actual || 0
+									})
+								}));
+								this.showRing("canvasRing",this.serverRingData)
+
+								/*店员绩效 end*/
+							}
+						})
+						break;
+				}
+			},
+
+
+
+
+
+
+			/*查看个人绩效信息*/
+			checkSaleDetail(item){
+				this.saleTabCount=item.account
+			},
+			onSelected(e) {//选择
+				this.showPicker = false;
+				if(e) {
+					let val=e.value.split('/');
+					this.timeObj={
+						year:val[0],
+						month:val[1],
+						day:val[2]
+					};
+					this[this.type] = e.value;
+
+				}
+				this.timeTabVal='year';
+				this.getPerformByYear()
+			},
+			onShowDatePicker(type){//显示
+				this.type = type;
+				this.showPicker = true;
+				this.value = this[type];
+			},
+			goBack(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
+			/*选择年月日*/
+			selectTab(item,type){
+				switch(type){
+					case 'time':
+						this.timeTabCur=item.id;
+						this.timeTabVal=item.val;
+						this.showTabVal='amount'
+						this.getPerformByYear();
+						break;
+					case 'show':
+						this.showTabVal=item.val;
+						switch(this.showTabVal){
+							case 'amount':
+								this.getPerformByYear()
+								break;
+							case 'sale':
+								this.getPerformBySale()
+								break;
+						}
+						break;
+				}
+
+			},
+			/*圆弧*/
+			showArcbar(canvasId,chartData){
+				canvaArcbar1=new uCharts({
+					$this:this,
+					canvasId: canvasId,
+					type: 'arcbar',
+					fontSize:11,
+					legend:{show:false},
+					background:'#FFFFFF',
+					pixelRatio:this.pixelRatio,
+					series: chartData.series,
+					animation: true,
+					width: this.cWidth3*this.pixelRatio,
+					height: this.cHeight3*this.pixelRatio,
+					dataLabel: true,
+					title: {
+						name: Math.round(chartData.series[0].data*100)+'%',//这里我自动计算了，您可以直接给任意字符串
+						color: '#2A2A2A',
+						fontSize: 36*this.pixelRatio
+					},
+					subtitle: {
+						name: chartData.series[0].name,//这里您可以直接给任意字符串
+						color: '#2A2A2A',
+						fontSize: 14*this.pixelRatio
+					},
+					extra: {
+						arcbar:{
+							type:'default',
+							width: this.arcbarWidth*this.pixelRatio,//圆弧的宽度
+						}
+					}
+				});
+
+			},
+			/*圆环*/
+			showRing(canvasId,chartData){
+				canvaRing=new uCharts({
+					$this:this,
+					canvasId: canvasId,
+					type: 'ring',
+					fontSize:11,
+					legend:true,
+					title: {
+						name: '销售额',
+						color: '#aaaaaa',
+						fontSize: 14,
+						offsetY:-10,
+						offsetX:-4
+					},
+					subtitle: {
+						name: `￥${this.shopfactPerform}`,
+						color: '#2A2A2A',
+						fontSize: 22,
+						offsetY:0,
+						offsetX:2
+					},
+					extra: {
+						pie: {
+							labelWidth:11,
+							offsetAngle: -45,
+							ringWidth:17
+						}
+					},
+					background:'#FFFFFF',
+					pixelRatio:1,
+					series: chartData.series,
+					animation: true,
+					width: this.cRingWidth,
+					height: this.cRingHeight,
+					disablePieStroke: true,
+					dataLabel: true,
+				});
+			},
+			touchRing(e){
+				canvaRing.showToolTip(e, {
+					format: function (item) {
+						return item.name + ':' + item.data
+					}
+				});
+			},
+			showMix(canvasId,chartData){
+				canvaMix=new uCharts({
+					$this:this,
+					canvasId: canvasId,
+					type: 'mix',
+					fontSize:11,
+					legend:{show:true},
+					background:'#FFFFFF',
+					pixelRatio:this.pixelRatio,
+					categories: chartData.categories,
+					series: chartData.series,
+					animation: true,
+					enableScroll: true,//开启图表拖拽功能
+					xAxis: {
+						disableGrid:false,
+						type:'grid',
+						gridType:'dash',
+						itemCount:4,
+						scrollShow:true,
+						scrollAlign:'left',
+					},
+					yAxis: {
+						gridType:'dash',
+						splitNumber:5,
+						min:10,
+						max:180,
+						format:(val)=>{return val.toFixed(0)}
+					},
+					width: this.cmixWidth*this.pixelRatio,
+					height: this.cmixHeight*this.pixelRatio,
+					dataLabel: true,
+					dataPointShape: true,
+					extra: {
+						tooltip:{
+							bgColor:'#000000',
+							bgOpacity:0.7,
+							gridType:'dash',
+							dashLength:8,
+							gridColor:'#1890ff',
+							fontColor:'#FFFFFF',
+							horizentalLine:true,
+							xAxisLabel:true,
+							yAxisLabel:true,
+							labelBgColor:'#DFE8FF',
+							labelBgOpacity:0.95,
+							labelAlign:'left',
+							labelFontColor:'#666666'
+						}
+					},
+				});
+			},
+			touchMix(e){
+				canvaMix.scrollStart(e);
+			},
+			moveMix(e) {
+				canvaMix.scroll(e);
+			},
+			touchEndMix(e) {
+				canvaMix.scrollEnd(e);
+				//下面是toolTip事件，如果滚动后不需要显示，可不填写
+				canvaMix.showToolTip(e, {
+					format: function (item, category) {
+						return category + ' ' + item.name + ':' + item.data
+					}
+				});
+			}
+
+		},
+		onLoad(params){
+			this.cWidth3=uni.upx2px(250);//这里要与样式的宽高对应
+			this.cHeight3=uni.upx2px(250);//这里要与样式的宽高对应
+			this.cRingWidth=uni.upx2px(750);
+			this.cRingHeight=uni.upx2px(400);
+			this.cmixWidth=uni.upx2px(750);
+			this.cmixHeight=uni.upx2px(600);
+			this.arcbarWidth=uni.upx2px(30);
+
+			if(params.id){
+				this.shopID=params.id;
+				this.getPerformByYear()
+			}
+
+
+		},
+		onShow(){
+			this.getPerformByYear()
+		}
+	}
+</script>
+
+<style lang="less">
+
+	page{
+		background-color: rgba(247,247,247,247,0.2);
+	}
+	.cu-custom .cu-bar .content .downimg{
+		width: 16px !important;
+		height: 12px !important;
+		vertical-align: baseline !important;
+		margin-left:6px !important;
+	}
+	.brand{
+		transition:all 5s;
+		position:fixed;
+		top:70px;
+		width:100%;
+		background-color: #fff;
+		z-index:1;
+
+	}
+	.brand-alone,.brand-shop{
+		border:1px solid #EEEEED;
+		width:100%;
+		height:53px;
+		line-height:53px;
+		font-size:15px;
+		text-align: center;
+
+	}
+	.brandActive{
+		background:rgba(0,0,0,0.1)
+	}
+	.brand-shop{
+		margin-top:-1px;
+	}
+	/*数据统计start*/
+	.countNumber-container{
+		padding-top:13px;
+		.calendar-container{
+
+			border-radius:6px;
+			border:1px solid rgba(224,224,224,1);
+			width: 123px;
+			padding:7px 7px;
+			margin:0px auto 12px;
+			.calendar-img>image{
+				width:16px;
+				height: 16px;
+				vertical-align: middle
+			}
+			.calendar-day{
+				border-right:1px solid #E0E0E0;
+				padding-right:12px;
+			}
+		}
+		.time-tab{
+			margin:0 12px 15px 15px;
+
+			height:34px;
+			line-height:34px;
+			border:1px solid #43B0ED;
+			border-radius:6px;
+			.time-tab-item{
+				flex:1;
+				height:34px;
+				line-height:34px;
+				text-align: center;
+
+			}
+			.time-tab-item:first-child,.time-tab-item:nth-child(2){
+				border-right:1px solid #43B0ED;
+			}
+		}
+		.chart-container{
+			width: 100%;
+			height: 150px;
+
+		}
+
+	}
+	.time-tab-active{
+		background:rgba(67,176,237,1);
+		color:#fff;
+	}
+	/*数据统计end*/
+
+	/*年销售额趋势start*/
+	.sale-trend-container{
+		background-color: #fff;
+		padding:0 12px;
+
+
+	}
+	.sale-trend-title{
+		padding:17px 0 14px;
+		border-bottom:1px solid #E3E3E3;
+		margin-bottom:10px;
+
+	}
+	/*年销售额趋势end*/
+	.year-sale-detail-container{
+		background-color: #fff;
+		padding:0 12px 32px 15px;
+		.year-sale-detail-item{
+			padding:0 15px;
+			display:flex;
+			justify-content: space-between;
+			margin-bottom:32px;
+			.month{
+				width: 38px;
+				height: 38px;
+				border-radius:50%;
+				background:rgba(66,176,237,1);
+				color:#fff;
+				text-align: center;
+				line-height:38px;
+			}
+			.detail{
+				display:flex;
+				justify-content: space-between;
+			}
+		}
+	}
+
+
+	/*样式的width和height一定要与定义的cWidth和cHeight相对应*/
+	.qiun-charts3{
+		width: 250px;
+		height: 250px;
+		position: relative;
+		margin:0 auto;
+		padding-left:40px;
+	}
+	.mix-charts{
+		width: 750px;
+		height: 300px;
+	}
+	.charts3 {
+		position: absolute;
+		width: 250px;
+		margin-left:20px;
+		height: 150px;
+		background-color: #FFFFFF;
+	}
+	.qiun-line-charts{
+		width: 100%;
+		height: 150px;
+		background-color: #FFFFFF;
+	}
+	.charts {
+		width: 100%;
+		height: 150px;
+		background-color: #FFFFFF;
+	}
+	.qiun-charts{width: 750px; height:400px;background-color: #FFFFFF;}
+	.chartsRing{width: 750px; height:400px;background-color: #FFFFFF;}
+	.height3{
+		height:300px;
+	}
+	.height4{
+		height:380px;
+	}
+	.sale-active{
+		-webkit-box-shadow: 0 15px 15px rgba(0,0,255,0.3);
+		-moz-box-shadow: 0 15px 15px rgba(0,0,255,0.3);
+		box-shadow: 0 15px 15px rgba(0,0,255,0.3);
+	}
+	.trend-tab{
+		height:30px;line-height:30px;border:1px solid #3BA0FF;border-radius:5px;
+	}
+	.trend-tab-item{
+		padding:0 10px;border-right:1px solid #3BA0FF;
+	}
+	.trend-tab-item:last-child{
+		border-right:0;
+	}
+</style>

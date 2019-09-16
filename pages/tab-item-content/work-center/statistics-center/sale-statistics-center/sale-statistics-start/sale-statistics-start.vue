@@ -1,0 +1,328 @@
+<template>
+	<view >
+		<cu-custom :isBack="true" bg-color="bg-white">
+			<block slot="left">
+				<view class="font-size-back color-regular cuIcon-back" @click="goBack"></view>
+			</block>
+			<block slot="content">
+				<view class="font-weight-bold font-size-big color-normal">
+					销售明星榜
+				</view>
+			</block>
+			<block slot="right" >
+				<view @click="searchEvent" style="margin-right:20px;" class="color-normal">筛选</view>
+			</block>
+		</cu-custom>
+		<view class="borderTop bg-white">
+			
+			<view class="tabNav flex justify-between">
+				<view class="tab-nav-item" :class="{'tab-nav-active':navTabCur=='alone'}" @click="selectTabCur('alone')">个人榜</view>
+				<view class="tab-nav-item" :class="{'tab-nav-active':navTabCur=='shop'}" @click="selectTabCur('shop')">门店榜</view>
+			</view>
+			<view class="smallNav flex justify-around">
+				<view v-for="(item,index) in threeNavList"
+					  @click="threeNavSelect(item)" class="font-size-normal color-normal font-weight-bold"
+					  :key="index" :class="{'border-active':item.id==threeNavTab}">{{item.name}}</view>
+			</view>
+			<!-- 前三名 -->
+			<view class="rank-container" v-if="firstItem['field']">
+				<view class="rank-img flex justify-between">
+					<view class="rank-two position_relative">
+						<image src="../../../../../../static/img/work/statistics/two_tag.png"
+							   style="width:80px;height:40px;position:absolute;bottom:10px;left:10px;z-index:10"></image>
+						<image :src="firstItem['afield']" v-if="firstItem['afield']"
+							   	style="width:45px;height:45px;position:absolute;left:30px;top:40px;border-radius:50%;"></image>
+						<image src="../../../../../../static/img/default.png" v-else
+								style="width:45px;height:45px;position:absolute;left:30px;top:40px;border-radius:50%;"
+						></image>
+						<view class="intro position_absolute" :class="{
+							'intro-alone':navTabCur=='alone',
+							'intro-shop':navTabCur=='shop'
+						}">
+							<view class=" color-normal"
+							:class="{
+								'font-size-big':navTabCur=='alone',
+								
+								'font-size-mini':navTabCur=='shop',
+								
+							}"
+							>{{firstItem['field'] || ''}}</view>
+							<view class="font-family-num font-size-big font-weight-bold number-color">¥{{firstItem['actual'] || 0}}</view>
+						</view>
+					</view>
+					<view class="rank-one position_relative">
+						<image src="../../../../../../static/img/work/statistics/one.png"
+							style="position:absolute;top:0;left:0;width: 160px;height: 160px;"
+						></image>
+						<image src="../../../../../../static/img/work/statistics/one_tag.png"
+							   style="width:80px;height:40px;position:absolute;bottom:24px;left:38px;z-index:10"></image>
+						<image :src="secondItem['afield']" v-if="secondItem['afield']"
+							   style="width:55px;height:55px;position:absolute;left:45px;top:54px;border-radius:50%;"
+						></image>
+						<image src="../../../../../../static/img/default.png" v-else
+							   style="width:60px;height:60px;position:absolute;left:46px;top:54px;border-radius:50%;"
+						></image>
+						<view class="intro position_absolute" :class="{
+							'intro-alone':navTabCur=='alone',
+							'intro-shop':navTabCur=='shop'
+						}">
+							
+							<view class=" color-normal"
+							:class="{
+								'font-size-big':navTabCur=='alone',
+								
+								'font-size-mini':navTabCur=='shop',
+								
+							}"
+							>{{secondItem['field']|| ''}}</view>
+							<view class="font-family-num font-size-big font-weight-bold number-color">¥{{secondItem['actual'] || 0}}</view>
+						</view>
+					</view>
+					<view class="rank-three position_relative">
+						<image src="../../../../../../static/img/work/statistics/three.png"
+							style="position:absolute;top:0;left:0;height: 120px;
+				width: 120px;"
+						></image>
+						<image src="../../../../../../static/img/work/statistics/three_tag.png"
+							   style="width:80px;height:40px;position:absolute;bottom:10px;left:19px;z-index:10"></image>
+						<image :src="thridItem['afield']" v-if="thridItem['afield']"
+							   	   style="width:45px;height:45px;position:absolute;left:34px;top:38px;border-radius:50%;"
+							   ></image>
+						<image src="../../../../../../static/img/default.png" v-else
+							   style="width:45px;height:45px;position:absolute;left:34px;top:40px;border-radius:50%;"
+						></image>
+						<view class="intro position_absolute" :class="{
+							'intro-alone':navTabCur=='alone',
+							'intro-shop':navTabCur=='shop'
+						}">
+							<view class=" color-normal"
+							:class="{
+								'font-size-big':navTabCur=='alone',
+								'font-size-mini':navTabCur=='shop',
+							}"
+							>{{thridItem['field']|| ''}}</view>
+							<view class="font-family-num font-size-big font-weight-bold number-color">¥{{thridItem['actual']||0}}</view>
+						</view>
+					</view>
+				</view>
+				
+				<!-- 排名 -->
+				<view class="rank-list ">
+					<view class="rank-list-item borderBottom flex justify-between align-center" v-for="(item,index) in rankList" :key="index">
+						<view>
+							<text class="font-family-num font-weight-bold font-size-bigger color-regular">{{index+4}}</text>
+							<image :src="item['afield']" style="margin:0 16px;width:47px;height:47px;border-radius:50%;vertical-align:middle" v-if="item['afield']"></image>
+							<image src="../../../../../../static/img/cute.jpg" style="margin:0 16px;width:47px;height:47px;border-radius:50%;vertical-align:middle" v-else></image>
+							<text class="color-normal">{{item.field || ''}}</text>
+							<text class="cont-size-mini color-blue" v-if="item.shopName">({{item.shopName || ''}}) </text>
+							
+						</view>
+						<view>
+							<image src="../../../../../../static/img/work/statistics/gold.png"
+								style="width:18px;height:18px;vertical-align: middle;margin-right:6px;"
+							></image>
+							<text class="number-color font-family-num font-weight-bold">{{item.actual || 0}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view v-else>
+				<LxEmpty></LxEmpty>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {mapState} from 'vuex';
+	import LxEmpty from '../../../../../../lx_components/lx-empty.vue'
+	export default {
+		computed:mapState(['userInfo']),
+		data() {
+			return {
+				navTabCur:'alone',
+				/*门店，区域和公司*/
+				threeNavList:[
+					{name:'公司',id:1,value:'company'},
+					{name:'区域',id:2,value:'area'},
+				],
+				threeNavTab:1,
+				threeNavTabName:'company',
+				shopID:'',
+				shopZone:'',//门店所在区域
+				year:new Date().getFullYear(),
+				month:new Date().getMonth()+1,
+				rankList:[],
+				firstItem:{},
+				secondItem:{},
+				thridItem:{}
+			
+			}
+		},
+		components:{LxEmpty},
+		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
+			//获得排列数据
+			getRankList(){
+				switch(this.navTabCur){
+					case 'alone':
+					this.$ajax('ZonePersonalPerformances',{
+						year:this.year,
+						month:this.month,
+						area:this.threeNavTabName=='area'?1:'',
+						target:this.target?this.target:this.userInfo.owner
+					},res=>{
+						if(res){
+							this.firstItem=res[0]?res[0]:{};
+							this.secondItem=res[1]?res[1]:{};
+							this.thridItem=res[2]?res[2]:{};
+							this.rankList=res.splice(3)
+						}
+					})
+					break;
+					case'shop':
+					this.$ajax('ZoneShopPerformances',{
+						year:this.year,
+						month:this.month,
+						area:this.threeNavTabName=='area'?1:'',
+						target:this.target?this.target:this.userInfo.owner
+					},res=>{
+						this.firstItem=res[0]?res[0]:{};
+						this.secondItem=res[1]?res[1]:{};
+						this.thridItem=res[2]?res[2]:{};
+						this.rankList=res.splice(3);
+						console.log(this.rankList)
+					})
+					break;
+				}
+				
+			},
+			/*选择门店榜还是个人榜*/
+			selectTabCur(type){
+				this.navTabCur=type;
+				this.threeNavTab=this.threeNavList[0].id;
+				this.threeNavTabName=this.threeNavList[0].value;
+				this.year=new Date().getFullYear();
+				this.month=new Date().getMonth()+1;
+				this.getRankList();
+			},
+			/*选择门店，区域和公司*/
+			threeNavSelect(item){
+				this.threeNavTab=item.id;
+				this.threeNavTabName=item.value;
+				this.getRankList()
+			},
+			/*筛选*/
+			searchEvent(){
+				uni.navigateTo({
+					url:"../sale-statistics-search/sale-statistics-search?type="+this.threeNavTabName+"&id="+this.shopID+"&zone="+this.shopZone
+				})
+			}
+		},
+		onLoad(param){
+			if(param){
+				this.shopID=param.id;
+				this.shopZone=param.zone;
+			}
+			this.$fire.on('search',result=>{
+				this.year=result.year?result.year:new Date().getFullYear();
+				this.month=result.month?result.month:new Date().getMonth()+1;
+				this.target=result.target?result.target:this.userInfo.owner;
+				this.getRankList()
+			})	
+		},
+		onShow(){
+			this.getRankList()
+			
+		}
+	}
+</script>
+
+<style lang="less">
+	page{
+		background:rgba(247,247,247,1)
+	}
+	.tabNav{
+		margin:9px 12px 19px 15px;
+		height:36px;
+		line-height:36px;
+		border-radius:6px;
+		border:1px solid rgba(66,176,237,1);
+		.tab-nav-item{
+			flex:1;
+			text-align: center;
+		}
+		.tab-nav-item:first-child{
+			border-right:1px solid rgba(66,176,237,1)
+		}
+	}
+	.tab-nav-active{
+		background:rgba(66,176,237,1);
+		color:#fff;
+	}
+	.border-active{
+		border-bottom:2px solid rgba(66,176,237,1)
+	}
+	.rank-container{
+		.rank-img{
+			.rank-two{
+				margin-top:42px;
+				height: 120px;
+				width: 120px;
+				margin-bottom:40px;
+				background:url("../../../../../../static/img/work/statistics/two.png") no-repeat center center;
+				background-size:cover;
+			}
+			.rank-one{
+				width: 160px;
+				height: 160px;
+			}
+			.rank-three{
+				margin-top:42px;
+				height: 120px;
+				width: 120px;
+				
+			}
+			.intro{
+				text-align: center;
+				
+				left:50%;
+				transform: translateX(-50%);
+
+			}
+		}
+		.intro-alone{
+			bottom:-30px;
+		}
+		.intro-shop{
+			bottom:-45px;
+		}
+		.rank-list{
+			margin-top:17px;
+			padding-bottom:69px;
+			.rank-list-item{
+				height:69px;
+				line-height:69px;
+				padding:0 15px 0 12px;
+				margin-bottom:8px;
+
+			}
+		}
+	}
+	.my-rank{
+		padding:14px 0 14px 40px;
+		background:rgba(244,251,255,1);
+		display:flex;
+		justify-content: flex-start;
+		position:fixed;
+		bottom:0px;
+		width:100%;
+		z-index:99;
+
+
+	}
+</style>

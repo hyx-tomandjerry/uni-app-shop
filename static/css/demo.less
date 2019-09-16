@@ -1,0 +1,110 @@
+// 基本颜色
+	//1.rgba(66,176,237,1)(蓝色)
+@famous_color:#42B0ED;//rgba(66,176,237,1)
+	//2.灰色rgba(137,136,136,1)
+@intro_color:#898888;
+	//黑色 #2A2A2A
+@normal_color:#2A2A2A;
+
+@white_color:#fff;
+
+@bg_color:rgba(247,247,247,1);
+
+// 基本字体大小
+@normal_fontSize:14px;
+
+//基本字体
+@normal_fontFamily:PingFangSC-Medium;
+
+//颜色
+.color(@color){
+	color:@color;
+}
+//字体大小
+.fontSize(@size){
+	font-size:@size;
+}
+.mixFontFamily(@family){
+	font-family:@family
+}
+//行高
+.lineHeight(@height){
+	line-height: @height;
+}
+//背景颜色
+.background(@bgColor){
+	background:@bgColor;
+}
+//宽，高
+.mixWidth(@width:0;){
+	width: @width;
+
+}
+.mixHeight(@height){
+	height: @height;
+}
+//字体大小
+.mixFont(@fontSize;@bold:400){
+	font-size:@fontSize;
+	font-weight:@bold;
+}
+//基本图片样式
+.img(@width;@height){
+	width:@width;
+	height:@height;
+}
+.mixImg(@width;@height;@vertical:middle){
+	width:@width;
+	height:@height;
+	vertical-align: @vertical
+}
+
+
+//边距
+.mixMargin(@marginTop:0;@marginRight:0;@marginBottom:0;@marginLeft:0){
+	margin:@marginTop @marginRight @marginBottom @marginLeft;
+}
+.mixMarginTop(@margin:0){
+	margin-top:@margin;
+}
+.mixMarginBottom(@margin:0){
+	margin-bottom:@margin;
+}
+.mixMarginRight(@margin:0){
+	margin-right:@margin;
+}
+.mixMarginLeft(@margin:0){
+	margin-left:@margin;
+}
+.mixPadding(@paddingTop;@paddingRight;@marginBottom;@marginLeft){
+	padding: @paddingTop @paddingRight @marginBottom @marginLeft;
+}
+.mixPaddingTop(@padding:0){
+	padding-top:@padding;
+}
+.mixPaddingRight(@padding:0){
+	padding-right:@padding;
+}
+.mixPaddingBottom(@padding:0){
+	padding-bottom:@padding;
+}
+.mixPaddingLeft(@padding:0){
+	padding-left:@padding;
+}
+
+//边框
+.mixBorder(@width;@weight;@color){
+	border:@width @weight @color;
+}
+.mixBorderBottom(@width;@weight;@color){
+	border-bottom:@width @weight @color;
+}
+.mixBorderRight(@width;@weight;@color){
+	border-right:@width @weight @color;
+}
+.mixBorderRadius(@radius){
+	border-radius:@radius;
+}
+.mixBorderTop(@width;@color){
+	border-top:@width solid @color;
+}
