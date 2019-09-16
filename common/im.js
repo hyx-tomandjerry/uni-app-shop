@@ -14,7 +14,7 @@ export default {
         return new Promise ((resolve,reject) => {
 
             let data = store.state.userInfo
-            console.log(data)
+        
 
 
             if (data.status == 1) {

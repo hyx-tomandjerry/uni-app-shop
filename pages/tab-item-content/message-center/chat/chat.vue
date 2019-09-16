@@ -2,7 +2,7 @@
 	<view>
 		<cu-custom :isBack="true">
 			<block slot="left">
-				<text class="cuIcon-back" style="font-size:20px" @click="goBack()"></text>
+				<text class="cuIcon-back" style="font-size:20px" @click.stop="goBack()"></text>
 			</block>
 			<block slot="content">
 				<view class="font-size-big font-weight-bold">张三</view>

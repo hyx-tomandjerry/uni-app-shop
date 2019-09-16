@@ -1,5 +1,10 @@
 <template>
-	<view>
+	<view class="borderTop">
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back" style="font-size:22px;" @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >维修详情</view></block>
+			<block slot="right"><view class="font-size-normal color-regular" style="margin-right:15px;" @click="chooseRepairItem">确定</view></block>
+		</cu-custom>
 		<view class="content">
 			<view class="nav">
 				<view class="nav-left">
@@ -46,6 +51,7 @@
 				// categorySubActive:1000,
 				leftNavTabCur:2,
 				rightNavTabCur:0,
+				rightNav:'',
 				scrollTop:0,
 				scrollHeight:0,
 				leftNavItem:''
@@ -64,6 +70,18 @@
 		},
 		methods:{
 			leftNavSelect(item){
+				// console.log(item)
+				// if(item.id==7){
+				// 	uni.navigateBack({
+				// 		delta:1,
+				// 		success:(res)=>{
+				// 			this.$fire.fire('repair',{
+				// 				bigID:item.id,
+				// 				bigName:item.name,
+				// 			})
+				// 		}
+				// 	})
+				// }
 				this.leftNavTabCur=item.id;
 				this.leftNavItem=item;
 				this.getRepairList(item.id)
@@ -83,92 +101,60 @@
 			},
 			rightNavSelect(item){
 				this.rightNavTabCur=item.id;
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:1,
-						success:(res)=>{
-							this.$fire.fire('repair',{
-								bigID:this.leftNavItem.id?this.leftNavItem.id:this.repairTypeArray[0].id,
-								bigName:this.leftNavItem.name?this.leftNavItem.name:this.repairTypeArray[0].name,
-								subID:item.id,
-								subName:item.name
-							})
-						}
-					})
-				},900)
+				this.rightNav=item;
+				// setTimeout(()=>{
+				// 	uni.navigateBack({
+				// 		delta:1,
+				// 		success:(res)=>{
+				// 			this.$fire.fire('repair',{
+				// 				bigID:this.leftNavItem.id?this.leftNavItem.id:this.repairTypeArray[0].id,
+				// 				bigName:this.leftNavItem.name?this.leftNavItem.name:this.repairTypeArray[0].name,
+				// 				subID:item.id,
+				// 				subName:item.name
+				// 			})
+				// 		}
+				// 	})
+				// },900)
 
 			},
 			goBack(){
 				uni.navigateBack({
 					delta:1,
+					success:()=>{
+						this.$fire.fire('repair',{
+							bigID:this.leftNavItem.id?this.leftNavItem.id:this.repairTypeArray[0].id,
+							bigName:this.leftNavItem.name?this.leftNavItem.name:this.repairTypeArray[0].name,
+							subID:this.rightNav.id?this.rightNav.id:'',
+							subName:this.rightNav.name?this.rightNav.name:''
+						})
+					}
+				})
+
+			},
+			chooseRepairItem(){
+				uni.navigateBack({
+					delta:1,
+					success:()=>{
+						this.$fire.fire('repair',{
+							bigID:this.leftNavItem.id?this.leftNavItem.id:this.repairTypeArray[0].id,
+							bigName:this.leftNavItem.name?this.leftNavItem.name:this.repairTypeArray[0].name,
+							subID:this.rightNav.id?this.rightNav.id:'',
+							subName:this.rightNav.name?this.rightNav.name:''
+						})
+					}
 				})
 			},
-			// choseRepair(){
-			// 	uni.navigateBack({
-			// 		delta:1,
-			// 		success:(res)=>{
-			// 			this.$fire.fire('repair',this.repairObj)
-			// 		}
-			// 	})
-			// },
 			scroll(e){
 				this.scrollHeight = e.detail.scrollHeight;
 			},
-			// categoryClickMain(categroy, index) {
-			// 	this.categoryActive = index;
-			// 	this.categorySubActive=1000;//右边默认为第一个
-			// 	this.subCategoryList = categroy.subCategoryList;
-			// 	this.scrollTop = -this.scrollHeight*index;
-			// 	this.repairObj={
-			// 		bigName:categroy.obj.val,
-			// 		bigID:categroy.obj.id,
-			// 		subID:'',
-			// 		subName:''
-			// 	}
-			//
-			// },
-			// categoryClickSub(categroy, index) {
-			// 	this.categorySubActive = index;
-			// 	this.scrollTop = -this.scrollHeight*index;
-			// 	this.repairObj={
-			// 		bigName:this.repairObj.bigName,
-			// 		bigID:this.repairObj.bigID,
-			// 		subID:categroy.obj.id,
-			// 		subName:categroy.obj.val
-			// 	}
-			// },
-			// getCategory() {
-			// 	this.$ajax('ServiceCatalogs',{},res=>{
-			// 		this.list=res;
-			// 		var bigArray=[],subArray=[];
-			// 		res.forEach(item=>{
-			// 			if(item.parent==0){
-			// 				bigArray.push(item)
-			// 			}else{
-			// 				subArray.push(item);
-			// 			}
-			// 		})
-			// 		if(subArray[0]&& subArray[0].id){
-			// 			this.repairObj.subID=subArray[0].id;
-			// 		}
-			// 		for(var i=0;i<bigArray.length;i++){
-			// 			var subList = [];
-			// 			for(var j=0;j<subArray.length;j++){
-			// 				if(subArray[j].parent==bigArray[i].id){
-			// 					subList.push({"name":subArray[j].val,obj:subArray[j]})
-			// 				}
-			// 			}
-			// 			this.categoryList.push({"name":bigArray[i].val,"subCategoryList":subList,obj:bigArray[i]})
-			// 		}
-			// 		this.subCategoryList = this.categoryList[0]? this.categoryList[0].subCategoryList:[];
-			// 		this.repairObj={
-			// 			bigName:this.categoryList[0]?this.categoryList[0].obj.val:'',
-			// 			bigID:this.categoryList[0]?this.categoryList[0].obj.id:'',
-			// 			subID:'',
-			// 			subName:''
-			// 		}
-			// 	})
-			// }
+		},
+		onPullDownRefresh(){
+			//下拉刷新
+			setTimeout(()=>{
+				uni.stopPullDownRefresh();
+				this.getRepairList(this.leftNavTabCur);
+			},800)
+
 		},
 		onLoad:function(){
 			this.getRepairList(this.leftNavTabCur);

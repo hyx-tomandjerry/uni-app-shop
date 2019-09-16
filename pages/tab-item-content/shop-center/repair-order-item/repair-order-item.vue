@@ -1,25 +1,6 @@
 <template>
-	<view>
+	<view class="borderTop position_relative">
 		<view class="order_content">
-			
-				<view class="operaterInfo flex justify-between" 
-					v-show="repaitItem.status==$store.state.repairStatus.finish">
-					<!-- 未处理状态不可见 -->
-					<view>
-						<image 
-						src="../../../../static/icon/touxiang.png"
-						class="img55"
-						style="vertical-align: middle;"
-						></image>
-						<text style="font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(42,42,42,1);">维修人员:TomAndJerry</text>
-					</view>
-					<view>
-						<image 
-						class="img38"
-						src="../../../../static/icon/call.png"></image>
-					</view>
-				</view>
-				
 				<view class="repair-detail" style="position: relative;">
 					<!-- 报修详情 -->
 					<view 
@@ -30,45 +11,49 @@
 					</view>
 					<view class="repair-detail-list">
 						<view class="repair-detail-list-item flex justify-between">
-							<view>报修人</view>
-							<view class="text-grey">{{repaitItem.creatorName}}</view>
+							<view style="width:40%;text-align: left;padding-left:10px;">报修人</view>
+							<view class="color-regular flex-1 text-right">{{repaitItem.creatorName}}</view>
 						</view>
 						
 						<view class="repair-detail-list-item flex justify-between">
-							<view>联系电话</view>
-							<view class="text-grey">{{repaitItem.creatorMobile}}</view>
+							<view style="width:40%;text-align: left;padding-left:10px;"> 联系电话</view>
+							<view class="color-regular flex-1 text-right">{{repaitItem.creatorMobile}}</view>
 						</view>
 						
 						<view class="repair-detail-list-item flex justify-between">
-							<view>门店名称</view>
-							<view class="text-grey">{{repaitItem.shopname}}</view>
+							<view style="width:40%;text-align: left;padding-left:10px;">门店名称</view>
+							<view class="color-regular flex-1 text-right">{{repaitItem.name}}</view>
 						</view>
-						
+						<view class="repair-detail-list-item flex justify-between">
+							<view style="width:40%;text-align: left;padding-left:10px;">品牌名称</view>
+							<view class="color-regular flex-1 text-right">{{repaitItem.brandName}}</view>
+						</view>
 						
 						
 						<view class="repair-detail-list-item flex justify-between text-right">
-							<view >门店地址</view>
-							<view class="text-grey">{{repaitItem.provinceName}}{{repaitItem.cityName}}{{repaitItem.districtName}}{{repaitItem.address}}</view>
+							<view style="width:40%;text-align: left;padding-left:10px;">门店地址</view>
+							<view class="color-regular text-right " style="flex:1">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{repaitItem.provinceName}}{{repaitItem.cityName}}{{repaitItem.districtName}}{{repaitItem.address}}</view>
 						</view>
 						
 						<view class="repair-detail-list-item flex justify-between">
-							<view>维修类别</view>
-							<view class="text-grey">{{repaitItem.catalogName}}</view>
+							<view style="width:40%;text-align: left;padding-left:10px;">维修类别</view>
+							<view class="color-regular flex-1 text-right">{{repaitItem.type|repairTypePipe}}</view>
 						</view>
 						
-						<!-- <view class="repair-detail-list-item flex justify-between">
-							<view>维修详情</view>
-							<view class="text-grey">门店灯具坏了</view>
-						</view> -->
+						<!--<view class="repair-detail-list-item flex justify-between">-->
+							<!--<view style="width:40%;text-align: left;padding-left:10px;">维修详情</view>-->
+							<!--<view class="text-grey flex-1 text-right">{{repaitItem.categoryName || ''}}</view>-->
+						<!--</view>-->
 						
 						<view class="repair-detail-list-item flex justify-between">
-							<view>上门时间</view>
-							<view class="text-grey">{{repaitItem.appointdate | formatTime('YMD')}}</view>
+							<view style="width:40%;text-align: left;padding-left:10px;">上门时间</view>
+							<view class="color-regular  flex-1 text-right">{{repaitItem.appointdate | formatTime('YMD')}}</view>
 						</view>
 						
 						<view class="repair-detail-list-item">
-							<view>报修描述</view>
-							<view class="text-grey " style="background:rgba(247,247,247,1);padding:10px 15px;border-radius: 10px;min-height:100px;;">{{repaitItem.summary}}</view>
+							<view style="width:40%;text-align: left;margin-bottom:6px;padding-left:10px;">报修描述</view>
+							<view class="color-regular " style="background:rgba(247,247,247,1);padding:10px 15px;border-radius: 10px;min-height:100px;;">{{repaitItem.summary}}</view>
 						</view>
 						
 					</view>
@@ -83,26 +68,32 @@
 					<view class="repair-detail-title" >
 						<text>服务状态</text>
 					</view>
-					<view class="repair-detail-item flex justify-between borderBottom" style="padding:24px 0;">
+					<view class="repair-detail-item flex justify-between borderBottom font-size-big" style="padding:24px 0;">
 						<view>
-							<text style="margin-right:40px;">维修进度:</text>
-							<text class="cu-tag  round" 
-							:class="{'bg-orange':repaitItem.status==$store.state.repairStatus.untreated,'bg-green':repaitItem.status==$store.state.repairStatus.treating,'bg-red':repaitItem.status==$store.state.repairStatus.refuse,'bg-purple':repaitItem.status==$store.state.repairStatus.finish}"
+							<text style="margin-right:40px;" class="font-size-normal color-normal">维修进度:</text>
+							<text  
+							:class="{
+								'text-orange':repaitItem.status==repairStatus.waitManager,
+								'text-green':repaitItem.status==repairStatus.waitArea,
+								'color-red':repaitItem.status==repairStatus.waitCompany,
+								'color-regular':repaitItem.status==repairStatus.finish,
+								'text-purple':repaitItem.status==repairStatus.loading}"
 							>{{repaitItem.status | repairStatus}}</text>
 						</view>
-						<view class="cu-tag line-blue" @click="showModal($event)" data-target="bottomModal" v-if="repaitItem.status==2 || repaitItem.status==4">
-							查看进度
-						</view>
+						<!--<view class="cu-tag line-blue" @click="showModal($event)" data-target="bottomModal" -->
+							<!--v-if="repaitItem.status==repairStatus.treating || repaitItem.status==repairStatus.finish">-->
+							<!--查看进度-->
+						<!--</view>-->
 					</view>
 					
 					<view style="padding-top:22px;">
-						<view style="margin-bottom:14px;">
-							<text style="margin-right:20px;">申请时间:</text>
-							<text class="text-grey">{{repaitItem.createdate | formatTime('YMDHMS')}}</text>
+						<view style="margin-bottom:14px;" class="font-size-big">
+							<text style="margin-right:20px;" class=" color-normal">申请时间:</text>
+							<text class="color-regular">{{repaitItem.createdate | formatTime('YMDHMS')}}</text>
 						</view>
-						<view>
-							<text style="margin-right:20px;">订单编号:</text>
-							<text class="text-grey">{{repaitItem.shopseq}}</text>
+						<view class="font-size-big">
+							<text style="margin-right:20px;" class=" color-normal">订单编号:</text>
+							<text class="color-regular">{{repaitItem.shopSeq}}</text>
 						</view>
 					</view>
 				</view>
@@ -147,17 +138,17 @@
 				</view>
 			
 			<view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
-			<view class="cu-dialog">
+				<view class="cu-dialog">
 				<view class="cu-bar bg-white">
 					<view></view>
 					<view class="action text-blue" @tap="hideModal()">
-						<image src="../../../../static/icon/close.png" style="width:24px;height:24px;"></image>
+						<image src="../../../../static/icon/icon-repair-guanbi.png" style="width:24px;height:24px;"></image>
 					</view>
 				</view>
 				<view class="progress-content">
 					<view style="margin-bottom:23px;">
 						<view class="progress-item">
-							<image src='../../../../static/icon/radio.png' style="width:18px;height:18px;margin-right:19px;"></image>
+							<image src='../../../../static/icon/icon-repair-wancheng.png' style="width:18px;height:18px;margin-right:19px;"></image>
 							<text class="status-title">已完成</text>
 						</view>
 						<view style="padding-left:37px;">
@@ -172,7 +163,7 @@
 					
 					<view style="margin-bottom:23px;">
 						<view class="progress-item">
-							<image src='../../../../static/icon/duihaoGreen.png' style="width:16px;height:16px;margin-right:16px;"></image>
+							<image src='../../../../static/icon/icon-repair-during.png' style="width:16px;height:16px;margin-right:16px;"></image>
 							<text class="status-title">维修中</text>
 						</view>
 						<view style="padding-left:37px;">
@@ -187,7 +178,7 @@
 					
 					<view style="margin-bottom:23px;">
 						<view class="progress-item">
-							<image src='../../../../static/icon/duihao.png' style="width:18px;height:16px;margin-right:16px;"></image>
+							<image src='../../../../static/icon/icon-repair-guocheng.png' style="width:18px;height:16px;margin-right:16px;"></image>
 							<text class="status-title">上门中</text>
 						</view>
 						<view style="padding-left:37px;">
@@ -203,7 +194,7 @@
 					
 					<view style="margin-bottom:23px;">
 						<view class="progress-item">
-							<image src='../../../../static/icon/duihao.png' style="width:18px;height:16px;margin-right:16px;"></image>
+							<image src='../../../../static/icon/icon-repair-guocheng.png' style="width:18px;height:16px;margin-right:16px;"></image>
 							<text class="status-title">派单中</text>
 						</view>
 						<view style="padding-left:37px;">
@@ -217,35 +208,105 @@
 					</view>
 				</view>
 			</view>
-		</view>
+			</view>
 	</view>
+		<view class="btn-container">
+			<!--  -->
+			<view class="flex justify-between" v-if="repaitItem.manager == userInfo.id && repaitItem.status==repairStatus.waitManager">
+				<view class="agree-btn flex-sm" @click="operateOrder('agree')">同意</view>
+				<view class="refuse-btn flex-1" @click="showModal($event)" data-target="refuseModel">拒绝</view>
+			</view>
+			<view class="btn-area" v-else-if="repaitItem.creator==userInfo.id && (repaitItem.status==repairStatus.waitManager || repaitItem.status==repairStatus.waitArea)" @click="showModal($event)" data-target="repairModel">修改订单</view>
+		</view>
+		<showModel :isShow="modalName=='repairModel'" @hideModel="hideModal"
+					 @confirmDel="operateOrder('edit')" v-if="modalName=='repairModel'">
+			<block slot="content">确定要修改保修单?</block>
+		</showModel>
+		<showModel :isShow="modalName=='refuseModel'" @hideModel="hideModal"
+					 @confirmDel="operateOrder('refuse')" v-if="modalName=='refuseModel'">
+			<block slot="content">确定要拒绝保修单?</block>
+		</showModel>
 </view>
 </template>
 
 <script>
-	import uniGrid from '../../../../components/uni-grid/uni-grid.vue'
+	import {mapState} from 'vuex';
+	import showModel from '../../../../components/show-model.vue'
+	import downloader from '../../../../common/img-downloader.js'
 	export default{
+		computed:mapState(['repairStatus','userInfo']),
 		data(){
 			return{
 				avatar:[],
 				modalName:null,
-				repaitItem:''
+				repaitItem:'',
+				
 			};
 		},
-		components: {
-			uniGrid
-		},
+		components:{showModel},
 		methods: {
+			/*
+				操作订单
+			*/
+		   operateOrder(type){
+			   switch(type){
+				   case 'edit':
+				   uni.navigateTo({
+				   		url:"../create-order/create-order?id="+this.repaitItem.id,
+				   			success:()=>{
+				   				this.hideModal()
+				   			}
+				   })
+				   break;
+				   case 'agree':
+				   this.$ajax('SubmitServiceOrder',{id:this.repaitItem.id,refused:0},res=>{
+				   	uni.showToast({
+				   		title:'拒绝保修单成功!',
+				   		icon:'none',
+				   		success:()=>{
+				   			uni.navigateBack({
+				   				delta:1
+				   			})
+				   		}
+				   	})
+				   })
+				   break;
+				   case 'refuse':
+					this.$ajax('SubmitServiceOrder',{id:this.repaitItem.id,refused:1},res=>{
+						uni.showToast({
+							title:'拒绝保修单成功!',
+							icon:'none',
+							success:()=>{
+								uni.navigateBack({
+									delta:1
+								})
+							}
+						})
+					})
+				   break;
+			   }
+			   
+		   },
+		   
+			/*获得设备详情*/
+			getSystemInfo(){
+				uni.getSystemInfo({
+					success:(res)=>{
+						console.log(res.windowHeight)
+					}
+				})
+			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
 			//显示模态框
 			showModal(e){
+				console.log(e)
 				this.modalName=e.currentTarget.dataset.target;
 			},
 			hideModal(){
-				this.modalName=''
+				this.modalName=null
 			},
 			viewImg(index){
 				let imgList=[];
@@ -254,9 +315,35 @@
 						imgList.push(item.url)
 					}
 				})
+				
 				uni.previewImage({
 					urls: imgList,
-					current:index
+					current:index,
+					indicator:'number',
+					longPressActions: {
+						itemList: [ '保存图片'],
+						success: function(data) {
+							if(data.tapIndex + 1==1){
+								uni.getImageInfo({
+									src:imgList[data.tapIndex + 1],
+									success:(res)=>{
+										let promise=downloader.load(res.path,res.path);
+										promise.then(([err, res])=>{ 
+											if(res){
+												uni.showToast({
+													title:'保存图片到相册',
+													icon:'none'
+												})			
+											} 
+										});
+								 }
+							})
+						}
+					},
+					fail: function(err) {
+							console.log(err.errMsg);
+					}
+            }
 				})
 				
 			},
@@ -277,22 +364,13 @@
 					
 					
 				})
-				// uni.request({
-				// 	url:this.$store.state.url+'ServiceOrder',
-				// 	data:{
-				// 		id:id,
-				// 		userId:49,
-				// 		owner:18
-				// 	},
-				// 	success: (res) => {
-				// 		
-				// 		this.repaitItem=res.data.data;
-				// 	}
-				// })
 			}
 		},
 		onLoad(option){
-			this.getRepairItem(option.id)
+			this.getSystemInfo()
+			if(option.id){
+				this.getRepairItem(option.id)
+			}
 		}
 	}
 </script>
@@ -377,5 +455,42 @@
 			}
 		}
 		
+	}
+	.btn-container{
+		background-color: #fff;
+		z-index:100;
+		position:absolute;
+		bottom:0;
+		width:100%;
+		padding:13px 12px 11px 14px;
+		.btn-area{
+			width:100%;
+			text-align: center;
+			background:rgba(66,176,237,1);
+			border-radius:5px;
+			height:40px;
+			line-height:40px;
+			color:#fff;
+			font-size:17px;
+			
+		}
+		.agree-btn{
+			height:40px;
+			line-height:40px;
+			color:rgba(66,176,237,1);
+			font-size:16px;
+			border-radius:5px;
+			text-align: center;
+			margin-right: 12px;
+			border:1px solid rgba(66,176,237,1);
+		}
+		.refuse-btn{
+			height:40px;
+			line-height:40px;
+			color:#fff;
+			text-align: center;
+			background:rgba(66,176,237,1);
+			border-radius:5px;
+		}
 	}
 </style>

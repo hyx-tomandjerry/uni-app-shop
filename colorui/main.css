@@ -1130,7 +1130,7 @@ button.icon.lg {
 }
 
 .cu-progress.xs {
-	height: 10upx;
+	height: 16upx;
 }
 
 .cu-progress.sm {
@@ -1409,7 +1409,7 @@ button.icon.lg {
 .cu-list.menu-avatar>.cu-item .content {
 	position: absolute;
 	left: 146upx;
-	width: calc(100% - 96upx - 60upx - 120upx - 20upx);
+	width: calc(100% - 96upx - 60upx - 240upx - 20upx);
 	line-height: 1.6em;
 }
 
@@ -1764,7 +1764,7 @@ button.icon.lg {
 .cu-bar .content {
 	position: absolute;
 	text-align: center;
-	width: calc(100% - 340upx);
+	width: calc(100% - 200upx);
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -2132,6 +2132,7 @@ button.icon.lg {
 	line-height: 90upx;
 	margin: 0 10upx;
 	padding: 0 20upx;
+	color: #898889;
 }
 
 .nav .cu-item.cur {
@@ -2495,7 +2496,7 @@ button.icon.lg {
 
 .cu-form-group {
 	background-color: var(--white);
-	padding: 1upx 30upx;
+	padding: 1upx 24upx;
 	display: flex;
 	align-items: center;
 	min-height: 100upx;
@@ -2518,7 +2519,7 @@ button.icon.lg {
 .cu-form-group input {
 	flex: 1;
 	font-size: 30upx;
-	color: #555;
+	color:#898888;
 	padding-right: 20upx;
 }
 
@@ -2600,7 +2601,7 @@ button.icon.lg {
 	transform: scale(1.185);
 	backface-visibility: hidden;
 	perspective: 2000upx;
-	background: rgba(0, 0, 0, 0.6);
+	background: rgba(0, 0, 0, 0.3);
 	transition: all 0.3s ease-in-out 0s;
 	pointer-events: none;
 }

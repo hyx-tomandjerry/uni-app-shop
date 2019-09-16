@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
+		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]" @click="clickEvent">
 			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
 				<view class="action">
 					<slot name="left"></slot>
 				</view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]">
-					<slot name="content"></slot>
+					<slot name="content" ></slot>
 				</view>
 				<slot name="right"></slot>
 			</view>
@@ -55,14 +55,15 @@
 					delta: 1
 				});
 			}
+		},
+		methods:{
+			clickEvent(){
+				this.$emit('clickEvent')
+			}
 		}
 	}
 </script>
 
-<style>
-.cu-custom .cu-bar{
-	min-height: 40px;
-	padding:0 15px 0 3px;
-	background:#fff;
-}
+<style lang="less">
+
 </style>

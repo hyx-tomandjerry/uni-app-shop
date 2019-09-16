@@ -1,28 +1,35 @@
 
 
  <template>
- 	<view>
-		<view class="shop-content bg-white" v-if="shopList.length>0">
+ 	<view class="borderTop">
+		<view class="shop-content" v-if="shopList.length">
 			<scroll-view scroll-y="true" >
-				<view class="shop-list-item" v-for="(item,index) in shopList"
-					:class="{'bg-gray':shopIndex==item.id}"
-				 :key="index" @click="choseShop(item)">
-					<view class="shop-item-name flex justify-between">
-					<view>
-						<text class="cuIcon-shop" style="margin-right:8px;"></text><text>{{item.name}}</text>
+				<view class="shop-list-item flex justify-start align-center bg-white" v-for="(item,index) in shopList"
+					:class="{'bg-gray':shopIndex==item.id}" :key="index" @click="choseShop(item)">
+					
+					<view class="shop-img-area">
+						<image :src="item.coverurl?item.coverurl:'../../../../static/img/default.png'" class="shop-img"></image>
+					</view>
+					<view class="shop-info-area flex-1 " >
+						<view class="flex justify-start font-size-normal font-weight-bold align-center">
+							<view class=" text-ellipse flex-litter">{{item.name || ''}}</view>
+							<view>({{item.brandName || ''}})</view>
+							<image src="../../../../static/img/shop/businessing.png" class="shop-tag" v-if="item.status==shopStatusZn.businessing"></image>
+							<image src="../../../../static/img/shop/ready.png" class="shop-tag" v-if="item.status==shopStatusZn.ready"></image>
+							<image src="../../../../static/img/shop/processing.png" class="shop-tag" v-if="item.status==shopStatusZn.processing"></image>
+							<image src="../../../../static/img/shop/canceled.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.canceled"></image>
+							<image src="../../../../static/img/shop/renovated.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.renovated"></image>
+							<image src="../../../../static/img/shop/moved.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.moved"></image>
+						</view>
+						
+						<view class="font-size-litter color-regular " style="margin:7px 0;width:65%">
+							<text style="margin-right:7px;">店长:</text>{{item.managerName || ''}}/{{item.managerMobile || ''}}
+						</view>
+						<view class="font-size-litter color-regular text-ellipse " style="width:70%;">
+							<text style="margin-right:7px;">地址:</text>{{item.provinceName || ''}}{{item.cityName || ''}}{{item.districtName||''}}{{item.address}}
+						</view>
 					</view>
 
-					<text class="text-blue cuIcon-brand" v-if="item.catalogName">{{item.catalogName}}</text>
-
-					</view>
-					<view style="width:100%" class=".shop-item-address">
-						<text class="cuIcon-location" style="margin-right:5px;"></text>
-						<text style="text-align:left;font-size:11px" >
-							{{item.provinceName || ''}}{{item.cityName || ''}}{{item.districtName||''}}{{item.address}}
-						</text>
-
-					</view>
-					<!-- <view class="cu-tag line-blue text-blue" v-if="item.catalogName">品牌名称</view> -->
 				</view>
 			</scroll-view>
 		</view>
@@ -30,150 +37,150 @@
 			<lx-empty></lx-empty>
 
 		</view>
-		<view v-if="type=='express'" style="position:fixed;bottom:0px;width:100%">
-			<!-- <view v-if="cat=='send' || cat=='distribute_send'">
-				<view class="cu-btn" style="width:100%;background:lightgray;" @click="searchMore()">搜索更多</view> -->
-			<!-- </view> -->
-			<view v-if="cat=='receive' ">
-				<view class="cu-btn" style="width:30%;background:lightgreen;" @click="searchMore()">搜索更多</view>
-				<view class="cu-btn" style="width:30%;background:lightgray;" @click="chooseStore()">选择仓库</view>
-				<view class="cu-btn bg-orange text-white" style="width:40%" @click="createAddress()"
-				><text class="cuIcon-add" style="font-size:15px;margin-right:5px;"></text>创建新地址</view>
-			</view>
-			<view v-if="cat=='distribute' ">
-				<view class="cu-btn" style="width:50%;background:lightgreen;" @click="searchMore()">搜索更多</view>
-				<view class="cu-btn" style="width:50%;background:lightgray;" @click="chooseStore()">选择仓库</view>
-			</view>
-		</view>
-
-		<view class="cu-modal" :class="isShow?'show':''" @tap="hideModal()">
-
-			<view class="cu-dialog" @tap.stop="">
-				<view style="padding:10px 0;">选择收件人</view>
-				<radio-group class="block" @change="RadioChange($event)">
-					<view class="cu-list menu text-left">
-						<view class="cu-item" v-for="(item,index) in shopMaleList" :key="index">
-							<label class="flex justify-between align-center flex-sub">
-								<view class="flex-sub">{{item.name}} <text style="margin:0px 10px;color:blue;font-size:14px">|</text>{{item.account}}</view>
-								<radio class="round"
-								:class="radio=='radio' + item.id?'checked':''"
-								:checked="radio=='radio' + item.id?true:false"
-								 :value="'radio' + item.id"></radio>
-							</label>
-						</view>
-					</view>
-				</radio-group>
-			</view>
-		</view>
+		<showModel :isShow="modalName=='shopModal'" @hideModel="hideShopModel" @confirmDel="hideShopModel" v-if="modalName=='shopModal'">
+			<block slot="content">该门店没有营业，不能进行操作!</block>
+		</showModel>
+		<uni-load-more :contentText="content" :showIcon="true" v-if="shopList.length" :status="loading"></uni-load-more>
  	</view>
  </template>
  <script>
 	 import LxEmpty from '../../../../lx_components/lx-empty.vue'
 	 import {mapState} from 'vuex'
+	 import showModel from '../../../../components/show-model.vue'
+	 import uniLoadMore from '../../../../components/uni-load-more.vue'
  	export default{
-		computed:mapState(['userInfo']),
+		computed:mapState(['userInfo','shopStatusZn']),
  		data(){
  			return{
 				shopList:[],
-				shopAddress:'',
-				type:'',
-				cat:'',
-				shopID:'',
-				isShow:false,
-				shopMaleList:[],
-				radio:'',
-				shopMaleID:-1,
-				shopIndex:-1,
+				cat:'',//用于判断是新建报修还是工作日志
+				shopIndex:-1,//用于选中门店，突出颜色
+				articleID:'',//用于筛选要回执的门店
+				page:1,
+				modalName:'',
+				content:{
+					contentdown: "",
+					contentrefresh: "正在加载...",
+					contentnomore: "没有更多数据了"
+					},
+				loading:'more',
+				
+
  			}
  		},
+		onPullDownRefresh(){
+			setTimeout(()=>{
+				uni.stopPullDownRefresh();
+				this.page=1;
+				this.getNearShopList()
+			},900)
+		},
+		onReachBottom(){
+					this.page++;
+					this.loading='loading';
+					setTimeout(()=>{
+						if(this.cat=='createOrder'){
+							this.$ajax('MyShops',{
+								address:'',
+								offset:this.$utils.getOffset(this.page)
+							},res=>{
+								if(res==''){
+									setTimeout(()=>{
+										this.loading='noMore'
+									},900)
+								}else{
+									res.forEach(item=>{
+										this.shopList=this.shopList.concat(item)
+									})
+									this.loading='loading';
+									setTimeout(()=>{
+										this.loading='noMore'
+									},900)
+								}
+							
+							})
+						}else if(this.cat=='article'){
+							this.$ajax('ShopsByReport',{
+								user:this.userInfo.id,
+								id:this.articleID,
+								offset:this.$utils.getOffset(this.page)
+							},res=>{
+								if(res==''){
+									setTimeout(()=>{
+										this.loading='noMore'
+									},900)
+								}else{
+									res.forEach(item=>{
+										this.shopList=this.shopList.concat(item)
+									})
+									this.loading='loading';
+									setTimeout(()=>{
+										this.loading='noMore'
+									},900)
+								}
+															
+							
+							})
+						}
+					},1000)
+				
+				},
  		components:{
-			LxEmpty
+			LxEmpty,showModel,uniLoadMore
  		},
  		onLoad(options){
-			this.type=options.type;
+			
 			this.cat=options.cat;
-
+			if(options.id){
+				this.articleID=options.id;
+			}
 			this.getNearShopList()
  		},
 		methods:{
-			RadioChange(event){
-				this.shopMaleID=event.detail.value.substr(5,)
-				this.isShow=false;
-				setTimeout(()=>{
-					uni.navigateBack({
-						delta:2,
-						success:(res)=>{
-							this.$fire.fire('shop',{
-								shopID:this.shopIndex,
-								shopMaleID:this.shopMaleID,
-								type:'receive'
-							})
-						}
-					})
-				},500)
-			},
-			chooseStore(){},
-			//搜索更多
-			searchMore(){
-				uni.navigateTo({
-					url:'../search-more-shop/search-more-shop?cat='+this.cat
-				})
-			},
-			//新建地址
-			createAddress(){
-				uni.navigateTo({
-					url:"../../work-center/express-center/create-address/create-address"
-				})
+			hideShopModel(){
+				if(this.modalName){
+					this.modalName=null;
+				}
 			},
  		    getNearShopList(){
-				if(this.cat=='receive' || this.cat=='distribute'){
-                    this.$ajax('IntraCityShops',{
-                        shop:this.userInfo.id
-                    },res=>{
-                        this.shopList=res
-                    })
-
-				}else{
+				// 新建报修
+				if(this.cat=='createOrder'){
 					this.$ajax('MyShops',{
-					    address:''
+						address:'',
+						offset:this.$utils.getOffset(this.page)
 					},res=>{
-					    this.shopList=res
+						this.shopList=res
+
+					})
+				}else if(this.cat=='article'){
+					// 新建文章回执
+					this.$ajax('ShopsByReport',{
+						user:this.userInfo.id,
+						id:this.articleID,
+						offset:this.$utils.getOffset(this.page)
+					},res=>{
+						this.shopList=res;
 
 					})
 				}
 
 			},
-			getShopMaleInfo(id){
-				this.$ajax('ShopSalesmen',{shop:id},res=>{
-					this.shopMaleList=res
-				})
-			},
+			
 			choseShop(item){
-				if(this.cat=='send' || this.cat=='distribute_send'){
-					uni.navigateBack({
-						delta:1,
-						success: (res) => {
-							this.$fire.fire('sendShop',{
-								shopID:item.id,
-								type:this.cat
-							})
-						}
-					})
-				}else if(this.cat=='receive' ){
-					this.isShow=true;
-					this.shopIndex=item.id;
-					this.getShopMaleInfo(item.id)
-				}else if(this.cat=='distribute'){
+				if(this.cat=='article'){
 					this.shopIndex=item.id;
 					setTimeout(()=>{
 						uni.navigateBack({
 							delta:1,
 							success:(res)=>{
-								this.$fire.fire('shopID',item.id)
+								this.$fire.fire('articleShop',item)
 							}
 						})
 					},500)
+				}else if(item.status!==this.shopStatusZn.businessing){
+					this.modalName='shopModal';
 				}else if(this.cat=='createOrder'){
+					//新建报修选择门店
 					this.shopIndex=item.id;
 					setTimeout(()=>{
 						uni.navigateBack({
@@ -184,79 +191,46 @@
 						})
 					},500)
 				}
+				
 
 			}
 		}
  	}
  </script>
  <style lang="less">
-	 uni-page{
-	 	background:#fff;
+	page{
+	 	background:rgba(247,247,247,1);
 	 }
 	 .shop-list-item{
-		 padding:16px 9px 17px 14px;
-		 margin:3px 4px;
-		 border:1px solid #EEEEED;
-		 border-radius:5px;
-		 .shop-item-name{
-				font-size:15px;
-				font-family:PingFangSC-Regular;
-				font-weight:400;
-				color:rgba(42,42,42,1);
-				margin-bottom:7px;
+		 margin-bottom:13px;
+		 padding:18px 10px 23px 14px;
+		 width:100%;
+		 .shop-img-area{
+			 width:30%;
+			 margin-right: 10px;
+			.shop-img{
+				height:86px;
+				border-radius:6px;		 
+			} 
 		 }
-		 .shop-item-address{
-				font-size:13px;
-				font-family:PingFangSC-Regular;
-				font-weight:400;
-				color:rgba(137,136,136,1);
-				margin-bottom:8px;
+		 .shop-info-area{
+			 margin-top: -10px;
+			 .shop-tag{
+				 width:18px;
+				 height: 18px;
+				 margin-left: 5px;
+			 }
+			 .shop-tag-canceled{
+				 width: 56px;
+				 height: 18px;
+				 margin-left: 5px;
+			 }
 		 }
+		 
 	 }
- 		// .header{
- 		// 	padding: 44px 15px 10px 15px;
- 		// 	line-height:15px;
- 		// 	align-items: center;
- 		// 	border-bottom:1px solid #EEEEED;
- 		// 	.title{
- 		// 		font-size:16px;
- 		// 		font-family:PingFangSC-Semibold;
- 		// 		font-weight:600;
- 		// 		color:rgba(42,42,42,1);
- 		// 	}
-			// .chose{
-			// 	font-size:14px;
-			// 	font-family:PingFangSC-Regular;
-			// 	font-weight:400;
-			// 	color:rgba(42,42,42,1);
-			// }
- 		// }
-		.shopImg{
-			width:103px;
-			height:79px;
-			margin-right:17px;
-		}
-		.shop-name{
-			font-size:16px;
-			font-family:'PingFangSC-Regular';
-			font-weight:400;
-			color:rgba(42,42,42,1);
-			margin-bottom:10px;
-		}
-		.shop-desc{
-			font-size:14px;
-			font-family:PingFangSC-Regular;
-			font-weight:400;
-			color:rgba(137,136,136,1);
-			margin-bottom:10px;
-		}
-		.img15{
-			width:15px;
-			height:15px;
-			margin-right:5px;
-		}
-		.noManager{
-			margin-top:5px;
-			margin-bottom:20px;
-		}
+
+
+
+
+
  </style>

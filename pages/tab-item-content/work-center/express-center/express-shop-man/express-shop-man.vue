@@ -1,14 +1,14 @@
 <template>
 	<view>
-		<cu-custom :isBack="true">
+		<cu-custom :isBack="true" bgColor="bg-white">
 			<block slot="left">
-				<view class="cuIcon-back font-size-middle color-placeholder" @click="goBack()"></view>
+				<view class="cuIcon-back font-size-middle color-placeholder" @click.stop="goBack()"></view>
 			</block>
 			<block slot="content">
-				<view class="font-size-big font-weight-bold">收件人信息</view>
+				<view class="font-size-big font-weight-bold color-normal">收件人信息</view>
 			</block>
 			<block slot="right">
-				<view class="text-blue" @click="confirmMan">确定</view>
+				<view class="text-blue" @click="confirmMan" style="margin-right:15px;">确定</view>
 			</block>
 		</cu-custom>
 		<view class="shop-man-container borderTop bg-white" v-if="userList">
@@ -20,10 +20,11 @@
 
 				</view>
 				<view style="margin-left:10px;margin-right:15px;">
-					{{item.name}}/{{item.account}}
+					{{item.name}}/{{item.mobile || item.account}}
 				</view>
 				<view class=" position_absolute" style="right:10px;top:25px;" >
-					<image :src="TabCur==item.id?'../../../../../static/icon/xuanze.png':'../../../../../static/icon/weixuanze.png'" style="width:20px;height:20px;"></image>
+					<image 
+					:src="TabCur==item.id?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'" style="width:20px;height:20px;"></image>
 				</view>
 			</view>
 		</view>

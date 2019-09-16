@@ -1,16 +1,22 @@
 <template>
-	<view class="borderTop">
-		<view style="min-height:500px;">
+	<view class="borderTop position_relative" :style="{height:windowHeight+'px'}">
+		<view >
 			<view class="save-price-container  bg-white">
 				<view class="text-center">
 					<view class="font-size-big color-normal" >物品声明价值</view>
 					<view class="input-container">
-						<input type="text" placeholder="请输入物品实际价格（元）" class="inputStyle" v-model="price">
+						<input type="number" placeholder="请输入物品实际价格（元）"
+						:class="{
+							'font-weight-bold':price,
+							'font-size-supper':price,
+							'color-blue':price
+						}"
+						 class="inputStyle" v-model="price">
 					</view>
 				</view>
 
 				<view class="intro-container">
-					<view class="font-size-small text-black" style="margin-bottom:5px;">温习提示:</view>
+					<view class="font-size-small " style="margin-bottom:5px;color:#000;">温习提示:</view>
 					<view class="intro-item color-regular font-size-small">
 						<view v-if="type=='logistics'">
 							<view>
@@ -35,7 +41,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="bg-white submit-area">
+		<view class="bg-white submit-area position_absolute" style="bottom:0;width:100%">
 			<view class="submit-btn" @click="savePrice()">确定</view>
 		</view>
 	</view>
@@ -45,7 +51,8 @@
 		data(){
 			return{
 				price:'',
-				type:''
+				type:'',
+				windowHeight:''
 			}
 		},
 		components:{
@@ -62,10 +69,14 @@
 			}
 		},
 		onLoad(options){
-			console.log(options)
 			if(options){
 				this.type=options.type;
 			}
+			uni.getSystemInfo({
+				success:res=>{
+					this.windowHeight=res.windowHeight;
+				}
+			})
 		},
 	}
 </script>
@@ -80,8 +91,13 @@
 			margin-bottom:30px;
 			margin-top:14px;
 			.inputStyle{
-				width:100%;background:rgba(245,245,245,1);
-				border-radius:22px;min-height:44px;padding-top:10px;font-size:15px;color:#898888;
+				width:100%;
+				background:rgba(245,245,245,1);
+				border-radius:22px;
+				line-height:54px;
+				height:54px;
+				padding-top:10px;
+				
 			}
 		}
 

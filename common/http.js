@@ -1,6 +1,6 @@
 import store from '../store/index'
 const errorText = require('./errorText')
-const ajax=(api,param,resp,reqCache=true)=>{
+const ajax=(api,param,resp,reqCache=true,failResp)=>{
 	if(reqCache){
 	
 		uni.getStorage({
@@ -21,7 +21,7 @@ const ajax=(api,param,resp,reqCache=true)=>{
 					// userId:1,
 					// session:'c12571af68a447389107a255e5c76183'
 				}
-				httpMethod(api,param,baseParam,resp)
+				httpMethod(api,param,baseParam,resp,failResp)
 			},
 			fail:()=>{
                 // uni.showToast({
@@ -32,13 +32,33 @@ const ajax=(api,param,resp,reqCache=true)=>{
 		})
 	}else{
 		let baseParam = {}
-		httpMethod(api,param,baseParam,resp)
+		httpMethod(api,param,baseParam,resp,failResp)
 	}
 }
-const httpMethod = (api,param,baseParam,resp)=>{
+const httpMethod = (api,param,baseParam,resp,failResp)=>{
+	// let url;
+	// if(store.state.production){
+	// 	url = store.state.proUrl
+	// }else{
+	// 	url = store.state.devUrl
+	// }
+	// if(store.state.hasLogin){
+	// 	url = store.state.userInfo.server;
+	// }
+
+	
+	let real_params
+	Object.keys(param).forEach(item=>{
+		if(baseParam[item]){
+			delete baseParam[item]
+		}
+	})
+	real_params = Object.assign({f:api},baseParam,param)
 	uni.request({
-		url:store.state.url+api,
-		data:Object.assign(param,baseParam),
+		// store.state.xiaoxiongUrl
+		// url:store.state.xiaoxiongUrl,
+		url:store.getters.url,
+		data:real_params,
 		method:'POST',
 		header: {
 			'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -47,12 +67,16 @@ const httpMethod = (api,param,baseParam,resp)=>{
 			if(res.statusCode===200){
                 if (res.data.code === 0) {
                     resp(res.data.data)
-                } else if(res.data.code===-31 || res.data.code===-1) {
-					 resp(res.data.code)
-                    
-                }else{
+                } else {
 					switchCode(res.data.code.toString());
+					failResp(res.data.code)
 				}
+                // else if(res.data.code===-31 || res.data.code===-1) {
+				// 	 resp(res.data.code)
+                //
+                // }else{
+				//
+				// }
 
 
 			}else {
@@ -60,6 +84,9 @@ const httpMethod = (api,param,baseParam,resp)=>{
                 handleError(res)
 			}
 
+		},
+		fail(error) {
+			console.log(error)
 		}
 	})
 }

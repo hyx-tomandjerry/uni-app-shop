@@ -119,7 +119,19 @@
 			}
 		},
 		methods: {
-			
+			/*查看物流*/
+			checkTrack(waybill){
+				this.$ajax('TraceWaybill',{
+					waybill:waybill
+				},res=>{
+					console.log(res);
+				})
+			}
+		},
+		onLoad(options){
+			if(options.id){
+				this.checkTrack(options.id)
+			}
 		}
 	}
 </script>

@@ -584,7 +584,7 @@
 	.picker {
 		position: fixed;
 		z-index: $z-index;
-		background: rgba(255, 255, 255, 0);
+		background:rgba(0,0,0,0.5);
 		left: 0;
 		top: 0;
 		width: 100%;

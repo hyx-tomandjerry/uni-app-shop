@@ -1,26 +1,17 @@
 <template>
 	<view >
+		<view class="title">
+			消息
+		</view>
 		<view style="position:relative;">
 			<view class="header-content" >
-				<!--<view class="flex justify-start" @click="showGroupList('group')">-->
-					<!--<image src="../../../static/img/message/group.png"-->
-					<!--style="width:50px;-->
-					<!--height:50px;-->
-					<!--vertical-align: middle;-->
-					<!--margin-right:29rpx;"-->
-					<!--&gt;</image>-->
-					<!--<view class="list-title">群组列表</view>-->
-				<!--</view>-->
 				<view class="flex justify-start" @click="showGroupList('telephone')">
-					<image src="../../../static/img/message/telephone.png"
-					style="width:50px;
-					height:50px;
-					vertical-align: middle;
-					margin-right:29rpx;"
+					<image src="../../../static/img/message/telephone.png" class="header-img"
 					></image>
 					<view class="list-title">通讯录</view>
 				</view>
 			</view>
+			<view style="height:13px;width:100%;background:rgba(247,247,247,1)"></view>
 			<scroll-view scroll-y="true" class="page" :class="modalName!=null?'show':''" >
 				<view class="cu-list menu-avatar">
 					<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" v-for="(item,index) in chatList"  :key="index"
@@ -218,71 +209,67 @@
 				})
 			},
 			getLoginInfo(){
-				uni.request({
-					url:this.$store.state.url+'Login',
-					data:{
-						user:'13167233205',
-						token:'abc123456'
-					},
-					success: (res) => {
-						if(res.data.data.status==1){
-						 //监听链接状态回调事件
+				this.$ajax('Login',{
+					user:'13167233205',
+					token:'abc123456'
+				},res=>{
+					if(res.status==1){
 						var onConnNotify=function(resp){
 							// console.log('链接状态',resp);
 							let info ;
 							switch(resp.ErrorCode){
 								case webim.CONNECTION_STATUS.ON:
-								webim.Log.warn('建立连接成功:'+resp.ErrorInfo);
-								break;
-							case webim.CONNECTION_STATUS.OFF:
-								info="连接已断开，无法收到新消息，请检查下您的网络是否正常:"+resp.ErrorInfo;
-								webim.Log.warn(info);
-								break;
-							case webim.CONNECTION_STATUS.RECONNECT:
-								info="连接状态恢复正常:"+res.ErrorInfo;
-								webim.Log.warn(info);
-								break;
-							default:
-								webim.Log.error('未知连接状态:' + resp.ErrorInfo);
-								break;
+									webim.Log.warn('建立连接成功:'+resp.ErrorInfo);
+									break;
+								case webim.CONNECTION_STATUS.OFF:
+									info="连接已断开，无法收到新消息，请检查下您的网络是否正常:"+resp.ErrorInfo;
+									webim.Log.warn(info);
+									break;
+								case webim.CONNECTION_STATUS.RECONNECT:
+									info="连接状态恢复正常:"+res.ErrorInfo;
+									webim.Log.warn(info);
+									break;
+								default:
+									webim.Log.error('未知连接状态:' + resp.ErrorInfo);
+									break;
 							}
 						};
-							//监听收到新消息回调事件
+						//监听收到新消息回调事件
 						var  onMsgNotify=function(resp){
-								let newMsg
-								for(let i in resp){
-									//遍历新消息
-									newMsg=resp[i];
-									if(newMsg.getSession().type()==webim.SESSION_TYPE.GROUP && newMsg.isSend){
-										return;
-									}
+							let newMsg
+							for(let i in resp){
+								//遍历新消息
+								newMsg=resp[i];
+								if(newMsg.getSession().type()==webim.SESSION_TYPE.GROUP && newMsg.isSend){
+									return;
 								}
-							};
-							const loginInfo={
-								sdkAppID:this.$store.state.IMSDKAPPID,
-								appIDAt3rd:this.$store.state.IMSDKAPPID,
-								identifier:res.data.data.imUser,
-								identifierNick:res.data.data.name,
-								accountType:39016,
-								userSig:res.data.data.extprops
-							};
-							const listeners={
-								"onConnNotify":onConnNotify,
-								"jsonpCallback":()=>{},
-								"onMsgNotify":onMsgNotify,
-								"onBigGroupMsgNotify":{},
-								"onGroupSystemNotifys":{},
-								"onGroupInfoChangeNotify":{},
-								"onFriendSystemNotifys":{},
-								"onProfileSystemNotifys":{},
-								"onKickedEventCall":()=>{},
-								"onC2cEventNotifys":()=>{}
-							};
-							const options={
-								isAccessFormalEnv:true,
-								isLogOn:false
-							};
-							webim.login(
+							}
+						};
+						const loginInfo={
+							sdkAppID:this.$store.state.IMSDKAPPID,
+							appIDAt3rd:this.$store.state.IMSDKAPPID,
+							identifier:res.imUser,
+							identifierNick:res.name,
+							accountType:39016,
+							userSig:res.extprops
+						};
+						const listeners={
+							"onConnNotify":onConnNotify,
+							"jsonpCallback":()=>{},
+							"onMsgNotify":onMsgNotify,
+							"onBigGroupMsgNotify":{},
+							"onGroupSystemNotifys":{},
+							"onGroupInfoChangeNotify":{},
+							"onFriendSystemNotifys":{},
+							"onProfileSystemNotifys":{},
+							"onKickedEventCall":()=>{},
+							"onC2cEventNotifys":()=>{}
+						};
+						const options={
+							isAccessFormalEnv:true,
+							isLogOn:false
+						};
+						webim.login(
 								loginInfo,listeners,options,
 								(resp)=>{
 									// console.log(loginInfo)
@@ -295,16 +282,97 @@
 								(err)=>{
 									// console.log(err,'用户登录失败');
 								}
-							)
-						}
-					},
-					fail:(error)=>{
-						uni.showToast({
-							title:error,
-							icon:'none'
-						})
+						)
 					}
 				})
+				// uni.request({
+				// 	url:this.$store.state.url+'Login',
+				// 	data:{
+				// 		user:'13167233205',
+				// 		token:'abc123456'
+				// 	},
+				// 	success: (res) => {
+				// 		console.log(res)
+				// 		if(res.data.data.status==1){
+				// 		 //监听链接状态回调事件
+				// 		var onConnNotify=function(resp){
+				// 			// console.log('链接状态',resp);
+				// 			let info ;
+				// 			switch(resp.ErrorCode){
+				// 				case webim.CONNECTION_STATUS.ON:
+				// 				webim.Log.warn('建立连接成功:'+resp.ErrorInfo);
+				// 				break;
+				// 			case webim.CONNECTION_STATUS.OFF:
+				// 				info="连接已断开，无法收到新消息，请检查下您的网络是否正常:"+resp.ErrorInfo;
+				// 				webim.Log.warn(info);
+				// 				break;
+				// 			case webim.CONNECTION_STATUS.RECONNECT:
+				// 				info="连接状态恢复正常:"+res.ErrorInfo;
+				// 				webim.Log.warn(info);
+				// 				break;
+				// 			default:
+				// 				webim.Log.error('未知连接状态:' + resp.ErrorInfo);
+				// 				break;
+				// 			}
+				// 		};
+				// 			//监听收到新消息回调事件
+				// 		var  onMsgNotify=function(resp){
+				// 				let newMsg
+				// 				for(let i in resp){
+				// 					//遍历新消息
+				// 					newMsg=resp[i];
+				// 					if(newMsg.getSession().type()==webim.SESSION_TYPE.GROUP && newMsg.isSend){
+				// 						return;
+				// 					}
+				// 				}
+				// 			};
+				// 			const loginInfo={
+				// 				sdkAppID:this.$store.state.IMSDKAPPID,
+				// 				appIDAt3rd:this.$store.state.IMSDKAPPID,
+				// 				identifier:res.data.data.imUser,
+				// 				identifierNick:res.data.data.name,
+				// 				accountType:39016,
+				// 				userSig:res.data.data.extprops
+				// 			};
+				// 			const listeners={
+				// 				"onConnNotify":onConnNotify,
+				// 				"jsonpCallback":()=>{},
+				// 				"onMsgNotify":onMsgNotify,
+				// 				"onBigGroupMsgNotify":{},
+				// 				"onGroupSystemNotifys":{},
+				// 				"onGroupInfoChangeNotify":{},
+				// 				"onFriendSystemNotifys":{},
+				// 				"onProfileSystemNotifys":{},
+				// 				"onKickedEventCall":()=>{},
+				// 				"onC2cEventNotifys":()=>{}
+				// 			};
+				// 			const options={
+				// 				isAccessFormalEnv:true,
+				// 				isLogOn:false
+				// 			};
+				// 			webim.login(
+				// 				loginInfo,listeners,options,
+				// 				(resp)=>{
+				// 					// console.log(loginInfo)
+				// 					// console.log('用户登录成功')
+				// 					this.$store.commit('setLoginInfo',loginInfo);
+				// 					this.getAllFriendEvent();
+				// 					this.getRecentContactList();
+				//
+				// 				},
+				// 				(err)=>{
+				// 					// console.log(err,'用户登录失败');
+				// 				}
+				// 			)
+				// 		}
+				// 	},
+				// 	fail:(error)=>{
+				// 		uni.showToast({
+				// 			title:error,
+				// 			icon:'none'
+				// 		})
+				// 	}
+				// })
 			},
 
 
@@ -315,6 +383,13 @@
 <style lang="less">
 	page{
 		background:#fff
+	}
+	.title{
+		font-size:25px;
+		font-weight: bold;
+		padding-left:50rpx;
+		padding-bottom:48rpx;
+		background: #fff;
 	}
 	.top-content{
 		position:fixed;
@@ -332,8 +407,13 @@
 		padding-right:26rpx;
 		padding-left:32rpx;
 		padding-top:10px;
-		margin-bottom:28rpx;
 		background:#fff;
+		.header-img{
+			width:50px;
+			height:50px;
+			vertical-align: middle;
+			margin-right:29rpx;
+		}
 
 	}
 	.list-title{

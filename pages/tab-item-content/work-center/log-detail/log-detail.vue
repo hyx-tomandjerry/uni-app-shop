@@ -1,30 +1,39 @@
 <template>
 	<view class="position_relative">
-		<cu-custom :isBack="true">
+		<cu-custom :isBack="true" bgColor="bg-white">
 			<block slot="left">
-				<text class="cuIcon-back" style="font-size:20px;" @click="goBack()"></text>
+				<view class="cuIcon-back" style="font-size:20px;" @click.stop="goBack()"></view>
 			</block>
-			<block slot="content"><text class="title">汇报详情</text></block>
-			<!--<block slot="right" v-if="type=='log'">-->
-				<!--<image src="../../../../static/icon/garbage.png"-->
-				<!--@click="deleteLog()"-->
-				<!--style="width:15px;height:15px;"></image>-->
-			<!--</block>-->
+			<block slot="content"><view class="title font-size-big font-weight-bold color-normal">汇报详情</view></block>
+			<block slot="right" >
+				<image src="../../../../static/icon/icon-shanchu@2x.png"
+						@click="deleteLog()"
+				style="width:16px;height:16px;" v-if="type=='log' && selectItem.reporter==userInfo.id"></image>
+			</block>
 		</cu-custom>
 		<view class="log-content borderTop bg-white">
 			
 			<view class="log-user flex justify-start font-size-normal font-weight-normal">
 				<view style="margin-right:14px;">
-					<image :src="selectItem.headurl?selectItem.headurl:userInfo.headurl"
+					<image :src="selectItem.headurl?selectItem.headurl:'../../../../static/img/default.png'"
 					 style="width:45px;height:45px;border-radius: 50%;vertical-align: middle;"></image>
 				</view>
 				<view style="padding-top:4px;">
 					<view class=" color-normal">{{selectItem.reporterName || ''}}</view>
-					<view class="color-placeholder font-size-litter font-weight-normal">{{selectItem.rptdate | formatTime('YMDHMS')}}</view>
+					<view class="color-placeholder font-size-litter font-weight-normal flex justify-between">
+						<view>
+							{{selectItem.rptdate | formatTime('YMDHMS')}}
+						</view>
+						<view style="margin-left:20px;">
+							<text v-if="type=='article'">来自</text>
+							<text v-else-if="type=='log'">发送</text>
+							<text style="margin-left:10px;">{{selectItem.shopName}}</text>
+						</view>
+					</view>
 				</view>
 			</view>
 			<view class="log-summary" >
-				<!--<view  style="color:rgba(45,96,151,1);margin-bottom:4px;">{{selectItem.name}}</view>-->
+				<view  style="margin-bottom:4px;font-size:17px;font-weight: bold;" class="color-normal">{{selectItem.name || ''}}</view>
 				<view class="log-detail ">
 					{{selectItem.summary}}
 				</view>
@@ -39,8 +48,8 @@
 
 		<view class="article-content bg-white font-size-small font-weight-normal" >
 			<view class="article-item flex justify-between borderBottom">
-				<view class="color-normal">文章标题</view>
-				<view style="color:rgba(137,136,136,1); " class="font-size-mini">{{selectItem.name}}</view>
+				<view class="color-normal flex-sm" >文章标题</view>
+				<view style="color:rgba(137,136,136,1); " class="font-size-mini text-ellipse flex-1">{{selectItem.articleTitle || ''}}</view>
 			</view>
 			<view v-if="type=='article'">
 
@@ -57,7 +66,7 @@
 			</view>
 		</view>
 
-		<view class="comment-content bg-white">
+		<!-- <view class="comment-content bg-white">
 			<view class="color-normal font-size-big font-weight-middle">评价（{{selectItem.likers?selectItem.likers.length:0}}）</view>
 			
 			
@@ -75,9 +84,9 @@
 					</view>
 				</view>
 				<view v-if="item.poster==userInfo.id">
-					<image src="../../../../static/icon/garbage.png"
+					<image src="../../../../static/icon/icon-shanchu@2x.png"
 					@click="delCommentClick(item.id)"
-					style="width:15px;height:15px;position: absolute;right:30px;"></image>
+					style="width:16px;height:16px;position: absolute;right:30px;"></image>
 				</view>
 			</view>
 			
@@ -85,7 +94,7 @@
 			
 			
 			
-		</view>
+		</view> -->
 		
 		
 		<!-- <view class="cu-modal" :class="modalName=='Image'?'show':''">
@@ -101,7 +110,7 @@
 			</view>
 		</view> -->
 		
-		<view class="cu-modal" :class="modalName=='Image'?'show':''" @click="hideModal()">
+		<!-- <view class="cu-modal" :class="modalName=='Image'?'show':''" @click="hideModal()">
 			<view class="cu-dialog">
 				<view class="bg-img" :style="[{ backgroundImage:'url(' + imgItem.url+ ')' }]" style="min-height:200px;">
 					<view class="cu-bar justify-end text-white">
@@ -110,13 +119,13 @@
 						</view>
 					</view>
 				</view>
-				<!-- <view class="cu-bar bg-white">
+				<view class="cu-bar bg-white">
 					<view class="action margin-0 flex-sub  solid-left" @tap="hideModal">我知道了</view>
-				</view> -->
+				</view>
 			</view>
-		</view>
-		
-		<view class="chat-comment flex justify-start " style="position:fixed;bottom:0px;z-index:100;width:100%">
+		</view> -->
+		<imageModel :isShow="modalName=='Image'" @hideModal="hideModal" @downImg="downImg" :url="imgItem.url"></imageModel>
+	<!-- 	<view class="chat-comment flex justify-start " style="position:fixed;bottom:0px;z-index:100;width:100%">
 			
 				<input type="text" :placeholder="placeMsg" style="background:rgba(238,238,237,1);
 border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-weight-normal" @click="inputMsgClick()" v-model="inputMsg">
@@ -130,40 +139,70 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 					<view  style="background:#3dcfff;color:#fff;padding:5px 15px;border-radius: 8px;margin-left:50px;" @click="sendMsg()"> 发表</view>
 				</view>
 			
-		</view>
+		</view> -->
 		
 		
-		<view class="cu-modal" :class="modalName=='deleteModal'?'show':''">
+		<!-- <view class="cu-modal" :class="modalName=='deleteModal'?'show':''">
 			<view class="cu-dialog ">
 				<view class="cu-bar bg-white justify-end borderBottom">
 					<view class="content font-size-big font-weight-normal color-normal">提示</view>
 				</view>
 				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
-					确定要删除吗?
+					确定要删除该评论吗?
 				</view>
 				<view class="cu-bar bg-white justify-end">
 					<view class="action flex justify-around" style="width:100%;">
 						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal()">取消</view>
-						<view style="width:50%;padding:12px;"  @tap="confirmDel()" class="text-blue">确定</view>
+						<view style="width:50%;padding:12px;"  @tap="confirmDel('comment')" class="text-blue">确定</view>
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
-		<view class="cu-modal" :class="modalName=='download'?'show':''"  @click="hideModal()()">
+		<!-- <view class="cu-modal" :class="modalName=='deleteLogModel'?'show':''">
+			<view class="cu-dialog ">
+				<view class="cu-bar bg-white justify-end borderBottom">
+					<view class="content font-size-big font-weight-normal color-normal">提示</view>
+				</view>
+				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
+					确定要删除该日志吗?
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action flex justify-around" style="width:100%;">
+						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal()">取消</view>
+						<view style="width:50%;padding:12px;"  @tap="confirmDel('log')" class="text-blue">确定</view>
+					</view>
+				</view>
+			</view>
+		</view> -->
+		<showModel :isShow="modalName=='deleteLogModel'" @hideModel="hideModal" @confirmDel="confirmDelModel('log')" v-if="modalName=='deleteLogModel'">
+			
+			<block slot="content">确定要删除该日志吗?</block>
+		</showModel>
+		<showModel :isShow="modalName=='deleteModal'" @hideModel="hideModal" @confirmDel="confirmDelModel('comment')" v-if="modalName=='deleteModal'">
+			
+			<block slot="content">确定要删除该评论吗?</block>
+		</showModel>
+		
+		<!-- <view class="cu-modal" :class="modalName=='download'?'show':''"  @click="hideModal()()">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class=" content" style="font-size:12px;">下载成功</view>
 				</view>
-		
 			</view>
-		</view>
+		</view> -->
+		<simpleModel :isShow="modalName=='download'" @hideSimpleModel="hideModal()" v-if="modalName=='download'">
+			<block slot="content">下载成功</block>
+		</simpleModel>
 	</view>
 </template>
 
 <script>
 	import {mapState} from 'vuex';
+	import showModel from '../../../../components/show-model.vue'
+	import simpleModel from '../../../../components/simple-model.vue'
 	import downloader from '../../../../common/img-downloader.js'
+	import imageModel from '../../../../components/image-model.vue'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
@@ -177,17 +216,20 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 				inputMsg:'',
 				commentList:[],
 				placeMsg:'',
-				deleteID:''
+				deleteID:'',
+				shopID:''
               
 			}
 		},
+		components:{showModel,simpleModel,imageModel},
         onLoad(params){
-			console.log(params)
+		
 			if(params){
 				this.id = params.id;
+				this.shopID=params.shop;
 				this.type=params.type;
 				this.getItem(this.id);
-				this.commentListClick()
+				// this.commentListClick()
 			}
 		  
 			
@@ -199,30 +241,45 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 					 success:(res)=>{
 						let promise=downloader.load(res.path,res.path);
 						promise.then(([err, res])=>{ 
-							console.log(res)
-							console.log(res.statusCode)//下载结果 
 							if(res){
-								console.log('下载成功')
 								this.modalName='download';
-								// this.hideModal()
-							}            // err 和 res 只会有一个存在，另一个为null  
+								
+							} 
 						});
 					 }
 				 })
 			},
-			confirmDel(){
-				this.$ajax('RemoveCommentByShop',{
-					id:this.deleteID,
-					workreport:this.id,
-					
-				},res=>{
-					this.commentListClick()
-					uni.showToast({
-						title:'删除评论成功',
-						icon:'none'
+			confirmDelModel(type){
+				switch(type){
+					case 'comment':
+					this.$ajax('RemoveCommentByShop',{
+						id:this.deleteID,
+						workreport:this.id,
+						
+					},res=>{
+						this.commentListClick()
+						uni.showToast({
+							title:'删除评论成功',
+							icon:'none'
+						})
+						this.modalName=null;
 					})
-					this.modalName=null;
-				})
+					break;
+					case 'log':
+					this.$ajax('RemoveShopWorkReport',{
+						id:this.selectItem.id
+					},res=>{
+						uni.showToast({
+							title:'删除工作日志成功',
+							icon:'none'
+						})
+						uni.navigateBack({
+							delta:1
+						})
+					})
+					break;
+				}
+				
 			},
 			chatClick(item){
 				if(item.poster!=this.userInfo.id){
@@ -245,7 +302,6 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			},
 			//删除评论
 			delCommentClick(id){
-				console.log('kkkkk')
 				this.modalName='deleteModal';
 				this.deleteID=id;
 			},
@@ -283,8 +339,8 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 						title:'不能重复点赞',
 						icon:'none'
 					})
+
 				}else{
-					this.selectItem.likes+=1;
 					this.$ajax('LikeWorkReportByShop',{
 						id:this.id
 					},res=>{
@@ -293,6 +349,7 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 							title:'点赞成功',
 							icon:'none'
 						})
+						this.getItem(this.selectItem.id)
 						
 					})
 				}
@@ -310,7 +367,7 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			},
 			//删除日志
 			deleteLog(){
-
+				this.modalName='deleteLogModel'
 			},
 			//返回上一级
 			goBack(){
@@ -320,7 +377,8 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			},
 			getItem(id){
 			    this.$ajax('WorkReportByShop',{
-			        id:id
+			        article:id,
+					shop:this.shopID
 				},res=>{
 			        this.selectItem = res
 					

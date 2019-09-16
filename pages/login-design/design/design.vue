@@ -1,68 +1,101 @@
 <template>
 	<view  class="position_relative">
 		<view class="design-container">
-			<view class=" font-weight-super font-size-supper" style="margin-bottom:4px;">注册</view>
-			<view class="color-normal font-weight-normal font-size-normal">您好！欢迎来到乐象工程管家</view>
+			<view class=" font-weight-super font-size-supper design-container-title" >注册</view>
+			<view class="color-regular font-weight-normal font-size-normal">您好！欢迎来到乐象门店助手</view>
 		</view>
 		<view class="design-info">
-			<view class="design-info-item flex justify-start borderBottom">
-				<text class="cuIcon-people text-grey" style="font-size:22px;margin-right:16px;padding-left:7px;"></text>
+			<view class="design-info-item flex justify-start borderBottom align-center">
+				<image src="../../../static/icon/icon-dneglu-zhanghu@2x.png" class="design-info-item-name"></image>
+
 				<input type="text" placeholder="请输入姓名" v-model="designer.name"
 					   :class="designer.name?'explain-color':'color-placeholder'"
-					   class=" font-size-big font-weight-normal" style="width:80%" @focus="hideTabbar()">
+					   class=" font-size-big font-weight-normal design-info-item-input"  @focus="hideTabbar()">
 			</view>
 			
-			<view class="design-info-item flex justify-start borderBottom">
-				<text class="cuIcon-mobile text-grey" style="font-size:24px;margin-right:16px;margin-left:4px;"></text>
-				<input type="telephone" placeholder="请输入手机号"
-					   maxlength="11"
-					   v-model="designer.mobile"
-					   :class="designer.mobile?'explain-color':'color-placeholder'"
-					   class=" font-size-big font-weight-normal" @blur="checkTelEvent(designer.mobile)" style="width:70%">
-				<text  class="text-gray">{{designer.mobile.length}}/11</text>
+			<view class="design-info-item flex justify-between borderBottom align-center">
+				<view class="flex justify-start">
+					<image src="../../../static/icon/icon-zhuce-shouji@2x.png" class="design-info-item-tel"></image>
+					
+					<input type="telephone" placeholder="请输入手机号"
+						   maxlength="11"
+						   v-model="designer.mobile"
+						   :class="designer.mobile?'explain-color':'color-placeholder'"
+						   class=" font-size-big font-weight-normal design-info-item-tel-input" @blur="checkTelEvent(designer.mobile)">
+				</view>
+				<view>
+					<text  class="text-gray">{{designer.mobile.length}}/11</text>
+				</view>
 			</view>
 			
-			<view class="design-info-item flex justify-start borderBottom position_relative">
-				<text class="cuIcon-lock text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
-
-				<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token"
-					   class="font-size-big font-weight-normal" :class="designer.token?'explain-color':'color-placeholder'">
-				<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)"
-					   v-else v-model="designer.token" class="font-size-big font-weight-normal"
-					   :class="designer.token?'explain-color':'color-placeholder'">
-				<image :src="isShowPwd?'../../../static/icon/eye_open.png':'../../../static/icon/eye.png'"
-					@click="showPwd()"
-				 style="width:22px;height:22px;position: absolute;right:38px;top:18px;" ></image>
+			<view class="design-info-item flex justify-between borderBottom position_relative align-center">
+				<view class="flex justify-start">
+					<image src="../../../static/icon/icon-dneglu-mima@2x.png"
+						   class="design-info-item-pwd"></image>
+					<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token"
+						   class="font-size-big font-weight-normal" :class="designer.token?'explain-color':'color-placeholder'">
+					<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)"
+						   v-else v-model="designer.token" class="font-size-big font-weight-normal"
+						   :class="designer.token?'explain-color':'color-placeholder'">
+				</view>
+				
+				<view>
+					<view v-if="isShowPwd" @click="showPwd()">
+						<image src="../../../static/icon/icon-xianshimima@2x.png"
+							   class="design-info-item-pwd-img-show"
+					
+						></image>
+					</view>
+					<view v-else @click="showPwd()">
+						<image  
+								src="../../../static/icon/icon-yingcangmima@2x.png"
+							  class="design-info-item-pwd-img"></image>
+					</view>
+				</view>
+				
+				
 			</view>
 			
-			<view class="design-info-item flex justify-start borderBottom position_relative">
-				<text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:7px;"></text>
-				<input type="text" placeholder="请输入验证码" v-model="designer.vcode"
-					   :class="designer.vcode?'explain-color':'color-placeholder'"
-					   class=" font-size-big font-weight-normal" style="width:80%" @blur="hideTabbar()">
-				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
-				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
+			<view class="design-info-item flex justify-between borderBottom position_relative align-center">
+				<view class="flex justify-start">
+					<image src="../../../static/icon/icon-zhuce-youxiang@2x.png"
+						   class="design-info-item-vscode"></image>
+					
+					<input type="text" placeholder="请输入验证码" v-model="designer.vcode"
+						   :class="designer.vcode?'explain-color':'color-placeholder'"
+						   class=" font-size-big font-weight-normal" style="width:80%" @blur="hideTabbar()">
+				</view>
+				<view>
+					<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal " >{{num}}s</button>
+					<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal "   @click="sendCode()">发送验证码</button>
+				</view>
+				
 			</view>
 		</view>
 		
 		<view class="design-submit">
-			<button style="width:100%" :class="{'bg-gray':!designer.name,
+			<button  class="design-submit-btn" :class="{'bg-gray':!designer.name,
 				'bg-blue':designer.name
 				}" @click="designerSubmit()" :disabled="isInput">注册</button>
 		</view>
-		<view class="font-size-small font-weight-normal  color-normal flex justify-between" style="padding-left:15px;margin-top:9px;padding-right:15px;">
-			<view>已有账号？<text style="color:rgba(66,176,237,1);" @click="operateClickEvent('login')">登录</text></view>
-			<view  style="color:rgba(66,176,237,1);"  @click="operateClickEvent('resign')">前往代理商注册</view>
-			<!--<text>已有账号？</text><text style="color:#42B0ED" @click="toLogin()">登录</text>-->
+		<view class="font-size-small font-weight-normal  color-normal flex justify-between submit-intro">
+			<view>已有账号？<text class="color-blue" @click="operateClickEvent('login')">登录</text></view>
 		</view>
 		<view class="copyright font-size-mini font-weight-normal color-normal" v-if="tabbar">
-			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
+			登录/注册即表示同意<text class="color-blue"  @click="signPro">《门店助手软件用户许可协议》</text>
 		</view>
-		
+		<loading
+				ref="loading"
+				:custom="false"
+				:shadeClick="true"
+				:type="1"
+				@callback="callback()">
+			<!-- <view class="test">自定义</view> -->
+		</loading>
 	</view>
 </template>
 <script>
-
+	import loading from '../../../components/xuan-loading.vue'
 	export default{
 		data(){
 			return{
@@ -80,13 +113,17 @@
 				isShowPwd:false,
 				isRightTel:true,
 				tabbar:true,//用于键盘，
-				windowHeight:''
+				windowHeight:'',
+				type:'',//用于区分销售人员还是渠道商个人注册
 			}
 		},
 		components:{
-			
+			loading
 		},
-		onLoad(){
+		onLoad(options){
+			if(options.type){
+				this.type=options.type;
+			}
 			uni.getSystemInfo({
 				success: (res) => {
 					this.windowHeight=res.windowHeight;
@@ -101,6 +138,20 @@
 			})
 		},
 		methods:{
+			close(){
+				 this.$refs.loading.close();
+			},
+			open(){
+				this.$refs.loading.open();
+			},
+			callback(){
+				
+			},
+			signPro(){
+				uni.redirectTo({
+					url:"../protocol/protocol"
+				})
+			},
 			showTabbar(){
 				this.tabbar=true;
 			},
@@ -117,27 +168,45 @@
 							url:'../login/login'
 						})
 						break;
-					case 'resign':
+					case 'choose':
 						uni.navigateTo({
-							url:'../design_company/design_company'
+							url:'../design-type/design-type'
 						})
 				}
 			},
 			designerSubmit(){
+				this.open();
 				if(!this.isRightTel){
 					uni.showToast({
 						title:'电话号码不存在',
-						icon:'none'
+						icon:'none',
+						success:()=>{
+							this.close()
+						}
 					})
 				}else if(!this.designer.name || !this.designer.mobile || !this.designer.token){
 					uni.showToast({
 						title:'请完善基本信息',
-						icon:'none'
+						icon:'none',
+						success:()=>{
+							this.close()
+						}
 					})
-				}else if(!this.designer.vcode){
+				}else if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.token)){
+					uni.showToast({
+						title:'密码不能含有非法字符，长度在6-12之间',
+						icon:'none',
+						success:()=>{
+							this.close()
+						}
+					})
+				} else if(!this.designer.vcode){
 					uni.showToast({
 						title:'请输入验证码',
-						icon:'none'
+						icon:'none',
+						success:()=>{
+							this.close()
+						}
 					})
 				}else{
 					this.$ajax('Signup',{
@@ -145,18 +214,22 @@
 						token:this.designer.token,
 						mobile:this.designer.mobile,
 						gender:this.$store.state.genderZn.man,
-						type:this.$store.state.shoperObj.type,
+						// type:this.$store.state.shoperObj.type,
+						type:this.type,
 						vcode:this.designer.vcode,
 					},res=>{
 						this.isInput=true;
 						uni.showToast({
 							title:'用户注册成功',
-							icon:'none'
+							icon:'none',
+							success:()=>{
+								this.close()
+							}
 						})
 						setTimeout(()=>{
-							uni.navigateBack({
-								delta:1,
-								success:(res)=>{
+							uni.redirectTo({
+								url:"../login/login",
+								success: () => {
 									this.$fire.fire('login',{
 										account:this.designer.mobile,
 										token:this.designer.token
@@ -198,7 +271,7 @@
 			},
 			checkPwdEvent(event){
 				if(event){
-					var reg=/^[a-zA-Z0-9]{6,12}$/;   
+					var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/;
 					if(reg.test(event)==false){
 						uni.showToast({
 							title:'密码不能含有非法字符，长度在6-12之间',
@@ -226,8 +299,9 @@
 	}
 </script>
 <style lang="less" >
+	@import url('../../../static/css/demo.less');
 	page{
-		background:#fff;
+		background: @bg_color;
 	}
 	.copyright{
 		position:fixed;
@@ -236,44 +310,86 @@
 		
 	}
 	.design-container{
-		padding:59px 12px 17px 15px;
-		// .design-title{
-		// 	font-size:30px;
-		// }
-		// .design-title-desc{
-		// 	color:rgba(137,136,136,1);
-		// }
+
+		.mixPadding(59px;12px;17px;15px;);
+		.design-container-title{
+			.mixMarginBottom(4px);
+
+		}
+
 	}
 	.design-info{
-		padding-top:34px;
-		padding-left:15px;
-		padding-right:12px;
-		margin-bottom:28px;
+
+		.mixPadding(34px;23px;0;15px);
+		.mixMarginBottom(28px);
 		.design-info-item{
-			padding:16px 0 16px 0;
+
+			.mixPadding(16px;0;16px;0);
+			.design-info-item-name{
+				.mixImg(22px;22px;);
+				.mixMarginRight(15px);
+
+			}
+			.design-info-item-input{
+
+				.mixWidth(80%;);
+			}
+			.design-info-item-tel{
+				.mixImg(18px;23px;);
+				.mixMarginRight(18px);
+
+			}
+			.design-info-item-tel-input{
+				.mixWidth(70%;);
+			}
+			.design-info-item-pwd{
+				.mixImg(19px;23px;);
+				.mixMarginRight(15px);
+
+			}
+			.design-info-item-pwd-img{
+				
+				.mixWidth(17px);
+				.mixHeight(8px);
+				
+
+			}
+			.design-info-item-pwd-img-show{
+
+				.mixWidth(17px);
+				.mixHeight(11px);
+			}
+			.design-info-item-vscode{
+				.mixImg(20px;18px;);
+				.mixMarginRight(15px);
+			}
+
 		}
-		// .design-info-item-input{
-		// 	color:rgba(185,185,185,1);
-		// }
 		.btn-area{
-			padding:2px 11px;
-			background:rgba(66,176,237,1);
-			color:#fff;
-			border-radius:4px;
-			right:10px;
-			line-height: 28px;
+			color:@bg_color;
+			
+			.mixPadding(2px;11px;2px;11px;);
+			.background(rgba(66,176,237,1));
+			.mixBorderRadius(4px);
+			.lineHeight(28px);
 		}
 		.default-btn{
-			padding:2px 45px;
-			color:gray;
-			border-radius:4px;
-			right:10px;
-			line-height: 28px;
 			
+			.mixPadding(2px;45px;2px;45px);
+			.color(gray);
+			.mixBorderRadius(4px);
+			.lineHeight(28px)
 		}
 	}
 	.design-submit{
-		padding-right:12px;
-		padding-left:15px;
+		.mixPadding(0;12px;0;15px);
+		.design-submit-btn{
+			.mixWidth(100%)
+		}
+
+	}
+	.submit-intro{
+		.mixPadding(0;15px;0;15px;);
+		.mixMarginTop(9px);
 	}
 </style>

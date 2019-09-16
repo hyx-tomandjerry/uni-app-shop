@@ -82,79 +82,38 @@
 
 				</view>
 				<view style="margin-left:10px;margin-right:15px;">
-					{{item.name}}/{{item.account || '无'}}
+					{{item.name}}/{{item.account || item.mobile}}
 				</view>
 				<view>
 					<text class="cu-tag round" v-if="shopItem.manager==item.id && item.status==salemanStatus.normal"
 						  style="font-size:12px;padding:0 10px;height:22px;background:#42B0ED;color:#fff;">
 						店长
 					</text>
-					<text class="cu-tag bg-green round" v-if="shopItem.manager!=item.id && item.status==salemanStatus.normal"
-						  style="font-size:12px;padding:0 10px;height:22px;">
+					<text class="cu-tag round" v-else-if="shopItem.manager!=item.id && item.nickname"
+						  style="font-size:12px;padding:0 10px;height:22px;background:#FE933E;color:#fff;">
+						{{item.nickname}}负责人
+					</text>
+					<text class="cu-tag bg-green round" 
+							v-else-if="shopItem.manager!=item.id && item.status==salemanStatus.normal"
+							style="font-size:12px;padding:0 10px;height:22px;">
 						在职
 					</text>
-					<text class="cu-tag bg-orange round" v-if=" item.status==salemanStatus.inviting" style="font-size:12px;padding:0 10px;height:22px;">邀请中待确认</text>
-					<text
+					<!-- <text class="cu-tag bg-orange round" v-if=" item.status==salemanStatus.inviting" style="font-size:12px;padding:0 10px;height:22px;">邀请中待确认</text> -->
+					<!-- <text
 							v-if=" item.status==salemanStatus.free" @click="SendInvitationEvent(item)">
 						<text v-if="shopItem.manager == userInfo.id" class="cu-tag round " style="font-size:12px;padding:0 10px;height:22px;background:#00BFFF;color:white">发送邀请</text>
 						<text v-else></text>
-					</text>
+					</text> -->
 				</view>
 				<view style="position:absolute;right:12px;">
-					<view v-if="shopItem.manager==item.id || item.nickName=='manager'"></view>
-					<view v-else>
-						<image :src="item.isCheck?'../../../../static/icon/xuanze.png':'../../../../static/icon/weixuanze.png'"
+					<view v-if="shopItem.manager==userInfo.id">
+						<image :src="item.isCheck?'../../../../static/icon/icon-xuanzhong.png':'../../../../static/icon/icon-weixuanzhong.png'"
 							   style="width:20px;height:20px;" @click="chooseMemberOperate(item)"></image>
 					</view>
-
+					
 				</view>
 			</view>
 		</view>
-		<!--<view  class=" cu-list menu menuBorder  sm-border  margin-top">-->
-			<!--<view class="cu-item position_relative" style="margin-bottom:20rpx;">-->
-				<!--<view class="content padding-tb-sm">-->
-					<!--<view class="flex justify-between">-->
-						<!--<view class="font-size-big font-weight-bold">-->
-							<!--店员列表-->
-						<!--</view>-->
-					<!--</view>-->
-					<!--<scroll-view :scroll-y="true" class="page show" style="min-height:460px;">-->
-						<!--<view class="cu-list menu-avatar">-->
-							<!--<view class="cu-item" v-for="(item ,index) in userList" :key="index">-->
-								<!--<view class="cu-avatar lg" style="width:40px;height:40px; background: #fff;">-->
-									<!--<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  	style="width:40px;height:40px;border-radius: 50%;"></image>-->
-								<!--</view>-->
-								<!--<view class="content">-->
-									<!--<view class="font-size-small">{{item.name}}/{{item.account}}</view>-->
-									<!--&lt;!&ndash;<view >&ndash;&gt;-->
-										<!--&lt;!&ndash;<text class="text-cut clerk-name">{{item.name}}</text>&ndash;&gt;-->
-										<!--&lt;!&ndash;<text class="font-size-litter font-weight-normal text-blue" style="margin-left:4px;"> {{shopItem.manager ==item.id?'（店长）' :''}}</text>&ndash;&gt;-->
-									<!--&lt;!&ndash;</view>&ndash;&gt;-->
-									<!--&lt;!&ndash;<view class="text-gray text-sm flex clerk-desc" >&ndash;&gt;-->
-										<!--&lt;!&ndash;<text style="margin-right:5px;">联系电话:</text><text>{{item.account}}</text>&ndash;&gt;-->
-									<!--&lt;!&ndash;</view>&ndash;&gt;-->
-								<!--</view>-->
-								<!--<view>-->
-									<!--<text class="cu-tag bg-green round" v-if="item.status==salemanStatus.normal" style="font-size:13px;padding:0 20px;">-->
-										<!--在职-->
-									<!--</text>-->
-									<!--<text class="cu-tag bg-orange round" v-if=" item.status==salemanStatus.inviting" style="font-size:13px;">邀请中待确认</text>-->
-									<!--<text-->
-										<!--v-if=" item.status==salemanStatus.free" @click="SendInvitationEvent(item)">-->
-										<!--<text v-if="shopItem.manager == userInfo.id" class="cu-tag round " style="background:#00BFFF;color:white">发送邀请</text>-->
-										<!--<text v-else></text>-->
-									<!--</text>-->
-								<!--</view>-->
-							<!--</view>-->
-						<!--</view>-->
-
-					<!--</scroll-view>-->
-				<!--</view>-->
-
-			<!--</view>-->
-		<!--</view>-->
-
-
 		<view class="cu-modal" :class="isShow?'show':''" >
 
 			<view class="cu-dialog">
@@ -167,16 +126,15 @@
 						
 						<view class="flex justify-start bg-white " style="padding-top:22px;padding-left:14px;">
 							<view style="margin-right:5px;width:11%;margin-top:4px;">
-								<image src="../../../../static/img/record-name.png" style="width:26px;height:26px;vertical-align: middle;"></image>
+								<image src="../../../../static/img/shop/record-name.png" style="width:26px;height:26px;vertical-align: middle;"></image>
 							</view>
-							<input type="text" v-model="designer.name" style="box-shadow:0px 1px 4px 1px rgba(227,227,227,0.5);
-border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text-align:left"
+							<input type="text" v-model="designer.name" style="box-shadow:0px 1px 4px 1px rgba(227,227,227,0.5);border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text-align:left"
 								placeholder="请输入店员姓名"  class="join-modal-input">
 						</view>
 
 						<view class="flex justify-start bg-white position_relative" style="padding-top:17px;padding-left:14px;">
 							<view style="margin-right:5px;width:11%;margin-top:4px;">
-								<image src="../../../../static/img/record-shouji.png" style="width:26px;height:26px;vertical-align: middle;"></image>
+								<image src="../../../../static/img/shop/record-shouji.png" style="width:26px;height:26px;vertical-align: middle;"></image>
 							</view>
 							<input type="text" v-model="designer.telephone"
 								class="join-modal-input"
@@ -198,100 +156,50 @@ border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text
 			
 		</view>
 
-		<!--<image src="../../../../static/icon/add.png"-->
-		<!--v-if="shopItem.manager==userInfo.id"-->
-		<!--style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="inviteJoin()"></image>-->
-
 		<view class="operate-btn flex justify-start" v-if="shopItem.manager==userInfo.id">
 			<view class="set-btn text-center" style="width:40%;" @click="setManager()">设为店长</view>
 			<view class="record-btn text-center" style="width:55%;" @click="inviteJoin()">录入店员</view>
 		</view>
 
-		<view class="cu-modal" :class="modalName=='imageModal'?'show':''" @click="hideModal()">
-			<view class="cu-dialog">
-				<view class="bg-img" :style="[{ backgroundImage:'url(' + shopItem.coverurl+ ')' }]" style="min-height:200px;">
-					<view class="cu-bar justify-end text-white">
-						<view class="action" @tap="downImg()">
-							<text class="cuIcon-down " style="font-size:20px;"></text>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="cu-modal" :class="secondModal=='nameModal'?'show':''" @click.stop="hideSecondModal()">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-center">
-					<view class=" font-size-litter font-weight-normal">请输入店员姓名</view>
-				</view>
+		<imageModel :isShow="modalName=='imageModal'" @hideModel="hideModal" @downImg="downImg" :url="shopItem.coverurl"></imageModel>
 
-			</view>
-		</view>
-		<view class="cu-modal" :class="secondModal=='telModal'?'show':''" @click.stop="hideSecondModal()">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-center">
-					<view class=" font-size-litter font-weight-normal">电话号码不存在</view>
-				</view>
+		<simpleModel :isShow="secondModal=='nameModal'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='nameModal'">
+			<block slot="content">请输入店员姓名</block>
+		</simpleModel>
 
-			</view>
-		</view>
-		<view class="cu-modal" :class="secondModal=='exist'?'show':''" @click.stop="hideSecondModal()">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class="content">工作关系已经存在,不能反复邀请或申请</view>
-				</view>
+		<simpleModel :isShow="secondModal=='telModal'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='telModal'">
+			<block slot="content">电话号码不存在</block>
+		</simpleModel>
 
-			</view>
-		</view>
+		<simpleModel :isShow="secondModal=='exist'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='exist'">
+			<block slot="content">工作关系已经存在,不能反复邀请或申请</block>
+		</simpleModel>
+
+		<simpleModel :isShow="secondModal=='download'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='download'">
+			<block slot="content">下载成功</block>
+		</simpleModel>
+
 		
-		<view class="cu-modal" :class="secondModal=='download'?'show':''"  @click="hideSecondModal()">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white justify-end">
-					<view class=" content" style="font-size:12px;">下载成功</view>
-				</view>
+		<showModel :isShow="modalName=='setModel'" @hideModel="hideModal" @confirmDel="setShoper" v-if="modalName=='setModel'">
+			<block slot="content">	确定要将{{shoper.name}}设置店长吗?</block>
+		</showModel>
+
 		
-			</view>
-		</view>
-
-		<view class="cu-modal" :class="modalName=='setModel'?'show':''">
-			<view class="cu-dialog ">
-				<view class="cu-bar bg-white justify-end borderBottom">
-					<view class="content font-size-big font-weight-normal color-normal">提示</view>
-				</view>
-				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
-					确定要将{{shoper.name}}设置店长吗?
-				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action flex justify-around" style="width:100%;">
-						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal()">取消</view>
-						<view style="width:50%;padding:12px;"  @tap="setShoper()" class="text-blue">确定</view>
-					</view>
-				</view>
-			</view>
-		</view>
-
-		<view class="cu-modal" :class="modalName=='deleteModel'?'show':''">
-			<view class="cu-dialog ">
-				<view class="cu-bar bg-white justify-end borderBottom">
-					<view class="content font-size-big font-weight-normal color-normal">提示</view>
-				</view>
-				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
-					确定要将店员删除吗?
-				</view>
-				<view class="cu-bar bg-white justify-end">
-					<view class="action flex justify-around" style="width:100%;">
-						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal()">取消</view>
-						<view style="width:50%;padding:12px;"  @tap="confirmDelete()" class="text-blue">确定</view>
-					</view>
-				</view>
-			</view>
-		</view>
+		<showModel :isShow="modalName=='deleteModel'" @hideModel="hideModal"
+				   v-if="modalName=='deleteModel'"
+				   @confirmDel="confirmDelete">
+			<block slot="content">确定要将店员删除吗?</block>
+		</showModel>
 	</view>
 </template>
 
 <script>
-	import popModal from '../../../../components/popmodal.vue'
+
 	import {mapState} from 'vuex';
 	import downloader from '../../../../common/img-downloader.js'
+	import simpleModel from '../../../../components/simple-model.vue'
+	import showModel from'../../../../components/show-model.vue'
+	import imageModel from '../../../../components/image-model.vue'
 	export default{
 	    computed:mapState(['userInfo','shopTypeZn','shopStatusZn']),
 		data(){
@@ -314,7 +222,9 @@ border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text
 			}
 		},
 		components:{
-			popModal
+			simpleModel,
+			showModel,
+			imageModel
 		},
 		methods:{
 			confirmDelete(){
@@ -487,6 +397,7 @@ border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text
 						item.isCheck=false;
 					})
 					this.userList=res;
+					
 				})
 			},
 			//录入店员
@@ -502,23 +413,20 @@ border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text
 					}else{
 							this.$ajax('Signup',{
 							name:this.designer.name,
-							mobile:this.designer.telephone,
-							type:4,
-							team:this.shopItem.id,
+								mobile:this.designer.telephone,
+								type:4,
+								team:this.shopItem.id,
 						},res=>{
-							console.log(res)
-							if(res==-31){
+							uni.showToast({
+								title:'录入店员成功',
+								icon:'none'
+							});
+							this.isShow=false;
+							this.checkShopDetail(this.shopID)
+						},true,code=>{
+							if(code==-31){
 								this.secondModal='exist';
-							}else{
-								uni.showToast({
-									title:'录入店员成功',
-									icon:'none'
-								});
-								this.isShow=false;
-								this.checkShopDetail(this.shopID)
 							}
-
-
 						})
 					}
 
@@ -614,7 +522,7 @@ border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text
 
 	.member-container{
 		padding:18px 15px 15px 23px;
-		margin-bottom:40px;
+		margin-bottom:60px;
 		background:#fff;
 		.member-list{
 			padding:18px 0 15px;

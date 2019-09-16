@@ -157,7 +157,7 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 			uni.chooseImage({
 				count:9,
 				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-				sourceType: ['album'], //从相册选择
+				sourceType: ['camera','album'],
 				success: (res) => {
 					const tempFilePaths=res.tempFilePaths;
 					if (this.imgList.length != 0) {
@@ -244,12 +244,8 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 			},
 			//获得上传token
 			getUploadToken(){
-				uni.request({
-					url:this.$store.state.url+'UploadToken',
-					success: (res) => {
-						this.token=res.data.data
-
-					}
+				this.$ajax('UploadToken',{},res=>{
+					this.token=res;
 				})
 			},
 			selected(n,type){
@@ -417,14 +413,14 @@ border-radius:5px;color:#fff;"><text class="submit-btn" >提交</text></button>
 	.starts-wrapper view{
 		width:30px;
 		height:30px;
-		background-image: url('../../../../static/icon/start/pingjia.png');
+		background-image: url('../../../../static/icon/icon-weipingjia.png');
 		background-repeat:no-repeat;
 		background-size:100% 100%;
 		margin-right: 10px;
 		display: inline-block;
 	}
 	.starts-wrapper .on{
-		background-image: url('../../../../static/icon/start/pingjia_color.png');
+		background-image: url('../../../../static/icon/icon-yipingjia.png');
 	}
 	.btn-area{
 

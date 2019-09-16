@@ -4,32 +4,46 @@
 			<view class="font-size-supper font-weight-super text-black">密码找回</view>
 		</view>
 		<view class="findPwd-info">
-			<view class="findPwd-info-item flex justify-start borderBottom">
-				<image src="../../../static/icon/common/phone.png" style="width:14px;height:20px;margin-right:22px;vertical-align: middle;margin-top:2px;"></image>
-				<input type="text" placeholder="请输入手机号" v-model="designer.mobile"  class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="checkTelEvent(designer.mobile)"  @focus="hideTabbar()" maxlength="11">
-				<text class="text-gray">{{designer.mobile.length}}/11</text>
+			<view class="findPwd-info-item flex justify-start borderBottom align-center">
+				<image src="../../../static/icon/icon-zhuce-shouji@2x.png"
+					   class="findPwd-info-item-tel-img"></image>
+				<input type="text" placeholder="请输入手机号"
+					   v-model="designer.mobile"
+					   :class="{
+					   		'color-placeholder':!designer.mobile,
+					   		'color-normal':designer.mobile
+					   }"
+					   class=" font-size-big font-weight-normal findPwd-info-item-tel-input"
+					   @blur="checkTelEvent(designer.mobile)"  @focus="hideTabbar()"
+					   maxlength="11">
+				<text class="color-placeholder">{{designer.mobile.length}}/11</text>
 			</view>
 			
-			<view class="findPwd-info-item flex justify-start borderBottom">
-				<!-- <text class="cuIcon-mail text-grey" style="font-size:23px;margin-right:16px;padding-left:8px;"></text> -->
-				<image src="../../../static/icon/common/email.png" style="width:21px;height:15px;margin-right:22px;vertical-align: middle;margin-top:6px;"></image>
-				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode" class="color-placeholder font-size-big font-weight-normal" style="width:80%" @blur="showTabbar()">
+			<view class="findPwd-info-item flex justify-start borderBottom align-center">
+				<image src="../../../static/icon/icon-zhuce-youxiang@2x.png"
+					   class="findPwd-info-item-vscode-img"></image>
+				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode"
+					   :class="{
+					   		'color-placeholder':!designer.vcode,
+					   		'color-normal':designer.vcode
+					   }"
+					   class="font-size-big font-weight-normal findPwd-info-item-vscode-input"  @blur="showTabbar()">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
 				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
 			</view>
 			
 			<view class="design-submit">
-				<button style="width:100%" :class="{'bg-gray':!designer.mobile,
+				<button  :class="{'bg-gray':!designer.mobile,
 					'bg-blue':designer.mobile
 					}" @click="toNextPage()">下一步</button>
 			</view>
 			
 		</view>
-		<view class=" font-size-small color-normal" style="margin-top:9px;padding-left:15px;">
-			<view @click="toLogin()">已有账号?<text style="color:#42B0ED;margin-left:9px;" >登录</text></view>
+		<view class=" font-size-small color-normal login_btn_container" >
+			<view @click="toLogin()">已有账号?<text class="color-blue" >登录</text></view>
 		</view>
 		<view class="copyright font-size-mini color-normal font-weight-normal" v-if="tabbar">
-			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
+			登录/注册即表示同意<text class="color-blue" @click="signPro">《门店助手软件用户许可协议》</text>
 		</view>
 	</view>
 </template>
@@ -51,13 +65,17 @@
 			
 		},
 		methods:{
+			signPro(){
+				uni.redirectTo({
+					url:"../protocol/protocol"
+				})
+			},
 			toLogin(){
 				uni.navigateBack({
 					delta:1
 				})
 			},
 			showTabbar(){
-				console.log('jjjj')
 				this.tabbar=true;
 			},
 			hideTabbar(){
@@ -70,11 +88,8 @@
 							title:'电话号码不存在',
 							icon:'none'
 						})
-						this.checkTel=true;
-						return
-					} else{
-						this.checkTel=false;
-					}
+							return;
+					} 
 				}
 			},
 			toNextPage(){
@@ -135,52 +150,65 @@
 	}
 </script>
 <style lang="less">
+	@import url('../../../static/css/demo.less');
 	page{
-		background:#fff;
+		.background(#fff)
 	}
 	.copyright{
 		position:fixed;
 		left:59px;
 		bottom:17px;
 	}
-		.findPwd-container{
-			padding:102px 15px 17px 22px;
-		
-			// .fintPwd-title{
-			// 	font-size:30px;
-			// }
-			
-		}
+	.findPwd-container{
+
+		.mixPadding(102px;15px;17px;22px)
+	}
 		.findPwd-info{
-			padding-top:51px;
-			padding-left:15px;
-			padding-right:12px;
-			
+
+			.mixPadding(51px;12px;0;15px);
 			.findPwd-info-item{
-				padding:26px 0 16px 0;
+
+				.mixPadding(26px;0;16px;0);
+				.findPwd-info-item-tel-img{
+					.mixImg(14px;22px;);
+					.mixMarginRight(15px);
+
+				}
+				.findPwd-info-item-tel-input,
+				.findPwd-info-item-vscode-input{
+					.mixWidth(80%)
+				}
+				.findPwd-info-item-vscode-img{
+
+					.mixImg(21px;15px;);
+					.mixMarginRight(15px);
+				}
+
 			}
-			// .findPwd-info-item-input{
-			// 	color:rgba(185,185,185,1);
-			// }
 			.btn-area{
-				padding:2px 11px;
-				background:rgba(66,176,237,1);
-				color:#fff;
-				border-radius:4px;
+
+				.mixPadding(2px;11px;2px;11px);
+				.background(rgba(66,176,237,1));
+				.color(#fff);
+				.mixBorderRadius(4px);
 				right:10px;
-				line-height: 28px;
+				.lineHeight(28px);
 			}
 			.default-btn{
-				padding:2px 45px;
-				color:gray;
-				border-radius:4px;
+
+				.mixPadding(2px;45px;2px;45px);
+				.color(gray);
+				.mixBorderRadius(4px);
 				right:10px;
-				line-height: 28px;
-				
+				.lineHeight(28px);
 			}
 		}
 		.design-submit{
-			margin-top:31px;
-			
+
+			.mixMarginTop(31px);
 		}
+	.login_btn_container{
+		.mixMarginTop(9px);
+		.mixPaddingLeft(15px)
+	}
 </style>

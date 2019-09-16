@@ -1,12 +1,12 @@
 <template>
 	<view >
 	
-	<view class="flex text-center" v-if="userInfo.type==shoperObj.type">
-		<view class="cu-item flex-sub font-size-big bg-white borderBottom" :class="item.id==TabCur?'borderBottomRed cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(item)" :data-id="index" style="padding:9px  0;">
+	<view class="flex text-center bg-white justify-around">
+		<view class="cu-item  font-size-big  " :class="item.id==TabCur?'cur  borderBottomRed color-red':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(item)" :data-id="index" style="padding:9px  0;">
 			{{item.name}}
 		</view>
 	</view>
-		<view v-if="list.length>0">
+		<view v-if="list.length">
 			<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px" >
 				<view class="user flex justify-start">
 					<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;border-radius: 50%;"></image>
@@ -15,13 +15,21 @@
 						<view  style="margin-bottom:4px;">
 							<text class="user-name">{{item.reporterName}}</text>
 						</view>
-						<!-- <view class="work-date  tag-name">{{item.title}}</view> -->
-						<view class="work-date ">{{item.rptdate | formatTime('YMDHMS')}}</view>
+						<view class="flex justify-between work-date">
+							<view >{{item.rptdate | formatTime('YMDHMS')}}</view>
+							<view style="margin-left:20px;">
+								<text >发送</text>
+								<text style="margin:0 10px;"> {{item.shopName}}</text>
+								
+							</view>
+						</view>
+						
 					</view>
 				</view>
 				<view class="work-content">
 					<view>
-						<text class="user-name ellipsis-2 font-size-normal font-weight-normal color-normal">{{item.summary}}</text>
+						<view style="font-size:15px;color:#2D6097">#{{item.name || ''}}#</view>
+						<view class="user-name ellipsis-2 font-size-normal font-weight-normal color-normal">{{item.summary}}</view>
 					</view>
 					<view v-if="item.files">
 						<view class="bg-white " style="padding:16px 0;">
@@ -31,28 +39,14 @@
 			</view>
 					</view>
 				</view>
-				<view class="share-content flex justify-start">
-					<view class="font-size-small font-weight-normal" style="margin-right:34px;" @click.stop="operateLog(item,'comment')">
-						<image src="../../../../static/img/work/log/pinglun.png" style="width:20px;height:19px;vertical-align: middle;"></image>
-						<text style="margin-left:10px;color:rgba(92,99,127,1);">{{item.comments}}</text>
-					</view>
-					<view class="font-size-small font-weight-normal" style="margin-right:34px;"  @click.stop="operateLog(item,'share')">
-						<image src="../../../../static/img/work/log/fenxiang.png" style="width:20px;height:19px;vertical-align: middle;"></image>
-						<text style="margin-left:10px;color:rgba(92,99,127,1);">{{item.forwards}}</text>
-					</view>
-					<view class="font-size-small font-weight-normal"   @click.stop="operateLog(item,'praise')">
-						<image src="../../../../static/img/work/log/dianzan.png" style="width:20px;height:19px;vertical-align: middle;" v-if="item.isLiker!=1"></image>
-						<image src="../../../../static/img/work/log/dianzan_color.png" style="width:20px;height:19px;vertical-align: middle;" v-else></image>
-						<text style="margin-left:10px;color:rgba(92,99,127,1);">{{item.likes}}</text>
-					</view>
-				</view>
+			
 			</view>
 		</view>
 		<view v-else>
 			<LxEmpty></LxEmpty>
 		</view>
-		<image src="../../../../static/icon/add.png"
-				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2 && userInfo.type==shoperObj.type "></image>
+		<!-- <image src="../../../../static/img/add.png"
+				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2 && userInfo.type==shoperObj.type "></image> -->
 				<uni-load-more :contentText="content" :status="loading" :showIcon="true" ></uni-load-more>
 	</view>
 </template>
@@ -67,10 +61,8 @@
 			return {
 				page:0,
 				list:[],
-
 				isLoading:false,
-				isFinish:false,
-				tabList:[{id:1,name:'工作回执'},{id:2,name:'工作日志'}],
+				tabList:[{id:1,name:'工作回执'},{id:2,name:'销售周报'}],
 				TabCur:1,
 				content:{
 					contentdown: "",
@@ -78,8 +70,7 @@
 					contentnomore: "没有更多数据了"
 				},
 				loading:'more',
-				avatar:'',
-				isLike:0,
+				//isLike:0,点赞功能，现在删除
 			}
 		},
 		components:{
@@ -87,27 +78,30 @@
 			uniLoadMore
 		},
 		onPullDownRefresh(){
-			this.getList()
+			setTimeout(()=>{
+				uni.stopPullDownRefresh();
+				this.page=1;
+				this.getList()
+			},800)
 		},
 		onReachBottom(){
 			this.page++;
 			this.$ajax('WorkReportsByShop',{
-			     zone:-1,
-				 brand:0,
-				  type:this.TabCur,
+				  type:2,
 				 offset:this.$utils.getOffset(this.page)
 			},res=>{
 				if(res==''){
 					setTimeout(()=>{
-							this.loading='noMore'
+						this.loading='noMore'
 					},900)
 
 			    }else{
+					res.forEach(item=>{
+						this.list.concat(item);
+					})
+					this.loading='loading'
 					setTimeout(()=>{
-						res.forEach(item=>{
-							this.list=this.list.concat(item);
-						})
-						this.loading='loading'
+						this.loading='noMore'
 					},900)
 
 
@@ -119,9 +113,12 @@
 			this.getList();
         },
 		onShow(){
+			this.page=1;
 			this.getList();
 		},
 		methods: {
+			/**
+			 点赞，评论功能，已删除
 			operateLog(item,type){
 				switch(type){
 					case 'comment':
@@ -140,10 +137,12 @@
 					break;
 					case 'praise':
 					console.log(item)
-
-					this.isLike+=1;
-					console.log(this.isLike)
-					if(this.isLike==1){
+					if(item.isLiker==1){
+						uni.showToast({
+							title:'不要重复点赞',
+							icon:'none'
+						})
+					}else{
 						item.likes+=1;
 						this.$ajax('LikeWorkReportByShop',{
 							id:item.id
@@ -152,52 +151,47 @@
 								title:'点赞成功',
 								icon:'none'
 							})
-						})
-					}else{
-						uni.showToast({
-							title:'不要重复点赞',
-							icon:'none'
+							this.getList();
 						})
 					}
+					
 
 					break;
 				}
 			},
-			tabSelect(item){
-				this.TabCur=item.id;
-				this.getList()
-
-			},
+			
 			//新建
 			createWork(event){
 				uni.navigateTo({
 					url:'../create-log/create-log?type=log'
 				})
 			},
+			*/
+		   //选择nav
+			tabSelect(item){
+				this.TabCur=item.id;
+				this.getList()
+
+			},
+			
 			//查看详情
 			itemDetail(event){
-				
-				if(event.type==1){
-					uni.navigateTo({
-						url:`../log-detail/log-detail?id=${event.id}&type=article`
-					})
-				}else if(event.type==2){
-					uni.navigateTo({
-						url:`../log-detail/log-detail?id=${event.id}&type=log`
-					})
-				}
-				
+				uni.navigateTo({
+					url:`../log-detail/log-detail?id=${event.article}&type=article&shop=${event.shop}`
+				})
 			},
 			//获取列表数据
 			getList(){
-			    this.$ajax('WorkReportsByShop',{
-                     zone:-1,
-					 brand:0,
-					 type:this.TabCur,
-					 offset:this.$utils.getOffset(this.page)
-				},res=>{
-					 this.list = res;
-				})
+			    if(this.TabCur==1){
+					this.$ajax('WorkReportsByShop',{
+						 type:2,
+						 offset:this.$utils.getOffset(this.page)
+					},res=>{
+						 this.list = res;
+					})
+				}else{
+					this.list=[]
+				}
 			},
 
 		}

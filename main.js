@@ -23,19 +23,16 @@ Vue.filter('repairStatus',function(value){
 	if(!value) return ''
 	return store.state.repairStatusZn[value]
 })
-Vue.filter('repairStatusColor',function(value){
+Vue.filter('repairTypePipe',(value)=>{
 	if(!value) return ''
-	return store.state.repairStatusColor[value]
+	return store.state.repairTypeZn[value]
 })
 //快递状态
 Vue.filter('expressStatusPipe',(value)=>{
 	if(!value) return''
 	return store.state.expressStatus[value]
 })
-Vue.filter('distributeStatusPipe',(value)=>{
-	if(!value) return''
-	return store.state.distributeStatus[value]
-})
+
 //门店
 Vue.filter('shopStatus',(value)=>{
 	if(!value) return ''
@@ -58,14 +55,22 @@ Vue.filter('operateZn',(value)=>{
 	if(!value) return ''
 	return store.state.runCatalogZn[value]
 })
+Vue.filter('distributeStatusPipe',(value)=>{
+	if(!value) return ''
+	return store.state.distributeStatus[value]
+})
 
 //成员状态
 Vue.filter('userStatusPipe',(value)=>{
 	if(!value) return ''
-	return store.state.userStatusZn[value]
+	return store.state.userStatus[value]
 })
+//外部成员状态
 
-
+Vue.filter('outerStatusZnPipe',(value)=>{
+	if(!value) return ''
+	return store.state.outerStatusZn[value]
+})
 Vue.prototype.format=function(value,type){
 				var dataTime="";
 				var data = new Date();  
@@ -107,17 +112,19 @@ Vue.filter('formatTime',function(value,type){
 				}else if(type == "YM"){
 					dataTime = year + "-" + month;
 
+				}else if(type=='MD'){
+					dataTime=month+"-"+day
 				}
 				return dataTime;//将格式化后的字符串输出到前端显示
 })
 
-//代办通知显示类型
-Vue.filter('todoType',function(value){
-	return store.state.noticeTypeZn[value]
-})
-//代办通知显示类型颜色
-Vue.filter('todoTypeColor',function(value){
-	return store.state.noticeTypeColor[value]
+
+/*
+	性别
+
+*/
+Vue.filter('genderPipe',(value)=>{
+	return store.state.gender[value]
 })
 const app = new Vue({
     ...App

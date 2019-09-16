@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<cu-custom :isBack="true">
-			<block slot="left"><text class="cuIcon-back" style="font-size:19px;" @click="goBack()"></text><text style="margin-left:10px;">更改昵称</text></block>
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back" style="font-size:19px;" @click.stop="goBack()"></text><text style="margin-left:10px;">更改昵称</text></block>
 			<block slot="right">
 				<text class="cu-tag bg-gradual-green round" @click="changeName()">保存</text>
 			</block>

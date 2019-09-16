@@ -70,35 +70,5 @@
 			margin-top:20px;
 		}
 	}
-	// .number-container{
-	// 	padding:20px 12px 16px 15px;
-	// 	border-bottom:1px solid #EEEEED;
-	// 	.number-title{
-	// 		font-size:22px;
-	// 		font-family:PingFangSC-Semibold;
-	// 		font-weight:600;
-	// 		color:rgba(42,42,42,1);
-	// 		margin-bottom:12px;
-	// 	}
-	// 	.number-tel{
-	// 		font-size:16px;
-	// 		font-family:PingFangSC-Regular;
-	// 		font-weight:400;
-	// 		color:rgba(42,42,42,1);
-	// 	}
-	// 	.number-change{
-	// 		font-size:16px;
-	// 		font-family:PingFangSC-Regular;
-	// 		font-weight:400;
-	// 		color:rgba(137,136,136,1);
-	// 	}
-	// }
-	// .number-desc{
-	// 	padding-top:10px;
-	// 	padding-left:14px;
-	// 	font-size:12px;
-	// 	font-family:PingFangSC-Regular;
-	// 	font-weight:400;
-	// 	color:rgba(212,13,13,1);
-	// }
+
 </style>

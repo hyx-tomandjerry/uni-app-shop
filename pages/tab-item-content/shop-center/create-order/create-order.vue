@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="borderTop">
 		<view >
 			<view class="cu-form-group borderBottom position_relative" @click="toNearShopList()">
 				<view class="title font-size-normal font-weight-normal" >
@@ -41,7 +41,7 @@
 			<view class="repair-info">
 				<view class="cu-form-group position_relative" @click="toRepairItem()">
 					<view class=" font-size-normal font-weight-normal" >
-						<!--<text class="text-red" style="margin-right:4rpx;">*</text>-->
+						<text class="text-red" style="margin-right:4rpx;">*</text>
 						维修类别
 					</view>
 					<view>
@@ -54,26 +54,53 @@
 					</view>
 				</view>
 
-				<view class="cu-form-group position_relative">
-					<view class=" font-size-normal font-weight-normal" >
-						<!--<text class="text-red" style="margin-right:4rpx;">*</text>-->
-						维修项
-					</view>
-					<view>
-						<view class="dateStyle" v-if="repairObj.subName" style="margin-right:20px;"><text >{{repairObj.subName}}</text></view>
-
-						<view ><text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:11px;"></text></view>
+				<view class="cu-form-group bg-white font-size-normal" v-show="subItem" style="padding:10px 15px;">
+					<view style="width:100%">
+						<view class="flex justify-start" style="margin-bottom:8px;">
+							<view class="color-placeholder" style="margin-right:21px;">维修子类别名称</view>
+							<view class="explain-color  color-blue">{{subItem.name}}</view>
+						</view>
+						<view class="flex justify-start" style="margin-bottom:8px;">
+							<view class="color-placeholder" style="margin-right:21px;">维修子类别规格</view>
+							<view class="explain-color  color-blue">{{subItem.size}}</view>
+						</view>
+						<view class="flex justify-start" style="margin-bottom:8px;">
+							<view class="color-placeholder" style="margin-right:21px;">维修子类别品牌</view>
+							<view class="explain-color  color-blue">{{subItem.type}}</view>
+						</view>
+						<view class="repair-detail-list-item"  style="margin-bottom:8px;">
+							<view  class="color-placeholder" style="margin-bottom:8px;">备注：</view>
+							<view class="text-grey "
+								  style="background:rgba(247,247,247,1);padding:10px 15px;border-radius: 10px;
+								  min-height:100px;;">{{subItem.summary}}</view>
+						</view>
+						<view style="margin-bottom:8px;" class="color-placeholder">附件:</view>
+						<view>
+							<view class="bg-white padding">
+								<view class="grid col-4 grid-square">
+									<view class="bg-img" v-for="(item,index) in subItemImg"
+										  :key="index"
+										  @click="checkSubItemImg(index)"
+										  :style="[{ backgroundImage:'url(' + subItemImg[index] + ')' }]"></view>
+								</view>
+							</view>
+						</view>
 					</view>
 				</view>
+				
 				<view>
 					<view class=" font-size-normal font-weight-normal bg-white" style="font-size:14px;padding-left:12px;padding-top:10px;border-top:1px solid #EEEEED"><text class="text-red" style="margin-right:4rpx;">*</text>报修描述</view>
 					<view>
 						<view class="cu-form-group">
-							<textarea maxlength="200"   v-model="repairObj.summary" placeholder="报修描述输入..." class="font-size-normal font-weight-normal"></textarea>
+							<textarea maxlength="200"
+									  required
+									  v-model="repairObj.summary" placeholder="报修描述输入..."
+									  class="font-size-normal font-weight-normal"
+									  style="background:rgba(247,247,247,1);padding:10px 15px;border-radius: 10px;min-height:100px;"></textarea>
 						</view>
 					</view>
 				</view>
-
+				<view style="height:13px;width:100%;background:rgba(247,247,247,1)"></view>
 				<view class="cu-bar bg-white" >
 <view class="title font-size-normal font-weight-normal" style="font-size:13px;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
 				</view>
@@ -98,7 +125,7 @@
 			<button class="cu-btn block bg-blue margin-tb-sm lg" @click="createOrder()"  :disabled="loading">
 				<text v-if="repaitItem.status==1">修改订单</text>
 				<text v-else-if="repaitItem.status==3">重新派单</text>
-				<text v-else>提交订单</text>
+				<text v-else>确定</text>
 			</button>
 		</view>
 		<mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true"
@@ -113,21 +140,22 @@
 	import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
 	import {mapState} from 'vuex'
 	export default{
-	    computed:mapState(['userInfo']),
+	    computed:mapState(['userInfo','repairStatus']),
 		data(){
 			return{
-				showPicker: false,
-				isShow:false,
-				modalName:null,
-				 value: '',
-				CustomBar: this.CustomBar,
+				showPicker: false,//显示日期弹出框
+				// isShow:false,
+				// modalName:null,
+				 value: '',//显示日期弹出框
+				 type:'rangetime',//显示日期弹出框
+				// CustomBar: this.CustomBar,
 				shop:{
 					id:'',
 					name:''
 				},
 
-				amapPlugin:null,//地图组件
-				key:'4c523fb1857f99ba7f2d683d9e88ec1e',//地图key
+				// amapPlugin:null,//地图组件
+				// key:'4c523fb1857f99ba7f2d683d9e88ec1e',//地图key
 				shopList:[],
 				designer:{
 					name:'',
@@ -139,12 +167,15 @@
 					bigID:'',
 					subName:'',
 					subID:'',
-					summary:''
+					summary:'',
+
 				},
-				type:'rangetime',
+				subItem:'',//维修子类别
+				subItemImg:[],
+				
 				files:[],
 				imgList:[],
-				address:'',
+				// address:'',获取位置
 				token:'',
 				loading:false,
 				repaitItem:'',//报修详情
@@ -153,12 +184,8 @@
 		components:{
 			MxDatePicker
 		},
-		getOpenDate(){
-			var date=new Date();
-			return this.format(date,'YMD')
-		},
+		
 		onLoad(options){
-			console.log(options)
 			if(options.id){
 				this.getRepairInfo(options.id)
 			}
@@ -181,7 +208,18 @@
 					subID:result.subID,
 					subName:result.subName
 				}
-				console.log(this.repairObj)
+				if(result.subID){
+					this.subItemImg=[]
+					this.$ajax('ServiceCatalog',{id:result.subID},res=>{
+						if(res.files){
+							res.files.forEach(item=>{
+								this.subItemImg.push(item.url)
+							})
+						}
+						this.subItem=res;
+					})
+				}
+
 				if(this.repaitItem){
 					this.repairObj.summary=this.repaitItem.summary;
 				}
@@ -195,14 +233,23 @@
 
 		},
 		methods:{
+			getOpenDate(){
+				var date=new Date();
+				return this.format(date,'YMD')
+			},
+			checkSubItemImg(event){
+				uni.previewImage({
+					urls: this.subItemImg,
+					current: event
+				});
+			},
 			//获得报修详情
 			getRepairInfo(id){
-				console.log(id)
+
 				this.$ajax('ServiceOrder',{
 					id:id
 				},res=>{
 					this.repaitItem=res;
-					console.log(res)
 					this.designer={
 					name:this.repaitItem.creatorName,
 					telephone:this.repaitItem.creatorMobile,
@@ -210,7 +257,7 @@
 					};
 					this.shop={
 						id:this.repaitItem.shop,
-						name:this.repaitItem.shopname
+						name:this.repaitItem.name
 					};
 					this.repairObj={
 					bigName:'',
@@ -224,10 +271,9 @@
 						this.repaitItem.files.forEach(item=>{
 
 							this.imgList.push(item.url);
-							this.files.push(item.id);
-							console.log(this.files)
+							this.files.push(item.id)
 						})
-						console.log(this.imgList)
+
 					}
 				})
 			},
@@ -236,17 +282,14 @@
 				if(this.repaitItem){
 					this.$ajax('SetServiceOrder',{
 						id:this.repaitItem.id,
-					    // catalog:this.repairObj.subID?this.repairObj.subID:this.repairObj.bigID,
-						detail:this.repairObj.subID?this.repairObj.subID:'',
+						category:this.repairObj.subID?this.repairObj.subID:'',
 						type:this.repairObj.bigID?this.repairObj.bigID:'',
-					    creator:this.userInfo.id,
-					    // shop:this.repaitItem.shop,
 					    appointdate:this.designer.date?this.designer.date:this.format(this.repaitItem.appointdate,'YMD'),
 					    summary:this.repairObj.summary,
 					    files:this.files?this.files.join(','):'',
 					    contractor:this.designer.name?this.designer.name:this.userInfo.name,
 					    telephone:this.designer.telephone?this.designer.telephone:this.userInfo.account,
-						reassigned:this.repaitItem.status==3?1:''
+						reassigned:this.repaitItem.status==this.repairStatus.refuse?1:''
 					},res=>{
 					    this.loading = true
 					    uni.showToast({
@@ -261,6 +304,7 @@
 										
 					})
 				}else{
+					
 					if(!this.shop.name){
 						uni.showToast({
 							title:'请选择门店进行报修',
@@ -281,8 +325,7 @@
 							title:'请输入报修描述',
 							icon:'none'
 						})
-					}else if(this.files.length==0){
-					
+					}else if(this.files.length===0){
 						uni.showToast({
 							title:'请上传图片',
 							icon:'none'
@@ -290,7 +333,7 @@
 					}else{
 					
 					    this.$ajax('NewServiceOrder',{
-					        catalog:this.repairObj.subID?this.repairObj.subID:'',
+					        category:this.repairObj.subID?this.repairObj.subID:'',
 							type:this.repairObj.bigID?this.repairObj.bigID:'',
 					        creator:this.userInfo.id,
 					        shop:this.shop.id,
@@ -323,34 +366,33 @@
 				})
 			},
 			toRepairItem(){
+				
 				uni.navigateTo({
 					url:'../repair-item/repair-item'
 				})
 			},
 			//获得上传图片的token
 			getUploadToken(){
-				uni.request({
-					url:this.$store.state.url+'UploadToken',
-					success: (res) => {
-						this.token=res.data.data
-					}
+				this.$ajax('UploadToken',{},res=>{
+					this.token=res
 				})
 			},
 			ChooseImageEvent(){
 					uni.chooseImage({
 						count:9,
 						sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-						sourceType: ['album'], //从相册选择
+						sourceType: ['camera','album'],
 						success: (res) => {
+							
                             const tempFilePaths=res.tempFilePaths;
                             if (this.imgList.length != 0) {
                                 this.imgList = this.imgList.concat(res.tempFilePaths)
                             } else {
                                 this.imgList = res.tempFilePaths
                             }
-                            console.log(this.imgList)
+
                             for(var i=0;i<res.tempFilePaths.length;i++){
-                                var  uploadTask=uni.uploadFile({
+                                let  uploadTask=uni.uploadFile({
                                     url:this.$store.state.uploadHostUrl+this.token,
                                     filePath:tempFilePaths[i],
                                     name:'file',
@@ -362,22 +404,23 @@
                                     success: (uploadFileRes) => {
                                         let res=JSON.parse(uploadFileRes.data);
                                         this.files.push(res.data);
-                                        console.log(this.files)
-                                    }
+                                    },
+									
                                 });
-                                uploadTask.onProgressUpdate((res)=>{
-                                    if(res.progress==100){
-                                        uni.showToast({
-                                            title:'上传成功',
-                                            icon:'none'
-                                        })
-                                    }
-                                },(error)=>{
-                                    uni.showToast({
-                                        title:'上传失败',
-                                        icon:'none'
-                                    })
-                                })
+								uploadTask.onProgressUpdate((res)=>{
+								       if(res.progress==100){
+								             uni.showToast({
+								                     title:'上传成功',
+								                       icon:'none'
+								              })
+								         }
+								       },(error)=>{
+								             uni.showToast({
+								                title:'上传失败',
+								                icon:'none'
+								            })
+								       })
+                            
                             }
 
 
@@ -388,7 +431,6 @@
 
 			},
 			ViewImage(event){
-				console.log(event)
 				uni.previewImage({
 					urls: this.imgList,
 					current: event
@@ -401,7 +443,6 @@
 						confirmText: '确定',
 						success: res => {
 								if (res.confirm) {
-									console.log(event)
 									this.imgList.splice(event, 1);
 									this.$ajax('RemoveFiles',{
 										files:this.files[event],
@@ -431,6 +472,9 @@
 			},
 			//显示最近的门店
 			toNearShopList(){
+				if(this.repaitItem){
+					return;
+				}
 				uni.navigateTo({
 					url:'../near-shop-list/near-shop-list?cat=createOrder'
 				})
@@ -455,13 +499,13 @@
 			// 			}
 			// 	})
 			// },
-			showModal(e) {
-				console.log(e)
-				this.modalName = e.currentTarget.dataset.target
-			},
-			hideModal(){
-				this.modalName=''
-			},
+// 			showModal(e) {
+// 
+// 				this.modalName = e.currentTarget.dataset.target
+// 			},
+			// hideModal(){
+			// 	this.modalName=''
+			// },
 			//验证电话号码
 			checkTelEvent(event){
 

@@ -22,7 +22,8 @@
 			<text class="cuIcon-round line-blue" style="font-size:19px;border-radius: 50%;" v-else></text>
 			<text style="margin-left:5px;">我已阅读并同意服务声明</text>
 		</view>
-		<view class="cu-modal" :class="isShow?'show':''">
+
+		<!-- <view class="cu-modal" :class="isShow?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">更换手机号码</view>
@@ -37,12 +38,17 @@
 					<view style="font-size:18px;width:50%;" @click="inputCheckCard()">确定</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
+		<showModel :isShow="isShow" @hideModel="hideModal" @confirmDel="inputCheckCard" v-if="isShow">
+			<block slot="content">
+				门店管家更换绑定新的手机号码前，需要将当前的绑定关系解除，请确定是否更换
+			</block>
+		</showModel>
 	</view>
 </template>
 
 <script>
-	import popModal from '../../../../components/popmodal.vue'
+	import showModel from '../../../../components/show-model.vue'
 	export default {
 		data() {
 			return {
@@ -53,7 +59,7 @@
 			}
 		},
 		components:{
-			popModal
+			showModel
 		},
 		onLoad(){
 			uni.getStorage({

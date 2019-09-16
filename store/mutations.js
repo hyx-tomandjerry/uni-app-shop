@@ -31,7 +31,7 @@ export default {
     },
     logout(state){
         //退出登录
-        state.hasLogin=false;
+        state.hasLogin= true;
         state.userInfo={};
         uni.removeStorage({
             key:'userInfo',

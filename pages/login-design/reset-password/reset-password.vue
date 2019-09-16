@@ -1,45 +1,39 @@
 <template>
 	<view class="login_container">
 		<view class="title">
-			<view class="login_title font-weight-super">设置密码</view>
+			<view class="login_title font-size-supper font-weight-super">设置密码</view>
 		</view>
 		<view class="login_form">
-			<view class="login-form-item borderBottom flex justify-start position_relative">
-				<view class="cuIcon-lock text-gray" style="font-size:23px;margin-right:21px;"></view>
-				<input type="password" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-if="isShowPwd" @blur="checkPwdEvent(designer.pwd)" @focus="hideTabbar()">
-				<input type="text" placeholder="请输入密码" v-model="designer.pwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" @focus="hideTabbar()">
-				<image
-				v-if="isShowPwd"
-				@click="showPwd('pwd')"
-				src="../../../static/icon/eye.png"
-				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
-				<image
-				@click="showPwd('pwd')"
-				
-				v-else
-				src="../../../static/icon/eye_open.png"
-				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
-				
+			<view class="login-form-item borderBottom flex justify-start position_relative align-center">
+				<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
+				<input type="text" placeholder="请输入密码"
+					   v-model="designer.pwd" class="font-weight-normal font-size-big"
+					   v-if="isShowPwd" @blur="checkPwdEvent(designer.pwd)" @focus="hideTabbar()">
+				<input type="password" placeholder="请输入密码" v-model="designer.pwd"
+					   class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)"
+					   @focus="hideTabbar()">
+
+				<div v-if="isShowPwd" @click="showPwd('pwd')">
+					<image src="../../../static/icon/icon-xianshimima@2x.png" class="login-form-item-eyeopen-img"></image>
+				</div>
+				<div v-else  @click="showPwd('pwd')">
+					<image src="../../../static/icon/icon-yingcangmima@2x.png" class="login-form-item-eye-img"></image>
+				</div>
 			</view>
-			<view class="login-form-item borderBottom flex justify-start position_relative">
-				<view class="cuIcon-lock text-gray" style="font-size:23px;margin-right:21px;"></view>
-				<input type="password" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(designer.pwd)">
-				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" >
-				
-				
-				<image
-				v-if="isShowConfrimPwd"
-				@click="showPwd('confirm')"
-				src="../../../static/icon/eye.png"
-				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
-				<image
-				@click="showPwd('confirm')"
-				v-else
-				src="../../../static/icon/eye_open.png"
-				style="width:30rpx;height:30rpx;position: absolute;right:44rpx;top:30px;"></image>
+			<view class="login-form-item borderBottom flex justify-start position_relative align-center">
+				<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
+				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(designer.pwd)">
+				<input type="password" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" >
+
+				<div v-if="isShowConfrimPwd" @click="showPwd('confirm')">
+					<image src="../../../static/icon/icon-xianshimima@2x.png" class="login-form-item-eyeopen-img"></image>
+				</div>
+				<div v-else  @click="showPwd('confirm')">
+					<image src="../../../static/icon/icon-yingcangmima@2x.png" class="login-form-item-eye-img"></image>
+				</div>
 			</view>
 			
-			<view class="text-center" style="margin-top:34px;margin-bottom:18rpx;">
+			<view class="text-center btn_container" >
 				<button @click="resetPassword()" 
 					:class="{
 						'inputStyle':designer.pwd || designer.confirmPwd,
@@ -51,8 +45,8 @@
 
 		</view>
 
-		<view class="copyright" v-if="tabbar">
-			登录/注册即表示同意<text style="color:rgba(66, 176, 237, 1)">《乐象工程管家服务协议》</text>
+		<view class="copyright font-size-mini" v-if="tabbar">
+			登录/注册即表示同意<text class="color-blue" @click="signPro">《门店助手软件用户许可协议》</text>
 		</view>
 	</view>
 </template>
@@ -62,8 +56,8 @@
             return{
                
 	
-				isShowPwd:true,
-				isShowConfrimPwd:true,
+				isShowPwd:false,
+				isShowConfrimPwd:false,
 				designer:{
 					pwd:'',
 					confirmPwd:'',
@@ -94,6 +88,11 @@
 			this.designer.vcode=options.vcode
         },
 		methods:{
+			signPro(){
+				uni.redirectTo({
+					url:"../protocol/protocol"
+				})
+			},
 			showTabbar(){
 				this.tabbar=true;
 			},
@@ -114,8 +113,12 @@
 						title:'请输入密码',
 						icon:'none'
 					})
-				}else{
-					if(this.designer.pwd!=this.designer.confirmPwd){
+				}else if( (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.pwd)) || (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.confirmPwd))){
+					uni.showToast({
+						title:'密码不能含有非法字符，长度在6-12之间',
+						icon:'none'
+					})
+				}else if(this.designer.pwd!=this.designer.confirmPwd){
 						uni.showToast({
 							title:'两次输入的密码不一致',
 							icon:'none'
@@ -126,30 +129,29 @@
 							token:this.designer.confirmPwd,
 							mobile:this.designer.mobile
 						},res=>{
+							uni.setStorageSync('userPsw',this.designer.confirmPwd);
 							uni.showToast({
 								title:'设置密码成功',
 								icon:'none'
 							})
 							setTimeout(()=>{
-								uni.navigateTo({
+								uni.redirectTo({
 									url:'../../login-design/login/login'
 								})
 							},800)
 						},false)
 					}
-
-				}
 			},
 			//验证密码
 			checkPwdEvent(event){
 				if(event){
-					var reg=/^[a-zA-Z0-9]{6,12}$/;
+					var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/;
 					if(reg.test(event)==false){
 						uni.showToast({
 							title:'密码不能含有非法字符，长度在6-12之间',
 							icon:'none'
 						})
-						return;
+
 					}
 
 				}
@@ -158,52 +160,51 @@
     }
 </script>
 <style lang="less">
+	@import url(../../../static/css/demo.less);
 	page{
-		background:#fff;
+
+		.background(#fff)
 	}
 	.login_container{
-		padding:113px 12px 17px 15px;
+		.mixPadding(113px;12px;17px;15px);
 		.title{
-			padding-left:7px;
+			.mixPaddingLeft(7px);
 			.login_title{
-				height:42px;
-				line-height:42px;
-				font-size:30px;
-				color:rgba(42,42,42,1);
-
-			}
-			.login_design{
-				font-size:15px;
-
-				font-weight:400;
-				color:rgba(137,136,136,1);
-				height:21p;
-				line-height:21px;
-
+				.mixHeight(42px);
+				.lineHeight(42px);
 
 			}
 		}
 		.login_form{
-			margin-top:47px;
+			.mixMarginTop(47px);
 			.login-form-item{
-				padding:20px 12px 20px 15px;
+				.mixPadding(20px;12px;20px;15px);
+				.login-form-item-tel-img{
+					.mixImg(19px;23px;);
+					.mixMarginRight(15px)
+				}
+				.login-form-item-eye-img{
+					width:16px;
+					height:9px;
+					position: absolute;
+					right:22px;top:30px;
+
+				}
+				.login-form-item-eyeopen-img{
+					width:16px;
+					height:14px;
+					position: absolute;
+					right:22px;top:30px;
+				}
 			}
 		}
-		.forget{
-			font-size:14px;
-
-			font-weight:400;
-			color:rgba(42,42,42,1);
-		}
-
 	}
 	.cu-form-group{
-		height:77px;
-		line-height:77px;
+		.mixHeight(77px);
+		.lineHeight(77px);
 	}
 	.cu-form-group uni-input{
 		font-size:16px;
-
 		font-weight:400;
 		color:rgba(185,185,185,1);
 
@@ -216,15 +217,12 @@
 		border:1px solid rgba(233,233,233,1);
 		text{
 			font-size:16px;
-
 			font-weight:400;
 			color:rgba(137,136,136,1);
 		}
 	}
 	.copyright{
-left:59px;
-			font-size:12px;
-			font-weight:400;
+			left:59px;
 			color:rgba(137,136,136,1);
 			position:fixed;
 			bottom:17px;
@@ -234,26 +232,20 @@ left:59px;
 	}
 	.cu-btn uni-text{
 		font-size:14px;
-
 		font-weight:400;
 		color:#fff;
-	}
-	.passwordSet{
-		margin-top:8px;
-		height:20px;
-		font-size:14px;
-
-		font-weight:400;
-		color:rgba(66,176,237,1);
-		line-height:20px;
-		margin-bottom:25px;
 	}
 	.inputStyle{
-		background:rgba(66,176,237,1);
-		color:#fff;
+		.background(rgba(66,176,237,1));
+		.color(#fff)
 	}
 	.noInputStyle{
-		background:rgba(245,246,248,1);
-		color:rgba(137,136,136,1);
+		.background(rgba(245,246,248,1));
+		.color(rgba(137,136,136,1))
+	}
+	.btn_container{
+		/*margin-top:34px;margin-bottom:9px;*/
+		.mixMarginBottom(9px);
+		.mixMarginTop(34px);
 	}
 </style>

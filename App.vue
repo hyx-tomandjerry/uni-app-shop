@@ -1,9 +1,10 @@
 <script>
 // import Vue from 'vue';
-import {mapState,mapMutations} from 'vuex';
+
+   import im from "./common/im.js"
 	import Vue from 'vue'
 	export default {
-		computed:mapState(['hasLogin','userInfo','replacerObj','shoperObj',]),
+		
 		data(){
 			return{
 
@@ -13,7 +14,6 @@ import {mapState,mapMutations} from 'vuex';
 
 		},
 		methods:{
-			
 		},
 		onLaunch() {
 			uni.getSystemInfo({
@@ -38,23 +38,6 @@ import {mapState,mapMutations} from 'vuex';
 							// #endif
 			    }
 			})
-			uni.getStorage({
-				key:'userInfo',
-				success: (res) => {
-					if(res){
-						uni.switchTab({
-							url:'./pages/tab-item/index/index'
-						})
-					}
-					
-				},
-				fail: () => {
-					uni.navigateTo({
-						url:'./pages/login-design/login/login'
-					})
-				}
-			})
-			
 		}
 	}
 </script>
@@ -63,13 +46,11 @@ import {mapState,mapMutations} from 'vuex';
 	@import "colorui/main.css";
     @import "colorui/icon.css";
 	@import url("./static/css/index.css");
+    @import url("./static/font/font.css");
 	page{
-		font-family:PingFangSC-Medium;
+		font-family:PingFangSC;
 		color:rgba(42,42,42,1);
 		font-weight: 400;
 		font-size:14px;
 	}
-
-
-
 </style>

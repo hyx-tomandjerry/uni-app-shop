@@ -1,7 +1,7 @@
 <template>
-	<view class="lx-empty">
-		<view class="lx-empty-image">
-			<img src="../static/img/noticeNo.png" alt="empty">
+	<view class="lx-empty position_absolute " style="bottom:30%;left:50%; transform: translate(-50%, -50%);">
+		<view class="lx-empty-image ">
+			<img src="../static/img/noticeNo.png" alt="empty"  style="width:125px;height:93px;">
 		</view>
 		<view class="lx-empty-description">
 			<!--<slot name="description" v-if=""></slot>-->
@@ -31,6 +31,9 @@
 </script>
 
 <style scoped lang="less">
+	page{
+		background:#fff;
+	}
 	.lx-empty{
 		display: block;
 		padding: 0 8px;
