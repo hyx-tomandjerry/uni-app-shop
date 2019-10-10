@@ -1,35 +1,25 @@
 <template>
-	<view style="border-top:1px solid #EEEEED;">
-		<!-- <view class="number-container">
-			<view class="number-title">手机账号</view>
-			<view class="number-content flex justify-between">
-				<view class="number-tel">18838380488</view>
-				<view class="number-change">
-					<text style="margin-right:8px;">更换</text>
-					<text class="cuIcon-right"></text>
+	<view class="borderTop">
+		<view class="tel-container borderBottom">
+			<view class="tel-title font-size-back font-weight-bold color-normal">手机账号</view>
+			<view class="flex justify-between tel-number align-center" @click="changeTel">
+				<view>{{userInfo.mobile}}</view>
+				<view>
+					<text class="font-size-big color-regular" style="margin-right:8px;">更换</text>
+					<text class="cuIcon-right font-size-big color-regular"></text>
 				</view>
 			</view>
 		</view>
-		<view class="number-desc">
+		<view class="intro font-size-mini">
 			注意：一个手机号码只能作为一个登录账号
-		</view> -->
-		
-		<view class="telephone-content">
-			<view class="title">
-				您已经绑定手机号码
-			</view>
-			<view class="telephone-title">
-				188****488
-			</view>
-			<view class="change cu-btn round" @click="changeTel()">
-				<view >更换手机号码</view>
-			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {mapState} from 'vuex';
 	export default {
+		computed:mapState(['userInfo']),
 		data() {
 			return {
 				
@@ -47,28 +37,26 @@
 
 <style lang="less">
 	page{
-		background:rgba(247,247,247,1);
+		background:#fff;
 	}
-	.telephone-content{
-		text-align:center;
+	.tel-container{
 		padding-top:20px;
-		padding-bottom:20px;
-		.title{
-			font-size:14px;
-			font-family:PingFangSC-Semibold;
-			font-weight:400;
-			margin-bottom:20px;
-			color:rgba(137,136,136,1);
+		.tel-title{
+			
+			margin-left: 15px;
+		
 		}
-		.telephone-title{
-			font-size:26px;
-			font-family:PingFangSC-Semibold;
-			font-weight:400;
-			color:rgba(42,42,42,1);
-		}
-		.change{
-			margin-top:20px;
+		.tel-number{
+			margin-top: 12px;
+			margin-left: 15px;
+			margin-right: 12px;
+			padding-bottom: 16px;
+			
 		}
 	}
-
+	.intro{
+		margin-left: 14px;
+		margin-top: 10px;
+		color:#D40D0D
+	}
 </style>

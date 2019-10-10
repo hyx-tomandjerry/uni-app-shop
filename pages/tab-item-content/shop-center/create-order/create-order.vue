@@ -37,7 +37,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="repair-item">维修明细</view>
+			<view class="repair-item"></view>
 			<view class="repair-info">
 				<view class="cu-form-group position_relative" @click="toRepairItem()">
 					<view class=" font-size-normal font-weight-normal" >
@@ -54,28 +54,27 @@
 					</view>
 				</view>
 
-				<view class="cu-form-group bg-white font-size-normal" v-show="subItem" style="padding:10px 15px;">
-					<view style="width:100%">
-						<view class="flex justify-start" style="margin-bottom:8px;">
-							<view class="color-placeholder" style="margin-right:21px;">维修子类别名称</view>
-							<view class="explain-color  color-blue">{{subItem.name}}</view>
+				<view class="cu-form-group bg-white font-size-normal margin-bottom-normal" v-show="subItem" style="padding:10px 15px;">
+					<view class="flex-all">
+						<view class="flex justify-start repair-detail-list-item" >
+							<view class="color-regular reapir-intro" >维修子类别名称</view>
+							<view class="color-normal  ">{{subItem.name}}</view>
 						</view>
-						<view class="flex justify-start" style="margin-bottom:8px;">
-							<view class="color-placeholder" style="margin-right:21px;">维修子类别规格</view>
-							<view class="explain-color  color-blue">{{subItem.size}}</view>
+						<view class="flex justify-start repair-detail-list-item" >
+							<view class="color-regular  reapir-intro" >维修子类别规格</view>
+							<view class="color-normal  ">{{subItem.size}}</view>
 						</view>
-						<view class="flex justify-start" style="margin-bottom:8px;">
-							<view class="color-placeholder" style="margin-right:21px;">维修子类别品牌</view>
-							<view class="explain-color  color-blue">{{subItem.type}}</view>
+						<view class="flex justify-start repair-detail-list-item" >
+							<view class="color-regular  reapir-intro" >维修子类别品牌</view>
+							<view class="color-normal">{{subItem.type}}</view>
 						</view>
-						<view class="repair-detail-list-item"  style="margin-bottom:8px;">
-							<view  class="color-placeholder" style="margin-bottom:8px;">备注：</view>
-							<view class="text-grey "
-								  style="background:rgba(247,247,247,1);padding:10px 15px;border-radius: 10px;
-								  min-height:100px;;">{{subItem.summary}}</view>
+						<view class="repair-detail-list-item"  >
+							<view  class="color-regular  reapir-intro" >备注：</view>
+							<view class="color-normal repair-summary"
+								  >{{subItem.summary || '空'}}</view>
 						</view>
-						<view style="margin-bottom:8px;" class="color-placeholder">附件:</view>
-						<view>
+						<view  class="color-regular  reapir-intro" v-if="subItemImg.length">附件:</view>
+						<view v-if="subItemImg.length">
 							<view class="bg-white padding">
 								<view class="grid col-4 grid-square">
 									<view class="bg-img" v-for="(item,index) in subItemImg"
@@ -89,20 +88,20 @@
 				</view>
 				
 				<view>
-					<view class=" font-size-normal font-weight-normal bg-white" style="font-size:14px;padding-left:12px;padding-top:10px;border-top:1px solid #EEEEED"><text class="text-red" style="margin-right:4rpx;">*</text>报修描述</view>
+					<view class=" font-size-normal font-weight-normal bg-white reapir-detail-container" ><text class="text-red" style="margin-right:4rpx;">*</text>报修描述</view>
 					<view>
 						<view class="cu-form-group">
 							<textarea maxlength="200"
 									  required
 									  v-model="repairObj.summary" placeholder="报修描述输入..."
-									  class="font-size-normal font-weight-normal"
-									  style="background:rgba(247,247,247,1);padding:10px 15px;border-radius: 10px;min-height:100px;"></textarea>
+									  class="font-size-normal font-weight-normal repair-detail"
+									  ></textarea>
 						</view>
 					</view>
 				</view>
 				<view style="height:13px;width:100%;background:rgba(247,247,247,1)"></view>
 				<view class="cu-bar bg-white" >
-<view class="title font-size-normal font-weight-normal" style="font-size:13px;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
+	<view class="title font-size-normal font-weight-normal" style="font-size:13px;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
 				</view>
 
 				<view class="cu-form-group">
@@ -113,8 +112,8 @@
 								<text class='cuIcon-close'></text>
 							</view>
 						</view>
-						<view class="padding-xs solids" @tap="ChooseImageEvent()" v-if="imgList.length<4">
-							<text class='cuIcon-cameraadd'></text>
+						<view class="padding-xs solids" v-if="imgList.length<4">
+							<image src='../../../../static/img/work/camera.png' mode="" @tap="ChooseImageEvent()"  style="width:78px;height:78px;"></image>
 						</view>
 
 					</view>
@@ -139,6 +138,7 @@
 	import amap from '../../../../common/amap-wx.js'
 	import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
 	import {mapState} from 'vuex'
+	// import moment from 'moment'
 	export default{
 	    computed:mapState(['userInfo','repairStatus']),
 		data(){
@@ -235,7 +235,8 @@
 		methods:{
 			getOpenDate(){
 				var date=new Date();
-				return this.format(date,'YMD')
+				// return this.format(date,'YMD')
+				return this.$moment(Date.now()).format('YYYY-MM-DD')
 			},
 			checkSubItemImg(event){
 				uni.previewImage({
@@ -253,7 +254,7 @@
 					this.designer={
 					name:this.repaitItem.creatorName,
 					telephone:this.repaitItem.creatorMobile,
-					date:this.format(this.repaitItem.appointdate,'YMD')
+					date:this.$moment(this.repaitItem.appointdate).format('YYYY-MM-DD')
 					};
 					this.shop={
 						id:this.repaitItem.shop,
@@ -284,7 +285,8 @@
 						id:this.repaitItem.id,
 						category:this.repairObj.subID?this.repairObj.subID:'',
 						type:this.repairObj.bigID?this.repairObj.bigID:'',
-					    appointdate:this.designer.date?this.designer.date:this.format(this.repaitItem.appointdate,'YMD'),
+					    // appointdate:this.designer.date?this.designer.date:this.format(this.repaitItem.appointdate,'YMD'),
+					    appointdate:this.designer.date?this.designer.date:this.$moment(this.repaitItem.appointdate).format('YYYY-MM-DD'),
 					    summary:this.repairObj.summary,
 					    files:this.files?this.files.join(','):'',
 					    contractor:this.designer.name?this.designer.name:this.userInfo.name,
@@ -327,7 +329,7 @@
 						})
 					}else if(this.files.length===0){
 						uni.showToast({
-							title:'请上传图片',
+							title:'未上传图片，或者图片正上传，请稍等',
 							icon:'none'
 						})
 					}else{
@@ -337,7 +339,7 @@
 							type:this.repairObj.bigID?this.repairObj.bigID:'',
 					        creator:this.userInfo.id,
 					        shop:this.shop.id,
-					        appointdate:this.designer.date?this.designer.date:this.getOpenDate,
+					        appointdate:this.designer.date?this.designer.date:this.$moment(Date.now()).format('YYYY-MM-DD'),
 					        summary:this.repairObj.summary,
 					        files:this.files?this.files.join(','):'',
 					        contractor:this.designer.name?this.designer.name:this.userInfo.name,
@@ -526,13 +528,8 @@
 		font-weight: 400;
 	}
 	.repair-item{
-		font-size:13px;
-		font-family:PingFangSC-Regular;
-		font-weight:400;
-		color:rgba(137,136,136,1);
-		padding-top:4px;
-		padding-bottom:10px;
-		padding-left:14px;
+		height:13px;
+		width:100%;
 	}
 	.title{
 		color:rgba(42,42,42,1);
@@ -546,5 +543,27 @@
 	uni-button[disabled]:not([type]){
 		background:#989595;
 		color:#fff;
+	}
+	.repair-detail-list-item{
+		margin-bottom: 8px;
+		.reapir-intro{
+			margin-right: 21px;
+		}
+		.repair-summary{
+			font-size:15px;
+			word-wrap: break-word;
+			word-break: break-all
+		}
+	}
+	.reapir-detail-container{
+		padding-left:12px;
+		padding-top:10px;
+		.repair-detail{
+			background:rgba(247,247,247,1);
+			padding:10px 15px;
+			border-radius: 10px;
+			min-height:100px;
+		}
+		
 	}
 </style>

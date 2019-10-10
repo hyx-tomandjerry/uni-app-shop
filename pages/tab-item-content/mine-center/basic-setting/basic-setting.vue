@@ -29,15 +29,20 @@
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:27px;" ></text>
 			</view>
 			
-			<view class="cu-form-group position_relative">
+			<view class="cu-form-group flex justify-between align-center">
 				<view class=" font-size-normal font-weight-normal color-normal">昵称</view>
-				<input placeholder="请输入昵称"  style="text-align:right;margin-right:5px;" class="font-size-normal font-weight-normal " v-model="userInfo.name"></input>
-				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:14px;" ></text>
+				<view class="flex justify-start align-center">
+					<input placeholder="请输入昵称"  style="text-align:right;" class="font-size-normal font-weight-normal " v-model="userInfo.name"></input>
+					<text class="cuIcon-right  text-gray" style="font-size:18px;" ></text>
+				</view>
 			</view>
-			<view class="cu-form-group position_relative">
-				<view class=" font-size-normal font-weight-normal color-normal">账号</view>
-				<input placeholder="请输入账号"  style="text-align:right;margin-right:5px;" class="font-size-normal font-weight-normal text-black" v-model="userInfo.mobile" @blur="checkTelEvent(userInfo.mobile)"></input>
-				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:14px;" ></text>
+			<view class="cu-form-group flex justify-between align-center" @click="changeTel">
+				<view class=" font-size-normal font-weight-normal color-normal">电话</view>
+				<view>
+					<text class="font-size-normal color-regular">{{userInfo.mobile}}</text>
+					<text class="cuIcon-right text-gray" style="font-size:18px;" ></text>
+				</view>
+				
 			</view>
 		</view>
 		<view class="extra-container bg-white" >
@@ -109,6 +114,12 @@
 			MxDatePicker,
 		},
 		methods:{
+			//修改电话号码
+			changeTel(){
+				uni.navigateTo({
+					url:'../account-manager/account-manager'
+				})
+			},
 			bindPickerChange: function(e) {
 				this.index = e.target.value
 			},
@@ -212,11 +223,13 @@
 						icon:'none'
 					})
 				}else{
+					
 					this.$ajax('SetProfile',{
 						gender:this.index==0?1:2,
 						mobile:this.userInfo.mobile,
 						name:this.userInfo.name,
-						birthday:this.birthday?this.birthday:this.format(this.userInfo.birthday,'YMD'),
+						// birthday:this.birthday?this.birthday:this.format(this.userInfo.birthday,'YMD'),
+						birthday:this.birthday?this.birthday:this.$moment(this.userInfo.birthday || new Date()).format('YYYY-MM-DD'),
 						idnum:this.userInfo.idnum?this.userInfo.idnum:''
 					},res=>{
 						uni.showToast({
@@ -256,6 +269,9 @@
 </script>
 <style lang="less">
 	@import "../../../../static/css/demo";
+	.cu-form-group uni-input{
+		padding-right:0px;
+	}
 	.extra-container{
 		/*margin-top:13px;*/
 		.mixMarginTop(13px);

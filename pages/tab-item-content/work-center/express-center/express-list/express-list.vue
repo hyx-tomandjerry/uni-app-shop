@@ -29,7 +29,7 @@
 					<view class="flex justify-start align-center">
 						<image src="../../../../../static/img/work/express/other/tag-speed.png" class="img-tag" v-if="item.type==expressType.speed"></image>
 						<image src="../../../../../static/img/work/express/other/tag-price.png" class="img-tag" v-if="item.type==expressType.price"></image>
-						<view>运单号 : {{item.seq || 'oks 2019 888 345(暂无)'}}</view>
+						<view>运单号 : {{item.seq }}</view>
 					</view>
 					<view>
 						<image src="../../../../../static/img/work/express/other/express-sign.png" class="sign-img" v-if="item.type==expressStatusZn.sign"></image>

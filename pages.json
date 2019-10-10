@@ -188,8 +188,11 @@
 		   {
 		      "path" : "pages/tab-item-content/mine-center/change-telephone/change-telephone",
 		      "style" : {
-		      		  				  "navigationBarTitleText": "绑定手机号码","navigationBarBackgroundColor":"#fff"
-		      		  			  }
+		      		  	"navigationStyle":"custom",
+		      		  	"app-plus":{
+		      		  		"titleNView":false
+		      		  	}
+		      		  	}
 		  },
 		  {
 		      "path" : "pages/tab-item-content/mine-center/account-manager/account-manager",
@@ -514,6 +517,10 @@
 				"navigationBarTitleText": "搜索公司","navigationBarBackgroundColor":"#fff"
 			}
         }
+        ,{
+            "path" : "pages/tab-item-content/work-center/work-log-item/work-log-item",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -531,12 +538,18 @@
 				"text":"首页"
 			},
 			{
-
-					"pagePath":"pages/tab-item/message/message",
-					"iconPath":"static/img/footer/message.png",
-					"selectedIconPath":"static/img/footer/message_color.png",
-					"text":"消息"
+				"pagePath":"pages/tab-item-content/notice-center/notice-index/notice-index",
+				"iconPath":"static/img/footer/message.png",
+				"selectedIconPath":"static/img/footer/message_color.png",
+				"text":"消息"
 			},
+// 			{
+// 
+// 					"pagePath":"pages/tab-item/message/message",
+// 					"iconPath":"static/img/footer/message.png",
+// 					"selectedIconPath":"static/img/footer/message_color.png",
+// 					"text":"消息"
+// 			},
 			{
 
 					"pagePath":"pages/tab-item/work/work",

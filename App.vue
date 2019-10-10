@@ -3,6 +3,7 @@
 
    import im from "./common/im.js"
 	import Vue from 'vue'
+
 	export default {
 		
 		data(){
@@ -11,7 +12,7 @@
 			}
 		},
 		onLoad(){
-
+			
 		},
 		methods:{
 		},

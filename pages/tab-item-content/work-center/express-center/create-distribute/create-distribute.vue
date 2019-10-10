@@ -1,13 +1,20 @@
 <template>
 	<view class="borderTop">
 
-		<view class="info-item flex justify-between  align-center  bg-white" @click="showModal($event)" data-target="assignTypeModal">
+		<view class="info-item flex justify-between  align-center  bg-white borderBottom" @click="showModal($event)" data-target="assignTypeModal">
 			<view class="font-size-normal color-normal"><text class="text-red">*</text>调拨类型</view>
 			<view><text class="font-size-normal color-normal">{{assign.name}}</text><text class="cuIcon-right font-size-big color-placeholder"></text></view>
 		</view>
-		<view class="express-container borderTop margin-bottom-normal  bg-white">
-			<view class="user-info border-top">
-				<view class="flex justify-start position_relative send-info borderBottom align-center" >
+		<view class="flex justify-between bg-white info-item align-center " @click="showModal($event)" data-target="sendObjModal">
+			<view class="color-normal"><text class="text-red">*</text>发件对象</view>
+			<view>
+				<text class="font-size-normal">{{sendTarget.name}}</text>
+				<text class="cuIcon-right font-size-normal color-placeholder"></text>
+			</view>
+		</view>
+		<view class="express-container   bg-white margin-top-13">
+			<view class="user-info ">
+				<view class="flex justify-start position_relative send-info  align-center" >
 					<view class="send-tag" >需</view>
 					<view class="font-size-normal font-weight-normal shopInfo" >
 						<view v-if="applierShop">
@@ -27,13 +34,7 @@
 			</view>
 		</view>
 		<view class="margin-bottom-normal ">
-			<view class="flex justify-between bg-white info-item align-center " @click="showModal($event)" data-target="sendObjModal">
-				<view>发件对象</view>
-				<view>
-					<text class="font-size-normal">{{sendTarget.name}}</text>
-					<text class="cuIcon-right font-size-normal color-placeholder"></text>
-				</view>
-			</view>
+			
 
 			<view class="user-info  bg-white borderTop" >
 				<view class="flex justify-start position_relative send-info  align-center" >
@@ -71,12 +72,13 @@
 
 
 		<view class="bg-white margin-bottom-normal">
-			<view class="goods-item flex justify-between borderBottom" >
-				<view class="font-weight-normal font-size-normal item-name"><text class="text-red">*</text>商品名称</view>
-				<input type="text" v-model="goods.name" placeholder="请输入商品名称" style="text-align: right;">
+			<view class="goods-item flex justify-between borderBottom position_relative" >
+				<view class=" font-size-normal color-normal"><text class="text-red">*</text>商品名称</view>
+				<input type="text" v-model="goods.name" placeholder="请输入商品名称" style="text-align: right;padding-right:15px;">
+				<text class="cuIcon-right position_absolute color-placeholder font-size-bigger" style="right:10px;top:50%;transform:translateY(-50%)"></text>
 			</view>
 			<view class="goods-item flex justify-between borderBottom" >
-				<view class="font-weight-normal font-size-normal item-name"><text class="text-red">*</text>数量</view>
+				<view class="color-normal font-size-normal "><text class="text-red">*</text>数量</view>
 
 				<view class="flex justify-start align-center">
 					<view class="cuIcon-move font-size-normal font-weight-bold" @click="operateGoods('minus')"></view>
@@ -85,7 +87,7 @@
 				</view>
 			</view>
 			<view class="goods-item flex justify-between borderBottom align-center" v-if="assignTypeValue=='replace'">
-				<view class="font-weight-normal font-size-normal item-name"><text class="text-red">*</text>是否到付</view>
+				<view class="color-normal font-size-normal "><text class="text-red">*</text>是否到付</view>
 				<view>
 					<view>
 						<image :src="ispay==1?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'" style="width:16px;height:16px;margin-right:3px;vertical-align: middle;"
@@ -100,7 +102,7 @@
 				</view>
 			</view>
 			<view class="goods-summary position_relative">
-				<view style="margin-bottom:10px;">备注</view>
+				<view style="margin-bottom:10px;" class="font-size-normal color-normal">备注</view>
 				<textarea v-model="goods.summary"
 						  maxlength="100" cols="30" rows="10" placeholder="请输入"
 						  class="summary-container"
@@ -399,7 +401,7 @@
 		.submit-btn{
 			background:rgba(66,176,237,1);
 			border-radius:5px;
-			padding-top:8px;
+			padding-top:10px;
 			padding-bottom:8px;
 			width:100%;
 		}

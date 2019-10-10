@@ -68,8 +68,11 @@ const httpMethod = (api,param,baseParam,resp,failResp)=>{
                 if (res.data.code === 0) {
                     resp(res.data.data)
                 } else {
-					switchCode(res.data.code.toString());
-					failResp(res.data.code)
+					setTimeout(()=>{
+						switchCode(res.data.code.toString());
+						failResp(res.data.code)
+					},800)
+					
 				}
                 // else if(res.data.code===-31 || res.data.code===-1) {
 				// 	 resp(res.data.code)

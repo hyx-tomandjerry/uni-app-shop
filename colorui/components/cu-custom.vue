@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]" @click="clickEvent">
+		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
 				<view class="action">
 					<slot name="left"></slot>
@@ -57,9 +57,7 @@
 			}
 		},
 		methods:{
-			clickEvent(){
-				this.$emit('clickEvent')
-			}
+			
 		}
 	}
 </script>

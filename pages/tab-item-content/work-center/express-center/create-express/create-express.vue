@@ -14,7 +14,7 @@
 						>
 							<view v-if="sendShop.name">
 								<view class="font-size-normal color-normal font-weight-bold">{{sendShop.name || ''}}</view>
-								<view  class="font-size-normal color-normal font-weight-bold"><text style="margin-right:10px;">{{sendShop.saleName || distributeItem.supplierName}}</text>{{sendShop.saleName || distributeItem.supplierMobile}}</view>
+								<view  class="font-size-normal color-normal font-weight-bold"><text style="margin-right:10px;">{{sendShop.saleName || distributeItem.supplierName}}</text>{{sendShop.saleTel || distributeItem.supplierMobile}}</view>
 								<view style="font-size:12px;" class="color-placeholder">{{sendShop.provinceName || ''}}{{sendShop.cityName || ''}}{{sendShop.districtName || ''}}
 									{{sendShop.address || ''}}</view>
 							</view>
@@ -599,6 +599,7 @@
 			}
 			//需求方
 			this.$fire.on('applierShop',result=>{
+				console.log(result)
 				this.sendShop=result;
 			})
 			this.$fire.on('supplierShop',result=>{

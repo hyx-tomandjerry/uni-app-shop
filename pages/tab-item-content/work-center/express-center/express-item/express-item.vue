@@ -83,7 +83,7 @@
 				</view>
 			</view>
 			<view>
-				<text class="order-other-intro color-regular " style="margin-right:9px;">包裹类型</text>
+				<text class="order-other-intro color-regular " style="margin-right:9px;">物品类型</text>
 				<text class="color-normal ">
 					{{expressDetail.catalog || '未说明'}}
 				</text>
@@ -96,7 +96,7 @@
 			</view>
 			<view class="order-info-other">
 				<view class="order-info-other-item">
-					<text class="order-other-intro color-regular">运单编号</text>
+					<text class="order-other-intro color-regular">运单号</text>
 					<text class="color-blue">{{expressDetail.seq || '暂无'}}</text>
 				</view>
 				<view class="order-info-other-item" style="padding-bottom:10px;">

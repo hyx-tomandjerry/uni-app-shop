@@ -17,7 +17,7 @@
 				<view class="flex justify-start">
 					<image src="../../../static/icon/icon-zhuce-shouji@2x.png" class="design-info-item-tel"></image>
 					
-					<input type="telephone" placeholder="请输入手机号"
+					<input type="number" placeholder="请输入手机号"
 						   maxlength="11"
 						   v-model="designer.mobile"
 						   :class="designer.mobile?'explain-color':'color-placeholder'"
@@ -61,7 +61,7 @@
 					<image src="../../../static/icon/icon-zhuce-youxiang@2x.png"
 						   class="design-info-item-vscode"></image>
 					
-					<input type="text" placeholder="请输入验证码" v-model="designer.vcode"
+					<input type="number" placeholder="请输入验证码" v-model="designer.vcode"
 						   :class="designer.vcode?'explain-color':'color-placeholder'"
 						   class=" font-size-big font-weight-normal" style="width:80%" @blur="hideTabbar()">
 				</view>
@@ -218,7 +218,9 @@
 						type:this.type,
 						vcode:this.designer.vcode,
 					},res=>{
+						console.log(res)
 						this.isInput=true;
+						
 						uni.showToast({
 							title:'用户注册成功',
 							icon:'none',
@@ -234,10 +236,14 @@
 										account:this.designer.mobile,
 										token:this.designer.token
 									})
+									this.close()
 								}
 							})
 						},600)
-					},false)
+					},false,(err)=>{
+						this.close();
+						
+					})
 				}
 			},
 			sendCode(){

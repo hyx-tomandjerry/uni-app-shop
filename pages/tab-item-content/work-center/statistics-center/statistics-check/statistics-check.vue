@@ -8,7 +8,7 @@
 				<view class="font-size-big font-weight-bold text-white">{{new Date().getMonth()+1}}.{{new Date().getDate()}}日门店绩效审核</view>
 			</block>
 		</cu-custom>
-		<uChartModel  :todayNum="totalPerform" :aimNum="salemanPerform.expect" :type="'today'">
+		<uChartModel  :todayNum="totalPerform" :aimNum="Number(salemanPerform.expect).toFixed(2)" :type="'today'">
 			<block slot="canvas">
 				<view class="qiun-charts3">
 					 <canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
@@ -21,7 +21,7 @@
 				<view class="flex-1 text-center">昵称</view>
 				<view class="flex-1 text-center">销售额</view>
 				<view class="flex-1 text-center">占比</view>
-				<view class="flex-1 text-center" v-if="userInfo.id==managerID">编辑</view>
+				<view class="flex-1 text-center" v-if="userInfo.id==managerID&&todayFact==0">编辑</view>
 			</view>
 			<view class="rank-list">
 				<view class="rank-list-item flex justify-around" v-for="(item,index) in salemanList" :key="index" >
@@ -35,13 +35,13 @@
 					</view>
 					<view class="num flex-1 text-center">{{item.actual || 0}}</view>
 					<view class="precent flex-1 text-center">{{item.pre || 0}}%</view>
-					<view @click="checkItem(item)" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID">编辑</view>
+					<view @click="checkItem(item)" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID&&todayFact==0">编辑</view>
 				</view>
 			</view>
 
 		</view>
 		
-		<view class="btn-container position_absolute" @click="confirmPerform" v-if="userInfo.id==managerID">确定</view>
+		<button class="btn-container position_absolute" @click="confirmPerform" v-if="userInfo.id==managerID" :disabled="todayFact!=0">确定</button>
 	</view>
 </template>
 
@@ -53,6 +53,7 @@
 		computed:mapState(['userInfo']),
 		data() {
 			return {
+				todayFact:'',//判断今日是否审核过
 				saleList:[],
 				//圆弧
 				cWidth: '',//圆弧进度图
@@ -103,11 +104,13 @@
 					month:new Date().getMonth()+1,
 					day:new Date().getDate()
 				},res=>{
+					this.todayFact=res['actual']
+				
 					this.salemanPerform=res;
 					this.chartData.series=[
 						{
 							name:'门店日占比',
-							data:(Number(res.actual)/Number(res.expect || 1)).toFixed(2),
+							data:res.expect?(res.actual/res.expect).toFixed(2):0,
 							color: '#2fc25b'
 							
 						}
@@ -116,12 +119,15 @@
 					this.totalPerform=0;
 					if(res.salesmen){
 						res.salesmen.forEach(item=>{
-							console.log(item.actual,this.salemanPerform.expect)
-							item.pre=(Number(item.actual)/Number(this.salemanPerform.expect || 1)).toFixed(2);
 							this.totalPerform+=Number(item.actual)
+							
+							
+						})
+						res.salesmen.forEach(item=>{
+							item.pre=this.salemanPerform.expect || this.totalPerform?Number(item.actual/(this.salemanPerform.expect || this.totalPerform)*100).toFixed(2):0
 						})
 						this.salemanList=res.salesmen;
-						console.log(this.totalPerform)
+						
 					}
 				
 				})
@@ -251,8 +257,9 @@
 		}
 	}
 	.btn-container{
-		width:100%;
+		width:93%;
 		bottom:0;
+		left:15px;
 		margin: 10px auto;
 		height:40px;
 		line-height:40px;

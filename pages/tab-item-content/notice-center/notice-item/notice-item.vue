@@ -12,6 +12,7 @@
 </template>
 <script>
 	import commonTitle from '../../../../components/common-title.vue'
+	// import moment from 'moment'
 	export default{
 		data(){
 			return{
@@ -29,7 +30,8 @@
 		methods:{
 			getNoticeItemInfo(id){
 				this.$ajax('Message',{id:id},res=>{
-					res.applyDate=this.format(res.applyDate,'YMDHMS');
+					// res.applyDate=this.format(res.applyDate,'YMDHMS');
+					res.applyDate=this.$moment(res.applyDate).format('YYYY-MM-DD hh:mm:ss')
 					this.noticeItem=res;
 					console.log(this.noticeItem)
 				})

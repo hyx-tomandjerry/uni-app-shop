@@ -16,7 +16,7 @@
 							<view class=" flex justify-between align-center">
 								<view class="list-item-title">{{repairTypeZn[item.type]}}-{{item.categoryName || ''}}维修</view>
 								<view class="flex justify-start align-center">
-									<image src="../../../static/img/shop/smile.png" style="width:15px;height:15px;vertical-align: middle;margin-right:5px;" v-if="item.status==repairStatus.waitManager"></image>
+									<!-- <image src="../../../static/img/shop/smile.png" style="width:15px;height:15px;vertical-align: middle;margin-right:5px;" v-if="item.status==repairStatus.waitManager"></image> -->
 									<view 
 									:class="{
 									'waitManager':item.status==repairStatus.waitManager,
@@ -30,18 +30,18 @@
 							<view class="list-content">
 								<view @click="orderDetail(item)">
 									<view class="list-content-item">
-										<image src="../../../static/icon/icon-mengdian@2x.png" class="shopImg " style="vertical-align:middle;" ></image>
+										<image src="../../../static/icon/icon-mengdian@2x.png" class="shopImg " ></image>
 										<text style="margin-right:5px;">门店名称:</text> {{item.name}}
 									</view>
 
 
 									<view class="list-content-item">
-										<image src="../../../static/icon/icon-time@2x.png" class="shopImg" style="vertical-align:middle;" ></image>
+										<image src="../../../static/icon/icon-time@2x.png" class="shopImg"></image>
 										<text style="margin-right:5px;">预约时间:</text> {{item.appointdate| formatTime('YMD')}}
 									</view>
 
 									<view class="list-content-item">
-										<image src="../../../static/icon/icon-dneglu-zhanghu@2x.png" class="shopImg " style="vertical-align:middle;" ></image>
+										<image src="../../../static/icon/icon-dneglu-zhanghu@2x.png" class="shopImg " ></image>
 										<text style="margin-right:5px;">报修人:</text> {{item.creatorName}}  <text class="color-regular" style="margin:0 5px;">|</text> {{item.creatorMobile}}
 									</view>
 								</view>
@@ -123,7 +123,7 @@
 			this.page++;
 			this.loading='loading';
 			setTimeout(()=>{
-				this.$ajax('ServiceOrders',{
+				this.$ajax('ShopServiceOrders',{
 					status:this.TabCur==1?[1,2,3].join(','):status,
 					offset:this.$utils.getOffset(this.page),
 					creator:this.type=='all'?'':this.userInfo.id,
@@ -236,7 +236,7 @@
 
 			//报修列表
 			getRepairList(status){
-				this.$ajax('ServiceOrders',{
+				this.$ajax('ShopServiceOrders',{
 					status:status==1?[1,2,3].join(','):status,
 					offset:this.$utils.getOffset(this.page),
 					creator:this.type=='all'?'':this.userInfo.id,
@@ -267,8 +267,8 @@
 	}
 
 	.shopImg{
-		width:18px;
-		height:18px;
+		width:16px;
+		height:16px;
 		vertical-align: middle;
 		margin-right:10px;
 	}
@@ -314,7 +314,7 @@
 				font-size:14px;
 				font-weight:400;
 				color:rgba(137,136,136,1);
-				margin-bottom:12px;
+				margin-bottom:15px;
 			}
 			.waitManager{
 				color:#ED7322

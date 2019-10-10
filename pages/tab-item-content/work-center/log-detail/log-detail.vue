@@ -49,13 +49,13 @@
 		<view class="article-content bg-white font-size-small font-weight-normal" >
 			<view class="article-item flex justify-between borderBottom">
 				<view class="color-normal flex-sm" >文章标题</view>
-				<view style="color:rgba(137,136,136,1); " class="font-size-mini text-ellipse flex-1">{{selectItem.articleTitle || ''}}</view>
+				<view style="color:rgba(137,136,136,1); text-align: right;" class="font-size-mini text-ellipse flex-1">{{selectItem.articleTitle || ''}}</view>
 			</view>
 			<view v-if="type=='article'">
 
 				<view class="article-item flex justify-between">
 					<view class="color-normal">文章编号</view>
-					<view style="color:rgba(137,136,136,1);">{{selectItem.articleSeq}}</view>
+					<view style="color:rgba(137,136,136,1);text-align: right;">{{selectItem.articleSeq}}</view>
 				</view>
 			</view>
 			<view v-if="type=='log'">
@@ -222,6 +222,15 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			}
 		},
 		components:{showModel,simpleModel,imageModel},
+		onPullDownRefresh(){
+					//下拉刷新
+					setTimeout(()=>{
+						uni.stopPullDownRefresh();
+						this.page=1;
+						this.getItem(this.id)
+					},800)
+		
+				},
         onLoad(params){
 		
 			if(params){
@@ -315,7 +324,6 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 				})
 			},
 			sendMsg(){
-				console.log(this.inputMsg)
 				this.$ajax('LeaveCommentByShop',{
 					id:this.id,
 					receiver:0,
@@ -363,7 +371,7 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 			viewImg(item){
 				this.modalName='Image';
 				this.imgItem=item;
-				console.log(this.imgItem)
+				
 			},
 			//删除日志
 			deleteLog(){
@@ -381,7 +389,7 @@ border-radius:15px;padding-left:18px;width:60%;" class="font-size-litter font-we
 					shop:this.shopID
 				},res=>{
 			        this.selectItem = res
-					
+					console.log(res)
 				})
 			}
 		},

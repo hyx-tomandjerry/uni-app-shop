@@ -27,7 +27,7 @@
 			<!-- swiper end -->
 			<!-- tab start -->
 			<view class="operateItem">
-				<view v-for="(item,index) in options" :key="index" @click="showOperateItem(index)" style="position: relative;">
+				<view v-for="(item,index) in options" :key="index" @click="showOperateItem(item.value)" style="position: relative;">
 					<view><image :src="item.image" 
 						:class="{
 							'operateIcon':index==0 || index==3,
@@ -108,8 +108,8 @@
 			
 		</view>
 		<!-- article end -->
-		<image src="../../../static/img/edit.png"
-			   style="position:fixed;right:12px;bottom:40px;width:80px;height:80px;z-index:100;" @click.stop="recordMoney"></image>
+		<!-- <image src="../../../static/img/edit.png"
+			   style="position:fixed;right:12px;bottom:40px;width:80px;height:80px;z-index:100;" @click.stop="recordMoney"></image> -->
     </view>
 </template>
 <script>
@@ -135,11 +135,11 @@
 				noticeList1:[],//销售技巧
 				noticeList2:[],//陈述案例
 				options:[
-					{image:'../../../static/img/index/index-message.png',text:'通知公告',isCheck:true},
-					{image:'../../../static/img/index/index-repair.png',text:'门店报修'},
-					{image:'../../../static/img/index/index-express.png',text:'快递包裹'},
-					{image:'../../../static/img/index/index-shop.png',text:'我的门店'},
-					
+					// {image:'../../../static/img/index/index-message.png',text:'通知公告',isCheck:true,value:'message'},
+					{image:'../../../static/img/index/index-repair.png',text:'门店报修',value:'repair'},
+					{image:'../../../static/img/index/index-express.png',text:'快递包裹',value:'express'},
+					{image:'../../../static/img/index/index-shop.png',text:'我的门店',value:'shop'},
+					{image:'../../../static/img/index/index-statistics.png',text:'销售绩效',value:'statistics'},
 					],
 				todoNum:0,
 				statusBarHeight:''
@@ -229,31 +229,39 @@
 			/*nav操作*/
 			showOperateItem(event){
 				switch(event){
-					case 0:
-						//通知公告
-						uni.navigateTo({
-
-							url:'../../tab-item-content/notice-center/notice-index/notice-index'
-						})
-						break;
-					case 1:
+// 					case '':
+// 						//通知公告
+// 						uni.navigateTo({
+// 
+// 							url:'../../tab-item-content/notice-center/notice-index/notice-index'
+// 						})
+// 						break;
+					case 'repair':
 						//门店报修
 						uni.navigateTo({
 
 							url:'../../tab-item-content/shop-center/shop-center?type=all'
 						})
 						break;
-					case 2:
+					case 'express':
 						//我的门店
 						uni.navigateTo({
 							url:'../../tab-item-content/work-center/express-center/express-index/express-index'
 						})
 						break;
-					case 3:
+					case 'shop':
 						//工作日志
 						uni.navigateTo({
 							url:'../../tab-item-content/shop-center/shop-list/shop-list?type=shop'
 						})
+						break;
+						
+					case 'statistics':
+						uni.navigateTo({
+							url:'../../tab-item-content/shop-center/shop-list/shop-list?type=statistics'
+						})
+						break;
+					
 				}
 				
 			},
@@ -273,6 +281,7 @@
 		},
 		onShow(){
 			this.refreshInfo();
+			// console.log(moment(Date.now()).format('YYYY-MM-DD hh:mm:ss'))
 			
 		}
 		

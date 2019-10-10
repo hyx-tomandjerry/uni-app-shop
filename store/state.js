@@ -2,11 +2,11 @@ export default {
 	production:true,
     appKey:null,//存储服务器发送给客户端的sessionkey
     // hostUrl:'http://192.168.10.22/services',
-    xiaoxiongUrl:'http://192.168.10.186:8080/blade/services',
-	// xiaoxiongUrl:'http://192.168.10.186:8081/blade/services',
+    // xiaoxiongUrl:'http://192.168.10.186:8090/blade/services',
+	xiaoxiongUrl:'http://192.168.10.186:8080/services',
     devUrl:'http://192.168.10.22:10086/services',//开发环境
 	proUrl:'http://192.168.10.22/services',//测试环境
-	// proUrl:'http://s1.oaks.cn/services',
+	// proUrl:'http://s.oaks.cn/services',
     uploadHostUrl:'http://up.qiniup.com?token=',
     userInfo:{},//用户信息
 	hasLogin:false,//判断是否登录
@@ -187,7 +187,8 @@ export default {
 		'remove':4
 	},
 	repairStatusZn:{
-	    1:'待店长审批',
+	    // 1:'待店长审批',
+		1:'未处理',
 	    2:'待区长审批',
 	    3:'待公司审批',
 	    4:'处理中',

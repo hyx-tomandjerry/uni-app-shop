@@ -21,17 +21,21 @@
 					<image src="../../../static/img/work/tab/wodebaoxiu.png" class="img-tag"></image>
 					<view>我的报修</view>
 				</view>
-				<view class="text-center" style="flex:1" @click="showItem('count')">
+				<!-- <view class="text-center" style="flex:1" @click="showItem('count')">
 					<image src="../../../static/img/work/tab/xiaoshoujixiao.png"  class="img-tag"></image>
 					<view>销售绩效</view>
+				</view> -->
+				<view class="text-center" style="flex:1" @click="showItem('work')">
+					<image src="../../../static/img/work/tab/renwuguanli.png"  class="work-tag"></image>
+					<view>任务管理</view>
 				</view>
 			</view>
-			<view class="tab-second flex justify-start" style="padding-left:20px;">
+			<!-- <view class="tab-second flex justify-start" style="padding-left:20px;">
 				<view class="text-center"  @click="showItem('work')">
 					<image src="../../../static/img/work/tab/renwuguanli.png" class="work-tag"></image>
 					<view>任务管理</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>

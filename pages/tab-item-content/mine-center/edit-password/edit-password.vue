@@ -43,7 +43,7 @@
 				<view class="font-size-litter color-regular">
 					密码必须是6-20位的数字、英文组合
 				</view>
-				<view class="font-size-litter color-blue">
+				<view class="font-size-litter color-blue" style="margin-top:6px;">
 					<text  @click="forgetPwd()">忘记密码?</text>
 				</view>
 			</view>

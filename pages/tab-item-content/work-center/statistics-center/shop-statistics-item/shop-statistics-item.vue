@@ -1,5 +1,5 @@
 <template>
-	<view class="position_relative">
+	<view>
 		<cu-custom :isBack="true"  bgColor="bg-color-perform">
 			<block slot="left">
 				<view class="cuIcon-back text-white" style="font-size:20px;" @click="goBack"></view>
@@ -29,8 +29,8 @@
 						<view style="width:23%" class="font-size-big text-white">门店占比</view>
 						<view style="flex:1;margin:0 8px 0 5px;" >
 							<view class="cu-progress round sm striped active" >
-								<view class="bg-color-red" :style="[{'width':`${item.shopPre}%`}]"></view>
-								
+								<view class="bg-color-red"  :style="[{ width:`${item.shopPre}%`}]"></view>
+
 							</view>
 						</view>
 						<view style="width:13%;text-align: right;" class="color-purple font-size-middle font-family-num">{{item.shopPre}}%</view>
@@ -49,7 +49,7 @@
 					<view>销售统计</view>
 					<view class="cuIcon-right font-size-bigger color-regular " ></view>
 				</view>
-				
+
 			</view>
 			<view class="rank-container-item flex justify-between align-center " @click="tabSelect('start')"	>
 				<image src="../../../../../static/img/work/statistics/rank.png" class="rank-img"></image>
@@ -76,11 +76,11 @@
 					<view class="cuIcon-right font-size-bigger color-regular " ></view>
 				</view>
 			</view>
-			
+
 		</view>
 		<!--列表 end-->
 		<view class="btn-tag font-size-big" @click="record">记一笔</view>
-		<!-- <image src="../../../../../static/img/edit.png" 
+		<!-- <image src="../../../../../static/img/edit.png"
 		style="position:fixed;right:12px;bottom:20px;width:80px;height:80px;z-index:100;" @click="record"></image> -->
 	</view>
 </template>
@@ -150,9 +150,9 @@
 			/*获得门店月份销售目标*/
 			getShopSaleAim(){
 				let year=new Date().getFullYear();
-				let month=new Date().getMonth()+1>10?new Date().getMonth()+1:'0'+(new Date().getMonth()+1);
-				let day=new Date().getDate()>10?new Date().getDate():'0'+new Date().getDate()
-				
+				let month=new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+(new Date().getMonth()+1);
+				let day=new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()
+
 				//获得今年的目标绩效
 				this.$ajax('ShopYearlyPerformance',{
 					shop:this.shopID,
@@ -160,46 +160,48 @@
 				},res=>{
 					this.shopPerformList[0]={
 						date:year,
-						factPerform:Number(res['actual']),
-						aimPerform:Number(res['expect']) || 0,
-						shopPre:(Number(res['aamount']/(res['expect'] ||1))).toFixed(2),
+						factPerform:Number(res['actual']).toFixed(2),
+						aimPerform:Number(res['expect']).toFixed(2) || 0,
+						shopPre:res['expect']?Number(res['actual']/res['expect']*100).toFixed(2):0,
 						factTitle:'本年销售额',
 						aimTitle:'年目标销售额',
-						
+
 					}
+					
 					this.chartData.series=[
 						{
 							name:'门店日占比',
 							data:0.29,
 							color: '#2fc25b'
-												
+
 						}
 					]
 					 this.showArcbar('canvasArcbar1', this.chartData)
 				})
-			
+
 				/*
 					获得月份的绩效，用于轮播图
 				*/
 			   this.$ajax('ShopMonthlyPerformance',{
 				   shop:this.shopID,
 				   year:new Date().getFullYear(),
-				  
+
 			   },res=>{
 				   this.shopPerformList[1]={
 					date:`${year}.${month}`,
-				   	factPerform:Number(res[`amonth${new Date().getMonth()+1}`]),
-				   	aimPerform:Number(res[`month${new Date().getMonth()+1}`]),
-				   	shopPre:(Number(res[`amonth${new Date().getMonth()+1}`]) / (Number(res[`month${new Date().getMonth()+1}`]) || 1)).toFixed(2),
+				   	factPerform:Number(res['actual']).toFixed(2),
+				   	aimPerform:Number(res[`month${new Date().getMonth()+1}`]).toFixed(2) ||0,
+				   	shopPre:res[`month${new Date().getMonth()+1}`]?Number(res['actual']/res[`month${new Date().getMonth()+1}`]*100).toFixed(2):0,
 					factTitle:'本月销售额',
 					aimTitle:'月目标销售额',
 				   }
+				  
 				  this.chartData.series=[
 				  	{
 				  		name:'门店日占比',
 				  		data:0.40,
 				  		color: '#2fc25b'
-				  							
+
 				  	}
 				  ]
 				   this.showArcbar('canvasArcbar2', this.chartData)
@@ -214,23 +216,25 @@
 			  },res=>{
 				  this.shopPerformList[2]={
 					date:`${year}.${month}.${day}`,
-				  	factPerform:Number(res[`aday${new Date().getDate()}`]),
-				  	aimPerform:Number(res[`day${new Date().getDate()}`]),
-				  	shopPre:(Number(res[`aday${new Date().getDate()}`]) / (Number(res[`day${new Date().getDate()}`]) || 1)).toFixed(2),
+				  	factPerform:Number(res['actual']).toFixed(2),
+				  	aimPerform:Number(res[`day${new Date().getDate()}`]).toFixed(2),
+				  	shopPre:res[`day${new Date().getDate()}`]?Number(res['actual']/res[`day${new Date().getDate()}`]*100).toFixed(2):0,
 					factTitle:'今日销售额',
 					aimTitle:'日目标销售额',
 				  }
+				  
 				  this.chartData.series=[
 				  	{
 				  		name:'门店日占比',
 				  		data:0.79,
 				  		color: '#2fc25b'
-				  							
+
 				  	}
 				  ]
 				   this.showArcbar('canvasArcbar3', this.chartData)
-				
+
 			  })
+
 			},
 			/*记一笔*/
 			record(){
@@ -316,6 +320,9 @@
 				this.getShopSaleAim()
 			}
 
+		},
+		onShow(){
+			this.getShopSaleAim()
 		}
 	}
 </script>
@@ -367,31 +374,31 @@
 	.screen-swiper{
 		min-height:216px;
 	}
-	
+
 	.chart-container{
 		height:216px;
 
 		background:url(../../../../../static/img/work/statistics/bg.png) no-repeat center center;
 		background-size:cover;
-		
+
 		.dateTitle{
-			
+
 			margin-top:30px;
 			margin-left:26px;
 		}
 		.performData{
 			margin: 15px 41px 17px 26px;
-			
+
 		}
 		.progress-container{
 			margin: 0px 21px 17px 20px;
 		}
 	}
-	
+
 	.rank-container{
 		/*padding:23px 13px 56px 14px;*/
-		
-		
+
+
 
 		.rank-container-item{
 			padding:3px 13px;

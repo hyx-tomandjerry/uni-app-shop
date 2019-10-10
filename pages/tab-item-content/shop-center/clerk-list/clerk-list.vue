@@ -6,8 +6,6 @@
 			<view class="flex justify-start" style="margin-bottom:8px;">
 				<view class="color-normal font-size-middle font-weight-bold" style="margin-right:8px;">{{shopItem.name || ''}}</view>
 				<view >
-
-					<!--<text class="cu-tag shop-tag" style="background:#FFF1EB;color:#F2735B;margin-right:10px;">{{shopItem.type | shopTypeFilter}}</text>-->
 					<text  class="shop-tag  cu-tag" :class="{
 								'shop-business':shopItem.status==shopStatusZn.businessing,
 								'shop-execution':shopItem.status==shopStatusZn.ready,
@@ -76,7 +74,7 @@
 				</view>
 				<view style="color:#42B0ED" v-if="shopItem.manager==userInfo.id" @click="deleteMember()">删除</view>
 			</view>
-			<view class="member-list borderBottom flex justify-start align-center position_relative" v-for="(item ,index) in userList" :key="index">
+			<view class="member-list borderBottom flex justify-start align-center position_relative" v-for="(item ,index) in userList" :key="index" v-if="item.name">
 				<view style="width:15%;">
 					<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  	style="width:40px;height:40px;border-radius: 50%;vertical-align: middle;"></image>
 

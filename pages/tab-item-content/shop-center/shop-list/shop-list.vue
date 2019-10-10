@@ -2,14 +2,14 @@
 	<view class="borderTop">
 		<view v-if="shopList.length">
 				<view class="shop-list-item bg-white flex justify-start margin-bottom-normal flex-all" v-for="(item,index) in shopList" :key="index"
-					   @click="checkShopDetail(item)">
+					   @click="checkShopDetail(item)" v-if="item.name">
 					<view class="shop-img-area">
 						<image :src="item.coverurl?item.coverurl:'../../../../static/img/default.png'" class="shop-img"></image>
 					</view>
 					<view class="shop-info-area flex-1 " >
 						<view class="flex justify-start font-size-normal font-weight-bold align-center">
-							<view class=" text-ellipse flex-litter">{{item.name || ''}}</view>
-							<view>({{item.brandName || ''}})</view>
+							<view class=" text-ellipse " style="width:35%;">{{item.name || ''}}</view>
+							<view v-if="item.brandName">({{item.brandName }})</view>
 							<image src="../../../../static/img/shop/businessing.png" class="shop-tag" v-if="item.status==shopStatusZn.businessing"></image>
 							<image src="../../../../static/img/shop/ready.png" class="shop-tag" v-if="item.status==shopStatusZn.ready"></image>
 							<image src="../../../../static/img/shop/processing.png" class="shop-tag" v-if="item.status==shopStatusZn.processing"></image>
@@ -20,7 +20,7 @@
 						<view class="font-size-litter color-regular " style="margin:7px 0;width:65%">
 							<text style="margin-right:7px;">店长:</text>{{item.managerName || ''}}/{{item.managerMobile || ''}}
 						</view>
-						<view class="font-size-litter color-regular text-ellipse " style="width:70%;">
+						<view class="font-size-litter color-regular text-ellipse " style="width:80%;">
 							<text style="margin-right:7px;">地址:</text>{{item.provinceName || ''}}{{item.cityName || ''}}{{item.districtName||''}}{{item.address}}
 						</view>
 					</view>
@@ -75,33 +75,32 @@
 			//下拉刷新
 			setTimeout(()=>{
 				uni.stopPullDownRefresh();
-				this.page=1;
 				this.getShopList()
 			},800)
 
 		},
-		onReachBottom(){
-			this.page++;
-			this.loading='loading';
-			setTimeout(()=>{
-				this.$ajax('MyShops',{address:'',offset:this.$utils.getOffset(this.page)},res=>{
-					if(res==''){
-						setTimeout(()=>{
-							this.loading='noMore'
-						},900)
-					}else{
-						res.forEach(item=>{
-							this.shopList=this.shopList.concat(item)
-						})
-						this.loading='loading';
-						setTimeout(()=>{
-							this.loading='noMore'
-						},900)
-					}
-				})
-			},1000)
-		
-		},
+		// onReachBottom(){
+		// 	this.page++;
+		// 	this.loading='loading';
+		// 	setTimeout(()=>{
+		// 		this.$ajax('MyShops',{address:'',offset:this.$utils.getOffset(this.page)},res=>{
+		// 			if(res==''){
+		// 				setTimeout(()=>{
+		// 					this.loading='noMore'
+		// 				},900)
+		// 			}else{
+		// 				res.forEach(item=>{
+		// 					this.shopList=this.shopList.concat(item)
+		// 				})
+		// 				this.loading='loading';
+		// 				setTimeout(()=>{
+		// 					this.loading='noMore'
+		// 				},900)
+		// 			}
+		// 		})
+		// 	},1000)
+		// 
+		// },
 		components:{
 			LxEmpty,
 			uniLoadMore,
@@ -141,13 +140,12 @@
 			},
 			//获得门店列表
 			getShopList(){
-				this.$ajax('MyShops',{address:'',offset:this.$utils.getOffset(this.page)},res=>{
+				this.$ajax('MyShops',{address:''},res=>{
 					this.shopList=res;
 				})
 			}
 		},
 		onShow(){
-			this.page=1;
             this.getShopList()
 		},
 		onLoad(params){

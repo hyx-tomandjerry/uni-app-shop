@@ -55,14 +55,14 @@
 		</view>
 		<!--门店目标 end-->
 		<!--月销售额趋势 start-->
-		<scroll-view scroll-x="true" class="trend-container margin-bottom-normal" v-if="switchTab=='month'">
+		<!-- <scroll-view scroll-x="true" class="trend-container margin-bottom-normal" v-if="switchTab=='month'">
 			<view >
 				<view class="font-size-big font-weight-bold color-normal" style="margin-bottom:15px;">月销售额趋势</view>
 				<text class="color-regular font-size-mini" style="margin-left:8px;">(单位:元)</text>
 				<canvas canvas-id="canvasMix" id="canvasMix" class="charts" disable-scroll=true @touchstart="touchMix" @touchmove="moveMix" @touchend="touchEndMix"></canvas>
 			</view>
 
-		</scroll-view>
+		</scroll-view> -->
 		<!-- 分解方法 start -->
 		<view class="bg-white margin-bottom-normal resolveWay flex justify-between align-center" v-if="isShowResolveWay && switchTab=='day'">
 			<view>分解方式</view>
@@ -79,7 +79,6 @@
 		<view class="month-list-container" v-if="switchTab=='month'">
 			<view >
 				<view class="month-list-item flex justify-between"
-					  :class="{'edit-active':item.id==monthTabID}"
 					  v-for="(item,index) in numList" :key="index" @click="editAim(item)">
 					<view class="mon-t" >{{item.name}}</view>
 					<view class="mon-n">
@@ -430,6 +429,13 @@
 			confirmShopAim(){
 				switch (this.switchTab) {
 					case 'month':
+						let totalMax=this.numList.reduce((pre,next)=>{return Number(pre)+Number(next.mon)},0);
+						if(totalMax<this.shopSaleResolve.expect){
+							uni.showToast({
+								title:'月份绩效综合不能小于年绩效目标!',
+								icon:'none'
+							})
+						}
 						this.$ajax('NewMonthlyPerformance',{
 							year:new Date().getFullYear(),
 							month1:this.numList[0].mon,
@@ -457,9 +463,6 @@
 							})
 							
 						})
-
-
-
 						break;
 					case 'day':
 						this.$ajax('SetDailyPerformance',{
@@ -496,9 +499,11 @@
 								let array=[];
 								this.numList.forEach(item=>{
 									item.mon=res[`${item.value}`];
+									// item.mon=Number(this.shopSaleResolve.expect/12).toFixed(2)
 									array.push(item.mon);
-									item.pre=(item.mon/(res.expect || 1)).toFixed(2)
+									item.pre=res.expect?(item.mon/res.expect).toFixed(2):0
 								})
+								
 								this.chartData.series=[
 									{
 										"name": "曲面",
@@ -609,7 +614,6 @@
 						},600)
 						break;
 					case 'day':
-						console.log(item)
 						this.dayTabCur=item;
 						this.dayTabID=item.day;
 						this.num=item.num;
@@ -716,6 +720,8 @@
 		onShow(){
 			this.getShopAim(this.shopID)
 			
+			
+			
 
 		}
 	}
@@ -761,10 +767,10 @@
 
 			.intro-l{
 
-				padding-right:20px;
+				
 			}
 			.intro-r{
-				padding-left:30px;
+				padding-left:15px;
 				border-left:1px solid #525A85;
 			}
 			.intro-i{

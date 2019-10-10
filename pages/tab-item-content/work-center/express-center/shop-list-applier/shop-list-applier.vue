@@ -119,7 +119,7 @@
 							districtName:this.selectedShop.districtName,
 							address:this.selectedShop.address,
 							saleName:this.userInfo.name,
-							saleTel:this.userInfo.telephone
+							saleTel:this.userInfo.mobile
 
 						})
 					}

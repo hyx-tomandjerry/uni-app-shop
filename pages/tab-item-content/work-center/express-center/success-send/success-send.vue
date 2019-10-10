@@ -23,8 +23,7 @@
 				</view>
 				<view class="margin-bottom-normal font-size-big">
 					<text class="color-regular" style="margin-right:6px;">下单时间 : </text>
-					<text>{{new Date().getFullYear()}}-{{new Date().getMonth()+1}}-{{new Date().getDay()}} </text>
-					<text>{{new Date().getHours()}}:{{new Date().getMinutes()}}:{{new Date().getSeconds()}}</text>
+					<text>{{new Date() | formatTime('YMDHMS')}}</text>
 				</view>
 				<view class="margin-bottom-normal font-size-big">
 					<text class="color-regular" style="margin-right:6px;">下单人 : </text>
