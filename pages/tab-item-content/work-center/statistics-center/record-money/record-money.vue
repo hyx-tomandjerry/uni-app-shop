@@ -2,7 +2,7 @@
 	<view class="borderTop position_relative" :style="{height:windowHeight+'px'}">
 		<view class="container position_relative">
 			<!-- <input type="number" placeholder="请输入金额" class=" input-style"  v-model="num" :class="{'input-active':num}"> -->
-			
+
 			<textarea   class="textarea-input" type="number"
 					    placeholder="请输入金额" v-model="num" :class="{'input-active':num}"></textarea>
 		</view>
@@ -10,7 +10,7 @@
 		<view class="btn-container bg-white position_absolute" style="width:100%;bottom:0px;">
 			<view class="btn-tag" @click="recordMoney('edit')" v-if="saleID">修改</view>
 			<view class="btn-tag" @click="recordMoney('save')" v-else>保存</view>
-			
+
 		</view>
 	</view>
 </template>
@@ -43,9 +43,10 @@
 						case 'edit':
 						this.$ajax('SetSalesmanDailyPerformance',{
 							shop:this.shopID,
-							year:new Date().getFullYear(),
-							month:new Date().getMonth()+1,
-							day:new Date().getDate(),
+							// year:new Date().getFullYear(),
+							// month:new Date().getMonth()+1,
+							// day:new Date().getDate(),
+							date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`,
 							amount:this.num,
 							account:this.saleID,
 						},res=>{
@@ -63,9 +64,10 @@
 						case 'save':
 						this.$ajax('NewPersonalPerformance',{
 							shop:this.shopID,
-							year:new Date().getFullYear(),
-							month:new Date().getMonth()+1,
-							day:new Date().getDate(),
+							// year:new Date().getFullYear(),
+							// month:new Date().getMonth()+1,
+							// day:new Date().getDate(),
+							date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`,
 							amount:this.num,
 							account:this.userInfo.id,
 							// summary:this.summary?this.summary:''
@@ -83,8 +85,8 @@
 						break;
 					}
 				}
-				
-				
+
+
 			}
 		},
 		onLoad(params){

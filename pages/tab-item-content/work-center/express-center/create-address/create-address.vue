@@ -79,6 +79,7 @@
 				this.shop.provinceName=e.provinceName;
 				this.shop.cityName=e.cityName;
 				this.shop.districtName=e.districtName
+				this.provinceList=[];
 			},
 			getProvinceList(){
 				this.$ajax('Districts',{parent:0},res=>{

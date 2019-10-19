@@ -1,13 +1,13 @@
 <template>
 	<view >
 
-	<view class="flex text-center bg-white justify-around">
+	<!-- <view class="flex text-center bg-white justify-around">
 		<view class="cu-item  font-size-big  " :class="item.id==TabCur?'cur  borderBottomRed color-red':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(item)" :data-id="index" style="padding:9px  0;">
 			{{item.name}}
 		</view>
-	</view>
-		<view>
-			<view v-if="TabCur==1">
+	</view> -->
+		<view v-if="list.length">
+			<view >
 				<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px" >
 					<view class="user flex justify-start align-center">
 						<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'" style="width:45px;height:45px;margin-right:13px;vertical-align: middle;border-radius: 50%;"></image>
@@ -42,11 +42,11 @@
 
 				</view>
 			</view>
-			<view v-if="TabCur==2">
+			<!-- <view v-if="TabCur==2">
 				<view class="sale_item bg-white margin-bottom-normal"  v-for="(item,index) in saleList" :key="index" @click="checkItem(item)">
 					<view class="user_info flex justify-start">
 						<image :src="item.img" mode="" class="user_avatar"></image>
-						<!-- <image src="../../../../static/img/cute.jpg" mode=""></image> -->
+						
 						<view>
 							<view class="color-normal font-size-big" style="margin-bottom:7px;">{{item.name}}</view>
 							<view class="font-size-litter color-regular">{{item.date}}</view>
@@ -54,15 +54,15 @@
 					</view>
 					<view class="log_content flex justify-between">
 						<view class="sale_info flex-1">
-							<view class="flex justify-start align-center sale_info_item">
+							<view class="flex justify-start align-center sale_info_item font-size-normal">
 								<view class="blue-dot"></view>
 								<view>{{item.project}}</view>
 							</view>
-							<view class="flex justify-star align-center sale_info_item">
+							<view class="flex justify-star align-center sale_info_item font-size-normal">
 								<view class="blue-dot"></view>
 								<view class="color-regular">今日目标:<text style="color:#13B27A" class="font-weight-bold">{{item.aim}}</text></view>
 							</view>
-							<view class="flex justify-star align-center sale_info_item">
+							<view class="flex justify-star align-center sale_info_item font-size-normal">
 								<view class="blue-dot"></view>
 								<view class="color-regular">今日销售额:<text style="color:#FE2763" class="font-weight-bold">{{item.fact}}</text></view>
 							</view>
@@ -72,11 +72,11 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
-		<!-- <view v-else>
+		<view v-else>
 			<LxEmpty></LxEmpty>
-		</view> -->
+		</view>
 		<!-- <image src="../../../../static/img/add.png"
 				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2 && userInfo.type==shoperObj.type "></image> -->
 				<uni-load-more :contentText="content" :status="loading" :showIcon="true" ></uni-load-more>
@@ -97,7 +97,7 @@
 				list:[],
 				isLoading:false,
 				tabList:[{id:1,name:'工作回执'},{id:2,name:'销售周报'}],
-				TabCur:2,
+				TabCur:1,
 				content:{
 					contentdown: "",
 					contentrefresh: "正在加载...",
@@ -172,9 +172,8 @@
 		
 				this.showArcbar(`canvasArcbar${index+1}`,item.chart);
 			})
-			let index=1
-			this.showArcbar(`canvasArcbar${index}`,this.saleList[0].chart);
-			this.showArcbar("canvasArcbar2",this.saleList[1].chart);
+			
+			
         },
 		onShow(){
 			this.page=1;

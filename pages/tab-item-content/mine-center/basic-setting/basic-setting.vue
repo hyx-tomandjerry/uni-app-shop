@@ -8,27 +8,27 @@
 				<view class="font-size-big font-weight-bold color-normal">基本资料</view>
 			</block>
 			<block slot="right">
-				
+
 				<view class="font-size-small font-weight-normal text-blue" style="margin-right:15px;"  @click="setUserInfo()" >
 					提交
 				</view>
 			</block>
 		</cu-custom>
 		<view class="info-container bg-white">
-		
+
 
 			<view class="user-info-item-log flex justify-between position_relative borderBottom" @click="uploadAvatar()">
 				<view class="font-weight-normal font-size-normal color-normal" style="line-height:47px;">头像</view>
 				<view >
-					<image 
-					
+					<image
+
 					class="coverUrl"
 					v-if="userInfo.headurl"
 					:src="userInfo.headurl" ></image>
 				</view>
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:27px;" ></text>
 			</view>
-			
+
 			<view class="cu-form-group flex justify-between align-center">
 				<view class=" font-size-normal font-weight-normal color-normal">昵称</view>
 				<view class="flex justify-start align-center">
@@ -42,7 +42,7 @@
 					<text class="font-size-normal color-regular">{{userInfo.mobile}}</text>
 					<text class="cuIcon-right text-gray" style="font-size:18px;" ></text>
 				</view>
-				
+
 			</view>
 		</view>
 		<view class="extra-container bg-white" >
@@ -61,7 +61,7 @@
 						</view>
 					</view>
 				</view>
-		
+
 			<view class="cu-form-group position_relative borderBottom" @click="inputIDcard()">
 				<view class=" font-size-normal font-weight-normal color-normal">身份证号</view>
 				<input placeholder="输入身份证号"  style="text-align:right;margin-right:5px;"
@@ -77,7 +77,7 @@
 				<view class="font-weight-normal font-size-normal color-normal" style="line-height:47px;">出生日期</view>
 				<view  style="line-height:40px;margin-right:10px;" class="color-regular">
 					<text v-if="showBir">{{birthday || ''}}</text>
-					<text  v-else>{{userInfo.birthday | formatTime('YMD') || ''}}</text>
+					<text  v-else-if="userInfo.birthday">{{userInfo.birthday | formatTime('YMD') || ''}}</text>
 				</view>
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:12px;"  ></text>
 			</view>
@@ -85,7 +85,7 @@
 		 <mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true"
 				@confirm="onSelected($event)" @cancel="onSelected($event)"
 		 />
-		 
+
 	</view>
 </template>
 <script>
@@ -103,7 +103,7 @@
 				birthday:'',
 				showPicker:false,
 				showBir:false,
-				coverID:'',	
+				coverID:'',
 				show_idnum:'',
 				array: [{name:'男'},{name: '女'}],
 				index: 0,
@@ -117,7 +117,7 @@
 			//修改电话号码
 			changeTel(){
 				uni.navigateTo({
-					url:'../account-manager/account-manager'
+					url:'../change-telephone/change-telephone'
 				})
 			},
 			bindPickerChange: function(e) {
@@ -133,7 +133,7 @@
 						})
 					}
 				}
-				
+
 			},
 			inputIDcard(){
 				this.isShowInput=true;
@@ -177,7 +177,7 @@
 									this.getAvater(this.coverID)
 								}
 							});
-						
+
 					}
 				})
 			},
@@ -195,13 +195,13 @@
 					this.showPicker = false;
 					this.showBir=true;
 				}
-			
+
 			},
 			goBack(){
 				uni.navigateBack({
 					delta:1,
 					success:(res)=>{
-						
+
 					}
 				})
 			},
@@ -211,7 +211,7 @@
 			  this.value = this[type];
 			},
 			setUserInfo(){
-				
+
 				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(this.userInfo.mobile))){
 					uni.showToast({
 						title:'电话号码不存在',
@@ -223,7 +223,7 @@
 						icon:'none'
 					})
 				}else{
-					
+
 					this.$ajax('SetProfile',{
 						gender:this.index==0?1:2,
 						mobile:this.userInfo.mobile,
@@ -241,9 +241,9 @@
 								delta:1
 							})
 						},800)
-					})	
+					})
 				}
-				
+
 			},
 			...mapMutations(['login']),
 		},
@@ -262,7 +262,7 @@
 					this.show_idnum='';
 					this.userInfo.idnum=''
 				}
-				
+
 			})
 		}
 	}

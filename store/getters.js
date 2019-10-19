@@ -17,7 +17,7 @@ export default {
 		// 	 define_Url = state.proUrl
 		// }
 		// 
-		return state.proUrl;
-        // return state.xiaoxiongUrl
+		// return state.proUrl;
+        return state.xiaoxiongUrl
     }
 }

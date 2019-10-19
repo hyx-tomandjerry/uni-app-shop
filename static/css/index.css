@@ -1,5 +1,5 @@
-	
-	
+
+
 	.font-family-num{
 		font-family:DINAlternate-Bold;
 	}
@@ -103,28 +103,31 @@
 		color:rgba(255,72,103,1);
 	}
 	.bg-color-red{
-		background-color:rgba(255,72,103,1);
+		background-color:rgba(255,72,103,1) !important;
 	}
 	.bg-color-yellow{
-		background:rgba(250,211,55,1);
+		background:rgba(250,211,55,1) !important;
+	}
+	.bg-color-orange{
+		background:orange !important;
 	}
 	.bg-color-purple{
-		background:rgba(182,89,255,1);
+		background:rgba(182,89,255,1) !important;
 	}
 	.color-purple{
-		color:rgba(182,89,255,1);
+		color:rgba(182,89,255,1) ;
 	}
 	.bg-color-blue{
-		background:#42B0ED
+		background:#42B0ED !important
 	}
 	.bg-color-perform{
-		background:rgba(56,61,91,1);
+		background:rgba(56,61,91,1) !important;
 	}
 	.flex-1{
 		flex:1
 	}
 	.bg-color-normal{
-		background:rgba(247,247,247,1)
+		background:rgba(247,247,247,1) !important
 	}
 	.flex-xs{
 		width:20%;
@@ -135,7 +138,12 @@
 	.flex-litter{
 		width:30%
 	}
-	
+	.flex-middle{
+		width:50%
+	}
 	.flex-all{
 		width:100%;
+	}
+	.border-red{
+		border:1px solid rgba(255,72,103,1)
 	}

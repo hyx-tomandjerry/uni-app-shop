@@ -72,9 +72,9 @@
 				<view class="font-size-big font-weight-bold">
 					店员列表
 				</view>
-				<view style="color:#42B0ED" v-if="shopItem.manager==userInfo.id" @click="deleteMember()">删除</view>
+				<!-- <view style="color:#42B0ED" v-if="shopItem.manager==userInfo.id" @click="deleteMember()">删除</view> -->
 			</view>
-			<view class="member-list borderBottom flex justify-start align-center position_relative" v-for="(item ,index) in userList" :key="index" v-if="item.name">
+			<view class="member-list borderBottom flex justify-start align-center position_relative" v-for="(item ,index) in userList" :key="index" v-if="item.name" @click="checkItemInfo(item)">
 				<view style="width:15%;">
 					<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  	style="width:40px;height:40px;border-radius: 50%;vertical-align: middle;"></image>
 
@@ -103,13 +103,13 @@
 						<text v-else></text>
 					</text> -->
 				</view>
-				<view style="position:absolute;right:12px;">
+				<!-- <view style="position:absolute;right:12px;">
 					<view v-if="shopItem.manager==userInfo.id">
 						<image :src="item.isCheck?'../../../../static/icon/icon-xuanzhong.png':'../../../../static/icon/icon-weixuanzhong.png'"
 							   style="width:20px;height:20px;" @click="chooseMemberOperate(item)"></image>
 					</view>
 					
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<view class="cu-modal" :class="isShow?'show':''" >
@@ -154,11 +154,12 @@
 			
 		</view>
 
-		<view class="operate-btn flex justify-start" v-if="shopItem.manager==userInfo.id">
-			<view class="set-btn text-center" style="width:40%;" @click="setManager()">设为店长</view>
-			<view class="record-btn text-center" style="width:55%;" @click="inviteJoin()">录入店员</view>
+		<view class="operate-btn flex justify-start" >
+			<!-- <view class="set-btn text-center" style="width:40%;" @click="setManager()">设为店长</view> -->
+			<view class="set-btn text-center" style="width:40%;" @click="inviteJoin" v-if="shopItem.manager==userInfo.id">录入店员</view>
+			<view class="record-btn text-center" :style="{width:shopItem.manager==userInfo.id?'55%':'100%'}" @click="record">记一笔</view>
 		</view>
-
+		
 		<imageModel :isShow="modalName=='imageModal'" @hideModel="hideModal" @downImg="downImg" :url="shopItem.coverurl"></imageModel>
 
 		<simpleModel :isShow="secondModal=='nameModal'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='nameModal'">
@@ -205,7 +206,6 @@
 				salemanStatus:this.$store.state.userStatus,
 				modalName:null,
 				secondModal:null,
-				radio: 'radio1',
 				shopItem:'',
 				isShow:false,
 				designer:{
@@ -214,9 +214,7 @@
 				},
 				shopID:'',//门店ID
 				userList:[],//店员列表
-				// userInfo:''
-				operateID:[],//选中店员的id,
-				shoper:''
+				
 			}
 		},
 		components:{
@@ -225,86 +223,25 @@
 			imageModel
 		},
 		methods:{
-			confirmDelete(){
-				console.log(this.operateID.join(','))
-				this.$ajax('RemoveSalesman',{
-					shop:this.shopItem.id,
-					users:this.operateID.join(','),
-				},res=>{
-					uni.showToast({
-						title:'删除店员成功',
-						icon:'none'
-					})
-					this.hideModal();
-					this.checkShopDetail(this.shopID);
-				})
-
-			},
-			deleteMember(){
-
-				this.userList.forEach(item=>{
-					if(item.isCheck){
-						this.operateID.push(item.id)
-					}
-
-				})
-				if(this.operateID.length<1){
-					uni.showToast({
-						title:'选择一项进行操作',
-						icon:'none'
-					})
-
-				}else{
-					this.modalName='deleteModel';
-					console.log(this.operateID)
+			//查看店员详情
+			checkItemInfo(item){
+				let obj={
+					shopItem:this.shopItem,
+					clerkItem:item,
+					
 				}
-			},
-			chooseMemberOperate(item){
-				item.isCheck=!item.isCheck;
-			},
-			//设置店长
-			setShoper(){
-				console.log(this.shoper)
-				this.$ajax('SetShopManager',{
-					shop:this.shopItem.id,
-					user:this.shoper.id
-				},res=>{
-					uni.showToast({
-						title:'设置店长成功',
-						icon:'none'
-					})
-					this.hideModal()
-					this.checkShopDetail(this.shopID);
-					this.operateID=[];
-
-				})
-			},
-			setManager(){
-				this.userList.forEach(item=>{
-					if(item.isCheck){
-						this.operateID.push(item.id)
+				uni.navigateTo({
+					url:"../clerk-item-info/clerk-item-info",
+					success: () => {
+						this.$fire.fire('clerk',obj)
 					}
 				})
-				if(this.operateID.length>1){
-					uni.showToast({
-						title:'只能选择一个',
-						icon:'none'
-					})
-					this.userList.forEach(it=>{
-						it.isCheck=false;
-					})
-					this.operateID=[]
-				}else if(this.operateID.length==1){
-					this.modalName='setModel';
-					this.shoper=this.userList.find(shop=>shop.id==this.operateID.join(''))
-
-				}else if(this.operateID.length<1){
-					uni.showToast({
-						title:'选择一项进行操作',
-						icon:'none'
-					})
-				}
-
+			},
+			//记一笔
+			record(){
+				uni.navigateTo({
+					url:"../../work-center/statistics-center/record-money/record-money?id="+this.shopID
+				})
 			},
 			downImg(){
 				 uni.getImageInfo({
@@ -322,37 +259,16 @@
 					 }
 				 })
 			},
-			SendInvitationEvent(item){
-				this.$ajax('SendInvitation',{user:item.id},res=>{
-					// item.isSend=true;
-					uni.showToast({
-						title:'已发送短信邀请',
-						icon:'none'
-					})
-					this.$ajax('ShopSalesmen',{shop:this.shopItem.id},res=>{
-						this.userList=res;
-					})
-				})
-
-
-
-			},
-			checkNameEvent(event){
-				if(!event){
-					// this.isWrongName=true;
-				}
-			},
 			//验证电话号码
 			checkTelEvent(event){
-
+			
 				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event))){
 					console.log('llllll')
 					this.secondModal='Modal'
 				}
 			},
-			//设置店长
-			setShopManager(){},
-			//邀请加入
+			
+			//录入店员
 			inviteJoin(){
 				this.isShow=true;
 				this.designer.name='';
@@ -368,34 +284,136 @@
 				if(this.modalName){
 					this.modalName=null;
 				}
-				if(this.operateID){
-					this.operateID=[];
-					this.userList.forEach(item=>{
-						item.isCheck=false;
-					})
-				}
-
 			},
 			hideSecondModal(){
 				if(this.secondModal){
 					this.secondModal=null;
 				}
 			},
-			RadioChange(e) {
+		
+			
+			
+			
+			
+			
+			/**
+			 * 
+			  RadioChange(e) {
 				this.radio = e.detail.value
-			},
+			  },
+			  //确认删除店员
+			  confirmDelete(){
+			  	console.log(this.operateID.join(','))
+			  	this.$ajax('RemoveSalesman',{
+			  		shop:this.shopItem.id,
+			  		users:this.operateID.join(','),
+			  	},res=>{
+			  		uni.showToast({
+			  			title:'删除店员成功',
+			  			icon:'none'
+			  		})
+			  		this.hideModal();
+			  		this.checkShopDetail(this.shopID);
+			  	})
+			  
+			  },
+			  
+			  deleteMember(){
+			  
+			  	this.userList.forEach(item=>{
+			  		if(item.isCheck){
+			  			this.operateID.push(item.id)
+			  		}
+			  
+			  	})
+			  	if(this.operateID.length<1){
+			  		uni.showToast({
+			  			title:'选择一项进行操作',
+			  			icon:'none'
+			  		})
+			  
+			  	}else{
+			  		this.modalName='deleteModel';
+			  		console.log(this.operateID)
+			  	}
+			  },
+			  chooseMemberOperate(item){
+			  	item.isCheck=!item.isCheck;
+			  },
+			  //设置店长
+			  setShoper(){
+			  	console.log(this.shoper)
+			  	this.$ajax('SetShopManager',{
+			  		shop:this.shopItem.id,
+			  		user:this.shoper.id
+			  	},res=>{
+			  		uni.showToast({
+			  			title:'设置店长成功',
+			  			icon:'none'
+			  		})
+			  		this.hideModal()
+			  		this.checkShopDetail(this.shopID);
+			  		this.operateID=[];
+			  
+			  	})
+			  },
+			  setManager(){
+			  	this.userList.forEach(item=>{
+			  		if(item.isCheck){
+			  			this.operateID.push(item.id)
+			  		}
+			  	})
+			  	if(this.operateID.length>1){
+			  		uni.showToast({
+			  			title:'只能选择一个',
+			  			icon:'none'
+			  		})
+			  		this.userList.forEach(it=>{
+			  			it.isCheck=false;
+			  		})
+			  		this.operateID=[]
+			  	}else if(this.operateID.length==1){
+			  		this.modalName='setModel';
+			  		this.shoper=this.userList.find(shop=>shop.id==this.operateID.join(''))
+			  
+			  	}else if(this.operateID.length<1){
+			  		uni.showToast({
+			  			title:'选择一项进行操作',
+			  			icon:'none'
+			  		})
+			  	}
+			  
+			  },
+			  
+			  SendInvitationEvent(item){
+			  	this.$ajax('SendInvitation',{user:item.id},res=>{
+			  		// item.isSend=true;
+			  		uni.showToast({
+			  			title:'已发送短信邀请',
+			  			icon:'none'
+			  		})
+			  		this.$ajax('ShopSalesmen',{shop:this.shopItem.id},res=>{
+			  			this.userList=res;
+			  		})
+			  	})
+			  
+			  
+			  
+			  },
+			  checkNameEvent(event){
+			  	if(!event){
+			  		// this.isWrongName=true;
+			  	}
+			  },
+			 */
+			
 			//获得门店详情
 			checkShopDetail(id){
 				this.$ajax('ChainShop',{id:id},res=>{
 					this.shopItem=res;
 				})
 				this.$ajax('ShopSalesmen',{shop:id},res=>{
-					res.forEach(item=>{
-						// item.isSend=false;
-						item.isCheck=false;
-					})
 					this.userList=res;
-					
 				})
 			},
 			//录入店员
@@ -435,12 +453,13 @@
 
 		},
 		onLoad(option){
-
-			// this.getUserInfo()
 		   if(option){
 		   		this.shopID=option.shopID;
                this.checkShopDetail(option.shopID)
 		   }
+		},
+		onShow(){
+			this.checkShopDetail(this.shopID)
 		}
 	}
 </script>

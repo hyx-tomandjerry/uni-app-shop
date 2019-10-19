@@ -27,7 +27,7 @@
 					<input placeholder="请输入联系方式" name="input" @blur="checkTelEvent($event)" style="text-align:right;"  class="font-size-normal font-weight-normal text-black" v-model="designer.telephone"></input>
 				</view>
 
-				<view class="cu-form-group position_relative"  @click="onShowDatePicker('date')">
+				<!-- <view class="cu-form-group position_relative"  @click="onShowDatePicker('date')">
 					<view class=" font-size-normal font-weight-normal" >
 						<text class="text-red" style="margin-right:4rpx;">*</text>上门日期
 					</view>
@@ -35,11 +35,11 @@
 						<view class="dateStyle color-normal" v-if="designer.date" style="margin-right:20px;">{{ designer.date}}</view>
 						<view><text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:12px;"></text></view>
 					</view>
-				</view>
+				</view> -->
 			</view>
 			<view class="repair-item"></view>
 			<view class="repair-info">
-				<view class="cu-form-group position_relative" @click="toRepairItem()">
+				<view class="cu-form-group position_relative borderBottom" @click="toRepairItem()">
 					<view class=" font-size-normal font-weight-normal" >
 						<text class="text-red" style="margin-right:4rpx;">*</text>
 						维修类别
@@ -86,7 +86,7 @@
 						</view>
 					</view>
 				</view>
-				
+
 				<view>
 					<view class=" font-size-normal font-weight-normal bg-white reapir-detail-container" ><text class="text-red" style="margin-right:4rpx;">*</text>报修描述</view>
 					<view>
@@ -100,11 +100,11 @@
 					</view>
 				</view>
 				<view style="height:13px;width:100%;background:rgba(247,247,247,1)"></view>
-				<view class="cu-bar bg-white" >
+				<view class="cu-bar bg-white " >
 	<view class="title font-size-normal font-weight-normal" style="font-size:13px;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
 				</view>
 
-				<view class="cu-form-group">
+				<view class="cu-form-group margin-bottom-normal">
 					<view class="grid col-4 grid-square flex-sub">
 						<view class="padding-xs bg-img" :style="[{backgroundImage:'url(' + imgList[index] +')'}]" v-for="(item,index) in imgList"
 													  :key="index" @tap="ViewImage(index) " :data-url="imgList[index]">
@@ -116,6 +116,20 @@
 							<image src='../../../../static/img/work/camera.png' mode="" @tap="ChooseImageEvent()"  style="width:78px;height:78px;"></image>
 						</view>
 
+					</view>
+				</view>
+
+				<view class="cu-form-group borderBottom position_relative" @click="chooseWorkflow" v-show="!repaitItem">
+					<view class="title font-size-normal font-weight-normal" >
+						<text class="text-red" style="margin-right:4rpx;">*</text>审批流程
+					</view>
+					<view>
+						<view class="dateStyle"  style="margin-right:20px;">
+							<text  class="font-size-normal font-weight-normal">{{workFlowItem.name || ''}}</text>
+							<text class="cuIcon-right  position_absolute color-placeholder" style="font-size:16px;right:17px;bottom:14px;" >
+							</text>
+						</view>
+						
 					</view>
 				</view>
 			</view>
@@ -140,7 +154,7 @@
 	import {mapState} from 'vuex'
 	// import moment from 'moment'
 	export default{
-	    computed:mapState(['userInfo','repairStatus']),
+	    computed:mapState(['userInfo','repairStatus','repairTypeZn']),
 		data(){
 			return{
 				showPicker: false,//显示日期弹出框
@@ -172,19 +186,20 @@
 				},
 				subItem:'',//维修子类别
 				subItemImg:[],
-				
+
 				files:[],
 				imgList:[],
 				// address:'',获取位置
 				token:'',
 				loading:false,
-				repaitItem:'',//报修详情
+				repaitItem:'',//报修详情,
+				workFlowItem:'',//审批详情
 			}
 		},
 		components:{
 			MxDatePicker
 		},
-		
+
 		onLoad(options){
 			if(options.id){
 				this.getRepairInfo(options.id)
@@ -228,11 +243,20 @@
                 this.designer.name=this.userInfo.name;
                 this.designer.telephone=this.userInfo.account;
 			}
-
+			this.$fire.on('workFlow',res=>{
+				console.log(res)
+				this.workFlowItem=res;
+			})
 
 
 		},
 		methods:{
+	    	//选择流程模板
+			chooseWorkflow(){
+				uni.navigateTo({
+					url:'../work-flow/work-flow'
+				})
+			},
 			getOpenDate(){
 				var date=new Date();
 				// return this.format(date,'YMD')
@@ -252,8 +276,8 @@
 				},res=>{
 					this.repaitItem=res;
 					this.designer={
-					name:this.repaitItem.creatorName,
-					telephone:this.repaitItem.creatorMobile,
+					name:this.repaitItem.applierName,
+					telephone:this.repaitItem.applierMobile,
 					date:this.$moment(this.repaitItem.appointdate).format('YYYY-MM-DD')
 					};
 					this.shop={
@@ -261,14 +285,14 @@
 						name:this.repaitItem.name
 					};
 					this.repairObj={
-					bigName:'',
-					bigID:'',
+					bigName:this.repaitItem.type?this.repairTypeZn[this.repaitItem.type]:'',
+					bigID:this.repaitItem.type?this.repaitItem.type:'',
 					subName:this.repaitItem.catalogName,
 					subID:this.repaitItem.catalog,
 					summary:this.repaitItem.summary?this.repaitItem.summary:''
 					};
 					if(this.repaitItem.files){
-						
+
 						this.repaitItem.files.forEach(item=>{
 
 							this.imgList.push(item.url);
@@ -281,17 +305,25 @@
 			//提交报修
 			createOrder(){
 				if(this.repaitItem){
+					// if(!this.workFlowItem.id){
+					// 	uni.showToast({
+					// 		title:'请选择审批流程',
+					// 		icon:'none'
+					// 	})
+					// 	return;
+					// }
 					this.$ajax('SetServiceOrder',{
 						id:this.repaitItem.id,
 						category:this.repairObj.subID?this.repairObj.subID:'',
 						type:this.repairObj.bigID?this.repairObj.bigID:'',
 					    // appointdate:this.designer.date?this.designer.date:this.format(this.repaitItem.appointdate,'YMD'),
-					    appointdate:this.designer.date?this.designer.date:this.$moment(this.repaitItem.appointdate).format('YYYY-MM-DD'),
+					    // appointdate:this.designer.date?this.designer.date:this.$moment(this.repaitItem.appointdate).format('YYYY-MM-DD'),
 					    summary:this.repairObj.summary,
 					    files:this.files?this.files.join(','):'',
 					    contractor:this.designer.name?this.designer.name:this.userInfo.name,
 					    telephone:this.designer.telephone?this.designer.telephone:this.userInfo.account,
-						reassigned:this.repaitItem.status==this.repairStatus.refuse?1:''
+						// reassigned:this.repaitItem.status==this.repairStatus.refuse?1:'',
+						workflow:this.repaitItem.workflow
 					},res=>{
 					    this.loading = true
 					    uni.showToast({
@@ -303,21 +335,23 @@
 					            delta:1
 					        })
 					    },1000)
-										
+
 					})
 				}else{
-					
+
 					if(!this.shop.name){
 						uni.showToast({
 							title:'请选择门店进行报修',
 							icon:'none'
 						})
-					}else if(!this.designer.date){
-						uni.showToast({
-							title:'请选择上门时间',
-							icon:'none'
-						})
-					}else if(!this.repairObj.bigID){
+					}else 
+					// if(!this.designer.date){
+					// 	uni.showToast({
+					// 		title:'请选择上门时间',
+					// 		icon:'none'
+					// 	})
+					// }else 
+					if(!this.repairObj.bigID){
 						uni.showToast({
 							title:'请选择报修类别',
 							icon:'none'
@@ -332,18 +366,25 @@
 							title:'未上传图片，或者图片正上传，请稍等',
 							icon:'none'
 						})
+					}else if(!this.workFlowItem.id){
+						console.log(this.workFlowItem)
+						uni.showToast({
+							title:'请选择审批流程',
+							icon:'none'
+						})
 					}else{
-					
+						
 					    this.$ajax('NewServiceOrder',{
 					        category:this.repairObj.subID?this.repairObj.subID:'',
 							type:this.repairObj.bigID?this.repairObj.bigID:'',
 					        creator:this.userInfo.id,
 					        shop:this.shop.id,
-					        appointdate:this.designer.date?this.designer.date:this.$moment(Date.now()).format('YYYY-MM-DD'),
+					        // appointdate:this.designer.date?this.designer.date:this.$moment(Date.now()).format('YYYY-MM-DD'),
 					        summary:this.repairObj.summary,
 					        files:this.files?this.files.join(','):'',
 					        contractor:this.designer.name?this.designer.name:this.userInfo.name,
-					        telephone:this.designer.telephone?this.designer.telephone:this.userInfo.account
+					        telephone:this.designer.telephone?this.designer.telephone:this.userInfo.account,
+							workflow:this.workFlowItem.id//流程模板
 					    },res=>{
 					        this.loading = true
 					        uni.showToast({
@@ -355,11 +396,11 @@
 					                delta:1
 					            })
 					        },1000)
-					
+
 					    })
 					}
 				}
-				
+
 			},
 			//获得门店信息
 			getShopInfo(id){
@@ -368,7 +409,7 @@
 				})
 			},
 			toRepairItem(){
-				
+
 				uni.navigateTo({
 					url:'../repair-item/repair-item'
 				})
@@ -385,7 +426,7 @@
 						sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 						sourceType: ['camera','album'],
 						success: (res) => {
-							
+
                             const tempFilePaths=res.tempFilePaths;
                             if (this.imgList.length != 0) {
                                 this.imgList = this.imgList.concat(res.tempFilePaths)
@@ -407,7 +448,7 @@
                                         let res=JSON.parse(uploadFileRes.data);
                                         this.files.push(res.data);
                                     },
-									
+
                                 });
 								uploadTask.onProgressUpdate((res)=>{
 								       if(res.progress==100){
@@ -422,7 +463,7 @@
 								                icon:'none'
 								            })
 								       })
-                            
+
                             }
 
 
@@ -502,7 +543,7 @@
 			// 	})
 			// },
 // 			showModal(e) {
-// 
+//
 // 				this.modalName = e.currentTarget.dataset.target
 // 			},
 			// hideModal(){
@@ -564,6 +605,6 @@
 			border-radius: 10px;
 			min-height:100px;
 		}
-		
+
 	}
 </style>

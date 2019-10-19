@@ -109,7 +109,16 @@
 
 		<!--按钮 start-->
 		<view class="btn-container bg-white">
-			<view class="submit-btn">申请验收</view>
+			<view v-if="status==taskStatus.waiting" class="flex justify-between">
+				<!-- 未接受（接受/拒绝） -->
+				<view class="agree-btn flex-sm">拒绝</view>
+				<view class="reject-btn flex-1">接受</view>
+			</view>
+			<!-- 已接受/已超期，未通过（申请验收） -->
+			<view class="submit-btn" 
+			v-if="status==taskStatus.received || status== taskStatus.overdue || status==taskStatus.noPass"
+				@click="checkApply"
+			>申请验收</view>
 		</view>
 		<!--按钮 end-->
 
@@ -117,9 +126,13 @@
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	export default {
+		computed:mapState(['taskStatus']),
+		
 		data() {
 			return {
+				status:3,//未接受
 				avatar:['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg',
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg',
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg',
@@ -131,9 +144,15 @@
 			}
 		},
 		methods: {
-			
+			//申请验收
+			checkApply(){
+				uni.navigateTo({
+					url: '../check-apply/check-apply',
+					
+				});
 		}
-	}
+	},
+}
 </script>
 
 <style lang="less">
@@ -164,6 +183,26 @@
 		background: #fff;
 		padding:11px 13px;
 		text-align: center;
+		font-size:16px;
+				
+		font-weight:400;
+		.agree-btn{
+			margin-right: 10px;
+			height:40px;
+			line-height:40px;
+			border-radius:5px;
+			border:1px solid rgba(66,176,237,1);
+			color:rgba(66,176,237,1);
+		}
+		.reject-btn{
+			height:40px;
+			line-height:40px;
+			background:rgba(66,176,237,1);
+			border-radius:5px;
+			
+			color:rgba(255,255,255,1);
+			
+		}
 		.submit-btn{
 			width: 100%;
 			background:rgba(66,176,237,1);

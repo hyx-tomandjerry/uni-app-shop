@@ -15,16 +15,21 @@
 					<view class="list-item"  v-for="(item,index) in repairList" :key="index" >
 							<view class=" flex justify-between align-center">
 								<view class="list-item-title">{{repairTypeZn[item.type]}}-{{item.categoryName || ''}}维修</view>
-								<view class="flex justify-start align-center">
-									<!-- <image src="../../../static/img/shop/smile.png" style="width:15px;height:15px;vertical-align: middle;margin-right:5px;" v-if="item.status==repairStatus.waitManager"></image> -->
-									<view 
+								<view v-if="item.status==repairStatus.submit"
+								:class="{
+									'wait':item.approval==approvalStatus.wait,
+									'executing':item.approval==approvalStatus.applied,
+									'accepted':item.approval==approvalStatus.accepted,
+									'rejected':item.approval==approvalStatus.rejected,
+								}"
+								>{{item.approval | approvalStatusPipe }}</view>
+								<view v-else
 									:class="{
-									'waitManager':item.status==repairStatus.waitManager,
-									'waitArea':item.status==repairStatus.waitArea,
-									'waitCompany':item.status==repairStatus.waitCompany,
-									'color-regular':item.status==repairStatus.loading,
+										'executing':item.status==repairStatus.executing,
+										'accepted':item.status==repairStatus.finished
 									}"
-									>{{item.status|repairStatus}}</view>
+								>
+									{{item.status|repairStatus}}
 								</view>
 							</view>
 							<view class="list-content">
@@ -35,14 +40,14 @@
 									</view>
 
 
-									<view class="list-content-item">
+									<!-- <view class="list-content-item">
 										<image src="../../../static/icon/icon-time@2x.png" class="shopImg"></image>
 										<text style="margin-right:5px;">预约时间:</text> {{item.appointdate| formatTime('YMD')}}
-									</view>
+									</view> -->
 
 									<view class="list-content-item">
 										<image src="../../../static/icon/icon-dneglu-zhanghu@2x.png" class="shopImg " ></image>
-										<text style="margin-right:5px;">报修人:</text> {{item.creatorName}}  <text class="color-regular" style="margin:0 5px;">|</text> {{item.creatorMobile}}
+										<text style="margin-right:5px;">报修人:</text> {{item.applierName}}  <text class="color-regular" style="margin:0 5px;">|</text> {{item.applierMobile}}
 									</view>
 								</view>
 
@@ -85,16 +90,16 @@
 	import showModel from '../../../components/show-model.vue'
 	import {mapState} from 'vuex'
 	export default{
-		computed:mapState(['userInfo','shoperObj','repairTypeZn']),
+		computed:mapState(['userInfo','shoperObj','repairTypeZn','approvalStatus','repairStatus']),
 		data(){
 			return{
-				repairStatus:this.$store.state.repairStatus,
+				// repairStatus:this.$store.state.repairStatus,
 				statusList:[
 					{id:1,
-					name:"未处理",
+					name:"已报修",
 					value:'orders'},
-					{id:4,name:"处理中",value:'unfinish'},
-					{id:6,name:"已完成",value:'refuse'},
+					{id:2,name:"执行中",value:'unfinish'},
+					{id:3,name:"已完成",value:'refuse'},
 
 				],
 				TabCur:1,
@@ -123,11 +128,15 @@
 			this.page++;
 			this.loading='loading';
 			setTimeout(()=>{
-				this.$ajax('ShopServiceOrders',{
-					status:this.TabCur==1?[1,2,3].join(','):status,
+				this.$ajax('MyServiceOrders',{
+					status:status,
 					offset:this.$utils.getOffset(this.page),
-					creator:this.type=='all'?'':this.userInfo.id,
-					store:this.type=='all'?1:''
+					// creator:this.type=='all'?'':this.userInfo.id,
+					mine:this.type=='all'?0:1
+					// status:this.TabCur==1?[1,2,3].join(','):status,
+					// offset:this.$utils.getOffset(this.page),
+					// creator:this.type=='all'?'':this.userInfo.id,
+					// store:this.type=='all'?1:''
 				},res=>{
 					if(res==''){
 						setTimeout(()=>{
@@ -236,11 +245,12 @@
 
 			//报修列表
 			getRepairList(status){
-				this.$ajax('ShopServiceOrders',{
-					status:status==1?[1,2,3].join(','):status,
+
+				this.$ajax('MyServiceOrders',{
+					status:status,
 					offset:this.$utils.getOffset(this.page),
-					creator:this.type=='all'?'':this.userInfo.id,
-					store:this.type=='all'?1:''
+					// creator:this.type=='all'?'':this.userInfo.id,
+					mine:this.type=='all'?0:1
 				},res=>{
 					this.repairList=res
 				})
@@ -298,7 +308,7 @@
 
 				}
 			}
-			
+
 			.marginRight10{
 				margin-right:10px;
 			}
@@ -316,20 +326,22 @@
 				color:rgba(137,136,136,1);
 				margin-bottom:15px;
 			}
-			.waitManager{
-				color:#ED7322
+			// 审批状态颜色-待审批
+			.wait{
+				color:#00474f
 			}
-			.waitArea{
-				color:#9013FE
+			// 审批状态颜色-审批中
+			.executing{
+				color:#096dd9
 			}
-			.waitCompany{
-				color:#1D7BFF
+			//已通过
+			.accepted{
+				color:#52c41a
 			}
-			.loading{
-				color:#13C16A
+			//被驳回
+			.rejected{
+				color:#f5222d
 			}
-			.finish{
-				color:#898888
-			}
+
 </style>
 

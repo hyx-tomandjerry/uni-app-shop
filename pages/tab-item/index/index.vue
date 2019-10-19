@@ -1,11 +1,11 @@
 <template>
     <view class="position_relative">
-	
+
 		<view class="head-container" >
 			<!-- header start  -->
 			<!-- 如果type=4&&status=2 加入门店-->
 			<view v-if="userInfo && (userInfo.type==shoperObj.type)">
-				
+
 				<view v-if="userInfo.status==userStatus.applying">
 					<text class=" text-orange ">申请加入中</text>
 				</view>
@@ -17,18 +17,18 @@
 			<!-- header end -->
 		</view>
 		<view class="index-container">
-			
+
 			<!-- swiper start -->
 			<swiper class="screen-swiper square-dot"  :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
 				<swiper-item v-for="(item,index) in shopList" :key="index">
-					<image :src="item.url" mode="aspectFill" style="border-radius:8px;"></image>	
+					<image :src="item.url" mode="aspectFill" style="border-radius:8px;"></image>
 				</swiper-item>
 			</swiper>
 			<!-- swiper end -->
 			<!-- tab start -->
 			<view class="operateItem">
 				<view v-for="(item,index) in options" :key="index" @click="showOperateItem(item.value)" style="position: relative;">
-					<view><image :src="item.image" 
+					<view><image :src="item.image"
 						:class="{
 							'operateIcon':index==0 || index==3,
 							'repairImg':index==1 || index==2
@@ -40,45 +40,45 @@
 			</view>
 			<!-- tab end -->
 		</view>
-		
+
 		<!-- article start -->
 		<view class="notice_container">
 			<view style="margin-bottom:10px;">
 				<view>
 					<view class="cu-bar bg-white ">
 						<view class="action">
-							
+
 							<text class="card-title">销售公告</text>
 						</view>
 						<view class="action">
 							<text class="card-more" @click="showMoreInfo('skill')">更多<text class="cuIcon-right" ></text></text>
 						</view>
 					</view>
-					
+
 					<view v-if="noticeList1.length==0" style="text-align: center;padding:42px 0 68px;">
-						
+
 						<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
 						<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 					</view>
 					<view class="flex justify-start  position_relative borderBottom" v-for="(item,index) in noticeList1" :key="index" @click="detailContent(item,'skill')" style="padding:23px 0 25px;;width:100%;align-items:center"  v-else>
-						
+
 						<view style="width:70%;margin-right:7px;">
 							<view class="font-weight-super font-weight-middle color-normal" style="margin-bottom:7px;">{{item.name}}</view>
 							<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">{{item.applyDate | formatTime('YMDHMS')}}</view>
 						</view>
 						<view style="width:29%;margin-right:15px;">
 							<image :src="item.coverurl" mode="aspectFill" style="
-							
+
 							height:79px;border-radius: 10px;vertical-align: middle;"></image>
 						</view>
-						
-						<image src="../../../static/img/huizhi1.png"  
+
+						<image src="../../../static/img/huizhi1.png"
 						style="right:15px;"
 						mode="aspectFill"
 						class="position_absolute operateImg" v-if="item.report==1"></image>
 					</view>
-					
-					
+
+
 				</view>
 			</view>
 		</view>
@@ -91,7 +91,7 @@
 					<text class="card-more" @click="showMoreInfo('example')">更多<text class="cuIcon-right" ></text></text>
 				</view>
 			</view>
-			
+
 			<view v-if="noticeList2.length==0" style="text-align: center;padding:42px 0 68px;">
 				<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
 				<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
@@ -104,8 +104,8 @@
 				<image src="../../../static/img/huizhi1.png"  mode="aspectFill" class="operateImg position_absolute" style="top:21px;right:0;"
 					   v-if="item.report==report"></image>
 			</view>
-			
-			
+
+
 		</view>
 		<!-- article end -->
 		<!-- <image src="../../../static/img/edit.png"
@@ -145,9 +145,9 @@
 				statusBarHeight:''
 			}
 		},
-		
+
 		methods:{
-			
+
 			/*记一笔*/
 			recordMoney(){
 				uni.navigateTo({
@@ -161,7 +161,7 @@
 					this.todoNum=res;
 				})
 			},
-			
+
 			/*文章列表*/
 			showArticles(){
 				this.$ajax('MyArticles',{
@@ -175,6 +175,16 @@
 								array1.push(item)
 							}else if(item.type==2){
 								array2.push(item)
+							}
+						})
+						array1.forEach(item=>{
+							if(!item.coverurl){
+								item.coverurl="../../../static/img/default.png"
+							}
+						})
+						array2.forEach(item=>{
+							if(!item.coverurl){
+								item.coverurl="../../../static/img/default.png"
 							}
 						})
 						this.noticeList1=Array.from(new Set(array1));
@@ -191,7 +201,7 @@
 				})
 			},
 			*/
-		   
+
 		   /*点击更多*/
 			showMoreInfo(type){
 				if(type=='skill'){
@@ -222,7 +232,7 @@
 						}
 						this.getTodoList()
 						this.showArticles();
-						
+
 					}
 				})
 			},
@@ -232,7 +242,7 @@
 // 					case '':
 // 						//通知公告
 // 						uni.navigateTo({
-// 
+//
 // 							url:'../../tab-item-content/notice-center/notice-index/notice-index'
 // 						})
 // 						break;
@@ -255,36 +265,36 @@
 							url:'../../tab-item-content/shop-center/shop-list/shop-list?type=shop'
 						})
 						break;
-						
+
 					case 'statistics':
 						uni.navigateTo({
 							url:'../../tab-item-content/shop-center/shop-list/shop-list?type=statistics'
 						})
 						break;
-					
+
 				}
-				
+
 			},
-			
+
 			...mapMutations(['login'])
-		
+
 		},
 		components:{
 			simpleModel,
 			showModel
 		},
-	
+
 		onLoad(){
 			this.getTodoList()
 			this.showArticles();
-			
+
 		},
 		onShow(){
 			this.refreshInfo();
 			// console.log(moment(Date.now()).format('YYYY-MM-DD hh:mm:ss'))
-			
+
 		}
-		
+
 	}
 </script>
 <style scoped>
@@ -330,10 +340,10 @@
 .notice_container{
 	margin-top:13px;
 	background:#fff;
-	
+
 	padding-right:14px;
 	padding-left:18px;
-	
+
 }
 
 	.cu-bar .action:first-child{
@@ -368,7 +378,7 @@
 	background:#fff;
 }
 .operate-title{
-	
+
 font-size:14px;
 
 font-weight:400;
@@ -397,7 +407,7 @@ color:rgba(137,136,136,1);
 .cu-dialog{
 	background:#fff;
 	max-width:263px;
-	
+
 }
 .cu-bar{
 	min-height:42px;
@@ -440,7 +450,7 @@ color:rgba(137,136,136,1);
 	.company-info-content{
 		margin-left:5px;color:#2A2A2A;flex:1;text-align:left;
 	}
-	
+
 	.repairImg{
 		width: 60px;
 		height: 60px;
@@ -452,5 +462,4 @@ color:rgba(137,136,136,1);
 </style>
 
 
- 
- 
+

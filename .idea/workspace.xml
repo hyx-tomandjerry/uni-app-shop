@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/common/http.js" line="49" />
+    <bookmark url="file://$PROJECT_DIR$/common/http.js" line="91" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99191785-f02d-4e9d-b508-f51b9992ff0f" name="默认更改列表" comment="">
+      <change afterPath="$PROJECT_DIR$/common/demo.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/demo1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/demo2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/work/statistics/rank/two_tag.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/colorui/components/cu-custom.vue" beforeDir="false" afterPath="$PROJECT_DIR$/colorui/components/cu-custom.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/errorText.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/errorText.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/http.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/city-model.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/city-model.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/common-title.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/common-title.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/upload-img.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/upload-img.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/pages.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/all-item-content/detail-content/detail-content.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/all-item-content/detail-content/detail-content.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/login-design/design/design.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login-design/design/design.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/mine-center/account-manager/account-manager.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/mine-center/account-manager/account-manager.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/all-item-content/index-more/index-more.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/all-item-content/index-more/index-more.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/login-design/login/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login-design/login/login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/mine-center/change-telephone/change-telephone.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/mine-center/change-telephone/change-telephone.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/mine-center/edit-password/edit-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/mine-center/edit-password/edit-password.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/mine-center/input-code/input-code.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/mine-center/input-code/input-code.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/notice-center/notice-item/notice-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/notice-center/notice-item/notice-item.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/店员列表.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/店员列表.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/repair-order-item/repair-order-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/repair-order-item/repair-order-item.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-list/shop-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-list/shop-list.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-distribute/create-distribute.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-distribute/create-distribute.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-express/create-express.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-express/create-express.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-item/express-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-item/express-item.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-list/express-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-list/express-list.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/shop-list-applier/shop-list-applier.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/shop-list-applier/shop-list-applier.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/success-send/success-send.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/success-send/success-send.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/log-detail/log-detail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/log-detail/log-detail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-address/create-address.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-address/create-address.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/record-money/record-money.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/record-money/record-money.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/sale-statistics-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/sale-statistics-search.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/销售明星榜.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/销售明星榜.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/销售统计页面.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/销售统计页面.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/new_file.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/new_file.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/门店销售绩效主页.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/门店销售绩效主页.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check/statistics-check.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check/statistics-check.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-index/task-index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-index/task-index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-item-detail/task-item-detail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-item-detail/task-item-detail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log-item/work-log-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log-item/work-log-item.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item/index/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item/work/work.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item/work/work.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/index.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/index.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/index_color.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/index_color.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/message.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/message.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/message_color.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/message_color.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/mine.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/mine.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/mine_color.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/mine_color.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/work.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/work.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/footer/work_color.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/footer/work_color.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/index/index-express.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/index/index-express.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/index/index-message.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/index/index-repair.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/index/index-repair.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/index/index-shop.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/index/index-shop.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/work/statistics/gold.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/work/statistics/one.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/work/statistics/one_tag.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/work/statistics/three.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/work/statistics/three_tag.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/work/statistics/two.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/work/statistics/two_tag.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/store/getters.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/getters.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/mutations.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/mutations.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/store/state.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/state.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -68,28 +68,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/store/state.js">
+        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1488">
-              <caret line="93" column="18" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3632">
-              <caret line="228" column="52" selection-start-line="228" selection-start-column="52" selection-end-line="228" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/new_file.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3968">
-              <caret line="248" column="52" selection-start-line="248" selection-start-column="52" selection-end-line="248" selection-end-column="52" />
+            <state relative-caret-position="416">
+              <caret line="31" column="58" selection-start-line="31" selection-start-column="58" selection-end-line="31" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -97,67 +79,43 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11488">
-              <caret line="719" column="17" selection-start-line="719" selection-start-column="17" selection-end-line="719" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/tab-item/index/index.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="182" column="18" selection-start-line="182" selection-start-column="18" selection-end-line="182" selection-end-column="18" />
+            <state relative-caret-position="563">
+              <caret line="688" column="38" selection-start-line="688" selection-start-column="38" selection-end-line="688" selection-end-column="38" />
+              <folding>
+                <element signature="n#style#0;n#view#2;n#view#0;n#view#0;n#view#2;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#1;n#view#0;n#view#1;n#view#2;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#view#2;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue">
+        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check/statistics-check.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1385">
-              <caret line="387" selection-start-line="387" selection-end-line="387" />
+            <state relative-caret-position="206">
+              <caret line="114" column="102" selection-start-line="114" selection-start-column="102" selection-end-line="114" selection-end-column="102" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="624">
+              <caret line="41" column="45" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="45" />
               <folding>
-                <element signature="n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" />
-                <element signature="n#style#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#image#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#text#1;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#0;n#view#0;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#text#0;n#view#1;n#view#1;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#text#0;n#view#1;n#view#2;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#3720#3781#0" expanded="true" />
+                <element signature="e#0#21#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/all-item-content/detail-content/detail-content.vue">
+        <entry file="file://$PROJECT_DIR$/store/state.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/notice-center/notice-item/notice-item.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2208">
-              <caret line="140" column="34" selection-start-line="140" selection-start-column="34" selection-end-line="140" selection-end-column="34" />
+            <state relative-caret-position="4928">
+              <caret line="308" column="4" selection-start-line="308" selection-start-column="4" selection-end-line="308" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -176,42 +134,43 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getOpenDate</find>
+      <find>ShopYearlyPerformance</find>
+      <find>shopID</find>
+      <find>shopfactPerform</find>
+      <find>dateTabChoose</find>
+      <find>numList</find>
+      <find>ShopMonth</find>
+      <find>ShopDailyPerformance</find>
+      <find>salemanList</find>
+      <find>currentMonthDaysList</find>
+      <find>date:</find>
+      <find>aimnum</find>
+      <find>day-item</find>
+      <find>day-pre</find>
+      <find>day-b</find>
+      <find>padding-xl</find>
+      <find>day-c</find>
+      <find>todayFact</find>
+      <find>day-active</find>
+      <find>skillList</find>
+      <find>noticeList2</find>
+      <find>itemInfo</find>
+      <find>shopBgndate</find>
+      <find>editAim</find>
+      <find>selectDayPre</find>
+      <find>shopPre</find>
+      <find>month-tag</find>
+      <find>console.log</find>
       <find>repairStatus</find>
-      <find>repairTypePipe</find>
-      <find>expressStatusPipe</find>
-      <find>shopStatus</find>
-      <find>shopStatusZn</find>
-      <find>shopStatusColor</find>
-      <find>shopTypeFilter</find>
-      <find>operateZn</find>
-      <find>distributeStatusPipe</find>
-      <find>userStatusPipe</find>
-      <find>userStatus</find>
-      <find>outerStatusZnPipe</find>
-      <find>formatTime</find>
-      <find>genderPipe</find>
-      <find>ServiceOrders</find>
-      <find>ZoneShopPerformances</find>
-      <find>moment</find>
-      <find>MonthlyPerformances</find>
-      <find>门店绩效</find>
-      <find>shopYear</find>
-      <find>shopDa</find>
-      <find>shopMonth</find>
-      <find>shopDail</find>
-      <find>aday</find>
-      <find>mya</find>
-      <find>work/tab/</find>
-      <find>cu-progress</find>
-      <find>user_info</find>
-      <find>log_content</find>
+      <find>approvalStatus</find>
+      <find>canvasArcbar1</find>
     </findStrings>
     <replaceStrings>
       <replace>footer</replace>
       <replace>companyInfo</replace>
       <replace>thirder</replace>
       <replace>color-placeholder</replace>
+      <replace>this</replace>
     </replaceStrings>
     <dirStrings>
       <dir>D:\lx\lx-erp-shop</dir>
@@ -231,13 +190,14 @@
       <dir>D:\myapps\pages\all-item-content</dir>
       <dir>D:\myapps\pages\tab-item-content\shop-center</dir>
       <dir>D:\myapps\colorui</dir>
-      <dir>D:\myapps\pages\tab-item-content\work-center\statistics-center</dir>
       <dir>D:\myapps\pages\login-design</dir>
-      <dir>D:\myapps</dir>
       <dir>D:\myapps\pages\tab-item-content\work-center\express-center</dir>
+      <dir>D:\myapps\components</dir>
+      <dir>D:\myapps</dir>
       <dir>D:\myapps\pages\tab-item-content\work-center</dir>
-      <dir>D:\myapps\pages\tab-item-content</dir>
       <dir>D:\myapps\pages</dir>
+      <dir>D:\myapps\pages\tab-item-content</dir>
+      <dir>D:\myapps\pages\tab-item-content\work-center\statistics-center</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -246,65 +206,65 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pages/tab-item/search-company-next/search-company-next.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-shop-list/express-shop-list.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/distribute-work-list/distribute-work-list.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/receipt-shop-list/receipt-shop-list.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-shop-list/Version2.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-index/statistics-index.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-shop-list/Version1.vue" />
-        <option value="$PROJECT_DIR$/components/upload-img.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/repair-order-item/repair-order-item.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/create-log/create-log.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item/index/主页.txt" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-distribute/create-distribute.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/near-shop-list/near-shop-list.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-list/shop-list.vue" />
         <option value="$PROJECT_DIR$/components/uchart-model.vue" />
         <option value="$PROJECT_DIR$/colorui/main.css" />
-        <option value="$PROJECT_DIR$/static/css/index.css" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/log-detail/log-detail.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-express/Version1.vue" />
-        <option value="$PROJECT_DIR$/pages/all-item-content/index-more/index-more.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-shop-man/express-shop-man.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/mine-center/change-name/change-name.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/repair-item/repair-item.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-list/express-list.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/sale-statistics-search.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item/search-shop/search-shop.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-index/express-index.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue" />
-        <option value="$PROJECT_DIR$/pages/login-design/login/login.vue" />
         <option value="$PROJECT_DIR$/store/getters.js" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-express/create-express.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-address/create-address.vue" />
         <option value="$PROJECT_DIR$/pages/login-design/protocol/protocol.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item/index/index.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item/join-shop/join-shop.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item/mine/mine.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item/work/work.vue" />
         <option value="$PROJECT_DIR$/static/css/demo.less" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/mine-center/edit-password/edit-password.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/notice-center/notice-index/notice-index.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue" />
-        <option value="$PROJECT_DIR$/main.js" />
         <option value="$PROJECT_DIR$/pages/all-item-content/detail-content/detail-content.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/notice-center/notice-item/notice-item.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue" />
+        <option value="$PROJECT_DIR$/components/city-model.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-item-info/clerk-item-info.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/sale-statistics-search.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start.vue" />
+        <option value="$PROJECT_DIR$/pages.json" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/mine-center/change-telephone/change-telephone.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-index/task-index.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/record-money/record-money.vue" />
+        <option value="$PROJECT_DIR$/common/demo.txt" />
+        <option value="$PROJECT_DIR$/common/http.js" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/demo1.txt" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/demo2.txt" />
+        <option value="$PROJECT_DIR$/static/css/index.css" />
+        <option value="$PROJECT_DIR$/pages/login-design/login/login.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item/index/index.vue" />
+        <option value="$PROJECT_DIR$/pages/all-item-content/index-more/index-more.vue" />
+        <option value="$PROJECT_DIR$/components/common-title.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-month/sale-statistics-month.vue" />
+        <option value="$PROJECT_DIR$/main.js" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue" />
+        <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check/statistics-check.vue" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="221" />
-    <option name="y" value="81" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="-196" />
+    <option name="y" value="304" />
     <option name="width" value="1940" />
-    <option name="height" value="1100" />
+    <option name="height" value="826" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -312,6 +272,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -341,66 +302,34 @@
               <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
               <item name="myapps" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="login-design" type="462c0819:PsiDirectoryNode" />
+              <item name="all-item-content" type="462c0819:PsiDirectoryNode" />
+              <item name="index-more" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
               <item name="myapps" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="login-design" type="462c0819:PsiDirectoryNode" />
-              <item name="protocol" type="462c0819:PsiDirectoryNode" />
+              <item name="tab-item" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
               <item name="myapps" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myapps" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="mine-center" type="462c0819:PsiDirectoryNode" />
+              <item name="tab-item" type="462c0819:PsiDirectoryNode" />
+              <item name="index" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
               <item name="myapps" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="mine-center" type="462c0819:PsiDirectoryNode" />
-              <item name="basic-setting" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
               <item name="myapps" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="mine-center" type="462c0819:PsiDirectoryNode" />
-              <item name="edit-password" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myapps" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="notice-center" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myapps" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="notice-center" type="462c0819:PsiDirectoryNode" />
-              <item name="notice-index" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myapps" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
-              <item name="notice-center" type="462c0819:PsiDirectoryNode" />
-              <item name="notice-item" type="462c0819:PsiDirectoryNode" />
+              <item name="shop-center" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
@@ -415,7 +344,27 @@
               <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
               <item name="work-center" type="462c0819:PsiDirectoryNode" />
-              <item name="work-log" type="462c0819:PsiDirectoryNode" />
+              <item name="statistics-center" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myapps" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="tab-item-content" type="462c0819:PsiDirectoryNode" />
+              <item name="work-center" type="462c0819:PsiDirectoryNode" />
+              <item name="statistics-center" type="462c0819:PsiDirectoryNode" />
+              <item name="shop-statistics-aim-resolve" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myapps" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myapps" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="myapps" type="b2602c69:ProjectViewProjectNode" />
@@ -426,7 +375,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -440,19 +388,19 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\myapps\static\img" />
-      <recent name="D:\myapps\static\icon" />
-      <recent name="D:\myapps\static\font" />
-      <recent name="D:\myapps\static\img\work\express\other" />
-      <recent name="D:\myapps\static\img\work\tab" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\myapps\pages\all-item-content\index-more" />
       <recent name="D:\myapps\pages\tab-item-content\work-center\statistics-center\sale-statistics-center\sale-statistics" />
       <recent name="D:\myapps\static\img\shop" />
       <recent name="D:\myapps\static\icon" />
       <recent name="D:\myapps\static\img" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\myapps\static\img\work\statistics\rank" />
+      <recent name="D:\myapps\static\img" />
+      <recent name="D:\myapps\static\icon" />
+      <recent name="D:\myapps\static\font" />
+      <recent name="D:\myapps\static\img\work\express\other" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -620,22 +568,30 @@
       <workItem from="1569723020686" duration="599000" />
       <workItem from="1569747775011" duration="931000" />
       <workItem from="1570615994289" duration="766000" />
-      <workItem from="1570693682161" duration="1945000" />
+      <workItem from="1570693682161" duration="4523000" />
+      <workItem from="1570761202427" duration="13770000" />
+      <workItem from="1570848020337" duration="19739000" />
+      <workItem from="1571018105341" duration="1784000" />
+      <workItem from="1571129866937" duration="773000" />
+      <workItem from="1571227399598" duration="3405000" />
+      <workItem from="1571278031865" duration="22900000" />
+      <workItem from="1571365064526" duration="12839000" />
+      <workItem from="1571477610750" duration="1241000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="748305000" />
+    <option name="totallyTimeSpent" value="827334000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-97" y="343" width="1940" height="1100" extended-state="1" />
+    <frame x="-196" y="304" width="1940" height="826" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16929547" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15194532" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.034949265" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.045045044" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -643,7 +599,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.11702128" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.19131614" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="调试" order="11" />
       <window_info anchor="bottom" id="GraphQL" order="12" />
@@ -690,7 +646,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/unpackage/dist/build/app-plus/app-service.js</url>
-          <line>4821</line>
+          <line>5012</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -700,7 +656,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item.vue</url>
-          <line>119</line>
+          <line>41</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -727,340 +683,15 @@
           <line>120</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-month/sale-statistics-month.vue</url>
+          <line>39</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/components/city-model.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="62" column="30" selection-start-line="61" selection-start-column="16" selection-end-line="62" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/repair-order-item/repair-order-item.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/upload-img.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1584">
-          <caret line="99" column="68" selection-start-line="99" selection-start-column="68" selection-end-line="99" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item/index/主页.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="438" column="1" selection-start-line="438" selection-start-column="1" selection-end-line="438" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-list/express-list.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2080">
-          <caret line="162" column="28" selection-start-line="162" selection-start-column="28" selection-end-line="162" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-distribute/create-distribute.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="689">
-          <caret line="53" column="81" selection-start-line="53" selection-start-column="81" selection-end-line="53" selection-end-column="81" />
-          <folding>
-            <element signature="n#style#0;n#text#0;n#view#1;n#view#0;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#0;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/create-log/create-log.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1963">
-          <caret line="152" column="44" selection-start-line="152" selection-start-column="44" selection-end-line="152" selection-end-column="44" />
-          <folding>
-            <element signature="n#style#0;n#text#1;n#view#1;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item/search-company-next/search-company-next.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1131">
-          <caret line="104" column="14" selection-start-line="104" selection-start-column="14" selection-end-line="104" selection-end-column="14" />
-          <folding>
-            <element signature="n#style#0;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" />
-            <element signature="n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" />
-            <element signature="n#view#2;n#view#1;n#view#0;n#template#0;n#!!top" />
-            <element signature="n#view#3;n#view#1;n#view#0;n#template#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-list/shop-list.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
-          <folding>
-            <element signature="n#script#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item/search-shop/search-shop.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="163" column="27" selection-start-line="163" selection-start-column="27" selection-end-line="163" selection-end-column="27" />
-          <folding>
-            <element signature="n#cu-custom#0;n#view#0;n#template#0;n#!!top" />
-            <element signature="e#2821#2883#0" />
-            <element signature="e#2896#3018#0" />
-            <element signature="e#3061#3224#0" />
-            <element signature="e#3252#3387#0" />
-            <element signature="e#3418#3916#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/near-shop-list/near-shop-list.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="213" column="14" selection-start-line="213" selection-start-column="14" selection-end-line="213" selection-end-column="14" />
-          <folding>
-            <element signature="n#view#0;n#scroll-view#0;n#view#0;n#view#0;n#template#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="367" column="21" selection-start-line="367" selection-start-column="21" selection-end-line="367" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check/statistics-check.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="10" column="15" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/uchart-model.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="23" column="71" selection-start-line="23" selection-start-column="71" selection-end-line="23" selection-end-column="71" />
-          <folding>
-            <element signature="n#style#0;n#view#1;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/record-money/record-money.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13">
-          <caret line="1" column="81" selection-start-line="1" selection-start-column="46" selection-end-line="1" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/colorui/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="499">
-          <caret line="2603" column="33" selection-start-line="2603" selection-start-column="33" selection-end-line="2603" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="58" column="16" selection-start-line="58" selection-start-column="5" selection-end-line="58" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-index/express-index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="74" column="54" selection-start-line="74" selection-start-column="54" selection-end-line="74" selection-end-column="54" />
-          <folding>
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#1;n#view#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#1;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="246" column="37" selection-start-line="246" selection-start-column="37" selection-end-line="246" selection-end-column="37" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#block#2;n#cu-custom#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#0;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#1;n#view#0;n#view#0;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#2;n#view#0;n#view#0;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#1;n#view#1;n#view#0;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/store/getters.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unpackage/dist/build/app-plus/pages/tab-item-content/shop-center/shop-center.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="1149" selection-start-column="1144" selection-end-column="1149" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-express/create-express.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="585" column="31" lean-forward="true" selection-start-line="585" selection-start-column="31" selection-end-line="585" selection-end-column="31" />
-          <folding>
-            <element signature="n#scroll-view#0;n#view#0;n#template#0;n#!!top" />
-            <element signature="n#style#0;n#text#0;n#view#1;n#view#0;n#view#1;n#view#0;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#0;n#view#1;n#view#0;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#0;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#0;n#view#1;n#view#1;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#1;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#1;n#view#0;n#view#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#1;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#1;n#view#1;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#2;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#1;n#view#2;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#3;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#1;n#view#3;n#view#0;n#view#2;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#3;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#4;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#2;n#view#4;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#2;n#view#4;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#2;n#view#4;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#1;n#view#3;n#view#4;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#0;n#view#1;n#view#3;n#view#4;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#1;n#view#0;n#view#1;n#view#3;n#view#4;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#1;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#view#1;n#view#0;n#template#0;n#!!top" />
-            <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#1;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#3;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#3;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#4;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#4;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#5;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#showModel#0;n#view#0;n#template#0;n#!!top" />
-            <element signature="e#12250#12279#0" expanded="true" />
-            <element signature="e#14295#18511#0" />
-            <element signature="e#18539#18624#0" />
-            <element signature="e#18652#19094#0" />
-            <element signature="e#19110#19224#0" />
-            <element signature="e#19257#19677#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-address/create-address.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/login-design/login/login.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="243" column="53" selection-start-line="243" selection-start-column="53" selection-end-line="243" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/login-design/design/design.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="368" column="28" lean-forward="true" selection-start-line="368" selection-start-column="12" selection-end-line="368" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1989" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item/join-shop/join-shop.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="213" column="37" selection-start-line="213" selection-start-column="37" selection-end-line="213" selection-end-column="37" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#block#2;n#cu-custom#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#scroll-view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#1;n#view#0;n#scroll-view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#2;n#view#1;n#view#0;n#scroll-view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/login-design/protocol/protocol.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="205" column="5" lean-forward="true" selection-start-line="205" selection-start-column="5" selection-end-line="205" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item/search-company/search-company.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-242">
-          <caret line="63" column="12" selection-start-line="63" selection-start-column="12" selection-end-line="68" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item/mine/mine.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="129" column="20" lean-forward="true" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item/work/work.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="102" column="14" selection-end-line="125" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/demo.less">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1605">
@@ -1104,16 +735,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -1121,19 +742,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/store/state.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1488">
-          <caret line="93" column="18" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3632">
-          <caret line="228" column="52" selection-start-line="228" selection-start-column="52" selection-end-line="228" selection-end-column="52" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/new_file.txt" />
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/new_file.vue">
       <provider selected="true" editor-type-id="text-editor">
@@ -1142,17 +753,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue">
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11488">
-          <caret line="719" column="17" selection-start-line="719" selection-start-column="17" selection-end-line="719" selection-end-column="17" />
+        <state relative-caret-position="4528">
+          <caret line="317" column="29" selection-start-line="317" selection-start-column="29" selection-end-line="317" selection-end-column="29" />
+          <folding>
+            <element signature="n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#text#1;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/all-item-content/detail-content/detail-content.vue">
+    <entry file="file://$PROJECT_DIR$/components/city-model.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+        <state relative-caret-position="1632">
+          <caret line="105" column="52" selection-start-line="105" selection-start-column="52" selection-end-line="105" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -1165,39 +787,299 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2208">
-          <caret line="140" column="34" selection-start-line="140" selection-start-column="34" selection-end-line="140" selection-end-column="34" />
+        <state relative-caret-position="4208">
+          <caret line="265" column="34" selection-end-line="600" />
+          <folding>
+            <element signature="n#style#0;n#view#3;n#view#3;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#text#0;n#view#0;n#view#6;n#view#3;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#6;n#view#3;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#text#1;n#view#0;n#view#1;n#view#6;n#view#3;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#6552#6600#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-item-info/clerk-item-info.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="125" column="13" selection-start-line="125" selection-start-column="13" selection-end-line="125" selection-end-column="13" />
+          <folding>
+            <element signature="e#1862#1891#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/img/work/statistics/three.png" />
+    <entry file="file://$PROJECT_DIR$/static/img/work/statistics/first.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/img/work/statistics/one.png" />
+    <entry file="file://$PROJECT_DIR$/static/img/work/statistics/one_tag.png" />
+    <entry file="file://$PROJECT_DIR$/static/img/work/statistics/rank/third.png" />
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="94" column="38" selection-end-line="245" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#block#2;n#cu-custom#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" />
+            <element signature="e#2144#3054#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="199" column="55" selection-start-line="199" selection-start-column="55" selection-end-line="199" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/account-manager/account-manager.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="119" column="61" selection-start-line="119" selection-start-column="61" selection-end-line="119" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/change-telephone/change-telephone.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="110" column="45" selection-start-line="110" selection-start-column="45" selection-end-line="110" selection-end-column="45" />
+          <folding>
+            <element signature="n#style#0;n#input#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2242#2299#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/input-code/input-code.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="68" column="22" selection-start-line="65" selection-start-column="20" selection-end-line="68" selection-end-column="22" />
+          <folding>
+            <element signature="e#1225#1279#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-index/task-index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="704">
+          <caret line="44" column="23" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/http.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="721">
+          <caret line="70" column="8" selection-start-line="70" selection-start-column="8" selection-end-line="70" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/demo.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1584">
+          <caret line="99" selection-start-line="99" selection-end-line="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/new_file.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/new_file.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-288" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/销售统计页面.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5952" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/demo2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="641" lean-forward="true" selection-start-line="641" selection-end-line="641" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="122" column="21" selection-start-line="122" selection-start-column="5" selection-end-line="122" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/demo1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="637" column="28" selection-end-line="656" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/sale-statistics-search.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="128" column="21" selection-start-line="128" selection-start-column="16" selection-end-line="128" selection-end-column="21" />
+          <folding>
+            <element signature="n#view#5;n#view#0;n#template#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/simple-model.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="50" lean-forward="true" selection-start-line="5" selection-start-column="50" selection-end-line="5" selection-end-column="50" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/show-model.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-12" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/login-design/login/login.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="44" column="92" selection-start-line="44" selection-start-column="92" selection-end-line="44" selection-end-column="92" />
+          <caret line="41" column="101" selection-start-line="41" selection-start-column="101" selection-end-line="41" selection-end-column="101" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#input#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" />
+            <element signature="n#input#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/all-item-content/index-more/index-more.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="131" column="43" selection-start-line="131" selection-start-column="43" selection-end-line="131" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/all-item-content/detail-content/detail-content.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/tab-item/index/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="182" column="18" selection-start-line="182" selection-start-column="18" selection-end-line="182" selection-end-column="18" />
+        <state relative-caret-position="204">
+          <caret line="186" column="78" selection-start-line="186" selection-start-column="47" selection-end-line="186" selection-end-column="78" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/new_file.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue">
+    <entry file="file://$PROJECT_DIR$/components/common-title.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1385">
-          <caret line="387" selection-start-line="387" selection-end-line="387" />
+        <state relative-caret-position="308">
+          <caret line="21" column="85" selection-start-line="21" selection-start-column="85" selection-end-line="21" selection-end-column="85" />
           <folding>
-            <element signature="n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#1;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#1;n#view#1;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#text#0;n#view#1;n#view#2;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#3720#3781#0" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#1;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#3;n#view#0;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="129" column="16" selection-start-line="129" selection-start-column="12" selection-end-line="129" selection-end-column="16" />
+          <folding>
+            <element signature="n#style#0;n#text#0;n#block#0;n#cu-custom#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#text#1;n#view#0;n#block#2;n#cu-custom#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#2;n#view#0;n#view#1;n#view#0;n#view#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#text#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#picker-view#0;n#view#1;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#picker-view-column#0;n#picker-view#0;n#view#1;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-month/sale-statistics-month.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="276" selection-start-line="276" selection-end-line="276" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#view#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#text#1;n#view#0;n#view#0;n#view#0;n#view#0;n#view#0;n#view#1;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/unpackage/dist/build/.tmp/app-plus/common/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="1538" selection-start-column="1538" selection-end-column="1538" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="31" column="58" selection-start-line="31" selection-start-column="58" selection-end-line="31" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="41" column="45" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/store/state.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4928">
+          <caret line="308" column="4" selection-start-line="308" selection-start-column="4" selection-end-line="308" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="563">
+          <caret line="688" column="38" selection-start-line="688" selection-start-column="38" selection-end-line="688" selection-end-column="38" />
+          <folding>
+            <element signature="n#style#0;n#view#2;n#view#0;n#view#0;n#view#2;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#0;n#view#1;n#view#2;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#2;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check/statistics-check.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="114" column="102" selection-start-line="114" selection-start-column="102" selection-end-line="114" selection-end-column="102" />
         </state>
       </provider>
     </entry>

@@ -36,6 +36,11 @@ Vue.filter('repairTypePipe', (value) => {
     if (!value) return ''
     return store.state.repairTypeZn[value]
 })
+//审批状态
+Vue.filter('approvalStatusPipe',  (value)=> {
+    // if (!value) return ''
+    return store.state.approvalStatusZn[value]
+})
 //快递状态
 Vue.filter('expressStatusPipe', (value) => {
     if (!value) return ''
@@ -52,7 +57,16 @@ Vue.filter('operateZn', (value) => {
     if (!value) return ''
     return store.state.runCatalogZn[value]
 })
-
+//任务状态
+Vue.filter('taskStatusPipe', (value) => {
+    if (!value) return ''
+    return store.state.taskStatus[value];
+})
+//任务状态
+Vue.filter('taskStatusZnPipe', (value) => {
+    if (!value) return ''
+    return store.state.taskStatusZn[value];
+})
 /*快递调拨类型*/
 Vue.filter('distributeStatusPipe', (value) => {
     if (!value) return ''

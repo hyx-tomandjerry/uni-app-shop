@@ -20,8 +20,8 @@
 			<view v-if="switchTab=='month'">
 				<view class="text-center text-white">{{new Date().getFullYear()}} 年门店年目标</view>
 				<view class="shop-aim">¥{{shopSaleResolve.expect || 0}}</view>
-				<view class="shop-intro flex justify-between">
-					<view class="intro-l flex justify-start">
+				<view class="shop-intro flex justify-start">
+					<view class="intro-l flex justify-start flex-1">
 						<image src="../../../../../static/icon/icon-time@2x.png" class="intro-i"></image>
 						<view>
 							<view class="shop-date" v-if="shopSaleResolve.shopBgndate">{{shopSaleResolve.shopBgndate | formatTime('YMD')}}</view>
@@ -29,11 +29,12 @@
 							<view class="font-size-mini" style="color:#7C81A3">开业日期</view>
 						</view>
 					</view>
-					<view class="intro-r flex justify-start">
+					<view class="intro-r flex justify-start flex-1">
 						<image src="../../../../../static/icon/icon-time@2x.png" class="intro-i"></image>
 						<view>
-							<view class="shop-date">{{shopSaleResolve.bgndate|formatTime('YMD') || ''}}~{{shopSaleResolve.duedate|formatTime('MD') || ''}}</view>
-							<view class="font-size-mini" style="color:#7C81A3">目标起止日期</view>
+
+							<view class="shop-date" >{{year}}-12-31</view>
+							<view class="font-size-mini" style="color:#7C81A3">截止日期</view>
 						</view>
 					</view>
 				</view>
@@ -44,7 +45,7 @@
 				</view>
 				<view class="shop-aim">¥ {{shopSaleResolve.expect || 0}}</view>
 				<view class="shop-intro flex justify-between align-center">
-					<view class="text-white" style="width:52%;">{{month}}月占全年比重</view>
+					<view class="text-white" style="width:55%;">{{month}}月占全年比重</view>
 					<view class="cu-progress round sm striped active" style="margin:0 5px;">
 
 						<view class="bg-color-purple"  :style="[{ width:`${monthPre}%`}]"></view>
@@ -78,28 +79,46 @@
 		<!--月份列表 start-->
 		<view class="month-list-container" v-if="switchTab=='month'">
 			<view >
-				<view class="month-list-item flex justify-between"
+				<view
 					  v-for="(item,index) in numList" :key="index" @click="editAim(item)">
-					<view class="mon-t" >{{item.name}}</view>
-					<view class="mon-n">
-						<view class="flex justify-between">
-							<view>月占比{{item.pre}}%</view>
-							<view class="font-size-number number-color font-weight-bold">
-								<text style="margin-right:8px;">¥{{item.mon}}</text>
-								<text class="cuIcon-write" style="color:#7C81A3;" ></text>
-								<!-- <text class="cuIcon-right" style="color:#7C81A3;" v-if="item.mon>1"></text> -->
-							</view>
-						</view>
-						<view class="cu-progress round sm striped active" >
-							<view class="bg-color-red" :style="[{'width':`${item.pre}%`}]"></view>
-						</view>
-					</view>
+					  <view v-if="item.id==12" class="month-list-item flex justify-between">
+						  <view class="mon-t" >{{item.name}}</view>
+						  <view class="mon-n">
+						  	<view class="flex justify-between">
+						  		<view>月占比{{item.pre}}%</view>
+						  		<view class="font-size-number number-color font-weight-bold">
+						  			<text style="margin-right:8px;">¥{{item.mon}}</text>
+						  			<!-- 12月份不显示图标，小于开业日期不显示图标 -->
+
+						  		</view>
+						  	</view>
+						  	<view class="cu-progress round sm striped active" >
+						  		<view class="bg-color-red" :style="[{'width':`${item.pre}%`}]" ></view>
+						  	</view>
+						  </view>
+					  </view>
+					  <view v-else class="month-list-item flex justify-between">
+						  <view class="mon-t" >{{item.name}}</view>
+						  <view class="mon-n">
+						  	<view class="flex justify-between">
+						  		<view>月占比{{item.pre}}%</view>
+						  		<view class="font-size-number number-color font-weight-bold">
+						  			<text style="margin-right:8px;">¥{{item.mon}}</text>
+						  			<!-- 12月份不显示图标，小于开业日期不显示图标 -->
+						  			<text class="cuIcon-write" style="color:#7C81A3;" v-if="(year==shopBgnYear && item.id>=shopBgndate) || year>shopBgnYear"></text>
+						  		</view>
+						  	</view>
+						  	<view class="cu-progress round sm striped active" >
+						  		<view class="bg-color-red" :style="[{'width':`${item.pre}%`}]" ></view>
+						  	</view>
+						  </view>
+					  </view>
+
 				</view>
 			</view>
 		</view>
 
 		<view v-if="switchTab=='day'" class="calendar">
-
 			<view class="week-list flex justify-around ">
 				<view class="week-item font-size-big font-weight-bold color-regular" v-for="(item,index) in weekList" :key="index">{{item}}</view>
 			</view>
@@ -174,8 +193,8 @@
 				<view>
 					<view class="grid col-4 padding-sm">
 						<view v-for="(item,index) in checkbox" class="padding-xs" :key="index">
-							<button class="cu-btn border-normal xs block" 
-								:class="{'month-active':month==item.value}"
+							<button class="cu-btn border-normal xs block"
+								:class="{'month-active':month==item.value,'border-red':year < shopBgnYear || (year == shopBgnYear && item.value<shopBgndate) }"
 							 @tap="ChooseCheckbox(item)" :data-value="item.value"> {{item.name}}
 							</button>
 						</view>
@@ -215,8 +234,10 @@
 	export default{
 		computed:mapState(['resolveWayZn']),
 		data(){
-			
+
 			return{
+				shopBgndate:'',//门店开始时间
+				shopBgnYear:'',
 				switchTab:'month',//判断年/日
 				//曲线图
 				cWidth:'',
@@ -246,7 +267,7 @@
 				num:'',
 				dayTabCur:'',//选择那一天
 				dayTabID:'',
-				
+
 				shopID:'',//门店id
 				shopSaleResolve:{},
 				maxNum:'',//最大值
@@ -298,7 +319,16 @@
 		},
 		methods:{
 			ChooseCheckbox(item) {
+				if(new Date().getFullYear()<this.shopBgnYear || (new Date().getFullYear()==this.shopBgnYear && item.value<this.shopBgndate)){
+					//如果当前年小于开业日期
+					uni.showToast({
+						title:'月份在门店未开业之前，不可设置',
+						icon:'none'
+					})
+					return;
+				}
 				this.month=item.value;
+
 			},
 			getWeek(){
 				var date = new Date((new Date(this).setDate(1)) || (new Date()).setDate(1));
@@ -324,36 +354,34 @@
 			},
 			/*按周末加倍,或者按天平摊渲染数据*/
 			renderByWay(id){
-				this.$ajax('NewDailyPerformance',{
-					month:this.month,
-					year:this.year,
-					type:3,
+				this.$ajax('NewShopDailyPerformance',{
+					date:`${this.year}-${this.month>=10?this.month:'0'+this.month}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`,
 					target:this.shopID,
 					doubled:id==2?1:''//传1就是加倍 不穿就是均摊
 				},res=>{
 					this.isShowResolveWay=false;
 					this.getShopAim(this.shopID);
-					
+
 				})
 			},
 			/*单选选中*/
 			selectResolveWay(item){
-				
 				this.radio=item.id;
 				this.isShowRadio=true
 				this.getWeek();//获得有几个周末
-				console.log(this.radio)
 			},
 			radioSelect() {
 				this.renderByWay(this.radio);
-				// this.getShopAimByMonth(this.shopID, this.year, this.month);
 				this.isShowRadio=false;
-				this.radio=''
+				this.radio='';
+
 			},
 			selectMonthModal(){
 				if(this.modalName){
 					this.modalName=null;
 				}
+				this.isShowEditDay=false;
+				this.dayTabID=''
 				this.getCalendar(this.year,this.month);
 				this.getShopAimByMonth(this.shopID,this.year,this.month)
 			},
@@ -429,15 +457,24 @@
 			confirmShopAim(){
 				switch (this.switchTab) {
 					case 'month':
-						let totalMax=this.numList.reduce((pre,next)=>{return Number(pre)+Number(next.mon)},0);
-						if(totalMax<this.shopSaleResolve.expect){
+						if(this.numList[this.numList.length-1].mon<0){
 							uni.showToast({
-								title:'月份绩效综合不能小于年绩效目标!',
+								title:'12月份绩效目标为负值，请重新修改',
 								icon:'none'
 							})
+							return;
 						}
-						this.$ajax('NewMonthlyPerformance',{
-							year:new Date().getFullYear(),
+						let totalMax=this.numList.reduce((pre,next)=>{return Number(pre)+Number(next.mon)},0);
+						if(totalMax!=this.shopSaleResolve.expect){
+							uni.showToast({
+								title:'年计划与月绩效之和不相符',
+								icon:'none'
+							})
+							return;
+						}
+
+						this.$ajax('NewShopMonthlyPerformance',{
+							// year:new Date().getFullYear(),
 							month1:this.numList[0].mon,
 							month2:this.numList[1].mon,
 							month3:this.numList[2].mon,
@@ -451,8 +488,9 @@
 							month11:this.numList[10].mon,
 							month12:this.numList[11].mon,
 							id:this.shopSaleResolve.id,
-							type:3,
-							target:this.shopID
+							// type:3,
+							// target:this.shopID,
+							// expect:this.shopSaleResolve.expect
 						},res=>{
 							uni.showToast({
 								title:'设置门店绩效成功!',
@@ -461,15 +499,14 @@
 									this.getShopAim(this.shopID)
 								}
 							})
-							
+
 						})
 						break;
 					case 'day':
-						this.$ajax('SetDailyPerformance',{
-							year:this.year,
+
+						this.$ajax('SetShopDailyPerformance',{
 							shop:this.shopID,
-							month:this.month,
-							day:this.dayTabCur.day,
+							date:`${this.year}-${this.month>=10?this.month:'0'+this.month}-${this.dayTabCur.day>=10?this.dayTabCur.day:'0'+this.dayTabCur.day}`,
 							expect:this.dayTabCur.num
 						},res=>{
 							uni.showToast({
@@ -481,8 +518,6 @@
 						})
 
 						break;
-
-
 				}
 
 			},
@@ -492,40 +527,50 @@
 					case 'month':
 						this.$ajax('ShopMonthlyPerformance',{
 							shop:id,
-							year:this.year
+							year:this.year,
 						},res=>{
 							if(res){
 								this.shopSaleResolve=res;
-								let array=[];
+								this.shopBgndate=new Date(res.shopBgndate).getMonth()+1;
+								this.shopBgnYear=new Date(res.shopBgndate).getFullYear()
 								this.numList.forEach(item=>{
-									item.mon=res[`${item.value}`];
-									// item.mon=Number(this.shopSaleResolve.expect/12).toFixed(2)
-									array.push(item.mon);
-									item.pre=res.expect?(item.mon/res.expect).toFixed(2):0
-								})
-								
-								this.chartData.series=[
-									{
-										"name": "曲面",
-										"data": array,
-										"type": "area",
-										"style": "curve"
-									}, {
-										"name": "曲线",
-										"data": array,
-										"type": "line",
-										"style": "curve",
-										"color": "#1890ff"
+
+									//如果当前年大于开业日期的年分
+									if(new Date().getFullYear()>this.shopBgnYear){
+										item.mon=res[`${item.value}`];
+										item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+									}else if(new Date().getFullYear()==this.shopBgnYear){
+										//如果12月份有值，就不管
+										if(item.id!=12){
+											if(item.id<this.shopBgndate){
+												item.mon=0;
+												item.pre=0
+											}else{
+												item.mon=res[`${item.value}`];
+												item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+											}
+
+										}else if(item.id==12){
+											if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
+													||res['month9']||res['month10']||res['month11']||res['month12']){
+												item.mon=res[`${item.value}`];
+												item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+											}else{
+												item.mon=this.shopSaleResolve.expect;
+												item.pre=item.mon/this.shopSaleResolve.expect*100
+											}
+
+										}
 									}
-								]
-								this.getServerData()
+
+								})
 							}
 
 						})
 						break;
 					case 'day':
 					this.getShopAimByMonth(this.shopID,this.year,this.month)
-					
+
 					break;
 				}
 
@@ -535,18 +580,32 @@
 				//上半部分目标绩效内容
 				this.$ajax('ShopMonthlyPerformance',{
 					shop:shopID,
-					year:year,
-				},res=>{
-					this.shopSaleResolve.expect=res[`month${month}`];
-					this.monthPre=(Number(res[`month${month}`])/(Number(res['expect']) || 1)).toFixed(2)
-				})
-				this.$ajax('ShopMonthlyPerformance',{
-					shop:shopID,
-					year:year,
-					month:month
+					year:year
 				},res=>{
 					if(res){
 						this.shopSaleResolve.id=res.id;
+						this.shopSaleResolve.expect=res[`month${month}`];
+						this.monthPre=res['expect']?Number(res[`month${month}`]/res['expect']*100).toFixed(2):0
+						// let sum=0;
+						// this.currentMonthDaysList.forEach(item=>{
+						// 	for(let k in  res){
+						// 		if(item.id==k){
+						// 			item.num=res[k].toFixed(2);
+						// 			sum+=Number(item.num);
+						// 		}
+						// 	}
+						// })
+						// if(sum==0){
+						// 	this.isShowResolveWay=true;
+						// }
+					}
+
+				})
+				this.$ajax('ShopMonthlyPerformance',{
+					shop:shopID,
+					date:`${year}-${month>=10?month:'0'+month}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
+				},res=>{
+					if(res){
 						let sum=0;
 						this.currentMonthDaysList.forEach(item=>{
 							for(let k in  res){
@@ -606,12 +665,39 @@
 			editAim(item){
 				switch(this.switchTab){
 					case 'month':
-						this.monthTabCur=item;
-						this.monthTabID=item.id;
-						this.num=this.monthTabCur.mon
-						setTimeout(()=>{
-							this.modalName='Modal';
-						},600)
+						if(item.id==12){
+							return
+						}
+						//如果当前时间在开业日期之后
+						let stringTime=`${new Date().getFullYear()}-${item.id}-1`;
+						//如果当前时间在开业日期之前
+						console.log(this.shopBgndate);
+						if(this.year==this.shopBgnYear){
+							//如果当前年份相等
+							console.log('如果当前年份相等');
+							if(item.id<this.shopBgndate){
+								uni.showToast({
+									title:'门店还未开业，无绩效可修改',
+									icon:'none'
+								})
+							}else{
+								this.monthTabCur=item;
+								this.monthTabID=item.id;
+								this.num=this.monthTabCur.mon
+								setTimeout(()=>{
+									this.modalName='Modal';
+								},600)
+							}
+						}else if(this.year>this.shopBgnYear){
+							this.monthTabCur=item;
+							this.monthTabID=item.id;
+							this.num=this.monthTabCur.mon
+							setTimeout(()=>{
+								this.modalName='Modal';
+							},600)
+						}
+
+
 						break;
 					case 'day':
 						this.dayTabCur=item;
@@ -706,7 +792,6 @@
 			}
 		},
 		onLoad(params){
-			console.log(this.month)
 			this.getCalendar(this.year,this.month);
 			this.cWidth=uni.upx2px(750);
 			this.cHeight=uni.upx2px(500);
@@ -718,11 +803,8 @@
 
 		},
 		onShow(){
-			this.getShopAim(this.shopID)
-			
-			
-			
 
+			// this.getShopAim(this.shopID)
 		}
 	}
 </script>
@@ -767,7 +849,7 @@
 
 			.intro-l{
 
-				
+
 			}
 			.intro-r{
 				padding-left:15px;
@@ -874,9 +956,7 @@
 		color:#fff !important;
 		border-radius:6px;
 	}
-	.hasNum-active{
-		
-	}
+
 	.noHas-active{
 		left:18px;
 	}

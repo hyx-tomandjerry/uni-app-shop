@@ -9,7 +9,7 @@
 					</view>
 				</view>
 				<view class="padding-xs solids" @tap="chooseImageEvent()" v-if="imgList.length<4">
-					<image src="../../../../static/img/work/camera.png" style="width:78px;height:78px;"></image>
+					<image :src="src?src:'../../../../static/img/work/camera.png'" style="width:78px;height:78px;"></image>
 				</view>
 			</view>
 		</view>
@@ -24,13 +24,18 @@
 			return {
 				token:'',
 				imgList:[],
-				files:[]
+				files:[],
+				
 			};
 		},
 		props:{
 
 			xType:{
 				type:Number,
+				default:''
+			},
+			src:{
+				type:String,
 				default:''
 			}
 		},

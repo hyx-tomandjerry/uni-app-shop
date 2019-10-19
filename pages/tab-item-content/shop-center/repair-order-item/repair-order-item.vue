@@ -3,8 +3,8 @@
 		<view class="user-info-container margin-bottom-normal flex justify-start align-center">
 			<image :src="userInfo.headurl?userInfo.headurl:'../../../../static/img/default.png'" mode="" class="user-img"></image>
 			<view class="user-info">
-				<view class="font-size-big color-normal" style="margin-bottom:3px;">报修人:{{repaitItem.creatorName || ''}}</view>
-				<view class="font-size-small color-regular">{{repaitItem.creatorMobile || ''}}</view>
+				<view class="font-size-big color-normal" style="margin-bottom:3px;">报修人:{{repaitItem.applierName || ''}}</view>
+				<view class="font-size-small color-regular">{{repaitItem.applierMobile || ''}}</view>
 			</view>
 		</view>
 		<view class="order_content">
@@ -76,17 +76,30 @@
 						<text>服务状态</text>
 					</view>
 					<view class="repair-detail-item flex justify-between borderBottom font-size-big" style="padding:24px 0;">
-						<view>
-							<text style="margin-right:40px;" class="font-size-normal color-normal">维修进度:</text>
-							<!-- <image src="../../../../static/img/shop/smile.png" class="smile-img" v-if="repaitItem.manager == userInfo.id && repaitItem.status==repairStatus.waitManager"></image> -->
-							<text  
+						<view class="flex justify-start">
+							<view style="margin-right:40px;" class="font-size-normal color-normal">
+								{{repaitItem.status==repairStatus.submit?'审核进度:':'维修进度:'}}
+							</view>
+							
+							
+							<view v-if="repaitItem.status==repairStatus.submit" 
+								:class="{
+									'wait':repaitItem.approval==approvalStatus.wait,
+									'executing':repaitItem.approval==approvalStatus.applied,
+									'accepted':repaitItem.approval==approvalStatus.accepted,
+									'rejected':repaitItem.approval==approvalStatus.rejected,
+								}"
+							>
+								{{repaitItem.approval | approvalStatusPipe }}
+							</view>
+							<view v-else
 							:class="{
-								'text-orange':repaitItem.status==repairStatus.waitManager,
-								'text-green':repaitItem.status==repairStatus.waitArea,
-								'color-red':repaitItem.status==repairStatus.waitCompany,
-								'color-regular':repaitItem.status==repairStatus.finish,
-								'text-purple':repaitItem.status==repairStatus.loading}"
-							>{{repaitItem.status | repairStatus}}</text>
+								'text-orange':repaitItem.status==repairStatus.submit,
+								'text-green':repaitItem.status==repairStatus.executing,
+								'color-red':repaitItem.status==repairStatus.finished,
+								'text-purple':repaitItem.status==repairStatus.commented}"
+							
+							>{{repaitItem.status | repairStatus}}</view>
 						</view>
 						<!--<view class="cu-tag line-blue" @click="showModal($event)" data-target="bottomModal" -->
 							<!--v-if="repaitItem.status==repairStatus.treating || repaitItem.status==repairStatus.finish">-->
@@ -105,6 +118,7 @@
 						</view>
 					</view>
 				</view>
+				
 				
 				<view class="repair-detail" style="position: relative;" v-if="repaitItem.status==4">
 					<!-- 报修进度 -->
@@ -144,7 +158,22 @@
 			
 					</view>
 				</view>
-			
+				<view class="margin-top-13 workflow-container bg-white">
+					<view class="font-size-big font-weight-bold color-normal">审批流程</view>
+					<view class="workflow-list" v-if="repaitItem.steps">
+						<view class=" flex justify-start align-center" v-for="(workflow,index) in repaitItem.steps" :key="index">
+							<view class="tag">{{workflow.id}}</view>
+							<view class="flex justify-between flex-1 work-flow-item" >
+								<view>
+									<view >{{workflow.acceptorName || ''}}</view>
+									<view style="margin-top:5px;margin-bottom:5px;"><text class="color-blue">{{workflow.status | approvalStatusPipe}}</text></view>
+									<view class="color-regular" v-if="workflow.comment">备注：{{workflow.comment|| ''}}</view>
+								</view>
+								<view v-if="workflow.reviewDate ">{{workflow.reviewDate | formatTime('YMDHMS')}}</view>
+							</view>
+						</view>
+					</view>
+				</view>
 			<view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
 				<view class="cu-dialog">
 				<view class="cu-bar bg-white">
@@ -218,21 +247,21 @@
 			</view>
 			</view>
 	</view>
-		<!-- <view class="btn-container">
+		<view class="btn-container" v-if="repaitItem.applier == userInfo.id">
 		
-			<view class="flex justify-between" v-if="repaitItem.manager == userInfo.id && repaitItem.status==repairStatus.waitManager">
-				<view class="agree-btn flex-sm"  @click="showModal($event)" data-target="refuseModel">驳回</view>
-				<view class="refuse-btn flex-1" @click="operateOrder('agree')">同意</view>
-			</view>
-			<view class="btn-area" v-else-if="repaitItem.creator==userInfo.id && (repaitItem.status==repairStatus.waitManager || repaitItem.status==repairStatus.waitArea)" @click="showModal($event)" data-target="repairModel">修改订单</view>
-		</view> -->
+			<!-- 待审批可以删除 -->
+			<view class="refuse-btn " @click="showModal($event)" data-target="deleteModel" v-if="repaitItem.approval==approvalStatus.wait">删除订单</view>
+			<!-- 已驳回可以修改 -->
+			<view class="refuse-btn " @click="showModal($event)" data-target="repairModel" v-if="repaitItem.approval==approvalStatus.rejected">修改订单</view>
+			<!-- <view class="btn-area" v-else-if=" (repaitItem.status==repairStatus.waitManager || repaitItem.status==repairStatus.waitArea)" @click="showModal($event)" data-target="repairModel">修改订单</view> -->
+		</view>
 		<showModel :isShow="modalName=='repairModel'" @hideModel="hideModal"
 					 @confirmDel="operateOrder('edit')" v-if="modalName=='repairModel'">
 			<block slot="content">确定要修改保修单?</block>
 		</showModel>
-		<showModel :isShow="modalName=='refuseModel'" @hideModel="hideModal"
-					 @confirmDel="operateOrder('refuse')" v-if="modalName=='refuseModel'">
-			<block slot="content">确定要拒绝保修单?</block>
+		<showModel :isShow="modalName=='deleteModel'" @hideModel="hideModal"
+					 @confirmDel="operateOrder('delete')" v-if="modalName=='deleteModel'">
+			<block slot="content">确定要删除报修单?</block>
 		</showModel>
 </view>
 </template>
@@ -242,7 +271,7 @@
 	import showModel from '../../../../components/show-model.vue'
 	import downloader from '../../../../common/img-downloader.js'
 	export default{
-		computed:mapState(['repairStatus','userInfo']),
+		computed:mapState(['repairStatus','userInfo','approvalStatus']),
 		data(){
 			return{
 				avatar:[],
@@ -253,6 +282,11 @@
 		},
 		components:{showModel},
 		methods: {
+			
+			//删除订单
+			deleteOrder(){
+				this.modalName='deleteModel';
+			},
 			/*
 				操作订单
 			*/
@@ -291,6 +325,21 @@
 							}
 						})
 					})
+				   break;
+				   case 'delete':
+				   this.$ajax('RemoveServiceOrder',{
+					   id:this.repaitItem.id
+				   },res=>{
+					   uni.showToast({
+					   	title:'删除报修单成功!',
+					   	icon:'none',
+					   	success:()=>{
+					   		uni.navigateBack({
+					   			delta:1
+					   		})
+					   	}
+					   })
+				   })
 				   break;
 			   }
 			   
@@ -358,7 +407,8 @@
 			//获得详情
 			getRepairItem(id){
 				this.$ajax('ServiceOrder',{
-					id:id
+					id:id,
+					step:1
 				},res=>{
 					this.repaitItem=res;
 					if(res.files){
@@ -520,5 +570,39 @@
 			background:rgba(66,176,237,1);
 			border-radius:5px;
 		}
+	}
+	.workflow-container{
+		padding-top: 17px;
+		padding-left: 15px;
+		.workflow-list{
+			padding:25px 14px 25px;
+			.tag{
+				width:30px;height:30px;background:orange;margin-right:15px;border-radius:50%;line-height:30px;color:#fff;text-align: center;font-weight: bold;
+			}
+			.work-flow-item{
+				background-color: #EEEEED;
+				padding:5px 7px;
+				border-radius:8px;
+				margin-right:15px;
+				
+			}
+		}
+		
+	}
+	// 审批状态颜色-待审批
+	.wait{
+		color:#00474f
+	}
+	// 审批状态颜色-审批中
+	.executing{
+		color:#096dd9
+	}
+	//已通过
+	.accepted{
+		color:#52c41a
+	}
+	//被驳回
+	.rejected{
+		color:#f5222d
 	}
 </style>

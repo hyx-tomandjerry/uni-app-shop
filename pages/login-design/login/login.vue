@@ -2,7 +2,7 @@
 	<view class="login_container position_relative">
 
 		<view class="title">
-			<view class="font-size-supper font-weight-super" >登录</view>
+			<view class="font-size-supper font-weight-super" style="margin-bottom:6px;">登录</view>
 			<view class="color-normal font-size-normal font-weight-normal">
 				<text class="color-regular">还没有账号,</text>&nbsp;
 				<text style="margin-left:10px;" class="color-blue" @click="toDesign()">
@@ -25,24 +25,24 @@
 			</view>
 			<view class="login-form-item flex justify-start borderBottom position_relative align-center">
 				<image src="../../../static/icon/icon-denglu-pwd.png"  class="imgPwd"></image>
-				<input type="text" 
-					   placeholder="请输入密码"  
-					   @blur="showTabbar()" 
-					   v-if="isShowPwd" 
-					   v-model="designer.token" 
-					   class="font-size-big font-weight-normal" 
-					   :class="designer.token?'text-black':'color-placeholder'">
-				<input type="password" 
+				<input type="text"
 					   placeholder="请输入密码"
-						@blur="showTabbar()" 
-						v-else 
-						v-model="designer.token" 
-						class="font-size-big font-weight-normal" 
+					   @blur="showTabbar()"
+					   v-if="isShowPwd"
+					   v-model="designer.token"
+					   class="font-size-big font-weight-normal"
+					   :class="designer.token?'text-black':'color-placeholder'">
+				<input type="password"
+					   placeholder="请输入密码"
+						@blur="showTabbar()"
+						v-else
+						v-model="designer.token"
+						class="font-size-big font-weight-normal"
 						:class="designer.token?'text-black':'color-placeholder'">
-				<div v-if="isShowPwd" @click="showPwd()">
+				<div v-if="isShowPwd" @click="showPwd()" class="flex-1" style="height:100%;width:100%">
 					<image src="../../../static/icon/icon-xianshimima@2x.png" class="imgEye" ></image>
 				</div>
-				<div v-else @click="showPwd()">
+				<div v-else @click="showPwd()" class="flex-1"  style="height:100%;width:100%">
 					<image src="../../../static/icon/icon-yingcangmima@2x.png" class="imgEyeOpen"></image>
 				</div>
 			</view>
@@ -95,7 +95,7 @@
 				modalName:'',
 				tabbar:true,//用于键盘隐藏，
 				windowHeight:'',
-				
+
 			}
 		},
 		onShow(){
@@ -120,7 +120,7 @@
 							url:"../../tab-item/index/index"
 						})
 					}
-					
+
 				}
 			})
 		},
@@ -145,7 +145,7 @@
 
 
 		},
-		
+
 		methods:{
 			close(){
 				 this.$refs.loading.close();
@@ -154,7 +154,7 @@
 				this.$refs.loading.open();
 			},
 			callback(){
-				
+
 			},
 			//验证电话号码
 			checkTelEvent(event){
@@ -179,7 +179,7 @@
 			hideTabbar(){
 				this.tabbar=false;
 			},
-			
+
 			hideModal(){
 				this.modalName=null;
 			},
@@ -232,7 +232,7 @@
 								}
 							},500)
 						}else{
-							
+
 							setTimeout(()=>{
 
 								uni.showToast({
@@ -245,8 +245,8 @@
 									}
 								})
 							},800)
-							
-							
+
+
 						}
 					},false,code=>{
 						if(code == -1){
@@ -259,8 +259,8 @@
 									this.close()
 								}
 							})
-							
-							
+
+
 						}
 					})
 				},1000)
@@ -285,7 +285,7 @@
 					});
 				}
 			},
-			
+
 			 ...mapMutations(['login','setAccount'])
 		},
 		components:{loading}

@@ -8,7 +8,7 @@
 				<view class="font-size-big font-weight-bold text-white">{{new Date().getMonth()+1}}.{{new Date().getDate()}}日门店绩效审核</view>
 			</block>
 		</cu-custom>
-		<uChartModel  :todayNum="totalPerform" :aimNum="Number(salemanPerform.expect).toFixed(2)" :type="'today'">
+		<uChartModel  :todayNum="today.todayFact || totalPerform" :aimNum="today.todayAim" :type="'today'">
 			<block slot="canvas">
 				<view class="qiun-charts3">
 					 <canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
@@ -21,27 +21,27 @@
 				<view class="flex-1 text-center">昵称</view>
 				<view class="flex-1 text-center">销售额</view>
 				<view class="flex-1 text-center">占比</view>
-				<view class="flex-1 text-center" v-if="userInfo.id==managerID&&todayFact==0">编辑</view>
+				<view class="flex-1 text-center" v-if="userInfo.id==managerID&&today.todayFact==0">编辑</view>
 			</view>
 			<view class="rank-list">
 				<view class="rank-list-item flex justify-around" v-for="(item,index) in salemanList" :key="index" >
 					<view class="flex-1 text-center">
 						<!-- <image src="../../../../../static/img/work/statistics/first.png" class="ring-img"> </image> -->
-						<image :src="item.afield?item.afield:'../../../../../static/img/cute.jpg'" class="ring-img"></image>
+						<image :src="item.headurl?item.headurl:'../../../../../static/img/default.png'" class="ring-img"></image>
 					</view>
-					<view class="flex-1 text-center">
-						
-						<text style="margin-left:9px;">{{item.field || ''}}</text>
+					<view class="flex-1 text-center text-ellipse">
+
+						<text >{{item.name || ''}}</text>
 					</view>
-					<view class="num flex-1 text-center">{{item.actual || 0}}</view>
+					<view class="num flex-1 text-center">{{item.value || 0}}</view>
 					<view class="precent flex-1 text-center">{{item.pre || 0}}%</view>
-					<view @click="checkItem(item)" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID&&todayFact==0">编辑</view>
+					<view @click="checkItem(item)" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID&&today.todayFact==0">编辑</view>
 				</view>
 			</view>
 
 		</view>
-		
-		<button class="btn-container position_absolute" @click="confirmPerform" v-if="userInfo.id==managerID" :disabled="todayFact!=0">确定</button>
+
+		<button class="btn-container position_absolute" @click="confirmPerform" v-if="userInfo.id==managerID" :disabled="today.todayFact!=0">确定</button>
 	</view>
 </template>
 
@@ -53,7 +53,12 @@
 		computed:mapState(['userInfo']),
 		data() {
 			return {
-				todayFact:'',//判断今日是否审核过
+				today:{
+					todayFact:0,//判断今日是否审核过
+					todayAim:0,//今天的总目标
+					todayPre:0,//今天百分比
+				},
+
 				saleList:[],
 				//圆弧
 				cWidth: '',//圆弧进度图
@@ -78,9 +83,10 @@
 			confirmPerform(){
 				this.$ajax('ConfirmShopDailyPerformance',{
 					shop:this.shopID,
-					year:new Date().getFullYear(),
-					month:new Date().getMonth()+1,
-					day:new Date().getDate()
+					// year:new Date().getFullYear(),
+					// month:new Date().getMonth()+1,
+					// day:new Date().getDate(),
+					date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
 				},res=>{
 					uni.showToast({
 						title:'确认绩效成功',
@@ -93,43 +99,63 @@
 								},800)
 						}
 					})
-					
+
 				})
 			},
 			/*获得今日绩效信息*/
 			getShopPerformByDay(id){
-				this.$ajax('ShopDailyPerformance',{
+				this.$ajax('ShopMonthlyPerformance',{
 					shop:id,
-					year:new Date().getFullYear(),
-					month:new Date().getMonth()+1,
-					day:new Date().getDate()
+					date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
 				},res=>{
-					this.todayFact=res['actual']
-				
-					this.salemanPerform=res;
+					let day=new Date().getDate();
+					this.today={
+						todayFact:res[`aday${day}`]?Number(res[`aday${day}`]).toFixed(2):0,
+						todayAim:res[`day${day}`]?Number(res[`day${day}`]).toFixed(2):0,
+						todayPre:res[`day${day}`]?Number(res[`aday${day}`]/res[`day${day}`]).toFixed(2):0
+					}
+					console.log(this.today.todayFact/this.today.todayAim);
 					this.chartData.series=[
 						{
 							name:'门店日占比',
-							data:res.expect?(res.actual/res.expect).toFixed(2):0,
+							data:res[`day${day}`]?(this.today.todayFact/res[`day${day}`]).toFixed(2):0,
 							color: '#2fc25b'
-							
+
 						}
 					]
-					this.showArcbar('canvasArcbar1',this.chartData)
-					this.totalPerform=0;
-					if(res.salesmen){
-						res.salesmen.forEach(item=>{
-							this.totalPerform+=Number(item.actual)
-							
-							
-						})
-						res.salesmen.forEach(item=>{
-							item.pre=this.salemanPerform.expect || this.totalPerform?Number(item.actual/(this.salemanPerform.expect || this.totalPerform)*100).toFixed(2):0
-						})
-						this.salemanList=res.salesmen;
-						
-					}
-				
+					console.log(this.chartData);
+					this.showArcbar('canvasArcbar1',this.chartData);
+					//获得店员绩效
+
+					this.$ajax('SalesmenDailyPerformance',{
+						shop:id,
+						date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
+					},res=>{
+						if(res){
+							this.totalPerform=0;
+							res.forEach(item=>{
+								this.totalPerform+=item.value;
+							})
+							res.forEach(item=>{
+								item.pre=this.today.todayFact || this.totalPerform ?Number(item.value/(this.today.todayFact || this.totalPerform)*100).toFixed(0):0;
+							})
+							this.salemanList=res;
+						}
+					})
+					// this.totalPerform=0;
+					// if(res.salesmen){
+					// 	res.salesmen.forEach(item=>{
+					// 		this.totalPerform+=Number(item.actual)
+					//
+					//
+					// 	})
+					// 	res.salesmen.forEach(item=>{
+					// 		item.pre=this.salemanPerform.expect || this.totalPerform?Number(item.actual/(this.salemanPerform.expect || this.totalPerform)*100).toFixed(2):0
+					// 	})
+					// 	this.salemanList=res.salesmen;
+					//
+					// }
+
 				})
 			},
 			goBack(){
@@ -139,13 +165,13 @@
 			},
 			/*查看单个店员的绩效*/
 			checkItem(item){
-				
+
 				uni.navigateTo({
-					url:'../record-money/record-money?saleID='+item.id+'&money='+item.actual+'&id='+this.shopID
+					url:'../record-money/record-money?saleID='+item.id+'&money='+item.value+'&id='+this.shopID
 				})
 			},
-			
-			
+
+
 			/*显示圆弧*/
 			showArcbar(canvasId,chartData){
 				let canvaArcbar1=new uCharts({
@@ -193,12 +219,12 @@
 				this.managerID=param.managetID;
 				console.log(this.managerID)
 				this.getShopPerformByDay(param.id)
-				
+
 			}
 		},
 		onShow(){
 			this.getShopPerformByDay(this.shopID)
-			
+
 		}
 	}
 </script>

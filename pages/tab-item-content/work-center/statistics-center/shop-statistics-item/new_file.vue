@@ -10,38 +10,30 @@
 		</cu-custom>
 
 		<!--图表 start-->
-		<view class="chart-container">
+		<view class="chart-container ">
 			<swiper class="screen-swiper round-dot" :indicator-dots="true" :circular="true"
 					interval="5000" duration="500" autoplay="true">
-				<swiper-item v-for="(item,index) in shopPerformList" :key="index">
-					<view class="chart-content" >
-						<canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"  :class="{'show':item.id==0}"></canvas>
-						<canvas canvas-id="canvasArcbar2" id="canvasArcbar2" class="charts3" :class="{'show':item.id==1}"></canvas>
-						<canvas canvas-id="canvasArcbar3" id="canvasArcbar3" class="charts3" :class="{'show':item.id==2}"></canvas>
+				<swiper-item v-for="(item,index) in shopPerformList" :key="index" class="text-white">
+					<view class="dateTitle font-family-num  font-size-supper text-white">{{item.date}}</view>
+					<view class="performData flex justify-between text-red">
+						<view style="width:60%">
+							<view class="text-white" style="margin-bottom:5px">{{item.aimTitle}}</view>
+							<view class="font-family-num" style="font-size:24px;color:#78F6B2">¥ {{item.aimPerform}}</view>
+						</view>
+						<view style="flex:1" class="text-left">
+							<view class="text-white" style="margin-bottom:5px">{{item.factTitle}}</view>
+							<view class="font-family-num" style="font-size:24px;color:#FF7A91">¥{{item.factPerform}}</view>
+						</view>
 					</view>
-					<view class="chart-num">
-						<view style="flex:1" class="flex justify-start">
-							<view class="chartNum-l">
-								<image src="../../../../../static/img/work/statistics/count-money.png" ></image>
-							</view>
-							<view>
-								<view >
-									<view class="font-family-num font-weight-bold" style="font-size:26px;">{{item.factPerform}}</view>
-									<view style="color:#7C81A3;" class="font-size-mini">{{item.factTitle}}</view>
-								</view>
+					<view class="progress-container flex justify-start align-center" style="padding:0 10px;">
+						<view style="width:23%" class="font-size-big text-white">门店占比</view>
+						<view style="flex:1;margin:0 8px 0 5px;" >
+							<view class="cu-progress round sm striped active" >
+								<view class="bg-color-red"  :style="[{ width:`${item.shopPre}%`}]"></view>
+
 							</view>
 						</view>
-						<view style="flex:1"  class="flex justify-start">
-							<view class="chartNum-r">
-								<image src="../../../../../static/img/work/statistics/aim-money.png" ></image>
-							</view>
-							<view>
-								<view >
-									<view class="font-family-num font-weight-bold" style="font-size:26px;">{{item.aimPerform}}</view>
-									<view style="color:#7C81A3;" class="font-size-mini">{{item.aimTitle}}</view>
-								</view>
-							</view>
-						</view>
+						<view style="width:13%;text-align: right;" class="color-purple font-size-middle font-family-num">{{item.shopPre}}%</view>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -51,39 +43,45 @@
 
 		<!--列表 start-->
 		<view class="rank-container bg-white" >
-			<view class="rank-container-item count flex justify-between align-center " @click="tabSelect('count')"	 :class="{'boxShadow':clickType=='count'}">
+			<view class="rank-container-item count flex justify-between align-center " @click="tabSelect('count')"	>
 				<image src="../../../../../static/img/work/statistics/xiaoshoutongji.png" class="rank-img"></image>
-				<view class="flex justify-between borderBottom" style="flex:1;height:42px;line-height:42px;">
+				<view class="flex justify-between borderBottom" style="flex:1;height:69px;line-height:69px;">
 					<view>销售统计</view>
 					<view class="cuIcon-right font-size-bigger color-regular " ></view>
 				</view>
-				
+
 			</view>
-			<view class="rank-container-item flex justify-between align-center " @click="tabSelect('start')"	:class="{'boxShadow':clickType=='start'}">
+			<view class="rank-container-item flex justify-between align-center " @click="tabSelect('start')"	>
 				<image src="../../../../../static/img/work/statistics/rank.png" class="rank-img"></image>
-				<view class="flex justify-between borderBottom" style="flex:1;height:42px;line-height:42px;">
+				<view class="flex justify-between borderBottom" style="flex:1;height:69px;line-height:69px;">
 					<view>销售明星榜</view>
 					<view class="cuIcon-right font-size-bigger color-regular " ></view>
 				</view>
 			</view>
-			<view class="rank-container-item flex justify-between align-center position_relative" @click="tabSelect('check')"	:class="{'boxShadow':clickType=='check'}">
+			<view class="rank-container-item flex justify-between align-center position_relative" @click="tabSelect('check')"	>
 				<image src="../../../../../static/img/work/statistics/shenhe.png" class="rank-img"></image>
-				<view class="flex justify-between borderBottom" style="flex:1;height:42px;line-height:42px;">
+				<view class="flex justify-between " style="flex:1;height:69px;line-height:69px;"
+					:class="{
+						'borderBottom':userInfo.id==shopManagerID
+					}"
+				>
 					<view>门店绩效审核</view>
 					<view class="cuIcon-right font-size-bigger color-regular " ></view>
 				</view>
 			</view>
-			<view class="rank-container-item flex justify-between align-center position_relative"  @click="tabSelect('resolve')"	v-if="userInfo.id==shopManagerID" :class="{'boxShadow':clickType=='resolve'}">
+			<view class="rank-container-item flex justify-between align-center position_relative"  @click="tabSelect('resolve')"	v-if="userInfo.id==shopManagerID" >
 				<image src="../../../../../static/img/work/statistics/resolve.png" class="rank-img"></image>
-				<view class="flex justify-between borderBottom" style="flex:1;height:42px;line-height:42px;">
+				<view class="flex justify-between " style="flex:1;height:69px;line-height:69px;">
 					<view>门店绩效分解</view>
 					<view class="cuIcon-right font-size-bigger color-regular " ></view>
 				</view>
 			</view>
-			
+
 		</view>
 		<!--列表 end-->
-		<view class="btn-tag" @click="record">记一笔</view>
+		<view class="btn-tag font-size-big" @click="record">记一笔</view>
+		<!-- <image src="../../../../../static/img/edit.png"
+		style="position:fixed;right:12px;bottom:20px;width:80px;height:80px;z-index:100;" @click="record"></image> -->
 	</view>
 </template>
 
@@ -96,6 +94,7 @@
 		data() {
 			return {
 				shopID:'',
+				shopZone:'',//门店所在区域
 				shopManagerID:'',//门店店长
 				clickType:'',
 				salePerformance:'',
@@ -150,54 +149,59 @@
 			},
 			/*获得门店月份销售目标*/
 			getShopSaleAim(){
-				
+				let year=new Date().getFullYear();
+				let month=new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+(new Date().getMonth()+1);
+				let day=new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()
+
 				//获得今年的目标绩效
 				this.$ajax('ShopYearlyPerformance',{
 					shop:this.shopID,
 					year:new Date().getFullYear()
 				},res=>{
 					this.shopPerformList[0]={
-						id:0,
-						factPerform:Number(res['aamount']),
-						aimPerform:Number(res['expect']) ||1,
-						shopPre:(Number(res['aamount']/(res['expect'] ||1))).toFixed(2),
+						date:year,
+						factPerform:Number(res['actual']).toFixed(2),
+						aimPerform:Number(res['expect']).toFixed(2) || 0,
+						shopPre:res['expect']?Number(res['actual']/res['expect']*100).toFixed(2):0,
 						factTitle:'本年销售额',
 						aimTitle:'年目标销售额',
-						
+
 					}
+					
 					this.chartData.series=[
 						{
 							name:'门店日占比',
 							data:0.29,
 							color: '#2fc25b'
-												
+
 						}
 					]
 					 this.showArcbar('canvasArcbar1', this.chartData)
 				})
-			
+
 				/*
 					获得月份的绩效，用于轮播图
 				*/
 			   this.$ajax('ShopMonthlyPerformance',{
 				   shop:this.shopID,
 				   year:new Date().getFullYear(),
-				  
+
 			   },res=>{
 				   this.shopPerformList[1]={
-					id:1,
-				   	factPerform:Number(res[`amonth${new Date().getMonth()+1}`]),
-				   	aimPerform:Number(res[`month${new Date().getMonth()+1}`]),
-				   	shopPre:(Number(res[`amonth${new Date().getMonth()+1}`]) / (Number(res[`month${new Date().getMonth()+1}`]) || 1)).toFixed(2),
+					date:`${year}.${month}`,
+				   	factPerform:Number(res['actual']).toFixed(2),
+				   	aimPerform:Number(res[`month${new Date().getMonth()+1}`]).toFixed(2) ||0,
+				   	shopPre:res[`month${new Date().getMonth()+1}`]?Number(res['actual']/res[`month${new Date().getMonth()+1}`]*100).toFixed(2):0,
 					factTitle:'本月销售额',
 					aimTitle:'月目标销售额',
 				   }
+				  
 				  this.chartData.series=[
 				  	{
 				  		name:'门店日占比',
 				  		data:0.40,
 				  		color: '#2fc25b'
-				  							
+
 				  	}
 				  ]
 				   this.showArcbar('canvasArcbar2', this.chartData)
@@ -211,24 +215,26 @@
 				  month:new Date().getMonth()+1
 			  },res=>{
 				  this.shopPerformList[2]={
-					id:2,
-				  	factPerform:Number(res[`aday${new Date().getDate()}`]),
-				  	aimPerform:Number(res[`day${new Date().getDate()}`]),
-				  	shopPre:(Number(res[`aday${new Date().getDate()}`]) / (Number(res[`day${new Date().getDate()}`]) || 1)).toFixed(2),
+					date:`${year}.${month}.${day}`,
+				  	factPerform:Number(res[`aday${new Date().getDate()}`]).toFixed(2),
+				  	aimPerform:Number(res[`day${new Date().getDate()}`]).toFixed(2),
+				  	shopPre:res[`day${new Date().getDate()}`]?Number(res[`aday${new Date().getDate()}`]/res[`day${new Date().getDate()}`]*100).toFixed(2):0,
 					factTitle:'今日销售额',
 					aimTitle:'日目标销售额',
 				  }
+				  console.log(this.shopPerformList[2])
 				  this.chartData.series=[
 				  	{
 				  		name:'门店日占比',
 				  		data:0.79,
 				  		color: '#2fc25b'
-				  							
+
 				  	}
 				  ]
 				   this.showArcbar('canvasArcbar3', this.chartData)
-				
+
 			  })
+
 			},
 			/*记一笔*/
 			record(){
@@ -251,41 +257,7 @@
 			tabSelect(type){
 				this.clickType=type;
 				switch(type){
-					case 'today':
-						setTimeout(()=>{
-							uni.navigateTo({
-								url:"../statistics-detail/statistics-detail?value="+type+'&id='+this.shopID,
-								success: () => {
-									this.clickType=null;
-								}
-							})
 
-						},600)
-						break;
-					case 'month':
-						setTimeout(()=>{
-							uni.navigateTo({
-								url:"../statistics-detail/statistics-detail?value="+type+'&id='+this.shopID,
-								success: () => {
-									this.clickType=null;
-								}
-							})
-
-						},600)
-
-						break;
-					case 'year':
-						setTimeout(()=>{
-							uni.navigateTo({
-								url:"../statistics-detail/statistics-detail?value="+type+'&id='+this.shopID,
-								success: () => {
-									this.clickType=null;
-								}
-							})
-
-						},600)
-
-						break;
 					case 'count':
 						// 销售统计
 						setTimeout(()=>{
@@ -303,7 +275,7 @@
 					case 'start':
 						setTimeout(()=>{
 							uni.navigateTo({
-								url:"../sale-statistics-center/sale-statistics-start/sale-statistics-start",
+								url:"../sale-statistics-center/sale-statistics-start/sale-statistics-start?id="+this.shopID+"&zone="+this.shopZone,
 								success: () => {
 									this.clickType=null;
 								}
@@ -314,7 +286,7 @@
 					case 'check':
 						setTimeout(()=>{
 							uni.navigateTo({
-								url:"../statistics-check/statistics-check?id="+this.shopID,
+								url:"../statistics-check/statistics-check?id="+this.shopID+'&managetID='+this.shopManagerID,
 								success: () => {
 									this.clickType=null;
 								}
@@ -344,14 +316,53 @@
 			if(params){
 				this.shopID=params.id;
 				this.shopManagerID=params.manager;
+				this.shopZone=params.zone;
 				this.getShopSaleAim()
 			}
 
+		},
+		onShow(){
+			this.getShopSaleAim()
 		}
 	}
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
+	swiper .a-swiper-dot {
+		display: inline-block;
+		width: 18upx;
+		height: 18upx;
+		background:rgba(38,43,76,1);
+		border-radius: 50%;
+		vertical-align: middle;
+	}
+
+
+
+	swiper.round-dot .wx-swiper-dot.wx-swiper-dot-active::after,
+	swiper.round-dot .a-swiper-dot.a-swiper-dot-active::after,
+	swiper.round-dot .uni-swiper-dot.uni-swiper-dot-active::after {
+		content: "";
+		position: absolute;
+		width: 16upx;
+		height: 16upx;
+		top: 0upx;
+		left: 0upx;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		background:rgba(82,88,128,1);
+		border-radius: 50%;
+
+	}
+
+	swiper.round-dot .wx-swiper-dot.wx-swiper-dot-active,
+	swiper.round-dot .a-swiper-dot.a-swiper-dot-active,
+	swiper.round-dot .uni-swiper-dot.uni-swiper-dot-active {
+		width: 16upx;
+		height: 16upx;
+		background:rgba(82,88,128,1);
+	}
 	.charts3{
 		width: 250upx;
 		height: 250upx;
@@ -361,44 +372,35 @@
 		opacity: 0;
 	}
 	.screen-swiper{
-		min-height:220px;
+		min-height:216px;
 	}
+
 	.chart-container{
-		height:220px;
-		background:url(../../../../../static/img/work/statistics/bg.png) no-repeat;
-		.chart-content{
-			width: 150px;
-			height: 150px;
-			margin:0 auto;
-			background:url(../../../../../static/img/work/statistics/count-bg.png) no-repeat;
-			-webkit-background-size: contain;
-			background-size: contain;
-			position:relative;
+		height:216px;
+
+		background:url(../../../../../static/img/work/statistics/bg.png) no-repeat center center;
+		background-size:cover;
+
+		.dateTitle{
+
+			margin-top:30px;
+			margin-left:26px;
 		}
-		.chart-num{
-			margin-left:70px;
-			display:flex;
-			color:#fff;
-			justify-content: space-between;
-			.chartNum-l{
-				background:url(../../../../../static/img/work/statistics/count-money.png) no-repeat left 10px;
-				padding-left:30px;
-				background-size:20px;
-			}
-			.chartNum-r{
-				padding-left:30px;
-				background:url(../../../../../static/img/work/statistics/aim-money.png) no-repeat left 10px;
-				background-size:20px;
-			}
+		.performData{
+			margin: 15px 41px 17px 26px;
+
+		}
+		.progress-container{
+			margin: 0px 21px 17px 20px;
 		}
 	}
+
 	.rank-container{
 		/*padding:23px 13px 56px 14px;*/
-		padding-top:23px;
-		padding-bottom:4px;
-		border-radius:6px;
+
+
+
 		.rank-container-item{
-			margin-bottom:27px;
 			padding:3px 13px;
 			// padding-left:14px;
 			// padding-right:13px;
@@ -425,7 +427,7 @@
 
 		height: 36px;
 		width: 117px;
-		margin:15px auto;
+		margin:35px auto;
 		line-height: 36px;
 		text-align: center;
 		background:rgba(66,176,237,1);
@@ -437,5 +439,9 @@
 	}
 	.show{
 		opacity:1;
+	}
+	 uni-swiper.round-dot .uni-swiper-dot{
+		width: 8px !important;
+		height: 8px !important;
 	}
 </style>

@@ -1,7 +1,7 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/page
-		
-		
+
+
 		{
 			"path" : "pages/login-design/login/login",
 			"style": {
@@ -9,7 +9,7 @@
 				"app-plus":{
 					"titleNView":false
 				}
-		
+
 			}
 		},
 		{
@@ -34,7 +34,7 @@
 
 
 
-	 
+
  {
 	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
 	          "style" : {
@@ -45,7 +45,7 @@
 				  }
 	          }
 	      },
-	
+
 		  {
 		              "path" : "pages/tab-item-content/notice-center/notice-index/notice-index",
 		              "style" : {
@@ -73,7 +73,7 @@
 	   	}
 	   }
 	},
-	
+
 
 
 		  {
@@ -142,7 +142,7 @@
 			"navigationBarTitleText": "我的门店","navigationBarBackgroundColor":"#fff"
 		}
 	},
-	
+
 	{
 	    "path" : "pages/tab-item-content/shop-center/create-comment/create-comment",
 	    "style" : {
@@ -177,7 +177,7 @@
 	   },
 
 
-		
+
 
 		  {
 	          "path" : "pages/tab-item-content/mine-center/input-code/input-code",
@@ -197,7 +197,7 @@
 		  {
 		      "path" : "pages/tab-item-content/mine-center/account-manager/account-manager",
 		      "style" : {
-		  				  "navigationBarTitleText": "手机号码","navigationBarBackgroundColor":"#fff"
+		  				  "navigationBarTitleText": "更换手机号码","navigationBarBackgroundColor":"#fff"
 		  			  }
 		  },
 
@@ -220,7 +220,7 @@
 	{
 	    "path" : "pages/tab-item-content/work-center/create-log/create-log",
 	    "style" : {
-			
+
 			"navigationBarBackgroundColor":"#fff",
 			"navigationBarTitleText": "工作回执"
 		}
@@ -260,7 +260,7 @@
            	"navigationBarTitleText": "报修详情","navigationBarBackgroundColor":"#fff"
            }
         }
-        
+
 
 
         ,{
@@ -289,7 +289,7 @@
         ,{
             "path" : "pages/tab-item-content/work-center/work-log/work-log",
             "style" : {
-				"navigationBarTitleText": "工作汇报",
+				"navigationBarTitleText": "工作回执",
 				"enablePullDownRefresh": true,"navigationBarBackgroundColor":"#fff"
 			}
         }
@@ -303,7 +303,7 @@
             	}
             }
         }
-       
+
 
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/choose-express/choose-express",
@@ -324,19 +324,19 @@
 				  "navigationBarTitleText": "订单详情","navigationBarBackgroundColor":"#fff"
 			}
         }
-        
+
         ,{
             "path" : "pages/tab-item-content/notice-center/notice-item/notice-item",
             "style" : {
 				 "navigationBarTitleText": "详情内容","navigationBarBackgroundColor":"#fff"
 			}
         }
-        
-        
-        
-        
 
-        
+
+
+
+
+
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/express-shop-man/express-shop-man",
             "style" : {
@@ -358,7 +358,7 @@
             "path" : "pages/tab-item-content/work-center/express-center/package-tracking/package-tracking",
             "style" : {"navigationBarTitleText": "物流跟踪","navigationBarBackgroundColor":"#fff"}
         }
-       
+
         ,{
             "path" : "pages/tab-item/search-company/search-company",
             "style" : {
@@ -377,18 +377,18 @@
 				"enablePullDownRefresh":true
 			}
         }
-        
+
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/success-send/success-send",
             "style" : {
 				"navigationStyle":"custom",
-				
+
 				"app-plus":{
 					"titleNView":false
 				}
 			}
         }
-        
+
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item",
             "style" : {
@@ -399,7 +399,7 @@
 				}
 			}
         }
-        
+
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/record-money/record-money",
             "style" : {
@@ -417,20 +417,22 @@
 				}
 			}
         }
-       
-        
+
+
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics",
             "style" : {
-				"navigationBarTitleText":"门店销售统计",
-				"navigationBarBackgroundColor":"#fff"
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start",
             "style" : {
 				"navigationStyle":"custom",
-				
+
 				"app-plus":{
 					"titleNView":false
 				}
@@ -439,9 +441,9 @@
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/sale-statistics-search",
             "style" : {
-			
+
 				"navigationStyle":"custom",
-				
+
 				"app-plus":{
 					"titleNView":false
 				}
@@ -451,7 +453,7 @@
             "path" : "pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve",
             "style" : {
 				"navigationStyle":"custom",
-				
+
 				"app-plus":{
 					"titleNView":false
 				}
@@ -471,7 +473,7 @@
 				"navigationBarBackgroundColor":"#fff"
 			}
         }
-        
+
         ,{
             "path" : "pages/login-design/protocol/protocol",
             "style" : {
@@ -479,7 +481,7 @@
 				"navigationBarBackgroundColor":"#fff"
 			}
         }
-        
+
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/search-express/search-express",
             "style" : {
@@ -519,7 +521,35 @@
         }
         ,{
             "path" : "pages/tab-item-content/work-center/work-log-item/work-log-item",
-            "style" : {}
+            "style" : {"navigationBarTitleText": "日报详情","navigationBarBackgroundColor":"#fff"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/work-flow/work-flow",
+            "style" : {"navigationBarTitleText": "流程模板","navigationBarBackgroundColor":"#fff"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/clerk-item-info/clerk-item-info",
+            "style" : {
+				"navigationStyle":"custom",
+
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/task-center/check-apply/check-apply",
+            "style" : {"navigationBarTitleText": "申请验收","navigationBarBackgroundColor":"#fff"}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-month/sale-statistics-month",
+            "style" : {
+				"navigationStyle":"custom",
+				
+				"app-plus":{
+					"titleNView":false
+				}
+			}
         }
     ],
 	"globalStyle": {
@@ -544,7 +574,7 @@
 				"text":"消息"
 			},
 // 			{
-// 
+//
 // 					"pagePath":"pages/tab-item/message/message",
 // 					"iconPath":"static/img/footer/message.png",
 // 					"selectedIconPath":"static/img/footer/message_color.png",
@@ -562,6 +592,16 @@
 				"iconPath":"static/img/footer/mine.png",
 				"selectedIconPath":"static/img/footer/mine_color.png",
 				"text":"个人中心"
+			}
+		]
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
 	}

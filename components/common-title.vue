@@ -17,16 +17,18 @@
 			<view >
 				<slot name="cover">
 					<div class="coverImg" :style="[{ backgroundImage:'url(' + itemInfo.coverurl+ ')' }]" @click="showImg()" v-if="itemInfo.coverurl">
-					
+					</div>
+					<div v-else>
+						<image src="../../../static/img/default.png" class="coverImg"></image>
 					</div>
 				</slot>
 			</view>
 			<view class="detail">
 				<slot name="content"></slot>
 			</view>
-			
+
 		</view>
-		
+
 			<view class="files-container bg-white"  style="padding:10px 15px;"  >
 				<view class="flex justify-between borderBottom" >
 					<view style="padding:5px 15px;" class="font-weight-bold color-normal">附件</view>
@@ -42,25 +44,25 @@
 								<view style="margin-bottom:6px;width:80%" class="font-size-normal text-ellipse color-blue">{{item.name}}</view>
 							</view>
 						</view>
-					
+
 						<view v-else
 							  style="padding:10px 15px;" class="position_relative  flex justify-start align-center align-center">
-							  <view style="width:5%;margin-right:10px;">
-								  <image src="../../../static/img/article/word.png" style="width:100%;height:21px;vertical-align: middle;"
+							  <view style="width:10%;margin-right:10px;">
+								  <image src="../../../static/img/article/word.png" style="width:100%;height:30px;vertical-align: middle;"
 								  	   v-if="item.postfix && item.postfix.toLowerCase()=='doc'"></image>
-								  <image src="../../../static/img/article/ppt.png" style="width:100%;height:21px;vertical-align: middle;"
+								  <image src="../../../static/img/article/ppt.png" style="width:100%;height:30px;vertical-align: middle;"
 								  	   v-else-if=" item.postfix && item.postfix.toLowerCase()=='ppt'"></image>
 								  <image src="../../../static/img/article/pdf.png" style="width:100%;height:21px;vertical-align: middle;"
 								  	   v-else-if=" item.postfix && item.postfix.toLowerCase()=='pdf'"></image>
-								  <image src="../../../static/img/article/other.png" style="width:100%;height:21px;vertical-align: middle;"
+								  <image src="../../../static/img/article/other.png" style="width:100%;height:30px;vertical-align: middle;"
 								  	   v-else></image>
 							  </view>
-							<view  style="width:33%">
+							<view  style="width:33%;padding-top:8px">
 								<view style="margin-bottom:6px;border-bottom:1px solid #00BFFF;" class="font-size-mini  color-blue text-ellipse">{{item.name}}</view>
 							</view>
 						</view>
 					</view>
-				</view>	
+				</view>
 				<view v-if="type=='notice'">
 					<view class="bg-white padding">
 						<view class="grid col-4 grid-square">
@@ -68,7 +70,7 @@
 							v-for="(item,index) in itemInfo.files" :key="index" :style="[{ backgroundImage:'url(' + item.url + ')' }]"></view>
 						</view>
 					</view>
-				</view>	
+				</view>
 			</view>
 		<imageModel :isShow="modalName=='imageModal'" :url="itemInfo.coverurl || imgItem.url" @hideModal="hideModal" @downImg="downImg"></imageModel>
 		<!-- <view class="cu-modal" :class="modalName=='imageModal'?'show':''" @click="hideModal()">
@@ -85,7 +87,7 @@
 		<simpleModel :isShow="modalName=='downModel'" @hideSimpleModel="hideModal" v-if="modalName=='downModel'">
 			<block slot="content">下载成功</block>
 		</simpleModel>
-		
+
 		<view class="cu-modal" :class="modalName=='download'?'show':''"  @click="hideModal()">
 			<view class="cu-dialog">
 				<view class="padding-xl">
@@ -116,7 +118,7 @@
 				type:String,
 				default:''
 			}
-			
+
 		},
 		components:{imageModel,simpleModel},
 		data(){
@@ -130,7 +132,7 @@
 			checkImage(item){
 				this.modalName="imageModal";
 				this.imgItem=item;
-				console.log(this.imgItem)
+
 			},
 			downFiles(item){
 				if(item.postfix){
@@ -142,7 +144,6 @@
 								promise.then(([err, res])=>{
 									if(res){
 										let count=0;
-
 										this.modalName='download';
 										var timeout =setInterval(()=>{
 											count+=30;
@@ -155,9 +156,6 @@
 												clearInterval(timeout)
 												this.loading=0;
 												count=0;
-
-
-
 											}else{
 												this.loading=count+'%'
 											}
@@ -174,7 +172,7 @@
 
 								this.modalName='download';
 								var timeout =setInterval(()=>{
-									count+=10;
+									count+=20;
 									if(count>=100){
 										this.hideModal();
 										uni.openDocument({
@@ -198,7 +196,7 @@
 					}
 				}
 
-				
+
 
 			},
 			hideModal(){
@@ -211,10 +209,10 @@
 					 src:this.itemInfo.coverurl || this.imgItem.url,
 					 success:(res)=>{
 						let promise=downloader.load(res.path,res.path);
-						promise.then(([err, res])=>{ 
+						promise.then(([err, res])=>{
 							if(res){
-								this.modalName='downModel';	
-							}            // err 和 res 只会有一个存在，另一个为null  
+								this.modalName='downModel';
+							}            // err 和 res 只会有一个存在，另一个为null
 						});
 					 }
 				 })
@@ -223,10 +221,10 @@
 				this.modalName='imageModal'
 
 			},
-			
+
 
 		},
-		
+
 	}
 </script>
 
@@ -242,7 +240,7 @@
 	}
 	.detail >>> div{
 		margin-bottom:15px;
-		
+
 	}
 	.container{
 		padding:10px 13px 10px 14px;
@@ -262,7 +260,7 @@
 	}
 	.v_html >>> img{
         width: 100%;
-		
+
 		border-radius: 8px;
     }
 	.v_html >>> pre {

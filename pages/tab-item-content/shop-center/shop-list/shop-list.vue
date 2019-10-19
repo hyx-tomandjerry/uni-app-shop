@@ -17,7 +17,7 @@
 							<image src="../../../../static/img/shop/renovated.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.renovated"></image>
 							<image src="../../../../static/img/shop/moved.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.moved"></image>
 						</view>
-						<view class="font-size-litter color-regular " style="margin:7px 0;width:65%">
+						<view class="font-size-litter color-regular " style="margin:7px 0;">
 							<text style="margin-right:7px;">店长:</text>{{item.managerName || ''}}/{{item.managerMobile || ''}}
 						</view>
 						<view class="font-size-litter color-regular text-ellipse " style="width:80%;">

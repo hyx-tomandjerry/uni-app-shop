@@ -1,30 +1,31 @@
 <template>
 	<view >
-		<cu-custom :isBack="true" >
+		<cu-custom :isBack="true" bg-color="bg-white">
 			<block slot="left">
 				<view class="font-size-back color-regular cuIcon-back" @click="goBack"></view>
 			</block>
 			<block slot="content">
-				<view class="font-weight-bold font-size-big">
-					销售明星榜
+				<view class="font-weight-bold font-size-big color-normal">
+					销售榜
 				</view>
 			</block>
 			<block slot="right" >
-				<view @click="searchEvent" style="margin-right:20px;" class="color-blue">筛选</view>
+				<view @click="searchEvent" style="margin-right:20px;" class="color-normal">筛选</view>
 			</block>
 		</cu-custom>
 		<view class="borderTop bg-white">
-			<image src="../../../../../../static/img/work/statistics/rank_one.png"></image>
+
 			<view class="tabNav flex justify-between">
 				<view class="tab-nav-item" :class="{'tab-nav-active':navTabCur=='alone'}" @click="selectTabCur('alone')">个人榜</view>
 				<view class="tab-nav-item" :class="{'tab-nav-active':navTabCur=='shop'}" @click="selectTabCur('shop')">门店榜</view>
 			</view>
 			<view class="smallNav flex justify-around">
 				<view v-for="(item,index) in threeNavList"
-					  @click="threeNavSelect(item)"
+					  @click="threeNavSelect(item)" class="font-size-normal color-normal font-weight-bold"
 					  :key="index" :class="{'border-active':item.id==threeNavTab}">{{item.name}}</view>
 			</view>
-			<view class="rank-container" v-show="firstItem">
+			<!-- 前三名 -->
+			<view class="rank-container" v-if="firstItem['field']">
 				<view class="rank-img flex justify-between">
 					<view class="rank-two position_relative">
 						<image src="../../../../../../static/img/work/statistics/two_tag.png"
@@ -41,47 +42,54 @@
 							<view class=" color-normal"
 							:class="{
 								'font-size-big':navTabCur=='alone',
-								
+
 								'font-size-mini':navTabCur=='shop',
-								
+
 							}"
 							>{{firstItem['field'] || ''}}</view>
 							<view class="font-family-num font-size-big font-weight-bold number-color">¥{{firstItem['actual'] || 0}}</view>
 						</view>
 					</view>
 					<view class="rank-one position_relative">
+						<image src="../../../../../../static/img/work/statistics/one.png"
+							style="position:absolute;top:0;left:0;width: 160px;height: 160px;"
+						></image>
 						<image src="../../../../../../static/img/work/statistics/one_tag.png"
 							   style="width:80px;height:40px;position:absolute;bottom:24px;left:38px;z-index:10"></image>
 						<image :src="secondItem['afield']" v-if="secondItem['afield']"
-							   style="width:50px;height:50px;position:absolute;left:56px;top:58px;border-radius:50%;"
+							   style="width:55px;height:55px;position:absolute;left:45px;top:54px;border-radius:50%;"
 						></image>
 						<image src="../../../../../../static/img/default.png" v-else
-							   style="width:50px;height:50px;position:absolute;left:56px;top:58px;border-radius:50%;"
+							   style="width:60px;height:60px;position:absolute;left:46px;top:54px;border-radius:50%;"
 						></image>
 						<view class="intro position_absolute" :class="{
 							'intro-alone':navTabCur=='alone',
 							'intro-shop':navTabCur=='shop'
 						}">
-							
+
 							<view class=" color-normal"
 							:class="{
 								'font-size-big':navTabCur=='alone',
-								
+
 								'font-size-mini':navTabCur=='shop',
-								
+
 							}"
 							>{{secondItem['field']|| ''}}</view>
 							<view class="font-family-num font-size-big font-weight-bold number-color">¥{{secondItem['actual'] || 0}}</view>
 						</view>
 					</view>
 					<view class="rank-three position_relative">
+						<image src="../../../../../../static/img/work/statistics/three.png"
+							style="position:absolute;top:0;left:0;height: 120px;
+				width: 120px;"
+						></image>
 						<image src="../../../../../../static/img/work/statistics/three_tag.png"
 							   style="width:80px;height:40px;position:absolute;bottom:10px;left:19px;z-index:10"></image>
 						<image :src="thridItem['afield']" v-if="thridItem['afield']"
-							   	   style="width:45px;height:45px;position:absolute;left:40px;top:40px;border-radius:50%;"
+							   	   style="width:45px;height:45px;position:absolute;left:34px;top:38px;border-radius:50%;"
 							   ></image>
 						<image src="../../../../../../static/img/default.png" v-else
-							   style="width:45px;height:45px;position:absolute;left:40px;top:40px;border-radius:50%;"
+							   style="width:45px;height:45px;position:absolute;left:34px;top:40px;border-radius:50%;"
 						></image>
 						<view class="intro position_absolute" :class="{
 							'intro-alone':navTabCur=='alone',
@@ -90,24 +98,24 @@
 							<view class=" color-normal"
 							:class="{
 								'font-size-big':navTabCur=='alone',
-								
 								'font-size-mini':navTabCur=='shop',
-								
 							}"
 							>{{thridItem['field']|| ''}}</view>
 							<view class="font-family-num font-size-big font-weight-bold number-color">¥{{thridItem['actual']||0}}</view>
 						</view>
 					</view>
 				</view>
+
+				<!-- 排名 -->
 				<view class="rank-list ">
 					<view class="rank-list-item borderBottom flex justify-between align-center" v-for="(item,index) in rankList" :key="index">
 						<view>
 							<text class="font-family-num font-weight-bold font-size-bigger color-regular">{{index+4}}</text>
 							<image :src="item['afield']" style="margin:0 16px;width:47px;height:47px;border-radius:50%;vertical-align:middle" v-if="item['afield']"></image>
 							<image src="../../../../../../static/img/cute.jpg" style="margin:0 16px;width:47px;height:47px;border-radius:50%;vertical-align:middle" v-else></image>
-							<text class="color-normal">{{item.field}}</text>
-							<text class="cont-size-mini color-blue">({{item.shopName}}) </text>
-							
+							<text class="color-normal">{{item.field || ''}}</text>
+							<text class="cont-size-mini color-blue" v-if="item.shopName">({{item.shopName || ''}}) </text>
+
 						</view>
 						<view>
 							<image src="../../../../../../static/img/work/statistics/gold.png"
@@ -116,11 +124,10 @@
 							<text class="number-color font-family-num font-weight-bold">{{item.actual || 0}}</text>
 						</view>
 					</view>
-					
-					
-					
-					
 				</view>
+			</view>
+			<view v-else>
+				<LxEmpty></LxEmpty>
 			</view>
 		</view>
 	</view>
@@ -128,6 +135,7 @@
 
 <script>
 	import {mapState} from 'vuex';
+	import LxEmpty from '../../../../../../lx_components/lx-empty.vue'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
@@ -148,9 +156,10 @@
 				firstItem:{},
 				secondItem:{},
 				thridItem:{}
-			
+
 			}
 		},
+		components:{LxEmpty},
 		methods: {
 			goBack(){
 				uni.navigateBack({
@@ -176,7 +185,7 @@
 					})
 					break;
 					case'shop':
-					this.$ajax('ZoneShopPerformances',{
+					this.$ajax('ZoneShopPerformancesList',{
 						year:this.year,
 						month:this.month,
 						area:this.threeNavTabName=='area'?1:'',
@@ -190,7 +199,7 @@
 					})
 					break;
 				}
-				
+
 			},
 			/*选择门店榜还是个人榜*/
 			selectTabCur(type){
@@ -224,16 +233,19 @@
 				this.month=result.month?result.month:new Date().getMonth()+1;
 				this.target=result.target?result.target:this.userInfo.owner;
 				this.getRankList()
-			})	
+			})
 		},
 		onShow(){
 			this.getRankList()
-			
+
 		}
 	}
 </script>
 
 <style lang="less">
+	page{
+		background:rgba(247,247,247,1)
+	}
 	.tabNav{
 		margin:9px 12px 19px 15px;
 		height:36px;
@@ -268,19 +280,16 @@
 			.rank-one{
 				width: 160px;
 				height: 160px;
-				background:url("../../../../../../static/img/work/statistics/rank_one.png");
-				background-size:cover;
 			}
 			.rank-three{
 				margin-top:42px;
 				height: 120px;
 				width: 120px;
-				background:url("../../../../../../static/img/work/statistics/two.png") no-repeat center center;
-				background-size:cover;
+
 			}
 			.intro{
 				text-align: center;
-				
+
 				left:50%;
 				transform: translateX(-50%);
 
@@ -299,7 +308,6 @@
 				height:69px;
 				line-height:69px;
 				padding:0 15px 0 12px;
-				box-shadow:0 15px 30px rgba(0,0,0,0.2);
 				margin-bottom:8px;
 
 			}
@@ -314,7 +322,7 @@
 		bottom:0px;
 		width:100%;
 		z-index:99;
-		box-shadow: 0 15px 30px rgba(0,0,0,0.9);
+
 
 	}
 </style>

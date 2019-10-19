@@ -12,20 +12,27 @@
 		</cu-custom>
 		<!--销售明星筛选-->
 		<view class="search-item borderTop" @click="selectModal('year')">
-			<view class="font-size-normal color-normal">年</view>
+			<view class="font-size-normal color-normal">日期</view>
 			<view class="color-regular" >
-				<text v-if="year">{{year}}年</text>
+				<text v-if="year && month">{{year}}年{{month}}月</text>
 				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text></view>
 		</view>
-		<view class="search-item borderTop" @click="selectModal('month')">
-			<view class="font-size-normal color-normal">月</view>
-			<view class="color-regular">
-			<text v-if="month">{{month}}月</text>
-			
-			<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text></view>
-		</view>
-		<view class="search-item borderTop" @click="selectModal('area')" v-if="type=='area'">
+		<!--<view class="search-item borderTop" @click="selectModal('month')">-->
+			<!--<view class="font-size-normal color-normal">月</view>-->
+			<!--<view class="color-regular">-->
+			<!--<text v-if="month">{{month}}月</text>-->
+
+			<!--<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text></view>-->
+		<!--</view>-->
+		<view class="search-item borderTop" @click="selectModal('area')" >
 			<view class="font-size-normal color-normal">区域</view>
+			<view class="color-regular">
+				<text>{{areaItem.name || ''}}</text>
+				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text>
+			</view>
+		</view>
+		<view class="search-item borderTop" @click="selectModal('brand')" >
+			<view class="font-size-normal color-normal">品牌</view>
 			<view class="color-regular">
 				<text>{{areaItem.name || ''}}</text>
 				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text>
@@ -43,7 +50,9 @@
 						<picker-view-column style="line-height:55px;">
 							<view class="item" v-for="(item,index) in years" :key="index">{{item}}年</view>
 						</picker-view-column>
-						
+						<picker-view-column style="line-height:55px;">
+							<view class="item" v-for="(item,index) in months" :key="index">{{item}}月</view>
+						</picker-view-column>
 					</picker-view>
 				</view>
 			</view>
@@ -77,6 +86,24 @@
 			</view>
 		</view>
 		
+		<!-- 品牌弹出框 -->
+		<view class="cu-modal bottom-modal" :class="modalName=='brandBottomModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-blue" @tap="hideModel">取消</view>
+					<view class="action text-green" @click="hideModel">确定</view>
+				</view>
+				<view >
+					<view class="brand-list-item align-center" v-for="(item,index) in brandList" :key="index" @click="chooseBrand(item)">
+						<view>{{item.name}}</view>
+						<image  :src="brandItem.id==item.id?'../../../../../../static/icon/icon-xuanzhong.png':'../../../../../../static/icon/icon-weixuanzhong.png'" mode="" class="icon-choose"></image>
+						
+					</view>
+				</view>
+			</view>
+		</view>
+		
+
 	</view>
 </template>
 
@@ -93,7 +120,7 @@
 			for (let i = 1; i <= 12; i++) {
 				months.push(i)
 			}
-			
+
 			return {
 				provinceList:[],
 				timeType:'',//判断是开始时间还是结束时间
@@ -108,7 +135,9 @@
 				type:'',//用于区分门店，区域，公司
 				shopID:'',
 				areaList:[],
-				areaItem:''
+				areaItem:'',
+				brandItem:'',
+				brandList:[]
 			}
 		},
 		methods: {
@@ -120,19 +149,24 @@
 					parentId
 				} = item;
 				this.areaItem=item;
-				
+
 			},
 			goBack(){
+				
 				uni.navigateBack({
 					delta:1,
 					success:()=>{
+						
 						this.$fire.fire('search',{
-							year:this.year?this.year:'',
-							month:this.month?this.month:'',
+							year:this.year?this.year:new Date().getFullYear(),
+							month:this.month,
 							target:this.areaItem?this.areaItem.id:''
 						})
 					}
 				})
+			},
+			chooseBrand(item){
+				this.brandItem=item;
 			},
 			//获得区域
 			getAreaList(){
@@ -144,14 +178,10 @@
 				})
 			},
 			bindChange: function (e) {
-				const val = e.detail.value
-				if(this.timeType=='year'){
-					this.year = this.years[val[0]]
-				}else if(this.timeType=='month'){
-					this.month = this.months[val[0]]
-				}
-
-
+				const val = e.detail.value;
+				this.year=this.years[val[0]];
+				this.month=this.months[val[1]]?this.months[val[1]]:'01'
+				console.log(this.year,this.month)
 			},
 			/*选择开始时间*/
 			selectModal(type){
@@ -167,11 +197,22 @@
 					this.modalName='areaBottomModal';
 					this.getAreaList()
 					break;
+					case 'brand':
+					this.modalName='brandBottomModal';
+					this.getBrandList()
+					break;
 				}
 			},
 			hideModel(){
 				this.modalName=null;
 				uni.stopPullDownRefresh();
+			},
+			getBrandList(){
+				this.$ajax('MyBrands',{},res=>{
+					if(res){
+						this.brandList=res;
+					}
+				})
 			},
 			//转为树形图数据
 			getTree(data){
@@ -184,7 +225,7 @@
 				data.forEach(item=>{
 					map[item.id]=item;
 				})
-				
+
 				let val=[];
 				data.forEach((item)=>{
 					//以当前遍历项，的parent去map对象中找到索引的id;
@@ -198,8 +239,8 @@
 				})
 				this.areaList = val
 			}
-			
-			
+
+
 		},
 		components:{
 			mixTree
@@ -211,7 +252,7 @@
 			if(params.id){
 				this.shopID=params.id;
 			}
-			
+
 
 		}
 	}
@@ -226,5 +267,16 @@
 		display:flex;
 		justify-content: space-between;
 		align-content: center;
+	}
+	.brand-list-item{
+		height:55px;
+		line-height:55px;
+		padding:0 15px 0 21px;
+		display: flex;
+		justify-content: space-between;
+		.icon-choose{
+			width: 20px;
+			height: 20px;
+		}
 	}
 </style>

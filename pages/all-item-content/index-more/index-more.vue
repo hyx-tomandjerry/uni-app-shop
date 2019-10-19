@@ -20,8 +20,8 @@
 						<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
 					</view>
 				</view>
-				
-				
+
+
 				<view class="cu-card case example-content" v-show="value=='example'" >
 					<view v-for="(item,index) in skillList" :key="index" @click="checkItemInfo(item)"  class="borderBottom position_relative example-content-list">
 						<image :src="item.coverurl" mode="aspectFill" class="example-content-cover"></image>
@@ -31,13 +31,13 @@
 					</view>
 				</view>
 			</view>
-			
-			
+
+
 			<view v-else>
 				<LxEmpty></LxEmpty>
 			</view>
 		</view>
-		
+
 
 		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
 	</view>
@@ -69,7 +69,7 @@
 		components:{
 			LxEmpty,
 			uniLoadMore
-			
+
 		},
 		onPullDownRefresh(){
 			setTimeout(()=>{
@@ -78,19 +78,19 @@
 			this.getArticleList()
 		},
 		onReachBottom(){
-		
+
 			this.page++;
 			this.$ajax('MyArticles',{
 				type:this.value=='skill'?1:2,
 				offset:this.$utils.getOffset(this.page)
 			},res=>{
-				
+
 				if(res==''){
-					
+
 					setTimeout(()=>{
 							this.loading='noMore'
 					},900)
-			
+
 				}else{
 					res.forEach(item=>{
 						this.skillList.concat(item)
@@ -100,9 +100,9 @@
 						this.loading='noMore'
 
 					},900)
-					
+
 				}
-			
+
 			})
 
 		},
@@ -123,7 +123,15 @@
 					type:this.value=='skill'?1:2,
 					offset:this.$utils.getOffset(this.page)
 				},res=>{
-					this.skillList=res;
+					if(res){
+						res.forEach(item=>{
+							if(!item.coverurl){
+								item.coverurl="../../../static/img/default.png"
+							}
+						})
+						this.skillList=res;
+					}
+
 				})
 			}
 		},
@@ -174,7 +182,7 @@
 			.mixHeight(79px);
 			.mixBorderRadius(10px)
 		}
-		
+
 	}
 	.example-content{
 		.mixMargin(7px;7px;7px;7px);

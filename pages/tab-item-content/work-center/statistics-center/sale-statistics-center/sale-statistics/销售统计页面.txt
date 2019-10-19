@@ -26,7 +26,7 @@
 						<view>{{timeObj.year}}年</view>
 						<view>门店销售额(元)</view>
 					</view>
-					<view class="font-size-middle font-weight-bold " style=" font-family: DINAlternate;">￥{{shopfactPerform || 0}}</view>
+					<view class="font-size-middle font-weight-bold " style=" font-family: DINAlternate;">￥{{Number(shopfactPerform).toFixed(2) || 0}}</view>
 
 				</view>
 				<view class="alone-aim text-center">
@@ -34,15 +34,15 @@
 						<view>{{timeObj.year}}年</view>
 						<view>门店目标(元)</view>
 					</view>
-					<view class="font-size-middle font-weight-bold ">￥{{shopAimPerform || 0}}</view>
+					<view class="font-size-middle font-weight-bold ">￥{{Number(shopAimPerform).toFixed(2) || 0}}</view>
 				</view>
 			</view>
 		</view>
 
 		<view class="sale-trend-container margin-bottom-normal"  style="overflow: hidden;"
 			  :class="{ 'height3':showTabVal=='sale','height4':showTabVal!='sale'}">
-			<view class="sale-trend-title flex justify-between">
-				<view class=" font-weight-bold font-size-big color-normal">门店销售额趋势</view>
+			<view class="sale-trend-title flex justify-between align-center">
+				<view class=" font-weight-bold font-size-big color-normal" style="height:30px;line-height:30px;">门店销售额趋势</view>
 				<view class="flex justify-start trend-tab"  >
 					<view  class="trend-tab-item"
 							:class="{'time-tab-active':showTabVal==item.val}"
@@ -166,7 +166,7 @@
 						<view class="detail-num flex justify-between">
 							<view  style="margin-top:6px;">
 								<view class="font-weight-bold">{{item.field || ''}}</view>
-								<view>占比 <text class="color-red">{{item.pre || 0}}%</text></view>
+								<view>占比 <text class="color-red">{{item.pre*100 || 0}}%</text></view>
 							</view>
 							<view class="font-family-num  font-size-middle font-weight-bold number-color">￥{{item.actual}}</view>
 						</view>
@@ -182,7 +182,7 @@
 									'bg-purple':(index+1)%6==0,
 
 
-								}" :style="[{'width':`${item.pre}%`}]"></view>
+								}" :style="[{'width':`${item.pre*100}%`}]"></view>
 								</view>
 							</view>
 
@@ -287,12 +287,13 @@
 								/*固定的 start*/
 								this.showList=[];
 								this.performItem=res;
-								this.shopfactPerform=res['aamount'];
-								this.shopAimPerform=res['expect'];
+								this.shopfactPerform=res['actual'];
+								
+								this.shopAimPerform=res['expect'] || 0;
 								this.chartData.series=[
 									{
 										name: '销售占比',
-										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										data:this.shopAimPerform? Number(this.shopfactPerform/this.shopAimPerform).toFixed(2) :0,
 										color: '#2fc25b',
 									}
 								];
@@ -302,7 +303,7 @@
 								
 								if(res.salesmen.length>0){
 									res.salesmen.forEach(item=>{
-										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+										item.pre=this.shopfactPerform?Number(item.actual/this.shopAimPerform*100).toFixed(2):0
 									})
 								}
 								this.salemanList=res.salesmen?res.salesmen:[];
@@ -334,17 +335,17 @@
 								this.chartData.series=[
 									{
 										name: '销售占比',
-										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										data:this.shopAimPerform? Number(this.shopfactPerform/this.shopAimPerform).toFixed(2) :0,
 										color: '#2fc25b',
 									}
 								];
-								console.log(this.chartData.series)
+							
 								this.showArcbar("canvasArcbar1",this.chartData);
 								/*固定的 end*/
 								/*店员绩效 start*/
 								if(res.salesmen.length>0){
 									res.salesmen.forEach(item=>{
-										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+										item.pre=this.shopfactPerform?Number(item.actual/this.shopAimPerform).toFixed(2)*100:0
 									})
 								}
 								this.salemanList=res.salesmen?res.salesmen:[];
@@ -375,7 +376,7 @@
 								this.chartData.series=[
 									{
 										name: '销售占比',
-										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										data: this.shopAimPerform?Number(this.shopfactPerform/this.shopAimPerform).toFixed(2):0,
 										color: '#2fc25b',
 									}
 								];
@@ -385,9 +386,10 @@
 								
 								if(res.salesmen.length>0){
 									res.salesmen.forEach(item=>{
-										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+										item.pre=this.shopAimPerform?Number(item.actual/this.shopAimPerform).toFixed(2):0
 									})
 								}
+								console.log(res.salesmen)
 								this.salemanList=res.salesmen?res.salesmen:[];
 								this.serverRingData.series=[];
 								this.salemanList.forEach((item=>{
@@ -416,20 +418,22 @@
 							year:this.timeObj.year
 						},res=>{
 							if(res){
+								
 								/*固定的 start*/
 								this.showList=[];
 								this.performItem=res;
-								this.shopfactPerform=res['aamount'];
+								this.shopfactPerform=res['actual'];
 								this.shopAimPerform=res['expect'];
 								this.chartData.series=[
 									{
 										name: '销售占比',
-										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										data:this.shopAimPerform? (this.shopfactPerform/this.shopAimPerform).toFixed(2):0,
 										color: '#2fc25b',
 									}
 								];
 								this.showArcbar("canvasArcbar1",this.chartData);
 								/*固定的 end*/
+								this.mixChartData.series=[]
 								for(var i =1;i<=12;i++){
 									this.mixChartData.categories.push(`${i}月`);
 									arr.push(res[`amonth${i}`]);
@@ -437,18 +441,19 @@
 										id:i,
 										name:`amonth${i}`,
 										num:res[`amonth${i}`],
-										pre:(res[`amonth${i}`]/(this.shopfactPerform || 1)).toFixed(2)
+										pre:this.shopAimPerform?(res[`amonth${i}`]/this.shopAimPerform).toFixed(2):0
 									})
 									
 								}
+								
 								this.mixChartData.series.push(
 										{
-											"name": "曲面",
+											"name": "销售额",
 											"data": arr,
 											"type": "area",
 											"style": "curve"
 										}, {
-											"name": "曲线",
+											"name": "销售额",
 											"data": arr,
 											"type": "line",
 											"style": "curve",
@@ -460,55 +465,64 @@
 						})
 						break;
 					case 'month':
-						this.$ajax('ShopMonthlyPerformance',{
+						this.$ajax('ShopYearlyPerformance',{
 							shop:this.shopID,
-							year:this.timeObj.year,
-							month:Number(this.timeObj.month)
+							year:this.timeObj.year
 						},res=>{
-							if(res){
-								/*固定的 start*/
-								this.showList=[];
-								this.performItem=res;
-								this.shopfactPerform=res['actual'];
-								this.shopAimPerform=res['expect'];
-								this.chartData.series=[
-									{
-										name: '销售占比',
-										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
-										color: '#2fc25b',
-									}
-								];
-							
-								this.showArcbar("canvasArcbar1",this.chartData);
-								/*固定的 end*/
-								let days=new Date(this.timeObj.year,Number(this.timeObj.month),0).getDate();
-								for(var i =1;i<=days;i++){
-									this.mixChartData.categories.push(`${i}`);
-									arr.push(res[`aday${i}`]);
-									this.showList.push({
-										id:i,
-										name:`aday${1}`,
-										num:res[`aday${i}`],
-										pre:(res[`aday${i}`]/(this.shopfactPerform || 1)).toFixed(2)
-									})
-								}
-								this.mixChartData.series.push(
+							this.shopfactPerform=res[`amonth${new Date().getMonth()+1}`];
+							this.shopAimPerform=res[`month${new Date().getMonth()+1}`];
+							this.$ajax('ShopMonthlyPerformance',{
+								shop:this.shopID,
+								year:this.timeObj.year,
+								month:Number(this.timeObj.month)
+							},res=>{
+								if(res){
+									/*固定的 start*/
+									this.showList=[];
+									this.performItem=res;
+									console.log(this.shopfactPerform/this.shopAimPerform)
+									this.chartData.series=[
 										{
-											"name": "曲面",
-											"data": arr,
-											"type": "area",
-											"style": "curve"
-										}, {
-											"name": "曲线",
-											"data": arr,
-											"type": "line",
-											"style": "curve",
-											"color": "#1890ff"
+											name: '销售占比',
+											data:this.shopAimPerform? Number(this.shopfactPerform/this.shopAimPerform).toFixed(2) :0,
+											color: '#2fc25b',
 										}
-								);
-								this.showMix("canvasMix",this.mixChartData);
-							}
+									];
+									console.log(this.chartData.series)
+									this.showArcbar("canvasArcbar1",this.chartData);
+									/*固定的 end*/
+									this.mixChartData.series=[]
+									let days=new Date(this.timeObj.year,Number(this.timeObj.month),0).getDate();
+									for(var i =1;i<=days;i++){
+										this.mixChartData.categories.push(`${i}`);
+										arr.push(res[`aday${i}`]);
+										this.showList.push({
+											id:i,
+											name:`aday${1}`,
+											num:res[`aday${i}`],
+											pre:this.shopAimPerform?(res[`aday${i}`]/this.shopAimPerform).toFixed(2)*100:0
+										})
+									}
+									
+									this.mixChartData.series.push(
+											{
+												"name": "销售额",
+												"data": arr,
+												"type": "area",
+												"style": "curve"
+											}, {
+												"name": "销售额",
+												"data": arr,
+												"type": "line",
+												"style": "curve",
+												"color": "#1890ff"
+											}
+									);
+									this.showMix("canvasMix",this.mixChartData);
+								}
+							})
 						})
+						
 						break;
 					case 'day':
 						
@@ -527,7 +541,7 @@
 								this.chartData.series=[
 									{
 										name: '销售占比',
-										data: (this.shopfactPerform/(this.shopAimPerform || 1)).toFixed(2),
+										data:this.shopAimPerform? Number(this.shopfactPerform/(this.shopAimPerform)).toFixed(2) :0,
 										color: '#2fc25b',
 									}
 								];
@@ -535,9 +549,10 @@
 								/*店员绩效 start*/
 								if(res.salesmen){
 									res.salesmen.forEach(item=>{
-										item.pre=(item.actual/(this.shopfactPerform || 1)).toFixed(2)
+										item.pre=this.shopAimPerform?Number(item.actual/this.shopAimPerform).toFixed(2):0
 									})
 								}
+								console.log(res.salesmen)
 								this.salemanList=res.salesmen?res.salesmen:[];
 								this.serverRingData.series=[];
 								this.salemanList.forEach((item=>{
