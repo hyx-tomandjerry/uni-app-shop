@@ -222,7 +222,7 @@
 			// 查看报修记录详情
 			orderDetail(item){
 				uni.navigateTo({
-					url:'./repair-order-item/repair-order-item?id='+item.id
+					url:'./repair-order-item/repair-order-item?id='+item.id+"&type=repair"
 				})
 			},
 			//新增报修

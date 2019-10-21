@@ -119,7 +119,7 @@
 					</view>
 				</view>
 
-				<view class="cu-form-group borderBottom position_relative" @click="chooseWorkflow" v-show="!repaitItem">
+				<view class="cu-form-group borderBottom position_relative" @click="chooseWorkflow" >
 					<view class="title font-size-normal font-weight-normal" >
 						<text class="text-red" style="margin-right:4rpx;">*</text>审批流程
 					</view>

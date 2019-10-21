@@ -21,7 +21,7 @@
 							</view>
 						</view>
 						<view class="flex justify-start">
-							<image src="../../../../static/img/notice/daiban.png" style="width:45px;height:45px;margin-right:15px;vertical-align: middle;width:14%"></image>
+							<image src="../../../../static/img/notice/daiban.png" style="height:90upx;margin-right:15px;vertical-align: middle;width:14%"></image>
 							<view style="width:86%;">
 								<view class="font-size-litter font-weight-normal color-placeholder" style="margin-bottom:8px;">
 									<text>{{TabCur==2?'公告':'通知'}}</text>
@@ -158,10 +158,19 @@
 		},
 		methods:{
 			checkMessageItem(item){
-				console.log(item)
-				uni.navigateTo({
-					url:'../notice-item/notice-item?id='+item.id
-				})
+				switch(this.TabCur){
+					case 0:
+					
+					uni.navigateTo({
+						url:"../../shop-center/repair-order-item/repair-order-item?id="+item.target+"&type=notice"
+					})
+					break;
+					case 1:
+					break;
+					case 2:
+					break;
+				}
+				
 			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;

@@ -161,15 +161,18 @@
 				<view class="margin-top-13 workflow-container bg-white">
 					<view class="font-size-big font-weight-bold color-normal">审批流程</view>
 					<view class="workflow-list" v-if="repaitItem.steps">
-						<view class=" flex justify-start align-center" v-for="(workflow,index) in repaitItem.steps" :key="index">
+						<view class=" flex justify-start align-center margin-bottom-normal" v-for="(workflow,index) in repaitItem.steps" :key="index">
 							<view class="tag">{{workflow.id}}</view>
-							<view class="flex justify-between flex-1 work-flow-item" >
-								<view>
-									<view >{{workflow.acceptorName || ''}}</view>
-									<view style="margin-top:5px;margin-bottom:5px;"><text class="color-blue">{{workflow.status | approvalStatusPipe}}</text></view>
-									<view class="color-regular" v-if="workflow.comment">备注：{{workflow.comment|| ''}}</view>
+							<view class=" flex-1 work-flow-item" >
+								<view class="flex  justify-between">
+									<view class="flex-1">
+											{{workflow.acceptorName || ''}}
+											<text v-show="workflow.acceptRoleName">({{workflow.acceptRoleName}})</text>
+									</view>
+									<view v-if="workflow.reviewDate " class="flex-sm " style="font-size:22upx;">{{workflow.reviewDate | formatTime('YMDHMS')}}</view>
 								</view>
-								<view v-if="workflow.reviewDate ">{{workflow.reviewDate | formatTime('YMDHMS')}}</view>
+								<view style="margin-top:5px;margin-bottom:5px;"><text class="color-blue">{{workflow.status | approvalStatusPipe}}</text></view>
+								<view class="color-regular" v-if="workflow.comment">备注：{{workflow.comment|| ''}}</view>
 							</view>
 						</view>
 					</view>
@@ -247,13 +250,17 @@
 			</view>
 			</view>
 	</view>
-		<view class="btn-container" v-if="repaitItem.applier == userInfo.id">
+		<view class="btn-container" v-if="orderType=='repair' && repaitItem.applier == userInfo.id">
 		
 			<!-- 待审批可以删除 -->
-			<view class="refuse-btn " @click="showModal($event)" data-target="deleteModel" v-if="repaitItem.approval==approvalStatus.wait">删除订单</view>
+			<view class="refuse-btn " @click="showModal($event)" data-target="deleteModel" v-if="repaitItem.approval==approvalStatus.applied">删除订单</view>
 			<!-- 已驳回可以修改 -->
 			<view class="refuse-btn " @click="showModal($event)" data-target="repairModel" v-if="repaitItem.approval==approvalStatus.rejected">修改订单</view>
 			<!-- <view class="btn-area" v-else-if=" (repaitItem.status==repairStatus.waitManager || repaitItem.status==repairStatus.waitArea)" @click="showModal($event)" data-target="repairModel">修改订单</view> -->
+		</view>
+		<view class="btn-container flex justify-start" v-if="orderType=='notice'">
+			<view class="refuse-btn flex-sm" @click="operateOrder('agree')">同意</view>
+			<view class="agree-btn flex-1" @click="showModal($event)" data-target="refuseModel">拒绝</view>
 		</view>
 		<showModel :isShow="modalName=='repairModel'" @hideModel="hideModal"
 					 @confirmDel="operateOrder('edit')" v-if="modalName=='repairModel'">
@@ -263,6 +270,20 @@
 					 @confirmDel="operateOrder('delete')" v-if="modalName=='deleteModel'">
 			<block slot="content">确定要删除报修单?</block>
 		</showModel>
+		<view class="cu-modal" :class="modalName=='refuseModel'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end borderBottom">
+					<view class="content ">说明事由</view>
+				</view>
+				<view class="padding-xl ">
+					<textarea value="" placeholder="请输入拒绝理由" v-model="reason"/>
+				</view>
+				<view class="borderTop cu-dialog-b bg-white" >
+					<view class="cu-dialog-btn" @click="operateOrder('refuse')">确定</view>
+				</view>		
+			</view>
+			
+		</view>
 </view>
 </template>
 
@@ -277,6 +298,10 @@
 				avatar:[],
 				modalName:null,
 				repaitItem:'',
+				orderType:'notice',//repair从门店报修，notice从动态通知中来
+				reason:'',
+				workflowItem:"",
+				repairID:''
 				
 			};
 		},
@@ -291,6 +316,7 @@
 				操作订单
 			*/
 		   operateOrder(type){
+			   console.log('317',this.workflowItem)
 			   switch(type){
 				   case 'edit':
 				   uni.navigateTo({
@@ -301,30 +327,52 @@
 				   })
 				   break;
 				   case 'agree':
-				   this.$ajax('SubmitServiceOrder',{id:this.repaitItem.id,refused:0},res=>{
-				   	uni.showToast({
-				   		title:'拒绝保修单成功!',
-				   		icon:'none',
-				   		success:()=>{
-				   			uni.navigateBack({
-				   				delta:1
-				   			})
-				   		}
-				   	})
+				   console.log('kkk',this.workflowItem)
+				   this.$ajax('ApproveWorkflow',{
+					   form:this.workflowItem.target,
+					   type:this.workflowItem.formType,
+					   event:this.workflowItem.id,
+				   	reject:0,//reject = 1,表示拒绝，审批不通过； = 0表示审批通过
+				   	comment:'',//审批意见，字符串
+				   },res=>{
+				    	uni.navigateBack({
+				   		 delta:1
+				   	  })
 				   })
 				   break;
 				   case 'refuse':
-					this.$ajax('SubmitServiceOrder',{id:this.repaitItem.id,refused:1},res=>{
+				    console.log('kkk',this.workflowItem)
+					this.$ajax('ApproveWorkflow',{
+						
+						form:this.workflowItem.target,
+						type:this.workflowItem.formType,
+						event:this.workflowItem.id,
+						reject:1,//reject = 1,表示拒绝，审批不通过； = 0表示审批通过
+						comment:this.reason,//审批意见，字符串
+					},res=>{
 						uni.showToast({
-							title:'拒绝保修单成功!',
+							title: '拒绝审批成功',
 							icon:'none',
-							success:()=>{
+							success: () => {
+								this.hideModal();
 								uni.navigateBack({
 									delta:1
 								})
 							}
-						})
+						});
+						
 					})
+					// this.$ajax('SubmitServiceOrder',{id:this.repaitItem.id,refused:1},res=>{
+					// 	uni.showToast({
+					// 		title:'拒绝保修单成功!',
+					// 		icon:'none',
+					// 		success:()=>{
+					// 			uni.navigateBack({
+					// 				delta:1
+					// 			})
+					// 		}
+					// 	})
+					// })
 				   break;
 				   case 'delete':
 				   this.$ajax('RemoveServiceOrder',{
@@ -345,14 +393,7 @@
 			   
 		   },
 		   
-			/*获得设备详情*/
-			getSystemInfo(){
-				uni.getSystemInfo({
-					success:(res)=>{
-						console.log(res.windowHeight)
-					}
-				})
-			},
+		
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
@@ -422,14 +463,44 @@
 					
 					
 				})
+			},
+			//获得流程
+			getWorkflowItem(target){
+				this.$ajax('EventFlows',{
+					account:this.userInfo.id,
+					owner:0,
+					contract:0,
+					status:0,
+					catalog:this.$store.state.notice.todo,
+					offset:this.$utils.getOffset(this.page)
+				},res=>{
+					if(res){
+						this.workflowItem=res.find(item=>item.target==target)
+						console.log('477',this.workflowItem)
+					}
+				})
 			}
 		},
+		onShow(){
+			this.getRepairItem(this.repairID)
+		},
 		onLoad(option){
-			console.log(this.userInfo)
-			this.getSystemInfo()
-			if(option.id){
-				this.getRepairItem(option.id)
+			if(option.type){
+				this.orderType=option.type
 			}
+			// this.$fire.on('notice',result=>{
+			// 	this.workflowItem=result;
+			// })
+			if(option.id){
+				this.repairID=option.id;
+				this.getRepairItem(option.id)
+				if(this.orderType=='notice'){
+					this.getWorkflowItem(option.id)
+				}
+				
+			}
+			
+			
 		}
 	}
 </script>
@@ -438,7 +509,7 @@
 	
 
 
-<style lang="less">
+<style lang="less" scoped>
 	.user-info-container{
 		height:97px;
 		box-sizing: border-box;
@@ -559,13 +630,14 @@
 			font-size:16px;
 			border-radius:5px;
 			text-align: center;
-			margin-right: 12px;
+			margin-left: 12px;
 			border:1px solid rgba(66,176,237,1);
 		}
 		.refuse-btn{
 			height:40px;
 			line-height:40px;
 			color:#fff;
+			font-size:16px;
 			text-align: center;
 			background:rgba(66,176,237,1);
 			border-radius:5px;
@@ -604,5 +676,21 @@
 	//被驳回
 	.rejected{
 		color:#f5222d
+	}
+	.cu-dialog-b{
+		padding:20upx;
+		.cu-dialog-btn{
+			height:40px;
+			line-height:40px;
+			border-radius: 10upx;
+			color:#fff;
+			font-size:15px;
+			text-align: center;
+			background-color: #42B0ED;
+		}
+	}
+	uni-textarea{
+		height:200upx;
+		text-align: left;
 	}
 </style>

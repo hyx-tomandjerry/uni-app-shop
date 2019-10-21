@@ -5,7 +5,7 @@
 		<view class="shop-content" v-if="shopList.length">
 			<scroll-view scroll-y="true" >
 				<view class="shop-list-item flex justify-start align-center bg-white" v-for="(item,index) in shopList"
-					:class="{'bg-gray':shopIndex==item.id}" :key="index" @click="choseShop(item)">
+					:class="{'bg-gray':shopIndex==item.id}" :key="index" @click="choseShop(item)" v-if="item.name">
 					
 					<view class="shop-img-area">
 						<image :src="item.coverurl?item.coverurl:'../../../../static/img/default.png'" class="shop-img"></image>
@@ -13,7 +13,7 @@
 					<view class="shop-info-area flex-1 " >
 						<view class="flex justify-start font-size-normal font-weight-bold align-center">
 							<view class=" text-ellipse flex-litter">{{item.name || ''}}</view>
-							<view>({{item.brandName || ''}})</view>
+							<view v-if="item.brandName">({{item.brandName || ''}})</view>
 							<image src="../../../../static/img/shop/businessing.png" class="shop-tag" v-if="item.status==shopStatusZn.businessing"></image>
 							<image src="../../../../static/img/shop/ready.png" class="shop-tag" v-if="item.status==shopStatusZn.ready"></image>
 							<image src="../../../../static/img/shop/processing.png" class="shop-tag" v-if="item.status==shopStatusZn.processing"></image>
