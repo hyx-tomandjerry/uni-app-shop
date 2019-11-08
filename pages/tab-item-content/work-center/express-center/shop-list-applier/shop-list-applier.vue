@@ -1,5 +1,9 @@
 <template>
 	<view class="borderTop">
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >门店列表</view></block>
+		</cu-custom>
 		<view v-if="shopList.length" class="bg-white">
 			<view v-for="(item,index) in shopList" :key="index"
 				  class="shop-item borderBottom flex justify-start " @click="chooseItem(item)" >
@@ -93,6 +97,11 @@
 			}
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			getShopList(){
 				this.$ajax('MyShops',{
 					address:''

@@ -1,7 +1,7 @@
 <template>
 	<view class="borderTop">
 		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back" style="font-size:22px;" @click="goBack()"></text></block>
+			<block slot="left"><text class="cuIcon-back" @click="goBack()"></text></block>
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >维修详情</view></block>
 			<block slot="right"><view class="font-size-normal color-regular" style="margin-right:15px;" @click="chooseRepairItem">确定</view></block>
 		</cu-custom>

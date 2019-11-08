@@ -1,7 +1,11 @@
 <template>
 	<view style="position:relative">
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >门店详情</view></block>
+		</cu-custom>
 		<view class="shop-info  borderTop bg-white">
-			<image :src="shopItem.coverurl?shopItem.coverurl:'../../../../static/img/default.png'" class="shop-img" @click="showModal($event)" data-target="imageModal"></image>
+			<!-- <image :src="shopItem.coverurl?shopItem.coverurl:'../../../../static/img/default.png'" class="shop-img" @click="showModal($event)" data-target="imageModal"></image> -->
 
 			<view class="flex justify-start" style="margin-bottom:8px;">
 				<view class="color-normal font-size-middle font-weight-bold" style="margin-right:8px;">{{shopItem.name || ''}}</view>
@@ -18,158 +22,65 @@
 			</view>
 
 			<view style="padding-bottom:14px;" class="borderBottom">
-				<view class="flex justify-start align-center color-normal" style="margin-bottom:5px;">
-					<view>店长 ：</view>
-					<view v-if="shopItem['managerName']">{{shopItem['managerName'] || ''}}/{{shopItem['managerMobile'] || ''}}</view>
-					<view v-else>无</view>
-
-
-				</view>
-
-				<view class="flex justify-start color-normal align-center" style="margin-bottom:5px;">
-					<view>品牌名称 :</view><view class=" text-blue font-weight-bold" style="margin-left:5px;">{{shopItem.brandName || ''}}</view>
-				</view>
-
-				<view class="flex justify-start color-normal align-center" >
-					<view class="flex justify-start" style="width:50%;">
-						<view style="width:40%">所属区域 :</view><view>{{shopItem.zoneName || '无'}}</view>
-					</view>
-					<view class="flex justify-start" v-if="shopItem.catalog" style="flex:1">
-						<view style="width:40%">经营类别 :</view><view >{{shopItem.catalog |operateZn}}</view>
-					</view>
-
-
-				</view>
-
-				<view class="flex justify-start color-normal align-center" v-if="shopItem.catalog">
-
-				</view>
+				<template v-if="shopItem.managerName">
+					<common-item intro="店长" :content="`${shopItem.managerName || ''}/${shopItem.managerMobile || ''}`" type="unNormal"></common-item>
+				</template>
+				<common-item intro="品牌名称:" :content="shopItem.brandName" type="normal" :isPadding="false"></common-item>
+				<common-item intro="所属区域:" :content="shopItem.zoneName" type="normal" :isPadding="false"></common-item>
+				<template v-if="shopItem.catalog">
+					<common-item intro="经营类别:" :content="shopItem.catalog" type="normal" :isPadding="false"></common-item>
+				</template>
 
 			</view>
 
 			<view class="shop-time flex justify-start align-center borderBottom">
 				<view class="flex justify-start shop-duedate" >
 					<view class="cuIcon-time color-placeholder" style="font-size:18px;" ></view>
-					<view style="margin-left:7px;">开业日期 : </view><view style="margin-left:7px;">{{shopItem.duedate | formatTime('YMD')}}</view>
+					<view style="margin-left:7px;">开业日期:</view><view style="margin-left:7px;">{{shopItem.duedate | formatTime('YMD')}}</view>
 				</view>
 				<view class="flex justify-start " style="padding-left:20px;">
 					<view class="cuIcon-time color-placeholder" style="font-size:18px;" ></view>
-					<view style="margin-left:7px;">营业天数 : </view><view style="margin-left:7px;">{{shopItem.days>0? shopItem.days:0}}</view>
+					<view style="margin-left:7px;">营业天数:</view><view style="margin-left:7px;">{{shopItem.days>0? shopItem.days:0}}</view>
 				</view>
 
 			</view>
 
-			<view class="flex justify-start shop-address">
-				<view class="cuIcon-location color-placeholder" style="font-size:18px;"></view>
-				<view style="margin-left:7px;">{{shopItem.provinceName  || '' }}{{shopItem.cityName  || '' }}{{shopItem.districtName  || ''}}{{shopItem.address || ''}}</view>
-			</view>
-
-
-		</view>
-
-		<view class="margin-top member-container">
-			<view class="flex justify-between">
-				<view class="font-size-big font-weight-bold">
-					店员列表
+			<view class="flex justify-between shop-address align-center">
+				<view class="flex justify-start">
+					<view class="cuIcon-location color-placeholder" style="font-size:18px;"></view>
+					<view style="margin-left:7px;">{{shopItem.provinceName  || '' }}{{shopItem.cityName  || '' }}{{shopItem.districtName  || ''}}{{shopItem.address || ''}}</view>
 				</view>
-				<!-- <view style="color:#42B0ED" v-if="shopItem.manager==userInfo.id" @click="deleteMember()">删除</view> -->
-			</view>
-			<view class="member-list borderBottom flex justify-start align-center position_relative" v-for="(item ,index) in userList" :key="index" v-if="item.name" @click="checkItemInfo(item)">
-				<view style="width:15%;">
-					<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  	style="width:40px;height:40px;border-radius: 50%;vertical-align: middle;"></image>
-
+				<view class="color-blue" @tap="editAddress">
+					<text class="cuIcon-edit"></text>
+					<text>修改地址</text>
 				</view>
-				<view style="margin-left:10px;margin-right:15px;">
-					{{item.name}}/{{item.account || item.mobile}}
-				</view>
-				<view>
-					<text class="cu-tag round" v-if="shopItem.manager==item.id && item.status==salemanStatus.normal"
-						  style="font-size:12px;padding:0 10px;height:22px;background:#42B0ED;color:#fff;">
-						店长
-					</text>
-					<text class="cu-tag round" v-else-if="shopItem.manager!=item.id && item.nickname"
-						  style="font-size:12px;padding:0 10px;height:22px;background:#FE933E;color:#fff;">
-						{{item.nickname}}负责人
-					</text>
-					<text class="cu-tag bg-green round" 
-							v-else-if="shopItem.manager!=item.id && item.status==salemanStatus.normal"
-							style="font-size:12px;padding:0 10px;height:22px;">
-						在职
-					</text>
-					<!-- <text class="cu-tag bg-orange round" v-if=" item.status==salemanStatus.inviting" style="font-size:12px;padding:0 10px;height:22px;">邀请中待确认</text> -->
-					<!-- <text
-							v-if=" item.status==salemanStatus.free" @click="SendInvitationEvent(item)">
-						<text v-if="shopItem.manager == userInfo.id" class="cu-tag round " style="font-size:12px;padding:0 10px;height:22px;background:#00BFFF;color:white">发送邀请</text>
-						<text v-else></text>
-					</text> -->
-				</view>
-				<!-- <view style="position:absolute;right:12px;">
-					<view v-if="shopItem.manager==userInfo.id">
-						<image :src="item.isCheck?'../../../../static/icon/icon-xuanzhong.png':'../../../../static/icon/icon-weixuanzhong.png'"
-							   style="width:20px;height:20px;" @click="chooseMemberOperate(item)"></image>
-					</view>
-					
-				</view> -->
 			</view>
 		</view>
-		<view class="cu-modal" :class="isShow?'show':''" >
-
-			<view class="cu-dialog">
-				
-				<view class=" bg-white justify-end borderBottom" style="padding:14px 0 8px;">
-					<view class=" font-weight-bold font-size-small color-normal">{{shopItem.name}}({{shopItem.brandName}})</view>
-					<text class="cuIcon-close font-size-big position_absolute" style="right:10px;top:10px;" @click="hideModal()"></text>
-				</view>
-				<view style="padding-bottom:20px" class="bg-white">
-						
-						<view class="flex justify-start bg-white " style="padding-top:22px;padding-left:14px;">
-							<view style="margin-right:5px;width:11%;margin-top:4px;">
-								<image src="../../../../static/img/shop/record-name.png" style="width:26px;height:26px;vertical-align: middle;"></image>
-							</view>
-							<input type="text" v-model="designer.name" style="box-shadow:0px 1px 4px 1px rgba(227,227,227,0.5);border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text-align:left"
-								placeholder="请输入店员姓名"  class="join-modal-input">
-						</view>
-
-						<view class="flex justify-start bg-white position_relative" style="padding-top:17px;padding-left:14px;">
-							<view style="margin-right:5px;width:11%;margin-top:4px;">
-								<image src="../../../../static/img/shop/record-shouji.png" style="width:26px;height:26px;vertical-align: middle;"></image>
-							</view>
-							<input type="text" v-model="designer.telephone"
-								class="join-modal-input"
-								style="box-shadow:0px 1px 4px 1px rgba(227,227,227,0.5);
-								border-radius:18px;height:35px;line-height:25px;padding-left:13px;width:78%;text-align:left"
-								 maxlength="11"
-								placeholder="请输入手机号"  @blur="checkTelEvent(designer.telephone)">
-							<text class="position_absolute color-placeholder" style="right:30px;top:27px;">{{designer.telephone?designer.telephone.length:0}}/11</text>
-						</view>
-				</view>
-				<view class="bg-white" style="padding:0 13px 15px;">
-					
-					<button 
-					style="border-radius: 5px;"
-					class=" bg-blue text-white font-size-small font-weight-normal" size="default" @tap="recordUser()">确定录入</button>
-					
-				</view>
-			</view>
-			
+		<normal-title content="店员列表"></normal-title>
+		<view class="member-container">
+			<block v-for="(item ,index) in userList" :key="index" >
+				<ClerkListItem :item="item" :index="index" @checkItemInfo="checkItemInfo" :shopItem="shopItem"></ClerkListItem>
+			</block>
 		</view>
 
-		<view class="operate-btn flex justify-start" >
-			<!-- <view class="set-btn text-center" style="width:40%;" @click="setManager()">设为店长</view> -->
-			<view class="set-btn text-center" style="width:40%;" @click="inviteJoin" v-if="shopItem.manager==userInfo.id">录入店员</view>
-			<view class="record-btn text-center" :style="{width:shopItem.manager==userInfo.id?'55%':'100%'}" @click="record">记一笔</view>
-		</view>
-		
+		<!-- 录入店员 start-->
+		<recordShoper :isShow=" (modalName=='recordModel')" :shopID="shopID"
+		@hideModal="hideModal"
+		@recordUser="recordUser" :shopItem="shopItem"></recordShoper>
+		<!-- 录入店员end -->
+		<view style="height:200upx;"></view>
+		<template v-if="shopItem &&  (shopItem.manager==userInfo.id)">
+			<BottomBtnTwo refuse_btn_con="录入店员"
+			agree_btn_con="记一笔"
+			 refuse_data_target="recordModel"
+			 @refuseBtn="inviteJoin"
+			 @agressBtn="record"
+			 ></BottomBtnTwo>
+		</template>
+		<template v-else>
+			<bottomBtnOne content="记一笔" @showModal="record"></bottomBtnOne>
+		</template>
 		<imageModel :isShow="modalName=='imageModal'" @hideModel="hideModal" @downImg="downImg" :url="shopItem.coverurl"></imageModel>
-
-		<simpleModel :isShow="secondModal=='nameModal'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='nameModal'">
-			<block slot="content">请输入店员姓名</block>
-		</simpleModel>
-
-		<simpleModel :isShow="secondModal=='telModal'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='telModal'">
-			<block slot="content">电话号码不存在</block>
-		</simpleModel>
-
 		<simpleModel :isShow="secondModal=='exist'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='exist'">
 			<block slot="content">工作关系已经存在,不能反复邀请或申请</block>
 		</simpleModel>
@@ -177,18 +88,6 @@
 		<simpleModel :isShow="secondModal=='download'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='download'">
 			<block slot="content">下载成功</block>
 		</simpleModel>
-
-		
-		<showModel :isShow="modalName=='setModel'" @hideModel="hideModal" @confirmDel="setShoper" v-if="modalName=='setModel'">
-			<block slot="content">	确定要将{{shoper.name}}设置店长吗?</block>
-		</showModel>
-
-		
-		<showModel :isShow="modalName=='deleteModel'" @hideModel="hideModal"
-				   v-if="modalName=='deleteModel'"
-				   @confirmDel="confirmDelete">
-			<block slot="content">确定要将店员删除吗?</block>
-		</showModel>
 	</view>
 </template>
 
@@ -199,36 +98,53 @@
 	import simpleModel from '../../../../components/simple-model.vue'
 	import showModel from'../../../../components/show-model.vue'
 	import imageModel from '../../../../components/image-model.vue'
+	import recordShoper from '../../../../components/shop/record-shoper.vue'
+	import BottomBtnTwo from '../../../../components/common/bottom-btn-two.vue'
+	import bottomBtnOne from '../../../../components/common/bottom-btn-one.vue'
+	import ClerkListItem from '../../../../components/shop/clerk-list-item.vue'
+	import commonItem from '../../../../components/common-item.vue'
+	import normalTitle from '../../../../components/common/normal-title.vue'
 	export default{
-	    computed:mapState(['userInfo','shopTypeZn','shopStatusZn']),
+	    computed:mapState(['userInfo','shopTypeZn','shopStatusZn','userStatus','shoperObj']),
 		data(){
 			return{
-				salemanStatus:this.$store.state.userStatus,
 				modalName:null,
 				secondModal:null,
-				shopItem:'',
-				isShow:false,
-				designer:{
-					name:null,
-					telephone:null
-				},
+				shopItem:{},
 				shopID:'',//门店ID
 				userList:[],//店员列表
-				
+
 			}
 		},
 		components:{
 			simpleModel,
 			showModel,
-			imageModel
+			imageModel,
+			recordShoper,
+			BottomBtnTwo,
+			bottomBtnOne,
+			ClerkListItem,
+			commonItem,
+			normalTitle
 		},
 		methods:{
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			//修改地址
+			editAddress(){
+				uni.navigateTo({
+					url:"../edit-shop-address/edit-shop-address?id="+this.shopID
+				})
+			},
 			//查看店员详情
 			checkItemInfo(item){
 				let obj={
 					shopItem:this.shopItem,
 					clerkItem:item,
-					
+
 				}
 				uni.navigateTo({
 					url:"../clerk-item-info/clerk-item-info",
@@ -248,9 +164,7 @@
 					 src:this.shopItem.coverurl,
 					 success:(res)=>{
 						let promise=downloader.load(res.path,res.path);
-						promise.then(([err, res])=>{ 
-							console.log(res)
-							console.log(res.statusCode)//下载结果 
+						promise.then(([err, res])=>{
 							if(res){
 								this.secondModal='download';
 								this.hideModal()
@@ -259,45 +173,26 @@
 					 }
 				 })
 			},
-			//验证电话号码
-			checkTelEvent(event){
-			
-				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event))){
-					console.log('llllll')
-					this.secondModal='Modal'
-				}
-			},
-			
+
+
 			//录入店员
-			inviteJoin(){
-				this.isShow=true;
-				this.designer.name='';
-				this.designer.telephone=''
-			},
-			showModal(e) {
-				this.modalName = e.currentTarget.dataset.target
+			inviteJoin(event){
+				this.modalName=event;
 			},
 			hideModal(){
-				if(this.isShow){
-					this.isShow=false;
-				}
-				if(this.modalName){
-					this.modalName=null;
-				}
+				this.modalName=null;
 			},
 			hideSecondModal(){
-				if(this.secondModal){
-					this.secondModal=null;
-				}
+				this.secondModal=null;
 			},
-		
-			
-			
-			
-			
-			
+
+
+
+
+
+
 			/**
-			 * 
+			 *
 			  RadioChange(e) {
 				this.radio = e.detail.value
 			  },
@@ -315,23 +210,23 @@
 			  		this.hideModal();
 			  		this.checkShopDetail(this.shopID);
 			  	})
-			  
+
 			  },
-			  
+
 			  deleteMember(){
-			  
+
 			  	this.userList.forEach(item=>{
 			  		if(item.isCheck){
 			  			this.operateID.push(item.id)
 			  		}
-			  
+
 			  	})
 			  	if(this.operateID.length<1){
 			  		uni.showToast({
 			  			title:'选择一项进行操作',
 			  			icon:'none'
 			  		})
-			  
+
 			  	}else{
 			  		this.modalName='deleteModel';
 			  		console.log(this.operateID)
@@ -354,7 +249,7 @@
 			  		this.hideModal()
 			  		this.checkShopDetail(this.shopID);
 			  		this.operateID=[];
-			  
+
 			  	})
 			  },
 			  setManager(){
@@ -375,16 +270,16 @@
 			  	}else if(this.operateID.length==1){
 			  		this.modalName='setModel';
 			  		this.shoper=this.userList.find(shop=>shop.id==this.operateID.join(''))
-			  
+
 			  	}else if(this.operateID.length<1){
 			  		uni.showToast({
 			  			title:'选择一项进行操作',
 			  			icon:'none'
 			  		})
 			  	}
-			  
+
 			  },
-			  
+
 			  SendInvitationEvent(item){
 			  	this.$ajax('SendInvitation',{user:item.id},res=>{
 			  		// item.isSend=true;
@@ -396,9 +291,9 @@
 			  			this.userList=res;
 			  		})
 			  	})
-			  
-			  
-			  
+
+
+
 			  },
 			  checkNameEvent(event){
 			  	if(!event){
@@ -406,7 +301,7 @@
 			  	}
 			  },
 			 */
-			
+
 			//获得门店详情
 			checkShopDetail(id){
 				this.$ajax('ChainShop',{id:id},res=>{
@@ -417,38 +312,25 @@
 				})
 			},
 			//录入店员
-			recordUser(){
-				if(!this.designer.name){
-					this.secondModal='nameModal'
-				}else if(!this.designer.telephone){
-					this.secondModal='telModal'
-				}else{
-					if(!(/^1[345678]\d{9}$/.test(this.designer.telephone))){
-						this.secondModal='telModal'
+			recordUser(event){
+				this.$ajax('Signup',{
+						name:event.name,
+						mobile:event.telephone,
+						type:this.shoperObj.type,
+						team:this.shopItem.id,
+				},res=>{
+					this.hideModal()
+					uni.showToast({
+						title:'录入店员成功',
+						icon:'none'
+					});
 
-					}else{
-							this.$ajax('Signup',{
-							name:this.designer.name,
-								mobile:this.designer.telephone,
-								type:4,
-								team:this.shopItem.id,
-						},res=>{
-							uni.showToast({
-								title:'录入店员成功',
-								icon:'none'
-							});
-							this.isShow=false;
-							this.checkShopDetail(this.shopID)
-						},true,code=>{
-							if(code==-31){
-								this.secondModal='exist';
-							}
-						})
+					this.checkShopDetail(this.shopID)
+				},true,code=>{
+					if(code==-31){
+						this.secondModal='exist';
 					}
-
-				}
-
-
+				})
 			},
 
 		},
@@ -507,91 +389,13 @@
 			padding:19px 0 22px;
 		}
 	}
-
-	//新开门店
-	.shop-new{
-		background:#FFF1EB;color:#F2735B;
-	}
-	//原有门店
-	.shop-original{
-		background:#EBFFFA;color:#3FD7B5;
-	}
-	//原味重装
-	.shop-original-restruct{
-		background:#F6ECFF;color:#9013FE;
-	}
-	//移位重装
-	.shop-remove-restruct{
-		background:#EBFFFA;color:#3FD7B5;
-	}
-	.cu-dialog{
-		max-width:263px;
-	}
-	.cu-list.menu-avatar>.cu-item .content{
-		width:70%;
-	}
-	.cu-list.menu-avatar>.cu-item .action{
-		width:25%;
-	}
-	.cu-list.menu-avatar>.cu-item{
-		border-bottom:1px solid lightgray;
-	}
-
 	.member-container{
 		padding:18px 15px 15px 23px;
 		margin-bottom:60px;
 		background:#fff;
-		.member-list{
-			padding:18px 0 15px;
-		}
-	}
-
-	.clerk-desc{
-		font-size:14px;
-		font-family:PingFangSC-Regular;
-		font-weight:400;
-		color:rgba(137,136,136,1);
-	}
-	.clerk-name{
-		font-size:15px;
-		font-family:PingFangSC-Regular;
-		font-weight:400;
-		color:rgba(42,42,42,1);
-	}
-
-	.padding-xl{
-		border-top:1px solid #EEEEED;
-		border-bottom:1px solid #EEEEED;
-		padding:0;
-	}
-	.join-modal-item{
-		line-height:50px;height:50px;padding-left:14px;
-		.join-modal-input{
-			margin-top:10px;text-align:left;font-size:13px;
-		}
-	}
-	.operate-btn{
-		position:fixed;
-		bottom:0;
-		width:100%;
-		background:#fff;
-		padding:11px 14px;
-		.set-btn{
-			border-radius:5px;
-			border:1px solid rgba(66,176,237,1);
-			color:#42B0ED;
-			font-size:16px;
-			padding:9px 0;
-			margin-right:12px;
-		}
-		.record-btn{
-			color:#fff;
-			font-size:16px;
-			padding:9px 0;
-			background:rgba(66,176,237,1);
-			border-radius:5px;
-
-		}
 
 	}
+
+
+
 </style>

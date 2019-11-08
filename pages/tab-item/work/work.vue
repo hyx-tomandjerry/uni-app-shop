@@ -1,5 +1,9 @@
 <template>
-	<view>
+	
+	<view class="position_relative">
+		<cu-custom :isBack="true" bgColor="bg-white">
+			
+		</cu-custom>
 		<view class="tab-container">
 			<view class="tab-title">
 				工作
@@ -21,35 +25,66 @@
 					<image src="../../../static/img/work/tab/wodebaoxiu.png" class="img-tag"></image>
 					<view>我的报修</view>
 				</view>
-				<!-- <view class="text-center" style="flex:1" @click="showItem('count')">
-					<image src="../../../static/img/work/tab/xiaoshoujixiao.png"  class="img-tag"></image>
-					<view>销售绩效</view>
-				</view> -->
 				<view class="text-center" style="flex:1" @click="showItem('work')">
 					<image src="../../../static/img/work/tab/renwuguanli.png"  class="work-tag"></image>
 					<view>任务管理</view>
 				</view>
 			</view>
-			<!-- <view class="tab-second flex justify-start" style="padding-left:20px;">
-				<view class="text-center"  @click="showItem('work')">
-					<image src="../../../static/img/work/tab/renwuguanli.png" class="work-tag"></image>
-					<view>任务管理</view>
+			<view class="tab-second flex justify-start" style="padding-left:20px;">
+				<view class="text-center"  @click="showItem('apply')">
+					<image src="../../../static/img/work/tab/apply.png" class="img-tag"></image>
+					<view>工作申请</view>
 				</view>
-			</view> -->
+			</view>
 		</view>
+		<tabbar-btn @gotoItem="gotoItem"  tabCur="work" :num="todoNum"></tabbar-btn>
 	</view>
 </template>
 
 <script>
-	import {mapState} from 'vuex'
+	import {mapState,mapMutations} from 'vuex'
+	import tabbarBtn from '../../../components/common/tabbar-btn.vue'
 	export default {
-		computed:mapState(['userInfo','userStatus']),
+		computed:mapState(['userInfo','userStatus','todoNum']),
+		components:{tabbarBtn},
 		data() {
 			return {
 
 			}
 		},
+		onLoad(){
+			this.getTodoList()
+		},
+		onShow(){
+			this.getTodoList()
+		},
 		methods: {
+			...mapMutations(['setTodoNum']),
+			/*获得代办数量*/
+			getTodoList(){
+				this.$ajax('MyEventNumbers',{},res=>{
+					this.setTodoNum(res)
+				})
+			},
+			gotoItem(type){
+				switch(type){
+					case 'index':
+					uni.redirectTo({
+						url:'../index/index'
+					})
+					break;
+					case 'notice':
+					uni.redirectTo({
+						url:"../../tab-item-content/notice-center/notice-index/notice-index"
+					})
+					break;
+					case 'mine':
+					uni.redirectTo({
+						url:'../mine/mine'
+					})
+					break;
+				}
+			},
 			showItem(type){
 				switch(type){
 					case 'log':
@@ -78,6 +113,12 @@
 						uni.navigateTo({
 							url:"../../tab-item-content/work-center/task-center/task-index/task-index"
 						})
+						break;
+					case 'apply':
+					uni.navigateTo({
+						url: '../../tab-item-content/work-center/work-apply-center/work-apply-index/work-apply-index'
+					});
+						break;
 					
 				}
 				

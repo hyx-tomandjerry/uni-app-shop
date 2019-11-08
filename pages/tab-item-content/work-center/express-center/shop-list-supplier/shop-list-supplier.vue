@@ -1,6 +1,9 @@
 <template>
 	<view class="borderTop">
-
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >门店列表</view></block>
+		</cu-custom>
 		<view class="flex justify-between bg-white  borderBottom align-center" style="padding:10px 15px;" @click="showModel" v-if="type=='emailReceiver'">
 			<view>收件对象</view>
 			<view>
@@ -180,6 +183,11 @@
 			}
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			chooseShopMan(){
 
 				uni.navigateTo({

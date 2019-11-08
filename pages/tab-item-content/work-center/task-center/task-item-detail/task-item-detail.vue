@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >任务详情</view></block>
+		</cu-custom>
 		<!--任务详情 start-->
 		<view class="task-detail borderTop margin-bottom-normal">
 			<view class="task-title  flex justify-between">
@@ -144,6 +148,11 @@
 			}
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			//申请验收
 			checkApply(){
 				uni.navigateTo({

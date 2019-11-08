@@ -1,83 +1,30 @@
 <template>
 	<view>
-		<view class="operateItem" >
-			<view class="bg-white nav" style="width:100%;">
-				<view class="flex text-center justify-around">
-					<view class="cu-item " :class="item.id==TabCur?'color-red cur borderBottomRed':''"
-						v-for="(item,index) in statusList" :key="index" @tap="tabSelect(item)" :data-id="index">
-						{{item.name}}
-					</view>
-				</view>
-			</view>
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back font-size-back font-weight-bold"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >报修记录</view></block>
+		</cu-custom>
+		<view class="flex text-center bg-white borderBottom  justify-around" >
+			<block  v-for="(item,index) in statusList" :key="index">
+				<tabNav :item="item" :index="index" :TabCur="TabCur" @tabSelect="tabSelect"></tabNav>
+			</block>	
 		</view>
-			<view v-if="repairList.length">
+		<template v-if="repairList.length">
 				<view class="order_content position_relative" >
-					<view class="list-item"  v-for="(item,index) in repairList" :key="index" >
-							<view class=" flex justify-between align-center">
-								<view class="list-item-title">{{repairTypeZn[item.type]}}-{{item.categoryName || ''}}维修</view>
-								<view v-if="item.status==repairStatus.submit"
-								:class="{
-									'wait':item.approval==approvalStatus.wait,
-									'executing':item.approval==approvalStatus.applied,
-									'accepted':item.approval==approvalStatus.accepted,
-									'rejected':item.approval==approvalStatus.rejected,
-								}"
-								>{{item.approval | approvalStatusPipe }}</view>
-								<view v-else
-									:class="{
-										'executing':item.status==repairStatus.executing,
-										'accepted':item.status==repairStatus.finished
-									}"
-								>
-									{{item.status|repairStatus}}
-								</view>
-							</view>
-							<view class="list-content">
-								<view @click="orderDetail(item)">
-									<view class="list-content-item">
-										<image src="../../../static/icon/icon-mengdian@2x.png" class="shopImg " ></image>
-										<text style="margin-right:5px;">门店名称:</text> {{item.name}}
-									</view>
-
-
-									<!-- <view class="list-content-item">
-										<image src="../../../static/icon/icon-time@2x.png" class="shopImg"></image>
-										<text style="margin-right:5px;">预约时间:</text> {{item.appointdate| formatTime('YMD')}}
-									</view> -->
-
-									<view class="list-content-item">
-										<image src="../../../static/icon/icon-dneglu-zhanghu@2x.png" class="shopImg " ></image>
-										<text style="margin-right:5px;">报修人:</text> {{item.applierName}}  <text class="color-regular" style="margin:0 5px;">|</text> {{item.applierMobile}}
-									</view>
-								</view>
-
-								<view class="list-content-item"
-								 style="border-top:1px solid #EEEEED;padding-top:10px;text-align:right;margin-bottom:7px;" >
-
-								<!-- <text v-if="item.status==repairStatus.untreated"
-								  class="cu-tag line-blue" @click.prevent="operateOrder(item,'edit')">修改订单</text> -->
-
-									<text v-if="item.status==repairStatus.finish && !item.comment"
-									 class="cu-tag line-blue" @click.prevent="operateOrder(item,'createComment')">去评价</text>
-									<!-- <text v-if="item.status==repairStatus.refuse"
-									  class="cu-tag line-red"  @click.prevent="operateOrder(item,'delete')">删除订单</text> -->
-									  <!-- <text v-if="item.status==repairStatus.refuse"
-									    class="cu-tag line-blue" @click.prevent="operateOrder(item,'again')">重新派单</text> -->
-									   <text v-if="item.status==repairStatus.finish"
-									   class="cu-tag line-blue" @click.prevent="operateOrder(item,'checkComment')">查看评价</text>
-								</view>
-							</view>
-						</view>
-
+					<block v-for="(item,index) in repairList" :key="index">
+						<repairListItem :item="item" :index="index" @orderDetail="orderDetail"></repairListItem>
+					</block>
+					<uni-load-more :contentText="content" :showIcon="true" :status="loading" color="rgb(39, 134, 245)"></uni-load-more>
 				</view>
-			</view>
-			<view v-else>
-				<lx-empty></lx-empty>
-			</view>
-		<uni-load-more :contentText="content" :showIcon="true" :status="loading"
-		color="rgb(39, 134, 245)" v-if="repairList.length"></uni-load-more>
-		<image src="../../../static/img/add.png" v-if="userInfo.type==shoperObj.type"
-				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createRepair()"></image>
+		</template>
+			
+		<template v-else>
+			<lx-empty></lx-empty>
+		</template>
+		
+		<positionImg @createOperate="createRepair" 
+		:position_img="true"
+		:src="'../../../static/img/add.png'"></positionImg>
 		<showModel :isShow="modalName=='DialogModal'" @hideModel="hideModal" @confirmDel="delOrder" v-if="modalName=='DialogModal'">
 			<block slot="content">确定删除该订单?</block>
 		</showModel>
@@ -85,21 +32,19 @@
 </template>
 
 <script>
+	import tabNav from '../../../components/common/tab-nav.vue'
 	import LxEmpty from '../../../lx_components/lx-empty.vue';
 	import uniLoadMore from '../../../components/uni-load-more.vue'
 	import showModel from '../../../components/show-model.vue'
-	import {mapState} from 'vuex'
+	import repairListItem from '../../../components/repair-list-item.vue'
+	import positionImg from '../../../components/position_img.vue'
 	export default{
-		computed:mapState(['userInfo','shoperObj','repairTypeZn','approvalStatus','repairStatus']),
 		data(){
 			return{
-				// repairStatus:this.$store.state.repairStatus,
 				statusList:[
-					{id:1,
-					name:"已报修",
-					value:'orders'},
-					{id:2,name:"执行中",value:'unfinish'},
-					{id:3,name:"已完成",value:'refuse'},
+					{id:this.$store.state.repairStatus.submit,name:"已报修",value:'orders'},
+					{id:this.$store.state.repairStatus.executing,name:"执行中",value:'unfinish'},
+					{id:this.$store.state.repairStatus.finished,name:"已完成",value:'refuse'},
 
 				],
 				TabCur:1,
@@ -127,39 +72,40 @@
 		onReachBottom(){
 			this.page++;
 			this.loading='loading';
-			setTimeout(()=>{
-				this.$ajax('MyServiceOrders',{
-					status:status,
-					offset:this.$utils.getOffset(this.page),
-					// creator:this.type=='all'?'':this.userInfo.id,
-					mine:this.type=='all'?0:1
-					// status:this.TabCur==1?[1,2,3].join(','):status,
-					// offset:this.$utils.getOffset(this.page),
-					// creator:this.type=='all'?'':this.userInfo.id,
-					// store:this.type=='all'?1:''
-				},res=>{
-					if(res==''){
-						setTimeout(()=>{
-							this.loading='noMore'
-						},600)
-					}else{
-						res.forEach(item=>{
-							this.repairList.concat(item)
-						})
-						this.loading='loading'
-						setTimeout(()=>{
-							this.loading='noMore'
-						},900)
-					}
-				})
-			},1000)
+			this.$ajax('MyServiceOrders',{
+				status:status,
+				offset:this.$utils.getOffset(this.page),
+				mine:this.type=='all'?0:1
+			},res=>{
+				if(res){
+					res.forEach(item=>{
+						this.repairList.concat(item)
+					})
+					this.loading='loading'
+					setTimeout(()=>{
+						this.loading='noMore'
+					},900)
+				}else{
+					setTimeout(()=>{
+						this.loading='noMore'
+					},600)
+				}
+			})
 		},
 		components:{
 			LxEmpty,
 			uniLoadMore,
-			showModel
+			showModel,
+			repairListItem,
+			positionImg,
+			tabNav
 		},
 		methods:{
+			goBack(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			hideModal(){
 				this.modalName=null;
 			},
@@ -220,9 +166,9 @@
 				})
 			},
 			// 查看报修记录详情
-			orderDetail(item){
+			orderDetail(id){
 				uni.navigateTo({
-					url:'./repair-order-item/repair-order-item?id='+item.id+"&type=repair"
+					url:'./repair-order-item/repair-order-item?id='+id+"&type=repair"
 				})
 			},
 			//新增报修
@@ -249,7 +195,6 @@
 				this.$ajax('MyServiceOrders',{
 					status:status,
 					offset:this.$utils.getOffset(this.page),
-					// creator:this.type=='all'?'':this.userInfo.id,
 					mine:this.type=='all'?0:1
 				},res=>{
 					this.repairList=res
@@ -271,77 +216,18 @@
 	}
 </script>
 
-<style lang="less">
+<style scoped>
 	page{
 		background:rgba(247,247,247,1);
 	}
 
-	.shopImg{
-		width:16px;
-		height:16px;
-		vertical-align: middle;
-		margin-right:10px;
-	}
-			.operateItem{
-				text-align:center;
-				display: flex;
-				justify-content: space-around;
-				border-bottom:1px solid rgba(233,233,233,1)
-			}
-
-			.page {
-				height: 87Vh;
-				width: 100vw;
-			}
-			.page.show {
-				overflow: hidden;
-			}
-			.list-item{
-				padding:18px 16px 4px 20px;
-				background: #fff;
-				margin-bottom:13px;
-				.list-item-title{
-					font-size:16px;
-					font-weight:400;
-					color:rgba(42,42,42,1);
-					margin-bottom:10px;
-
-				}
-			}
-
-			.marginRight10{
-				margin-right:10px;
-			}
-			.lineHeight18{
-				line-height:18px;
-
-			}
-			.lineHeight20{
-				line-height: 20px;
-
-			}
-			.list-content-item{
-				font-size:14px;
-				font-weight:400;
-				color:rgba(137,136,136,1);
-				margin-bottom:15px;
-			}
-			// 审批状态颜色-待审批
-			.wait{
-				color:#00474f
-			}
-			// 审批状态颜色-审批中
-			.executing{
-				color:#096dd9
-			}
-			//已通过
-			.accepted{
-				color:#52c41a
-			}
-			//被驳回
-			.rejected{
-				color:#f5222d
-			}
+	/* // .page {
+	// 	height: 87Vh;
+	// 	width: 100vw;
+	// }
+	// .page.show {
+	// 	overflow: hidden;
+	// } */		
 
 </style>
 

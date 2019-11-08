@@ -1,3 +1,4 @@
+
 <template>
 	<view class="login_container">
 		<view class="title">
@@ -6,35 +7,35 @@
 		<view class="login_form">
 			<view class="login-form-item borderBottom flex justify-start position_relative align-center">
 				<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
-				<input type="text" placeholder="请输入密码"
+				<input type="text" placeholder="请输入密码" maxlength="12"
 					   v-model="designer.pwd" class="font-weight-normal font-size-big"
 					   v-if="isShowPwd" @blur="checkPwdEvent(designer.pwd)" @focus="hideTabbar()">
-				<input type="password" placeholder="请输入密码" v-model="designer.pwd"
+				<input type="password" placeholder="请输入密码" v-model="designer.pwd" maxlength="12"
 					   class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)"
 					   @focus="hideTabbar()">
 
 				<div v-if="isShowPwd" @click="showPwd('pwd')">
-					<image src="../../../static/icon/icon-xianshimima@2x.png" class="login-form-item-eyeopen-img"></image>
+					<image src="../../../static/icon/icon-eye-open.png" class="login-form-item-eyeopen-img"></image>
 				</div>
 				<div v-else  @click="showPwd('pwd')">
-					<image src="../../../static/icon/icon-yingcangmima@2x.png" class="login-form-item-eye-img"></image>
+					<image src="../../../static/icon/eye.png" class="login-form-item-eye-img"></image>
 				</div>
 			</view>
 			<view class="login-form-item borderBottom flex justify-start position_relative align-center">
 				<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
-				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(designer.pwd)">
-				<input type="password" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" >
+				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(designer.pwd)" maxlength="12">
+				<input type="password" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" maxlength="12">
 
 				<div v-if="isShowConfrimPwd" @click="showPwd('confirm')">
-					<image src="../../../static/icon/icon-xianshimima@2x.png" class="login-form-item-eyeopen-img"></image>
+					<image src="../../../static/icon/icon-eye-open.png" class="login-form-item-eyeopen-img"></image>
 				</div>
 				<div v-else  @click="showPwd('confirm')">
-					<image src="../../../static/icon/icon-yingcangmima@2x.png" class="login-form-item-eye-img"></image>
+					<image src="../../../static/icon/eye.png" class="login-form-item-eye-img"></image>
 				</div>
 			</view>
 			
 			<view class="text-center btn_container" >
-				<button @click="resetPassword()" 
+				<button @click="resetPassword()" :disabled="disabled" :loading="loading"
 					:class="{
 						'inputStyle':designer.pwd || designer.confirmPwd,
 						'noInputStyle':! designer.pwd && ! designer.confirmPwd
@@ -54,8 +55,8 @@
     export default{
         data(){
             return{
-               
-	
+               disabled:false,
+			   loading:false,
 				isShowPwd:false,
 				isShowConfrimPwd:false,
 				designer:{
@@ -106,41 +107,54 @@
 					this.isShowConfrimPwd=!this.isShowConfrimPwd;
 				}
 			},
-			resetPassword(){
-				this.showTabbar()
+			check(){
 				if(!this.designer.pwd || !this.designer.confirmPwd){
 					uni.showToast({
-						title:'请输入密码',
-						icon:'none'
+						title:'请填写密码',
+						icon:none
 					})
-				}else if( (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.pwd)) || (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.confirmPwd))){
+					return false;
+				}
+				if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.pwd) || 
+				(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.confirmPwd))){
 					uni.showToast({
 						title:'密码不能含有非法字符，长度在6-12之间',
 						icon:'none'
 					})
-				}else if(this.designer.pwd!=this.designer.confirmPwd){
+					return false;
+				}
+				if(this.designer.pwd!=this.designer.confirmPwd){
+					uni.showToast({
+						title:'两次输入的密码不一致',
+						icon:'none'
+					})
+					return false;
+				}
+				return true;
+				
+			},
+			resetPassword(){
+				this.showTabbar()
+				if(this.check()){
+					this.loading=true;
+					this.disabled=true;
+					this.$ajax('InitPwd',{
+						vcode:this.designer.vcode,
+						token:this.designer.confirmPwd,
+						mobile:this.designer.mobile
+					},res=>{
+						uni.setStorageSync('userPsw',this.designer.confirmPwd);
 						uni.showToast({
-							title:'两次输入的密码不一致',
+							title:'设置密码成功',
 							icon:'none'
 						})
-					}else{
-						this.$ajax('InitPwd',{
-							vcode:this.designer.vcode,
-							token:this.designer.confirmPwd,
-							mobile:this.designer.mobile
-						},res=>{
-							uni.setStorageSync('userPsw',this.designer.confirmPwd);
-							uni.showToast({
-								title:'设置密码成功',
-								icon:'none'
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'../../login-design/login/login'
 							})
-							setTimeout(()=>{
-								uni.redirectTo({
-									url:'../../login-design/login/login'
-								})
-							},800)
-						},false)
-					}
+						},800)
+					},false)
+				}
 			},
 			//验证密码
 			checkPwdEvent(event){
@@ -184,15 +198,15 @@
 					.mixMarginRight(15px)
 				}
 				.login-form-item-eye-img{
-					width:16px;
-					height:9px;
+					width:60upx;
+					height:50upx;
 					position: absolute;
 					right:22px;top:30px;
 
 				}
 				.login-form-item-eyeopen-img{
-					width:16px;
-					height:14px;
+					width:60upx;
+					height:50upx;
 					position: absolute;
 					right:22px;top:30px;
 				}

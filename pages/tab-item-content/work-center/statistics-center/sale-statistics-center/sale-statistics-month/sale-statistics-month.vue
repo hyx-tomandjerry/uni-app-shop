@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<cu-custom :is-back="true" bg-color="bg-color-perform">
-			<block slot="left"><text class="cuIcon-back font-size-back text-white"  @click.stop="goBack()"></text></block>
+			<block slot="left"><view class="cuIcon-back text-white"  @click.stop="goBack()"></view></block>
 			<block slot="content"><view class="font-size-big text-white font-weight-bold">{{shopItem.name}}{{timeObj.month}}月绩效统计</view></block>
 		</cu-custom>
 		<view class="month-sale-container bg-white margin-bottom-normal">

@@ -1,46 +1,24 @@
 
 
  <template>
- 	<view class="borderTop">
-		<view class="shop-content" v-if="shopList.length">
-			<scroll-view scroll-y="true" >
-				<view class="shop-list-item flex justify-start align-center bg-white" v-for="(item,index) in shopList"
-					:class="{'bg-gray':shopIndex==item.id}" :key="index" @click="choseShop(item)" v-if="item.name">
-					
-					<view class="shop-img-area">
-						<image :src="item.coverurl?item.coverurl:'../../../../static/img/default.png'" class="shop-img"></image>
-					</view>
-					<view class="shop-info-area flex-1 " >
-						<view class="flex justify-start font-size-normal font-weight-bold align-center">
-							<view class=" text-ellipse flex-litter">{{item.name || ''}}</view>
-							<view v-if="item.brandName">({{item.brandName || ''}})</view>
-							<image src="../../../../static/img/shop/businessing.png" class="shop-tag" v-if="item.status==shopStatusZn.businessing"></image>
-							<image src="../../../../static/img/shop/ready.png" class="shop-tag" v-if="item.status==shopStatusZn.ready"></image>
-							<image src="../../../../static/img/shop/processing.png" class="shop-tag" v-if="item.status==shopStatusZn.processing"></image>
-							<image src="../../../../static/img/shop/canceled.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.canceled"></image>
-							<image src="../../../../static/img/shop/renovated.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.renovated"></image>
-							<image src="../../../../static/img/shop/moved.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.moved"></image>
-						</view>
-						
-						<view class="font-size-litter color-regular " style="margin:7px 0;width:65%">
-							<text style="margin-right:7px;">店长:</text>{{item.managerName || ''}}/{{item.managerMobile || ''}}
-						</view>
-						<view class="font-size-litter color-regular text-ellipse " style="width:70%;">
-							<text style="margin-right:7px;">地址:</text>{{item.provinceName || ''}}{{item.cityName || ''}}{{item.districtName||''}}{{item.address}}
-						</view>
-					</view>
-
-				</view>
-			</scroll-view>
+ 	<view>
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >选择门店</view></block>
+		</cu-custom>
+		<view class="shop-content borderTop" v-if="shopList.length">
+			<block v-for="(item,index) in shopList" :key="index">
+				<shopListItem :item="item" :index="index"  @checkShopDetail="choseShop"></shopListItem>
+			</block>
+			<uni-load-more :contentText="content" :showIcon="true" v-if="shopList.length" :status="loading"></uni-load-more>
 		</view>
 		<view v-else>
 			<lx-empty></lx-empty>
-
 		</view>
 		<showModel :isShow="modalName=='shopModal'" @hideModel="hideShopModel" @confirmDel="hideShopModel" v-if="modalName=='shopModal'">
 			<block slot="content">该门店没有营业，不能进行操作!</block>
 		</showModel>
-		<uni-load-more :contentText="content" :showIcon="true" v-if="shopList.length" :status="loading"></uni-load-more>
+		
  	</view>
  </template>
  <script>
@@ -48,6 +26,7 @@
 	 import {mapState} from 'vuex'
 	 import showModel from '../../../../components/show-model.vue'
 	 import uniLoadMore from '../../../../components/uni-load-more.vue'
+	 import shopListItem from '../../../../components/shop-list-item.vue'
  	export default{
 		computed:mapState(['userInfo','shopStatusZn']),
  		data(){
@@ -126,25 +105,31 @@
 				
 				},
  		components:{
-			LxEmpty,showModel,uniLoadMore
+			LxEmpty,showModel,uniLoadMore,shopListItem
  		},
  		onLoad(options){
 			
 			this.cat=options.cat;
+			console.log(options)
 			if(options.id){
 				this.articleID=options.id;
 			}
 			this.getNearShopList()
  		},
 		methods:{
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			hideShopModel(){
 				if(this.modalName){
 					this.modalName=null;
 				}
 			},
  		    getNearShopList(){
-				// 新建报修
-				if(this.cat=='createOrder'){
+				// 新建报修或者报销申请
+				if(this.cat=='createOrder' || this.cat=='apply'){
 					this.$ajax('MyShops',{
 						address:'',
 						offset:this.$utils.getOffset(this.page)
@@ -179,7 +164,7 @@
 					},500)
 				}else if(item.status!==this.shopStatusZn.businessing){
 					this.modalName='shopModal';
-				}else if(this.cat=='createOrder'){
+				}else if(this.cat=='createOrder' || this.cat=='apply'){
 					//新建报修选择门店
 					this.shopIndex=item.id;
 					setTimeout(()=>{

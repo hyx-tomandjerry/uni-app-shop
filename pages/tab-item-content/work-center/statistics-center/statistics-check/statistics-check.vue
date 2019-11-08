@@ -2,7 +2,7 @@
 	<view>
 		<cu-custom :isBack="true" bgColor="bg-color-perform">
 			<block slot="left">
-				<view class="cuIcon-back font-size-back font-weight-bold text-white" @click="goBack"></view>
+				<view class="cuIcon-back   text-white" @click="goBack"></view>
 			</block>
 			<block slot="content">
 				<view class="font-size-big font-weight-bold text-white">{{new Date().getMonth()+1}}.{{new Date().getDate()}}日门店绩效审核</view>
@@ -35,13 +35,21 @@
 					</view>
 					<view class="num flex-1 text-center">{{item.value || 0}}</view>
 					<view class="precent flex-1 text-center">{{item.pre || 0}}%</view>
-					<view @click="checkItem(item)" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID&&today.todayFact==0">编辑</view>
+					<view @tap="checkItem(item)" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID&&today.todayFact==0">编辑</view>
 				</view>
 			</view>
 
 		</view>
 
-		<button class="btn-container position_absolute" @click="confirmPerform" v-if="userInfo.id==managerID" :disabled="today.todayFact!=0">确定</button>
+		<button class="btn-container position_absolute" @tap="showModel($event)" 
+			data-target="noticeModel"
+			v-if="userInfo.id==managerID" :disabled="today.todayFact!=0">提交当天绩效</button>
+		
+		<showModel :isShow="modelName=='noticeModel'" @hideModel="hideModel" v-if="modelName=='noticeModel'" @confirmDel="confirmPerform">
+			<block slot="content">
+				每天只能提交一次销售绩效，请确认您提交的是当天门店所有店员的全部销售金额!
+			</block>
+		</showModel>
 	</view>
 </template>
 
@@ -49,6 +57,7 @@
 	import uCharts from '../../../../../components/u-charts/u-charts.js'
 	import uChartModel from '../../../../../components/uchart-model.vue'
 	import {mapState} from 'vuex'
+	import showModel from '../../../../../components/show-model.vue'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
@@ -73,14 +82,23 @@
 				salemanList:[],
 				managerID:'',//店长的ID
 				totalPerform:'',//总的绩效之和
+				modelName:''
 			}
 		},
 		components: {
-			uChartModel
+			uChartModel,
+			showModel
 		},
 		methods: {
+			hideModel(){
+				this.modelName=null;
+			},
+			showModel(event){
+				this.modelName=event.currentTarget.dataset.target
+			},
 			//确认今天绩效
 			confirmPerform(){
+			
 				this.$ajax('ConfirmShopDailyPerformance',{
 					shop:this.shopID,
 					// year:new Date().getFullYear(),
@@ -90,15 +108,13 @@
 				},res=>{
 					uni.showToast({
 						title:'确认绩效成功',
-						icon:'none',
-						success: () => {
-								setTimeout(()=>{
-									uni.navigateBack({
-										delta:1
-									})
-								},800)
-						}
+						icon:'none'
 					})
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1
+						})
+					},800)
 
 				})
 			},
@@ -217,7 +233,6 @@
 				// this.getShopSaleManList(param.id)
 				this.shopID=param.id;
 				this.managerID=param.managetID;
-				console.log(this.managerID)
 				this.getShopPerformByDay(param.id)
 
 			}

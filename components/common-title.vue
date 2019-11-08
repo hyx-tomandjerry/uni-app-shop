@@ -18,9 +18,6 @@
 				<slot name="cover">
 					<div class="coverImg" :style="[{ backgroundImage:'url(' + itemInfo.coverurl+ ')' }]" @click="showImg()" v-if="itemInfo.coverurl">
 					</div>
-					<div v-else>
-						<image src="../../../static/img/default.png" class="coverImg"></image>
-					</div>
 				</slot>
 			</view>
 			<view class="detail">

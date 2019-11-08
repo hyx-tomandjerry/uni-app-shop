@@ -39,11 +39,11 @@
 						v-model="designer.token"
 						class="font-size-big font-weight-normal"
 						:class="designer.token?'text-black':'color-placeholder'">
-				<div v-if="isShowPwd" @click="showPwd()" class="flex-1" style="height:100%;width:100%">
-					<image src="../../../static/icon/icon-xianshimima@2x.png" class="imgEye" ></image>
+				<div v-if="isShowPwd" @click="showPwd()" class="flex-1" style="width:200upx;height:20px;">
+					<image src="../../../static/icon/zhengkaiyanjing.png" class="imgEye" ></image>
 				</div>
 				<div v-else @click="showPwd()" class="flex-1"  style="height:100%;width:100%">
-					<image src="../../../static/icon/icon-yingcangmima@2x.png" class="imgEyeOpen"></image>
+					<image src="../../../static/icon/eye.png" class="imgEyeOpen"></image>
 				</div>
 			</view>
 
@@ -83,7 +83,7 @@
 	    mapMutations
 	} from 'vuex';
 	export default{
-		computed: mapState(['hasLogin','userInfo','shoperObj','user','userStatus']),
+		computed: mapState(['hasLogin','userInfo','shoperObj','user','userStatus','shopType']),
 		data(){
 			return{
 				designer:{
@@ -116,7 +116,7 @@
 				key:'userInfo',
 				success: (res) => {
 					 if(res.data.status==this.userStatus.normal){
-						uni.switchTab({
+						uni.redirectTo({
 							url:"../../tab-item/index/index"
 						})
 					}
@@ -226,7 +226,7 @@
 										url:"../../tab-item/search-company/search-company"
 									})
 								}else if(this.userInfo.status==this.userStatus.normal){
-									uni.switchTab({
+									uni.redirectTo({
 										url:"../../tab-item/index/index"
 									})
 								}
@@ -346,14 +346,14 @@
 
 	}
 	.imgEye{
-		.mixWidth(16px);
-		.mixHeight(14px);
-		position: absolute;right:22px;top:30px;
+		.mixWidth(76upx);
+		.mixHeight(50upx);
+		position: absolute;right:22px;top:20px;
 	}
 	.imgEyeOpen{
-		.mixWidth(16px);
-		.mixHeight(9px);
-		position: absolute;right:22px;top:30px;
+		.mixWidth(70upx);
+		.mixHeight(60upx);
+		position: absolute;right:22px;top:40upx;
 	}
 	.resign-shop{
 		// border-right:1px solid #EEEEED;

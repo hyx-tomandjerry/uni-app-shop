@@ -2,8 +2,8 @@
 	<view class="clerk-item-container" >
 		<view class="user-info-container position_relative">
 			<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="" class="user-info-img"></image>
-			<text class="cuIcon-back font-size-back position_absolute arrow-back color-normal" @click="goBack" style="left:15px;top:15px;"></text>
-			<view class="name ">
+			<text class="cuIcon-back font-size-back position_absolute arrow-back color-normal" @tap="goBack" style="left:15px;top:15px;"></text>
+			<view class="name align-center flex justify-start">
 				<text class="font-size-supper font-weight-bold text-white">{{clerkItem.name || ''}}</text>
 				<text class="status-tag">在职</text>
 			</view>
@@ -133,13 +133,12 @@
 			bottom:15px;
 			left:25px;
 			.status-tag{
-				margin-right:7px;
+				margin-left:20upx;
 				background:rgba(32,208,158,1);
 				border-radius:13px;
-				font-size:12px;
-				font-weight: normal;
+				font-size:22upx;
 				color:#fff;
-				padding:2px 10px;
+				padding:0px 10upx;
 			}
 		}
 

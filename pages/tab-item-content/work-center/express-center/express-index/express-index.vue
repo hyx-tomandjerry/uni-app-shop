@@ -2,7 +2,7 @@
 	<view style="font-size:0;">
 		<cu-custom :isBack="true"  bgColor="bg-white">
 				<block slot="left">
-					<view class="cuIcon-back " style="font-size:20px;" @click="goBack"></view>
+					<view class="cuIcon-back "  @click="goBack"></view>
 				</block>
 				<block slot="content">
 					<view class=" font-size-big color-normal font-weight-bold">快递包裹</view>
@@ -76,7 +76,7 @@
 				})
 			},
 			goBack(){
-				uni.switchTab({
+				uni.redirectTo({
 					url:"../../../../tab-item/index/index"
 				})
 			},

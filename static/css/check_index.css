@@ -1,0 +1,23 @@
+/* 审批状态颜色 */
+/* 审批状态颜色-待审批 */
+	.wait{
+		background:#00474f
+	}
+	/* 审批状态颜色-审批中 */
+	.executing{
+		background:#1ED4E6
+	}
+	/* 已通过 */
+	.accepted{
+		background:#52c41a
+	}
+	.common-tag{
+		padding:10upx 20upx;
+		border-radius: 40upx;
+		font-size:24upx;
+		color:#FFFFFF;
+	}
+	/* 被驳回 */
+	.rejected{
+		background-color:#f5222d;	
+	}

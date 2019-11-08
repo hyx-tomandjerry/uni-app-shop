@@ -1,5 +1,9 @@
 <template>
 	<view class="borderTop position_relative" :style="{height:windowHeight+'px'}">
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >保价</view></block>
+		</cu-custom>
 		<view >
 			<view class="save-price-container  bg-white">
 				<view class="text-center">
@@ -59,6 +63,11 @@
 
 		},
 		methods:{
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			savePrice(){
 				uni.navigateBack({
 					delta:1,

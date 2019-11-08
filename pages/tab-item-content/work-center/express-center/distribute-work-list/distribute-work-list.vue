@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >调拨任务</view></block>
+		</cu-custom>
 		<view  class="bg-white nav">
 			<view class="flex text-center justify-around">
 				<view class="cu-item  font-size-big"
@@ -99,7 +103,11 @@
 			
 		},
 		methods: {
-
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			/*nav选择*/
 			tabSelect(item){
 				this.navTabCur=item.id;

@@ -7,15 +7,15 @@
 						<slot name="title">提示</slot>
 					</view>
 				</view>
-				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 0 27px;">
+				<view class="padding-xl font-size-big font-weight-normal color-normal bg-white borderBottom" style="padding:25px 20upx 27px;">
 					<slot name="content"></slot>
 				</view>
 				<view class="cu-bar bg-white justify-end">
 					<view class="action flex justify-around" style="width:100%;">
-						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal()" 
+						<view style="width:50%;border-right:1px solid #EEEEED;padding:12px;"  @tap="hideModal" 
 						:class="{'text-red':isRed}"
 						>{{cancel_btn}}</view>
-						<view style="width:50%;padding:12px;"  @tap="confirmModel()" class="text-blue">{{save_btn}}</view>
+						<view style="width:50%;padding:12px;"  @tap="confirmModel" class="text-blue">{{save_btn}}</view>
 					</view>
 				</view>
 			</view>
@@ -31,10 +31,7 @@
 			};
 		},
 		props:{
-			isShow:{
-				type:[Boolean,String],
-				default:''
-			},
+			isShow:Boolean,
 			save_btn:{
 				type:String,
 				default:'确定'

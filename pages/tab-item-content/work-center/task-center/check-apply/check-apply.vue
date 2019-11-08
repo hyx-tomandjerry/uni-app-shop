@@ -1,6 +1,10 @@
 <template>
-	<view class="borderTop position_relative">
-		<view class="input-container margin-bottom-normal bg-white">
+	<view class=" position_relative">
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >申请验收</view></block>
+		</cu-custom>
+		<view class="input-container margin-bottom-normal bg-white borderTop">
 			<textarea value="" placeholder="请输入完工说明......" v-model="inputValue" :class="{
 				'color-normal':inputValue,
 				'color-regular':!inputValue
@@ -33,7 +37,11 @@
 			}
 		},
 		methods: {
-			
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			}
 		},
 		components:{uploadImg}
 	}

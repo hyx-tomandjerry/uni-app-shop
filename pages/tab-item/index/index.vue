@@ -1,6 +1,5 @@
 <template>
     <view class="position_relative">
-
 		<view class="head-container" >
 			<!-- header start  -->
 			<!-- 如果type=4&&status=2 加入门店-->
@@ -108,14 +107,16 @@
 
 		</view>
 		<!-- article end -->
-		<!-- <image src="../../../static/img/edit.png"
-			   style="position:fixed;right:12px;bottom:40px;width:80px;height:80px;z-index:100;" @click.stop="recordMoney"></image> -->
+		<tabbar-btn 
+			@gotoItem="gotoItem" tabCur="index" :num="todoNum"
+		></tabbar-btn>
     </view>
 </template>
 <script>
 	import simpleModel from '../../../components/simple-model.vue';
 	import showModel from '../../../components/show-model.vue'
 	import {mapState,mapMutations} from 'vuex'
+	import tabbarBtn from '../../../components/common/tabbar-btn.vue'
 	export default{
 		computed:mapState(['userInfo','userStatus','shoperObj','report']),
 		data(){
@@ -147,7 +148,25 @@
 		},
 
 		methods:{
-
+			gotoItem(type){
+				switch(type){
+					case 'notice':
+					uni.redirectTo({
+						url:"../../tab-item-content/notice-center/notice-index/notice-index"
+					})
+					break;
+					case 'work':
+					uni.redirectTo({
+						url:'../work/work'
+					})
+					break;
+					case 'mine':
+					uni.redirectTo({
+						url:'../mine/mine'
+					})
+					break;
+				}
+			},
 			/*记一笔*/
 			recordMoney(){
 				uni.navigateTo({
@@ -159,6 +178,7 @@
 			getTodoList(){
 				this.$ajax('MyEventNumbers',{},res=>{
 					this.todoNum=res;
+					this.setTodoNum(res)
 				})
 			},
 
@@ -223,6 +243,20 @@
 			},
 			/*刷新*/
 			refreshInfo(){
+				// if(this.userInfo){
+				// 		if(this.userInfo.status==this.userStatus.normal){
+				// 			console.log('kkk')
+				// 			this.login(this.userInfo);
+				// 			this.company={
+				// 				name:this.userInfo['ownerName'],
+				// 				cover:this.userInfo['ownerLogoUrl']
+				// 			}
+				// 			this.getTodoList()
+				// 			this.showArticles();
+					
+				// 		}
+				// }
+				
 				this.$ajax('RefreshOnlineUser',{},res=>{
 					if(res.status==this.userStatus.normal){
 						this.login(res);
@@ -276,12 +310,13 @@
 
 			},
 
-			...mapMutations(['login'])
+			...mapMutations(['login','setTodoNum'])
 
 		},
 		components:{
 			simpleModel,
-			showModel
+			showModel,
+			tabbarBtn
 		},
 
 		onLoad(){
@@ -459,6 +494,7 @@ color:rgba(137,136,136,1);
 		width: 58px;
 		height: 58px;
 	}
+	
 </style>
 
 

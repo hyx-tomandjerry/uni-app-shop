@@ -2,7 +2,7 @@
 	<view class="bg-white">
 		<cu-custom :isBack="true" bg-color="bg-white">
 			<block slot="left">
-				<view class="font-size-back color-regular cuIcon-back" @click="goBack"></view>
+				<view class="cuIcon-back" @click="goBack"></view>
 			</block>
 			<block slot="content">
 				<view class="font-weight-bold font-size-big color-normal">
@@ -154,15 +154,15 @@
 					this.timeObj.month=result.month;
 					this.shopZone=result.target;
 					if(this.timeObj.month){
-						this.getShopRank(true)
+						// this.getShopRank(true)
 					}
-					this.getShopRank()
+					// this.getShopRank()
 					
 					
 					
 				}
 			})
-			this.getShopRank()
+			// this.getShopRank()
 		},
 	}
 </script>

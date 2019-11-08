@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back" style="font-size:22px;" @click.stop="goBack()"></text></block>
+			<block slot="left"><view class="cuIcon-back"  @click.stop="goBack()"></view></block>
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >{{shop.name}}绩效统计</view></block>
 			<block slot="right">
 				<view class="choose-year" @click="chooseYear">
@@ -30,11 +30,11 @@
 		<!--趋势图-->
 		<view class="sale-trend-container">
 			<view class="sale-trend-top flex justify-between">
-				<view class="text-center">
+				<view class="text-center flex-1">
 					<view class="font-size-big font-weight-bold">{{timeObj.year}}年{{shop.name}}销售额详情</view>
 					<text class="font-size-mini color-regular">(点击可查看单月详情)</text>
 				</view>
-				<view class="flex justify-start trend-tab">
+				<view class="flex justify-start trend-tab" style="width:100px">
 					<view v-for="(item,index) in trendTabList" :key="index" class="trend-tab-item"  @click="dateTabChoose(item)"
 						  :class="{'tab-active':trendTab==item.value}">{{item.title}}</view>
 				</view>
@@ -151,13 +151,11 @@
 				arcbarWidth:'',//圆弧进度图，进度条宽度,此设置可使各端宽度一致
 				pixelRatio:1,
 				chartData: {
-					series: [
-						{
-							name:'销售占比',
-							data:0.8,
-							color: '#43B0ED'
-						}
-					]
+					series: [{
+						name:'销售占比',
+						data:0,
+						color: '#43B0ED'
+					}]
 				},
 				//日历选择
 				value:[],
@@ -246,12 +244,12 @@
 					height: this.cHeight3*this.pixelRatio,
 					dataLabel: true,
 					title: {
-						name: Math.round(chartData.series[0].data*100)+'%',//这里我自动计算了，您可以直接给任意字符串
-						color: chartData.series[0].color,
+						name:chartData.series[0]? Math.round(chartData.series[0].data*100)+'%':0,//这里我自动计算了，您可以直接给任意字符串
+						color: chartData.series[0]?chartData.series[0].color:'#43B0ED',
 						fontSize: 25*this.pixelRatio
 					},
 					subtitle: {
-						name: chartData.series[0].name,//这里您可以直接给任意字符串
+						name:chartData.series[0]? chartData.series[0].name:'',//这里您可以直接给任意字符串
 						color: '#666666',
 						fontSize: 15*this.pixelRatio
 					},

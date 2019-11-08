@@ -17,7 +17,7 @@
 			<commonTitle :itemInfo='itemInfo' :type="'article'">
 				<block slot="title">{{itemInfo.name}}</block>
 				<block slot='senderName'>{{itemInfo.applierName}}</block>
-				<block slot="ti nme">{{itemInfo['applyDate']}}</block>
+				<block slot="time">{{itemInfo['applyDate'] | formatTime('YMDHMS')}}</block>
 				<block slot="content">
 					<view class="article-text">{{itemInfo.content}}</view>
 				</block>
@@ -46,10 +46,6 @@
 			},
 			getItemInfo(id) {
 				this.$ajax('Article',{id:id},res=>{
-					// res.applyDate=this.format(res.applyDate,'YMDHMS');
-					// if(!res.files){
-					// 	res.files=[]
-					// }
 					res.applyDate=this.$moment(res.applyDate).format('YYYY-MM-DD hh:mm:ss')
 					this.itemInfo=res;
 				

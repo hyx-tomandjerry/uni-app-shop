@@ -1,5 +1,9 @@
 <template>
 	<view class="borderTop position_relative" :style="{height:windowHeight+'px'}">
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >记一笔</view></block>
+		</cu-custom>
 		<view class="container position_relative">
 			<!-- <input type="number" placeholder="请输入金额" class=" input-style"  v-model="num" :class="{'input-active':num}"> -->
 
@@ -29,6 +33,11 @@
 			}
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			recordMoney(type){
 				if(isNaN(this.num)){
 					uni.showToast({

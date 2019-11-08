@@ -1,7 +1,7 @@
 <template>
 	<view :style="{height:windowHeight+'px'}" class="position_relative" id="test">
 		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back" style="font-size:22px;" @click.stop="goBack()"></text></block>
+			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >{{title.name}}</view></block>
 		</cu-custom>
 		<scroll-view scroll-y="true" :style="{minHeight:screenHeight+'px'}">
@@ -9,7 +9,7 @@
 				<view class="user-info border-top ">
 					<view class="flex justify-start position_relative send-info borderBottom align-center" >
 						<view class="send-tag" >寄</view>
-						<view class="font-size-normal font-weight-normal shopInfo" 
+						<view class="font-size-normal font-weight-normal shopInfo"
 						:class="{'borderRight':!distributeItem.id,'borderNo':distributeItem.id}"
 						>
 							<view v-if="sendShop.name">
@@ -26,7 +26,7 @@
 					</view>
 					<view class="flex justify-start position_relative send-info borderBottom align-center">
 						<view class="receive-tag" >收</view>
-						<view class="font-size-normal font-weight-normal shopInfo" 
+						<view class="font-size-normal font-weight-normal shopInfo"
 							:class="{'borderRight':!distributeItem.id,'borderNo':distributeItem.id}"
 						>
 							<view v-if="receiverMan.name">
@@ -37,7 +37,7 @@
 							</view>
 							<view v-else style="color:#606060" class="font-size-normal">请填写/添加收件人信息</view>
 						</view>
-						<text class=" position_absolute  " 
+						<text class=" position_absolute  "
 						  v-if="!distributeItem.id"
 						 @click="chooseSenderItem('receiver')" style="right:21px;top:35px;color:#42B0ED">选择</text>
 					</view>
@@ -79,7 +79,7 @@
 					<view class=" font-size-normal item-name"><text class="text-red">*</text>身份证号</view>
 					<view class="color-normal font-size-normal">{{userInfo.idnum}}</view>
 				</view>
-			
+
 				<view class="goods-item flex justify-between borderBottom align-center" @click="showModal($event)" data-target="goodsInfo">
 					<view class="font-weight-normal font-size-normal item-name"><text class="text-red">*</text>包裹信息</view>
 					<view style="width:75%;text-align:right;padding-top:2px;" class="text-ellipse">
@@ -92,11 +92,11 @@
 						<text class="font-size-normal color-regular" v-else>
 							请选择包裹信息
 						</text>
-			
+
 					</view>
 					<text class="cuIcon-right right-icon"></text>
 				</view>
-			
+
 				<view class="goods-item flex justify-between borderBottom align-center" @click="savePrice()">
 					<view class="font-weight-normal font-size-normal item-name" style="padding-left:15px;">保价</view>
 					<view style="width:80%;text-align:right">
@@ -112,12 +112,12 @@
 							<image :src="ispay=='pay'?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'" style="width:16px;height:16px;margin-right:3px;vertical-align: middle;"
 								  @click="changePayment('pay')"></image>
 							<text style="margin-right:25px;">是</text>
-			
+
 							<image :src="ispay=='nopay'?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'" style="width:16px;height:16px;margin-right:3px;vertical-align: middle;"
 								    @click="changePayment('nopay')"></image>
 							<text>否</text>
 						</view>
-			
+
 					</view>
 				</view>
 			</view>
@@ -135,11 +135,11 @@
 				<view 	class="submit-btn"
 						 @click="createExpress">下单</view>
 			</view>
-			
-		</view>
-		
 
-		
+		</view>
+
+
+
 
 		<!--//包裹信息-->
 		<view class="cu-modal bottom-modal" :class="modalName=='goodsInfo'?'show':''">
@@ -215,8 +215,8 @@
 				</view>
 			</view>
 		</view>
-		
-		
+
+
 		<showModel :isShow="modalName=='orderModal'" @hideModel="hideModel"
 				   @confirmDel="hideModel" v-if="modalName=='orderModal'">
 			<block slot="content">请遵守相关条例</block>
@@ -295,7 +295,7 @@
 				windowHeight:'',
 				sTop:'',
 				screenHeight:''
-			
+
 			}
 		},
 		components:{
@@ -311,7 +311,7 @@
 			viewTop(){
 				uni.createSelectorQuery().select('#test').boundingClientRect((e)=>{
 					this.sTop=e.top
-				
+
 				}).exec()
 			},
 			hideModel(){
@@ -367,7 +367,7 @@
 										url:"../success-send/success-send?way="+this.expressCatalog.express+'&id='+res+"&type=distribute"
 									})
 								}
-													
+
 							})
 						}
 					}else{
@@ -377,7 +377,7 @@
 								icon:'none'
 							})
 						}else if(
-						(this.receiveTarget==1 && !this.receiveShop) 
+						(this.receiveTarget==1 && !this.receiveShop)
 						|| (this.receiveTarget==2 && !this.receiverMan)){
 							uni.showToast({
 								title:'还没有选择收件人',
@@ -423,15 +423,15 @@
 										url:"../success-send/success-send?way="+this.expressCatalog.express+'&id='+res+"&type=create"
 									})
 								}
-						
+
 							})
 						}
 					}
-					
-					
-					
+
+
+
 				}
-				
+
 
 			},
 			chooseExpressType(type){
@@ -508,7 +508,7 @@
 			hideModal(){
 				this.modalName=null;
 			},
-			
+
 			/**
 			 * @param {Object} type
 			 获得调拨单详情
@@ -519,7 +519,7 @@
 					this.sendShop={
 						id:res.supplyShop,
 						name:res.supplyShopName,
-						
+
 					}
 					this.receiveShop={
 					id:res.applyShop?res.applyShop:'',//如果是门店，则为门店id,
@@ -539,8 +539,8 @@
 					name:res.recverName?res.recverName:res.applierName,//联系人名称,
 					mobile:res.recverMobile?res.recverMobile:res.applierMobile,//电话
 				}
-					
-					
+
+
 				})
 			},
 			backFixationTop(){
@@ -626,7 +626,7 @@
 					}
 				}
 
-				
+
 			})
 			this.$fire.on('price',result=>{
 				this.goods.price=result;
@@ -666,7 +666,7 @@
 		.user-info{
 			.send-info{
 				padding:23px 9px 22px 18px;
-			
+
 			}
 			.send-tag{
 				width:45px;
@@ -692,15 +692,15 @@
 			}
 			.shopInfo{
 				width:60%;
-				
+
 			}
 
 		}
-		
+
 	}
 	.goods-container,.other-container{
-		
-		
+
+
 		.goods-item{
 			padding:0px 9px 0px 15px;
 			height:53px;
@@ -742,7 +742,7 @@
 		.submit-btn{
 			width:35%;padding-top:16px;background:rgba(66,176,237,1);font-size:20px;text-align: center;color:white
 		}
-		
+
 	}
 	.goods-info-item{
 		.num-tab{
@@ -787,7 +787,7 @@
 		padding:11px 32px 10px 15px;
 	}
 	.borderNo{
-		border:none 
+		border:none
 	}
 	.borderRight{
 		border-right:1px solid #EEEEED;

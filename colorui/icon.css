@@ -207,6 +207,8 @@
 
 .cuIcon-back:before {
 	content: "\e679";
+	font-size:50upx;
+	font-weight: 700;
 }
 
 .cuIcon-cascades:before {

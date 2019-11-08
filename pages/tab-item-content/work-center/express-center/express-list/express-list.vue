@@ -2,7 +2,7 @@
 	<view>
 		<cu-custom isBack="true" bgColor="bg-white">
 			<block slot="left">
-				<view class="cuIcon-back font-size-back color-normal" @click="goBack"></view>
+				<view class="cuIcon-back" @click="goBack"></view>
 			</block>
 			<block slot="content">
 				<view class="font-size-big color-normal color-normal">查快递</view>

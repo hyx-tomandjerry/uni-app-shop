@@ -1020,8 +1020,8 @@ button.icon.lg {
 .cu-tag.badge {
 	border-radius: 200upx;
 	position: absolute;
-	top: -10upx;
-	right: -10upx;
+	top: 0upx;
+	right: 3upx;
 	font-size: 20upx;
 	padding: 0upx 10upx;
 	height: 28upx;
@@ -2510,7 +2510,8 @@ button.icon.lg {
 .cu-form-group .title {
 	text-align: justify;
 	padding-right: 30upx;
-	font-size: 30upx;
+	font-size: 28upx;
+	color:#2A2A2A;
 	position: relative;
 	height: 60upx;
 	line-height: 60upx;

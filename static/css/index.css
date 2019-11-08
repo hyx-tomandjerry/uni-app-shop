@@ -7,7 +7,7 @@
 		font-size:12px;
 	}
 	.font-size-litter{
-		font-size:13px;
+		font-size:13px !important;
 	}
 	.font-size-small{
 		font-size:14px;
@@ -53,7 +53,7 @@
 		position:relative
 	}
 	.color-normal{
-		color:rgba(42,42,42,1);
+		color:rgba(42,42,42,1) !important;
 	}
 	.borderTop{
 		border-top:1px solid #EEEEED
@@ -117,6 +117,9 @@
 	.color-purple{
 		color:rgba(182,89,255,1) ;
 	}
+	.bg-color-green{
+		background-color: #52C41A;
+	}
 	.bg-color-blue{
 		background:#42B0ED !important
 	}
@@ -144,6 +147,12 @@
 	.flex-all{
 		width:100%;
 	}
+	.flex-mini{
+		width:15%
+	}
 	.border-red{
 		border:1px solid rgba(255,72,103,1)
 	}
+.bg-color-active{
+	background-color: #42B0ED;
+}

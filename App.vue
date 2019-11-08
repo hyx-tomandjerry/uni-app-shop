@@ -48,6 +48,7 @@
     @import "colorui/icon.css";
 	@import url("./static/css/index.css");
     @import url("./static/font/font.css");
+	@import url("./common/animate.css");
 	page{
 		font-family:PingFangSC;
 		color:rgba(42,42,42,1);

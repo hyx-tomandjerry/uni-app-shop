@@ -54,12 +54,15 @@
 				</view>
 			</view>
 		</view>
+		<bottomBtnOne content="确定" @showModal="confirmSearch"></bottomBtnOne>
+		
 	</view>
 </template>
 
 <script>
 	import {mapState} from 'vuex'
 	import mixTree from '../../../components/mix-tree/mix-tree.vue'
+	import bottomBtnOne from '../../../components/common/bottom-btn-one.vue'
 	export default {
 		computed:mapState(['constants']),
 		data() {
@@ -76,13 +79,14 @@
 				companyID:''
 			}
 		},
-		components:{mixTree},
+		components:{mixTree,bottomBtnOne},
 		methods: {
 			chooseItem(item,type){
 				switch(type){
 					case 'brand':
 						this.searchObj.brandID=item.id;
-						this.searchObj.brandName=item.val
+						this.searchObj.brandName=item.val;
+						this.hideModel()
 						break;
 					case 'area':
 						break;
@@ -105,6 +109,14 @@
 					this.modalName=null;
 				}
 			},
+			confirmSearch(){
+				uni.navigateBack({
+					delta:1,
+					success:()=>{
+						this.$fire.fire('seach',this.searchObj)
+					}
+				})
+			},
 			goBack(){
 				uni.navigateBack({
 					delta:1,
@@ -123,7 +135,7 @@
 				} = item;
 				this.searchObj.zoneID=item.id;
 				this.searchObj.zoneName=item.name;
-
+				this.hideModel()
 
 			},
 			//获得区域

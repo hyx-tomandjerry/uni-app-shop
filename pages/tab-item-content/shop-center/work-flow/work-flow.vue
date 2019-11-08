@@ -1,42 +1,52 @@
 <template>
-	<view class="bg-white work-flow-container borderTop">
-		<view class="work-flow-item flex justify-between align-center " v-for="(item,index) in workFlowList" :key="index">
-			<view>{{item.name}}</view>
-			<view @click="selectFlow(item)">
-				
-				<image src="../../../../static/icon/icon-xuanzhong.png" mode="" class="choose-img" v-if="workFlowItem.id==item.id"></image>
-				<image src="../../../../static/icon/icon-weixuanzhong.png" mode="" class="choose-img" v-else></image>
-			</view>
+	<view>
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >流程模板</view></block>
+		</cu-custom>
+		<view class="bg-white work-flow-container borderTop">
+			<!-- -->
+			<block v-for="(item,index) in workFlowList" :key="index" >
+				<checkProgressItem :item="item" :index="index" @chooseItem="selectFlow"></checkProgressItem>
+			</block>
+			
 		</view>
 	</view>
+	
 </template>
 
 <script>
 	import {mapState} from 'vuex'
+	import checkProgressItem from '../../../../components/check-progress-item.vue'
 	export default {
 		computed:mapState(['constants']),
+		components:{checkProgressItem},
 		data() {
 			return {
 				workFlowList:[],
-				workFlowItem:{}
+				workFlowItem:{},
+				type:''
 			}
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			selectFlow(item){
-				this.workFlowItem=item;
-				
 				setTimeout(()=>{
 					uni.navigateBack({
 						delta:1,
 						success:(res)=>{
-							this.$fire.fire('workFlow',this.workFlowItem)
+							this.$fire.fire('workFlow',item)
 						}
 					})
 				},800)
 			},
-			getWorkFlowList(){
+			getWorkFlowList(type){
 				this.$ajax('Workflows',{
-					type:this.constants.work_flow
+					type:type
 				},res=>{
 					if(res){
 						this.workFlowList=res;
@@ -44,24 +54,13 @@
 				})
 			}
 		},
-		onLoad(){
-			this.getWorkFlowList()
+		onLoad(options){
+			this.type=options.type;
+			this.getWorkFlowList(this.type)
 		}
 	}
 </script>
 
 <style lang="less">
-	.work-flow-container{
-		padding:10px 20px;
-		.work-flow-item{
-			height:66px;
-			line-height:66px;
-			border-bottom:1px solid #EEEEED;
-			.choose-img{
-				width: 20px;
-				height: 20px;
-			}
-		}
-	}
 	
 </style>

@@ -1,12 +1,9 @@
 <template>
 	<view>
-		<!--<view class="tab-nav flex justify-around borderBottom bg-white">-->
-			<!--<view class="tab-item font-size-big"-->
-				  <!--:class="{-->
-				  		<!--'borderBottomRed text-red':navTabCurVal==item.value-->
-				  <!--}"-->
-				  <!--v-for="(item,index) in tabList" :key="index" @click="selectNav(item)">{{item.name}}</view>-->
-		<!--</view>-->
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >任务管理</view></block>
+		</cu-custom>
 		<view class="task-container">
 			<view >
 				<!--<view class="task-charts margin-bottom-normal bg-white">-->
@@ -90,6 +87,11 @@
 			}
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
 			/*查看单个任务详情*/
 			checkItemDetail(item){
 				uni.navigateTo({

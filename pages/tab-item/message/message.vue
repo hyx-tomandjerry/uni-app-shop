@@ -1,5 +1,5 @@
 <template>
-	<view >
+	<view class="position_relative">
 		<view class="title">
 			消息
 		</view>
@@ -40,66 +40,14 @@
 			</scroll-view>
 		</view>
 		
-
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		<!-- <view class="box" style="position:fixed;bottom:0px;width:100%;">
-			<view class="cu-bar tabbar bg-white">
-				<view class="action" style="padding-top:5px;" @click="showIndexClick()">
-					<view class="cuIcon-cu-image">
-						<image src="../../../static/img/tab_img/shouye.png"></image>
-
-					</view>
-					<view class="text-gray">首页</view>
-				</view>
-				<view class="action" style="padding-top:5px;">
-					<view class="cuIcon-cu-image" >
-						<image src="../../../static/img/tab_img/xiaoxi_color.png" ></image>
-						<view class="cu-tag badge">99</view>
-					</view>
-					<view class="text-blue">消息</view>
-				</view>
-				<view class="action" style="padding-top:5px;" @click="showWorkClick()">
-					<view class="cuIcon-cu-image" >
-						<image src="../../../static/img/tab_img/gongzuo.png" ></image>
-					</view>
-					<view class="text-gray">工作</view>
-				</view>
-				<view class="action" style="padding-top:5px;" @click="showMineClick()">
-					<view class="cuIcon-cu-image">
-
-						<image src="../../../static/img/tab_img/mine.png"></image>
-					</view>
-					<view class="text-gray">我的</view>
-				</view>
-			</view>
-		</view> -->
 	</view>
 </template>
 
 <script>
 	import webim from '../../../static/js/webim.js'
+	
 	export default {
+		
 		data() {
 			return {
 				chatList:[],//当前聊天列表
@@ -119,6 +67,7 @@
 		},
 
 		methods: {
+			
 			showWorkClick(){
 				uni.navigateTo({
 					url:'../work/work'

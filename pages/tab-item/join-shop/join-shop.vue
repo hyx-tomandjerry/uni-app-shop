@@ -10,55 +10,19 @@
 				</view>
 			</block>
 			<block slot="right">
-				<view style="margin-right:15px;" @click="searchShop">筛选</view>
+				<view style="width:100px;padding-right:10px; " class="font-size-normal text-right" @click="searchShop">筛选</view>
 			</block>
 		</cu-custom>
-		<view class="borderTop input-container">
-
-			<!--<searchInput :placeholder="'请输入门店名称'" @getSearchList="getSearchList"-->
-						 <!--:searchImg="'../../../static/icon/icon-sousuo2.png'"></searchInput>-->
-		</view>
-
-
-
 		<view v-if="shopList.length">
 
-			<scroll-view scroll-y="true" >
-				<view class="shop-list-item flex justify-start align-center bg-white" v-for="(item,index) in shopList"
-					  :key="index" @click="chooseShop(item)">
-
-					<view class="shop-img-area">
-						<image :src="item.coverurl?item.coverurl:'../../../static/img/default.png'" class="shop-img"></image>
-					</view>
-					<view class="shop-info-area flex-1 " >
-						<view class="flex justify-start font-size-normal font-weight-bold align-center">
-							<view class=" text-ellipse flex-litter">{{item.name || ''}}</view>
-							<view>({{item.brandName || ''}})</view>
-							<image src="../../../static/img/shop/businessing.png" class="shop-tag" v-if="item.status==shopStatusZn.businessing"></image>
-							<image src="../../../static/img/shop/ready.png" class="shop-tag" v-if="item.status==shopStatusZn.ready"></image>
-							<image src="../../../static/img/shop/processing.png" class="shop-tag" v-if="item.status==shopStatusZn.processing"></image>
-							<image src="../../../static/img/shop/canceled.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.canceled"></image>
-							<image src="../../../static/img/shop/renovated.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.renovated"></image>
-							<image src="../../../static/img/shop/moved.png" class="shop-tag-canceled" v-if="item.status==shopStatusZn.moved"></image>
-						</view>
-
-						<view class="font-size-litter color-regular " style="margin:7px 0;width:75%">
-							<text style="margin-right:7px;">店长:</text>{{item.managerName || ''}}/{{item.managerMobile || ''}}
-						</view>
-						<view class="font-size-litter color-regular text-ellipse " style="width:75%;">
-							<text style="margin-right:7px;">地址:</text>{{item.provinceName || ''}}{{item.cityName || ''}}{{item.districtName||''}}{{item.address}}
-						</view>
-					</view>
-
-				</view>
-			</scroll-view>
+			<block v-for="(item,index) in shopList" :key="index">
+				<shopListItem :item="item" :index="index" type="join" @checkShopDetail="chooseShop" cat="search"></shopListItem>
+			</block>
+			<uni-load-more :contentText="content" :status="loading" :showIcon="true" ></uni-load-more>
 		</view>
 		<view v-else>
 			<LxEmpty></LxEmpty>
 		</view>
-
-
-
 		<showModel :isShow="modelName=='shop'" @hideModel="hideModel" @confirmDel="confirmShop" v-if="modelName=='shop'">
 			<block slot="content">确定加入<text class="color-blue">{{shopItem.name}}</text>吗?</block>
 		</showModel>
@@ -75,8 +39,9 @@
 	import LxEmpty from '../../../lx_components/lx-empty.vue'
 	import showModel from '../../../components/show-model.vue'
 	import simpleModel from '../../../components/simple-model.vue'
-
+	import shopListItem from '../../../components/shop-list-item.vue'
 	import searchInput from '../../../components/search-input.vue'
+	import uniLoadMore from '../../../components/uni-load-more.vue'
 	export default {
 		computed:mapState(['userInfo','constants','shopStatusZn','shoperObj']),
 		data() {
@@ -89,7 +54,13 @@
 				searchObj:{
 					brandID:'',
 					zoneID:''
-				}
+				},
+				content:{
+					contentdown: "",
+						contentrefresh: "正在加载...",
+						contentnomore: "没有更多数据了"
+					},
+					loading:'more',			
 
 				
 			}
@@ -98,7 +69,9 @@
 			LxEmpty,
 			showModel,
 			simpleModel,
-			searchInput
+			searchInput,
+			shopListItem,
+			uniLoadMore
 		},
 		onPullDownRefresh(){
 			setTimeout(()=>{
@@ -161,7 +134,7 @@
 					})
 					this.hideModel();
 					setTimeout(()=>{
-						uni.switchTab({
+						uni.reLaunch({
 							url:"../index/index"
 						})
 					},800)

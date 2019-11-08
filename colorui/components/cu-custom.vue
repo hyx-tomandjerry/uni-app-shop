@@ -2,7 +2,7 @@
 	<view>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
-				<view class="action">
+				<view class="action" style="padding-right:80upx">
 					<slot name="left"></slot>
 				</view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]">

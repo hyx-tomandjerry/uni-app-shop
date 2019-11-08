@@ -1,27 +1,27 @@
 <template>
-	<view>
+	<view class="position_relative">
 		<!-- 门店目标分解 -->
-		<cu-custom :isBack="true" bg-image="'../../../../../static/img/work/statistics/bg.png'">
+		<cu-custom :isBack="true" bgColor="bg-color-perform">
 			<block slot="left">
-				<view class="font-size-back font-weight-bold cuIcon-back text-white" @click="goBack"></view>
+				<view class="cuIcon-back text-white" @click="goBack"></view>
 			</block>
 			<block slot="content">
-				<view class="font-size-big font-weight-bold text-white">{{shopSaleResolve.name || ''}}绩效分解</view>
+				<view class="font-size-big font-weight-bold text-white ">{{shopSaleResolve.name || ''}}绩效分解</view>
 			</block>
-			<block slot="right">
-				<view class="switch-btn flex justify-around">
-					<view class="text-white switch-btn-item" :class="{'switch-active':switchTab=='month'}" @click="switchSelect('month')">月</view>
-					<view class="text-white switch-btn-item" :class="{'switch-active':switchTab=='day'}" @click="switchSelect('day')">日</view>
-				</view>
-			</block>
+			<!--<block slot="right">-->
+				<!--<view class="switch-btn flex justify-around">-->
+					<!--<view class="text-white switch-btn-item" :class="{'switch-active':switchTab=='month'}" @click="switchSelect('month')">月</view>-->
+					<!--<view class="text-white switch-btn-item" :class="{'switch-active':switchTab=='day'}" @click="switchSelect('day')">日</view>-->
+				<!--</view>-->
+			<!--</block>-->
 		</cu-custom>
 		<!--门店目标 start-->
 		<view class="shop-aim-container">
 			<view v-if="switchTab=='month'">
-				<view class="text-center text-white">{{shopSaleResolve.year}}年门店年目标</view>
-				<view class="shop-aim">¥{{shopSaleResolve.amount || 0}}</view>
-				<view class="shop-intro flex justify-between">
-					<view class="intro-l flex justify-start">
+				<view class="text-white">{{new Date().getFullYear()}} 年门店年目标</view>
+				<view class="shop-aim">¥{{shopSaleResolve.expect || 0}}</view>
+				<view class="shop-intro flex justify-start">
+					<view class="intro-l flex justify-start flex-1">
 						<image src="../../../../../static/icon/icon-time@2x.png" class="intro-i"></image>
 						<view>
 							<view class="shop-date" v-if="shopSaleResolve.shopBgndate">{{shopSaleResolve.shopBgndate | formatTime('YMD')}}</view>
@@ -29,97 +29,114 @@
 							<view class="font-size-mini" style="color:#7C81A3">开业日期</view>
 						</view>
 					</view>
-					<view class="intro-r flex justify-start">
+					<view class="intro-r flex justify-start flex-1">
 						<image src="../../../../../static/icon/icon-time@2x.png" class="intro-i"></image>
 						<view>
-							<view class="shop-date">{{shopSaleResolve.bgndate|formatTime('YMD')}}~{{shopSaleResolve.duedate|formatTime('MD')}}</view>
-							<view class="font-size-mini" style="color:#7C81A3">目标起止日期</view>
+
+							<view class="shop-date" >{{year}}-12-31</view>
+							<view class="font-size-mini" style="color:#7C81A3">截止日期</view>
 						</view>
 					</view>
 				</view>
 			</view>
 			<view v-else-if="switchTab=='day'">
-				<view class="text-center text-white"><text class="cuIcon-back"></text>2019年1月目标<text class="cuIcon-right"></text></view>
-				<view class="shop-aim">¥ 62,025,00</view>
+				<view class="text-center text-white" @click="selectMonth"><text class="cuIcon-back">
+				</text>{{new Date().getFullYear()}}年{{month}}月目标<text class="cuIcon-right"></text>
+				</view>
+				<view class="shop-aim">¥ {{shopSaleResolve.expect || 0}}</view>
 				<view class="shop-intro flex justify-between align-center">
-					<view class="text-white" style="width:20%;">1月占比</view>
+					<view class="text-white" style="width:55%;">{{month}}月占全年比重</view>
 					<view class="cu-progress round sm striped active" style="margin:0 5px;">
 
-						<view class="bg-color-purple" style="width:60%"></view>
+						<view class="bg-color-purple"  :style="[{ width:`${monthPre}%`}]"></view>
 					</view>
-					<view class="font-family-num font-size-middle  font-weight-bold color-purple">60%</view>
+					<view class="font-family-num font-size-middle  font-weight-bold color-purple">{{monthPre}}%</view>
 				</view>
 			</view>
 		</view>
 		<!--门店目标 end-->
-		<!--月销售额趋势 start-->
-		<scroll-view scroll-x="true" class="trend-container margin-bottom-normal">
-			<view v-if="switchTab=='month'">
-				<view class="font-size-big font-weight-bold color-normal" style="margin-bottom:15px;">月销售额趋势</view>
-				<text class="color-regular font-size-mini" style="margin-left:8px;">(单位:元)</text>
-				<canvas canvas-id="canvasMix" id="canvasMix" class="charts" disable-scroll=true @touchstart="touchMix" @touchmove="moveMix" @touchend="touchEndMix"></canvas>
-			</view>
-			<view v-if="switchTab=='day'">
-				<view class="font-size-big font-weight-bold color-normal flex justify-start" style="margin-bottom:15px;">
-					<view v-for="(item,index) in weekList" :key="index" style="margin-right:39px;"
-						@click="selectWeek(item)" :class="{'week-active':weekTabCur==item.id}"
-					>{{item.name}}</view>
-				</view>
-				<canvas canvas-id="canvasMix" id="canvasMix" class="charts" disable-scroll=true @touchstart="touchMix" @touchmove="moveMix" @touchend="touchEndMix"></canvas>
-			</view>
-		</scroll-view>
-		<!--月销售额趋势 end-->
-		<!--月份列表 start-->
-		<view class="month-list-container">
-			<view v-if="switchTab=='month'">
-				<view class="month-list-item flex justify-between"
-					  :class="{'edit-active':item.id==monthTabID}"
-					  v-for="(item,index) in numList" :key="index" @click="editAim(item)">
-					<view class="mon-t" >{{item.name}}</view>
-					<view class="mon-n">
-						<view class="flex justify-between">
-							<view>月占比{{item.pre}}%</view>
-							<view class="font-size-number number-color font-weight-bold">
-								<text style="margin-right:8px;">¥{{item.mon}}</text>
-								<text class="cuIcon-write" style="color:#7C81A3;" ></text>
-								<!-- <text class="cuIcon-right" style="color:#7C81A3;" v-if="item.mon>1"></text> -->
-							</view>
-						</view>
-						<view class="cu-progress round sm striped active" >
-							<view class="bg-color-red" :style="[{'width':`${item.pre}%`}]"></view>
-						</view>
-					</view>
-				</view>
-			</view>
-			<view v-if="switchTab=='day'">
-				<view class="month-list-item flex justify-between"
-					  :class="{'edit-active':item.id==monthTabID}"
-					  v-for="(item,index) in dayList" :key="index" @click="editAim(item)">
-					<view>
-						<image :src="item.img" style="width:37px;height:37px;border-radius: 50%;"></image>
-					</view>
-					<view class="mon-n">
-						<view class="flex justify-between">
-							<view>{{item.name}}</view>
-							<view class="font-size-number number-color font-weight-bold">
-								<text style="margin-right:8px;">¥{{item.mon}}</text>
-								<text class="cuIcon-right" style="color:#7C81A3;"></text>
-							</view>
-						</view>
-						<view class="cu-progress round sm striped active" >
-							<!-- <view class="bg-color-red" :style="[{'width':item.pre}]"></view> -->
-							<view class="bg-color-purple" style="width:60%"></view>
-						</view>
-					</view>
+		<!-- 分解方法 start -->
+		<view class="bg-white margin-bottom-normal resolveWay flex justify-between align-center" v-if="isShowResolveWay && switchTab=='day'">
+			<view>分解方式</view>
+			<view class="flex justify-between align-center">
+				<view v-for="(item,index) in radioTabList" style="margin-left:15px;" :key="index" @tap="selectResolveWay(item)">
+					<image
+							:src="radio==item.id?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'"
+							class="resolve-img"></image>
+					<text>{{item.name}}</text>
 				</view>
 			</view>
 		</view>
+		<!-- 分解方式 end -->
+		<!--月销售额趋势 end-->
+		<!--月份列表 start-->
+		<view class="month-list-container" v-if="switchTab=='month'">
+			<view >
+				<view
+						v-for="(item,index) in numList" :key="index" @click="editAim(item)">
+					<view v-if="item.id==12" class="month-list-item flex justify-between">
+						<view class="mon-t" >{{item.name}}</view>
+						<view class="mon-n">
+							<view class="flex justify-between">
+								<view>月占比{{item.pre}}%</view>
+								<view class="font-size-number number-color font-weight-bold">
+									<text style="margin-right:8px;">¥{{item.mon}}</text>
+									<!-- 12月份不显示图标，小于开业日期不显示图标 -->
+
+								</view>
+							</view>
+							<view class="cu-progress round sm striped active" >
+								<view class="bg-color-red" :style="[{'width':`${item.pre}%`}]" ></view>
+							</view>
+						</view>
+					</view>
+					<view v-else class="month-list-item flex justify-between">
+						<view class="mon-t" >{{item.name}}</view>
+						<view class="mon-n">
+							<view class="flex justify-between">
+								<view>月占比{{item.pre}}%</view>
+								<view class="font-size-number number-color font-weight-bold">
+									<text style="margin-right:8px;">¥{{item.mon}}</text>
+									<!-- 12月份不显示图标，小于开业日期不显示图标 -->
+									<text class="cuIcon-write" style="color:#7C81A3;" v-if="(year==shopBgnYear && item.id>=shopBgndate) || year>shopBgnYear"></text>
+								</view>
+							</view>
+							<view class="cu-progress round sm striped active" >
+								<view class="bg-color-red" :style="[{'width':`${item.pre}%`}]" ></view>
+							</view>
+						</view>
+					</view>
+
+				</view>
+			</view>
+		</view>
+
+		<view v-if="switchTab=='day'" class="calendar">
+			<view class="week-list flex justify-around ">
+				<view class="week-item font-size-big font-weight-bold color-regular" v-for="(item,index) in weekList" :key="index">{{item}}</view>
+			</view>
+			<view class="flex days-list">
+				<view class="day lm" v-for="(item,index) in lastMonthDaysList" :key="item.day"><text>{{item.day}}</text></view>
+				<block v-for="(item,index2) in currentMonthDaysList" :key="item.day" >
+					<view class="day position_relative" @click="editAim(item)" :class="{'day-active':dayTabID==item.day}">
+						<view>{{item.day}}</view>
+						<view style="bottom:4px;"
+							  :class="{'noHas-active':item.num==0}"
+							  class="font-size-mini color-regular position_absolute"
+						>￥{{item.num}}</view>
+					</view>
+				</block>
+				<view class="day nm" v-for="(item,index3) in nextMonthDaysList" :key="item.day">{{item.day}}</view>
+			</view>
+		</view>
 		<!--月份列表 end-->
+
+
 		<!--弹出框-->
 		<view class="cu-modal" :class="modalName=='Modal'?'show':''">
 			<view class="cu-dialog">
 				<view class=" bg-white justify-end" >
-					<view class="content" style="padding:25px 23px 19px 23px;text-align:left;">{{monthTabCur.name}}目标金额</view>
+					<view class="content text-left" style="padding:25px 23px 19px 23px;" v-if="switchTab=='month'">{{monthTabCur.name}}目标金额</view>
 				</view>
 
 				<view class=" bg-white borderBottom " >
@@ -146,17 +163,74 @@
 				</view>
 			</view>
 		</view>
-		<view class="btn-container">
-			<view class="submit-btn" @click="confirmShopAim">确定</view>
+		<!--按钮区域 start-->
+
+		<view class="btn-container" v-if="switchTab=='month'">
+			<view class="submit-btn" @click="confirmShopAim" >确定</view>
+		</view>
+		<view v-if="switchTab=='day' && isShowEditDay" class="bg-white flex justify-start align-center edit-day-content" >
+			<image src="../../../../../static/icon/icon-bianji.png"  class="edit-day-img"></image>
+			<input type="text" placeholder="请输入要修改的金额" v-model="num" style="border-bottom:1px solid #ccc;height:31px;width:70%;">
+			<view class="editBtn" @click="setShopAim">确定</view>
+		</view>
+		<!--按钮区域 end-->
+
+		<!--日期选择框 start-->
+
+		<view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-green" @tap="selectMonthModal">取消</view>
+					<view class="action text-blue" @tap="selectMonthModal">确定</view>
+				</view>
+				<view>
+					<view class="grid col-4 padding-sm">
+						<view v-for="(item,index) in checkbox" class="padding-xs" :key="index">
+							<button class="cu-btn border-normal xs block"
+									:class="{'month-active':month==item.value,'border-red':year < shopBgnYear || (year == shopBgnYear && item.value<shopBgndate) }"
+									@tap="ChooseCheckbox(item)" :data-value="item.value"> {{item.name}}
+							</button>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!--日期选择框 end-->
+
+		<view class="resolveModal data-choose-container"  v-if="isShowRadio">
+
+			<view class="choose-content">
+				<image src='../../../../../static/icon/close.png'  @click="cancelRadio" class="close_img"></image>
+				<view style="text-align:center;">
+					<image :src="radio==resolveWayZn.day?'../../../../../static/img/work/statistics/resolve-day.png':'../../../../../static/img/work/statistics/resolve-week.png'" class="choose-way-img"></image>
+				</view>
+				<view class="resolve-content" >
+					<view class="font-size-big color-normal" style="margin-bottom:10px;">{{year}}年{{month}}月</view>
+					<view class="margin-bottom-mini">月目标 :	<text  class="resolve-content-text">{{shopSaleResolve.expect || 0}}元</text></view>
+					<view v-show="radio==resolveWayZn.day">
+						<view class="margin-bottom-mini">分解方式 :	<text class="resolve-content-text">按天平摊({{monthDay}}天)</text></view>
+					</view>
+					<view v-show="radio==resolveWayZn.week">
+						<view class="margin-bottom-mini">周末天数 :	<text class="resolve-content-text">{{countWeek}}天</text></view>
+						<view class="margin-bottom-mini">普通天数 :	<text class="resolve-content-text">{{monthDay-countWeek}}天</text></view>
+					</view>
+				</view>
+				<view class="resolve-btn" @click="radioSelect()">确定</view>
+			</view>
 		</view>
 	</view>
 </template>
 <script>
 	import uCharts from '../../../../../components/u-charts/u-charts.js'
+	import {mapState} from 'vuex'
 	var canvaMix=null;
 	export default{
+		computed:mapState(['resolveWayZn']),
 		data(){
+
 			return{
+				shopBgndate:'',//门店开始时间
+				shopBgnYear:'',
 				switchTab:'month',//判断年/日
 				//曲线图
 				cWidth:'',
@@ -184,127 +258,403 @@
 				monthTabCur:'',
 				monthTabID:'',
 				num:'',
-				weekList:[
-					{id:1,name:'第一周'},
-					{id:2,name:'第二周'},
-					{id:3,name:'第三周'},
-					{id:4,name:'第四周'},
-				],
-				weekTabCur:1,
-				dayList:[
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
-					{img:'../../../../../static/img/work/statistics/day.png',name:'周一(08-01) 32%',mon:'¥2,1001.00'},
+				dayTabCur:'',//选择那一天
+				dayTabID:'',
 
-				],
 				shopID:'',//门店id
-				shopSaleResolve:'',
+				shopSaleResolve:{},
 				maxNum:'',//最大值
+				radio:'',//单选
+				isShowRadio:false,
+				radioTabList:[
+					{id:1,name:'按天平摊'},
+					{id:2,name:'周末加倍'}
+				],
+				radioTabCur:'',//选择按天平摊，还是周末加倍
+				isShowEditDay:false,//是否显示修改金额
+				isShowResolveWay:false,//是否显示分解方法
+				/*日分解*/
+				weekList:['日','一','二','三','四','五','六'],
+				// itemIndex:10,
+				monthList:[],//月份范围
+				yearList:[],//年份范围
+				lastMonthDaysList:[],//上个月的总天数
+				currentMonthDaysList:[],//当前月总天数
+				nextMonthDaysList:[],//下个月总天
+				month:new Date().getMonth()+1,
+				value:[new Date().getFullYear()-1980,8],
+				year:new Date().getFullYear(),
+				// monthAim:'',//每个月的月目标
+				// yearAim:'',//年目标
+				monthPre:'',//月份所占比重
+				monthDay:'',//本月有多少天
+				countWeek:'',//本月有几个周末
+				editItem:'',//要要修改的日期
+				checkbox: [
+					{value: 1,name: '1月'},
+					{value: 2,name: '2月'},
+					{value: 3,name: '3月'},
+					{value: 4,name: '4月'},
+					{value: 5,name: '5月'},
+					{value: 6,name: '6月'},
+					{value: 7,name: '7月'},
+					{value: 8,name: '8月'},
+					{value: 9,name: '9月'},
+					{value: 10,name: '10月'},
+					{value: 11,name: '11月'},
+					{value: 12,name: '12月'},
+				],
+
 			}
 		},
 		components:{
 
 		},
 		methods:{
-			/*确认门店绩效*/
-			confirmShopAim(){
-				let current=new Date();
-				this.$ajax('NewMonthlyPerformance',{
-					year:current.getFullYear(),
-					shop:this.shopID,
-					month1:this.numList[0].mon,
-					month2:this.numList[1].mon,
-					month3:this.numList[2].mon,
-					month4:this.numList[3].mon,
-					month5:this.numList[4].mon,
-					month6:this.numList[5].mon,
-					month7:this.numList[6].mon,
-					month8:this.numList[7].mon,
-					month9:this.numList[8].mon,
-					month10:this.numList[9].mon,
-					month11:this.numList[10].mon,
-					month12:this.numList[11].mon,
-					id:this.shopSaleResolve.id
-				},res=>{
+			ChooseCheckbox(item) {
+				if(new Date().getFullYear()<this.shopBgnYear || (new Date().getFullYear()==this.shopBgnYear && item.value<this.shopBgndate)){
+					//如果当前年小于开业日期
 					uni.showToast({
-						title:'设置门店绩效成功!',
+						title:'月份在门店未开业之前，不可设置',
 						icon:'none'
 					})
-					this.getShopAim(this.shopID)
+					return;
+				}
+				this.month=item.value;
+
+			},
+			getWeek(){
+				var date = new Date((new Date(this).setDate(1)) || (new Date()).setDate(1));
+				var firstWeekDate = 1;// 默认第一周是本月1号 为了模拟本月1号是否为本月第1周的判断
+				if (date.getDay() === 1) { // 判断1号是周一
+					firstWeekDatek = 1;
+				} else if (date.getDay() === 0) { // 判断1号是周日
+					firstWeekDate = 8 - 7 + 1;
+				} else { // 判断1号是周二至周六之间
+					firstWeekDate = 8 - date.getDay() + 1;
+				}
+				date.setMonth(date.getMonth()+1);
+				date.setDate(0);
+				var monthHasDays = date.getDate();// 本月天数
+				monthHasDays = date.getDate() - firstWeekDate + 1;
+				var hasWeek = Math.ceil(monthHasDays/7); //
+				this.countWeek=hasWeek*2;
+			},
+			/*取消选择分解方法*/
+			cancelRadio(){
+				this.isShowRadio=false;
+				this.radio=''
+			},
+			/*按周末加倍,或者按天平摊渲染数据*/
+			renderByWay(id){
+				this.$ajax('NewShopDailyPerformance',{
+					date:`${this.year}-${this.month>=10?this.month:'0'+this.month}-01`,
+					target:this.shopID,
+					doubled:id==2?1:''//传1就是加倍 不穿就是均摊
+				},res=>{
+					this.isShowResolveWay=false;
+					this.getShopAim(this.shopID);
+
 				})
+			},
+			/*单选选中*/
+			selectResolveWay(item){
+				this.radio=item.id;
+				this.isShowRadio=true
+				this.getWeek();//获得有几个周末
+			},
+			radioSelect() {
+				this.renderByWay(this.radio);
+				this.isShowRadio=false;
+				this.radio='';
+
+			},
+			selectMonthModal(){
+				if(this.modalName){
+					this.modalName=null;
+				}
+				this.isShowEditDay=false;
+				this.dayTabID=''
+				this.getCalendar(this.year,this.month);
+				this.getShopAimByMonth(this.shopID,this.year,this.month)
+			},
+			//选择月份显示该月份的天数
+			selectMonth(){
+				this.modalName='bottomModal';
+			},
+			chooseMonth(event){
+				let val=event.detail.value;
+				this.year=this.yearList[val[0]];
+				this.month=this.monthList[val[1]];
+
+			},
+			/*根据年月获得该月份的天数*/
+			getCalendar(year,month){
+				//获得该月份总天数
+				let fullDay=parseInt(new Date(year,month,0).getDate());
+				this.monthDay=fullDay;
+
+				//获得该月第一天是周几
+				let startWeek=parseInt(new Date(year,month-1,1).getDay());
+
+				//获得上个月的天数
+				let lastMonthDay=parseInt(new Date(year,month,0).getDate());
+
+				let totalDay = (fullDay + startWeek) % 7 == 0 ?
+						(fullDay + startWeek) :
+						fullDay + startWeek + (7 - (fullDay + startWeek) % 7);//元素总个数
+
+				//年份范围
+				let curYear=new Date().getFullYear();
+				//年份范围2009-2029
+				this.monthList=[];
+				this.yearList=[];
+				for(var i=1990;i<=curYear+10;i++){
+					this.yearList.push(i)
+				}
+				//月份范围1-12
+				for(var i=1;i<=12;i++){
+					this.monthList.push(i);
+				}
+
+				//遍历日历
+				this.currentMonthDaysList=[];
+				this.lastMonthDaysList=[];
+				this.nextMonthDaysList=[];
+				for(let i=0;i<totalDay;i++){
+					if(i<startWeek){
+						//如果第一天不是周日的情况下，就渲染上个月的数据
+						this.lastMonthDaysList.push({
+							id:`day${lastMonthDay-startWeek+1+i}`,
+							day:lastMonthDay-startWeek+1+i,
+							num:0
+						});
+					}else if(i<(startWeek+fullDay)){
+						//当月天数
+						this.currentMonthDaysList.push({
+							id:`day${i + 1 - startWeek}`,
+							day:i + 1 - startWeek,
+							num:0
+						});
+					}else {
+						this.nextMonthDaysList.push({
+							id:`day${(i + 1 - (startWeek + fullDay))}`,
+							day:(i + 1 - (startWeek + fullDay)),
+							num:0
+						});
+					}
+				}
+				let tmonth=month+1;
+			},
+			/*确认门店绩效*/
+			confirmShopAim(){
+				switch (this.switchTab) {
+					case 'month':
+						if(this.numList[this.numList.length-1].mon<0){
+							uni.showToast({
+								title:'12月份绩效目标为负值，请重新修改',
+								icon:'none'
+							})
+							return;
+						}
+						// let totalMax=this.numList.reduce((pre,next)=>{return Number(pre)+Number(next.mon)},0);
+						// if(totalMax!=this.shopSaleResolve.expect){
+						// 	uni.showToast({
+						// 		title:'年计划与月绩效之和不相符',
+						// 		icon:'none'
+						// 	})
+						// 	return;
+						// }
+
+						this.$ajax('NewShopMonthlyPerformance',{
+							// year:new Date().getFullYear(),
+							month1:this.numList[0].mon,
+							month2:this.numList[1].mon,
+							month3:this.numList[2].mon,
+							month4:this.numList[3].mon,
+							month5:this.numList[4].mon,
+							month6:this.numList[5].mon,
+							month7:this.numList[6].mon,
+							month8:this.numList[7].mon,
+							month9:this.numList[8].mon,
+							month10:this.numList[9].mon,
+							month11:this.numList[10].mon,
+							month12:this.numList[11].mon,
+							id:this.shopSaleResolve.id,
+							// type:3,
+							// target:this.shopID,
+							// expect:this.shopSaleResolve.expect
+						},res=>{
+							uni.showToast({
+								title:'设置门店绩效成功!',
+								icon:'none',
+								success: () => {
+									this.getShopAim(this.shopID)
+								}
+							})
+
+						})
+						break;
+					case 'day':
+
+						this.$ajax('SetShopDailyPerformance',{
+							shop:this.shopID,
+							date:`${this.year}-${this.month>=10?this.month:'0'+this.month}-${this.dayTabCur.day>=10?this.dayTabCur.day:'0'+this.dayTabCur.day}`,
+							expect:this.dayTabCur.num
+						},res=>{
+							uni.showToast({
+								title:'设置门店绩效成功!',
+								icon:'none'
+							})
+							this.isShowEditDay=false;
+							this.dayTabID=0;
+						},err=>{
+							this.getShopAim(this.shopID)
+						})
+
+						break;
+				}
+
 			},
 			/*获得门店绩效数据*/
 			getShopAim(id){
 				switch(this.switchTab){
 					case 'month':
-						this.$ajax('MonthlyPerformances',{
-							shop:id
+						this.$ajax('ShopMonthlyPerformance',{
+							shop:id,
+							year:this.year,
 						},res=>{
 							if(res){
-							let array=[],max=-65535;
-							this.shopSaleResolve=res[0];
-							this.numList.forEach((item,index)=>{
-								item.mon=this.shopSaleResolve[`month${index+1}`];
-								array.push(item.mon);
-								item.pre=(item.mon/this.shopSaleResolve.amount).toFixed(2);
+								this.shopSaleResolve=res;
+								this.shopBgndate=new Date(res.shopBgndate).getMonth()+1;
+								this.shopBgnYear=new Date(res.shopBgndate).getFullYear()
+								this.numList.forEach(item=>{
 
-							})
-							this.chartData.series=[
-								{
-									"name": "曲面",
-									"data": array,
-									"type": "area",
-									"style": "curve"
-								}, {
-									"name": "曲线",
-									"data": array,
-									"type": "line",
-									"style": "curve",
-									"color": "#1890ff"
-								}
-							]
-							this.getServerData()
-						}
+									//如果当前年大于开业日期的年分
+									if(new Date().getFullYear()>this.shopBgnYear){
+
+										if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
+												||res['month9']||res['month10']||res['month11']||res['month12']){
+											//如果一个有数据，就赋值
+											item.mon=res[`${item.value}`];
+											item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+										}else{
+											if(item.id==12){
+												item.mon=this.shopSaleResolve.expect;
+												item.pre=item.mon/this.shopSaleResolve.expect*100
+											}else{
+												item.mon=res[`${item.value}`];
+												item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+											}
+										}
+
+
+
+									}else if(new Date().getFullYear()==this.shopBgnYear){
+										//如果12月份有值，就不管
+										if(item.id!=12){
+											if(item.id<this.shopBgndate){
+												item.mon=0;
+												item.pre=0
+											}else{
+												item.mon=res[`${item.value}`];
+												item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+											}
+
+										}else if(item.id==12){
+											if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
+													||res['month9']||res['month10']||res['month11']||res['month12']){
+												item.mon=res[`${item.value}`];
+												item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+											}else{
+												item.mon=this.shopSaleResolve.expect;
+												item.pre=item.mon/this.shopSaleResolve.expect*100
+											}
+
+										}
+									}
+
+								})
+							}
+
 						})
-					break;
+						break;
 					case 'day':
-					this.getShopAimByMonth(id,new Date().getFullYear(),new Date().getMonth()+1);
-					break;
+						this.getShopAimByMonth(this.shopID,this.year,this.month)
+
+						break;
 				}
 
 			},
 			/*根据月份获得绩效*/
 			getShopAimByMonth(shopID,year,month){
-				this.$ajax('DailyPerformances',{
+				//上半部分目标绩效内容
+				this.$ajax('ShopMonthlyPerformance',{
 					shop:shopID,
-					year:year,
-					month:month
+					year:year
 				},res=>{
-					console.log(res)
+					if(res){
+						this.shopSaleResolve.id=res.id;
+						this.shopSaleResolve.expect=res[`month${month}`];
+						this.monthPre=res['expect']?Number(res[`month${month}`]/res['expect']*100).toFixed(2):0
+					}
+
+				})
+				this.$ajax('ShopMonthlyPerformance',{
+					shop:shopID,
+					date:`${year}-${month>=10?month:'0'+month}-01`
+				},res=>{
+					if(res){
+						let sum=0;
+						this.currentMonthDaysList.forEach(item=>{
+							for(let k in  res){
+								if(item.id==k){
+									item.num=res[k].toFixed(2);
+									sum+=Number(item.num);
+								}
+							}
+						})
+						if(sum==0){
+							this.isShowResolveWay=true;
+						}
+					}
 				})
 			},
 			/*设置或者修改金额*/
 			setShopAim(){
-				let min=(this.monthTabCur.mon-this.num).toFixed(2);
-				this.numList[this.numList.length-1].mon=Number(this.numList[this.numList.length-1].mon)+Number(min);
-				this.numList.forEach(item=>{
-					if(item.id==this.monthTabCur.id){
-						item.mon=this.num;
-					}
-					this.hideModal()
-				})
+				switch(this.switchTab){
+					case 'month':
+						let min=(this.monthTabCur.mon-this.num).toFixed(2);
+						this.numList[this.numList.length-1].mon=Number(this.numList[this.numList.length-1].mon)+Number(min);
+						this.numList.forEach(item=>{
+							if(item.id==this.monthTabCur.id){
+								item.mon=this.num;
+							}
+							// this.hideModal()
+						})
+						console.log(this.numList)
+						this.confirmShopAim()
+						break;
+					case 'day':
+						let dayMin=(Number(this.dayTabCur.num)-Number(this.num)).toFixed(2);
+						let len=this.currentMonthDaysList.length-1;
+						this.currentMonthDaysList[len].num=(Number(this.currentMonthDaysList[len].num)+Number(dayMin)).toFixed(2);
+						this.currentMonthDaysList.forEach((item=>{
+							if(item.day==this.dayTabCur.day){
+								item.num=this.num
+							}
+						}))
+						this.confirmShopAim()
+						break;
+				}
+
 			},
 			/*
 				选择周
 			*/
-		   selectWeek(item){
-			   this.weekTabCur=item.id;
-		   },
+			selectWeek(item){
+				this.weekTabCur=item.id;
+			},
 			/*关闭弹出框*/
 			hideModal(){
 				if(this.modalName){
@@ -314,13 +664,72 @@
 			},
 			/*编辑门店目标*/
 			editAim(item){
-				this.monthTabCur=item;
-				this.monthTabID=item.id;
-				this.num=this.monthTabCur.mon
-				setTimeout(()=>{
-					this.modalName='Modal';
+				switch(this.switchTab){
+					case 'month':
+						if(item.id==12){
+							return
+						}
+						//如果当前时间在开业日期之后
+						let stringTime=`${new Date().getFullYear()}-${item.id}-1`;
+						//如果当前时间在开业日期之前
+						if(this.year==this.shopBgnYear){
+							//如果当前年份相等
+							if(item.id<this.shopBgndate){
+								uni.showToast({
+									title:'门店还未开业，无绩效可修改',
+									icon:'none'
+								})
+							}else{
+								this.monthTabCur=item;
+								this.monthTabID=item.id;
+								this.num=this.monthTabCur.mon
+								setTimeout(()=>{
+									this.modalName='Modal';
+								},600)
+							}
+						}else if(this.year>this.shopBgnYear){
+							this.monthTabCur=item;
+							this.monthTabID=item.id;
+							this.num=this.monthTabCur.mon
+							setTimeout(()=>{
+								this.modalName='Modal';
+							},600)
+						}
 
-				},600)
+
+						break;
+					case 'day':
+						let sum=0;
+						this.currentMonthDaysList.forEach(item=>{
+							sum+=Number(item.num).toFixed(0);
+						})
+						if(sum==0){
+							uni.showToast({
+								title:'绩效目标还未分解,分解之后才可以修改',
+								icon:'none'
+							})
+							this.isShowEditDay=false;
+						}else{
+							if(this.currentMonthDaysList[this.currentMonthDaysList.length-1].day==item.day){
+								uni.showToast({
+									title:'最后一天不可修改',
+									icon:'none'
+								})
+								this.isShowEditDay=false;
+
+							}else{
+								this.dayTabCur=item;
+								this.dayTabID=item.day;
+								this.num=item.num;
+								this.isShowEditDay=true;
+							}
+
+						}
+
+
+						break;
+				}
+
 			},
 			/*返回上一页*/
 			goBack(){
@@ -331,6 +740,9 @@
 			/*选择年日*/
 			switchSelect(type){
 				this.switchTab=type;
+				if(this.isShowEditDay){
+					this.isShowEditDay=false;
+				}
 				this.getShopAim(this.shopID)
 
 			},
@@ -406,16 +818,19 @@
 			}
 		},
 		onLoad(params){
+			this.getCalendar(this.year,this.month);
 			this.cWidth=uni.upx2px(750);
 			this.cHeight=uni.upx2px(500);
-			this.getServerData();
 			if(params.id){
 				this.shopID=params.id;
 				this.getShopAim(params.id)
 			}
+
+
 		},
 		onShow(){
-			this.getShopAim(this.shopID)
+
+			// this.getShopAim(this.shopID)
 		}
 	}
 </script>
@@ -427,6 +842,7 @@
 		background:rgba(66,74,119,1);
 		border-radius:12px;
 		padding:2px 4px;
+		margin-right:10px;
 		/*background-color: pink;*/
 		.switch-btn-item{
 			padding: 3px 6px;
@@ -444,25 +860,26 @@
 
 	/*门店目标 start*/
 	.shop-aim-container{
-		height: 200px;
+		// height: 170px;
 		background:url("../../../../../static/img/work/statistics/bg.png") no-repeat;
-		padding:30px  15px 23px 36px;
+		padding:20px  15px 30px 20px;
 		.shop-aim{
 			text-align:center;
 			font-size:36px;
 			font-weight: bold;
 			font-family:DINAlternate-Bold;
 			color:rgba(120,246,178,1);
-			margin:3px 0 24px;
+			margin:3px 0 10px;
 		}
 		.shop-intro{
 
 			.intro-l{
-				border-right:1px solid #525A85;
-				padding-right:20px;
+
+
 			}
 			.intro-r{
-				padding-left:10px;
+				padding-left:15px;
+				border-left:1px solid #525A85;
 			}
 			.intro-i{
 				width: 16px;
@@ -489,7 +906,7 @@
 	/*销售额趋势 end*/
 	/*月份列表 start*/
 	.month-list-container{
-		padding:29px 0;
+		padding:29px 0 1px 0 ;
 		background-color: #fff;
 		.month-list-item{
 			padding: 4px 17px 4px 15px;
@@ -529,6 +946,7 @@
 	.btn-container{
 		width:100%;
 		padding:0 15px;
+		margin-top: 10px;
 		.submit-btn{
 			text-align: center;
 			height:40px;
@@ -538,5 +956,87 @@
 			border-radius:5px;
 			font-size:17px;
 		}
+
+	}
+	.calendar{overflow-x:hidden;padding-bottom:50px;background:#fff;}
+
+	.calendar .week-list{line-height: 40px;height:40px;}
+	.calendar .week-list .week-itm{flex:1;text-align: center;font-size:24px;color:#fff;}
+	.calendar .days-list{-webkit-flex-wrap: wrap;flex-wrap: wrap;width:99.995%;}
+	.calendar .days-list .day{width: 14.285%;height:50px;font-size:15px;color:#2A2A2A;
+		position: relative;text-align: center;padding-top:10px;}
+	.calendar .days-list .lm,.calendar .days-list .nm{color:#b6b6b6;}
+	.calendar .day .ep{color:#333;}
+	.btn-item{
+		height:41px;line-height:41px;border:1px solid rgba(66,176,237,1);border-radius:5px;
+		text-align: center;
+	}
+	.btn-item-month{
+		color:rgba(66,176,237,1);width:45%;margin-right:20px;
+	}
+	.btn-item-week{
+		background:rgba(66,176,237,1);color:#fff;flex:1;text-align: center;
+	}
+	.day-active{
+		background:#42B0ED;
+		color:#fff !important;
+		border-radius:6px;
+	}
+
+	.noHas-active{
+		left:18px;
+	}
+	.editBtn{
+		background:rgba(66,176,237,1);
+		border-radius:13px;height:21px;line-height:21px;padding: 0px 8px;color:#fff;margin-left:10px;
+	}
+	.resolveWay{
+		height:53px;
+		line-height:53px;
+		align-content: sub;
+		padding: 0 13px;
+		font-size:15px;
+		color:#2A2A2A
+	}
+	.month-active{
+		background:#42B0ED;
+		color:#fff;
+	}
+	.resolve-img{
+		width:18px;height:18px;vertical-align: middle;margin-right:5px;
+	}
+	.data-choose-container{
+		width:100%;min-height:800px;background:rgba(0,0,0,0.2);position:absolute;z-index:9999;top:0;left:0;
+	}
+	.choose-content{
+		width:263px;height:219px;
+		background:#fff;border:1px solid #ccc;
+		position:absolute;
+		transform: translate(-50%,-50%);
+		left:50%;top:50%;transition: all 1s;padding-bottom:5px;
+	}
+	.close_img{
+		width:24px;height:24px;margin-top:-10px;position:absolute;right:-10px;
+	}
+	.choose-way-img{
+		width:137px;height:90px;margin-top:-40px;margin-left:6px;
+	}
+	.resolve-content{
+		padding-top:4px;padding-left:20px;margin-bottom:17px;
+	}
+	.resolve-content-text{
+		color:#14B45D;margin-left:8px;
+	}
+	.margin-bottom-mini{
+		margin-bottom: 10upx;
+	}
+	.resolve-btn{
+		height:30px;line-height:30px;text-align: center;background: url('../../../../../static/img/work/statistics/btn-bg.png') no-repeat center;margin:0 13px;color:#fff;
+	}
+	.edit-day-content{
+		padding:11px 14px 3px;width:100%;bottom:0;position:fixed;height:50px;
+	}
+	.edit-day-img{
+		width:16px;height:19px;margin-right:8px;
 	}
 </style>

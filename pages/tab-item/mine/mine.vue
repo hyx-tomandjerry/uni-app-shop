@@ -1,7 +1,6 @@
 <template>
-	<view >
+	<view class="position_relative">
 		<view style="position:relative;">
-			
 			<view class="header-content flex justify-between">
 				<view class="flex justify-start align-center" @click="operateItem('user')">
 					<image :src="userInfo.headurl?userInfo.headurl:'../../../static/img/avatar.jpg'"
@@ -62,21 +61,22 @@
 				<block slot="content">确定要退出登录吗?</block>
 			</showModel>
 		</view>
-		
+		<tabbarBtn @gotoItem="gotoItem"  tabCur="mine" :num="todoNum"></tabbarBtn>
 	</view>
-
+	
 </template>
 
 <script>
 	import showModel from '../../../components/show-model.vue'
+	import tabbarBtn from '../../../components/common/tabbar-btn.vue'
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex';
 
 	export default{
-		computed: mapState(['hasLogin','userInfo','shoperObj','userStatus']),
-		components:{showModel},
+		computed: mapState(['hasLogin','userInfo','shoperObj','userStatus','todoNum']),
+		components:{showModel,tabbarBtn},
 		data(){
 			return{
 				isQuit:false,
@@ -85,6 +85,25 @@
 		},
 		methods:{
 			...mapMutations(['logout','login']),
+			gotoItem(type){
+				switch(type){
+					case 'index':
+					uni.redirectTo({
+						url:'../index/index'
+					})
+					break;
+					case 'work':
+					uni.redirectTo({
+						url:'../work/work'
+					})
+					break;
+					case 'notice':
+					uni.redirectTo({
+						url:"../../tab-item-content/notice-center/notice-index/notice-index"
+					})
+					break;
+				}
+			},
 			hideModal(type){
 				
 				if(type=='agree'){

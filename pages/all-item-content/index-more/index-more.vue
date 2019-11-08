@@ -1,7 +1,7 @@
 <template>
 	<view >
 		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back font-size-middle" @click.stop="goBack()" ></text></block>
+			<block slot="left"><text class="cuIcon-back" @click="goBack()" ></text></block>
 			<block slot="content">
 				<view class="font-size-big font-weight-bold color-normal">{{title}}</view>
 			</block>
@@ -93,7 +93,7 @@
 
 				}else{
 					res.forEach(item=>{
-						this.skillList.concat(item)
+						this.skillList=this.skillList.concat(item)
 					})
 					this.loading='loading'
 					setTimeout(()=>{

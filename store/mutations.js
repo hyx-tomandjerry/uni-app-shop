@@ -36,6 +36,9 @@ export default {
         uni.removeStorage({
             key:'userInfo',
         })
-    }
+    },
+	setTodoNum(state,value){
+		state.todoNum=value
+	}
 }
 

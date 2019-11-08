@@ -1,11 +1,9 @@
 <template>
 	<view >
-
-	<!-- <view class="flex text-center bg-white justify-around">
-		<view class="cu-item  font-size-big  " :class="item.id==TabCur?'cur  borderBottomRed color-red':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(item)" :data-id="index" style="padding:9px  0;">
-			{{item.name}}
-		</view>
-	</view> -->
+		<cu-custom :isBack="true" bgColor="bg-white">
+			<block slot="left"><text class="cuIcon-back font-size-back font-weight-bold"  @click="goBack()"></text></block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >工作回执</view></block>
+		</cu-custom>
 		<view v-if="list.length">
 			<view >
 				<view class="work-item" @click="itemDetail(item)" v-for="(item,index) in list" :key="index" style="margin-bottom:13px" >
@@ -46,7 +44,7 @@
 				<view class="sale_item bg-white margin-bottom-normal"  v-for="(item,index) in saleList" :key="index" @click="checkItem(item)">
 					<view class="user_info flex justify-start">
 						<image :src="item.img" mode="" class="user_avatar"></image>
-						
+
 						<view>
 							<view class="color-normal font-size-big" style="margin-bottom:7px;">{{item.name}}</view>
 							<view class="font-size-litter color-regular">{{item.date}}</view>
@@ -73,13 +71,14 @@
 					</view>
 				</view>
 			</view> -->
+			<uni-load-more :contentText="content" :status="loading" :showIcon="true" ></uni-load-more>
 		</view>
 		<view v-else>
 			<LxEmpty></LxEmpty>
 		</view>
 		<!-- <image src="../../../../static/img/add.png"
 				style="position:fixed;right:12px;bottom:36px;width:68px;height:68px;z-index:100;" @click.stop="createWork()" v-if="TabCur==2 && userInfo.type==shoperObj.type "></image> -->
-				<uni-load-more :contentText="content" :status="loading" :showIcon="true" ></uni-load-more>
+
 	</view>
 </template>
 
@@ -169,17 +168,22 @@
 			this.cHeight3=uni.upx2px(200);//这里要与样式的宽高对应
 			this.arcbarWidth=uni.upx2px(20);
 			this.saleList.forEach((item,index)=>{
-		
+
 				this.showArcbar(`canvasArcbar${index+1}`,item.chart);
 			})
-			
-			
+
+
         },
 		onShow(){
 			this.page=1;
 			this.getList();
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			/*查看任务详情*/
 			checkItem(item){
 				uni.navigateTo({
@@ -218,7 +222,7 @@
 						}
 					}
 				});
-				
+
 			},
 			/**
 			 点赞，评论功能，已删除

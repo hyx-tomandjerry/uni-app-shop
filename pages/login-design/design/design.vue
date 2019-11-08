@@ -39,17 +39,17 @@
 						   :class="designer.token?'explain-color':'color-placeholder'">
 				</view>
 				
-				<view>
+				<view style="width:200upx;height:20px;">
 					<view v-if="isShowPwd" @click="showPwd()">
-						<image src="../../../static/icon/icon-xianshimima@2x.png"
-							   class="design-info-item-pwd-img-show"
+						<image src="../../../static/icon//zhengkaiyanjing.png"
+							   class="imgEye"
 					
 						></image>
 					</view>
 					<view v-else @click="showPwd()">
 						<image  
-								src="../../../static/icon/icon-yingcangmima@2x.png"
-							  class="design-info-item-pwd-img"></image>
+								src="../../../static/icon/eye.png"
+							  class="imgEyeOpen"></image>
 					</view>
 				</view>
 				
@@ -307,13 +307,23 @@
 <style lang="less" >
 	@import url('../../../static/css/demo.less');
 	page{
-		background: @bg_color;
+		background: #FFFFFF;
 	}
 	.copyright{
 		position:fixed;
 		bottom:17px;
 		left:59px;
 		
+	}
+	.imgEye{
+		.mixWidth(76upx);
+		.mixHeight(50upx);
+		position: absolute;right:10px;top:24upx;
+	}
+	.imgEyeOpen{
+		.mixWidth(70upx);
+		.mixHeight(60upx);
+		position: absolute;right:10px;top:24upx;
 	}
 	.design-container{
 
@@ -330,7 +340,7 @@
 		.mixMarginBottom(28px);
 		.design-info-item{
 
-			.mixPadding(16px;0;16px;0);
+			.mixPadding(16px;10px;16px;0);
 			.design-info-item-name{
 				.mixImg(22px;22px;);
 				.mixMarginRight(15px);

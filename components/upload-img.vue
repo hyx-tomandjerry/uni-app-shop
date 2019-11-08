@@ -25,19 +25,28 @@
 				token:'',
 				imgList:[],
 				files:[],
-				
+
+
+
 			};
 		},
 		props:{
-
+			showImg:Array,
+			showFileID:Array,
 			xType:{
-				type:Number,
+				type:[Number,String],
 				default:''
 			},
 			src:{
 				type:String,
 				default:''
 			}
+		},
+		created(){
+			console.log(this.showImg)
+			console.log(this.showFileID)
+			this.imgList=this.showImg;
+			this.files=this.showFileID;
 		},
 		methods:{
 			ViewImage(e) {
@@ -69,6 +78,7 @@
 									title: '删除成功',
 									icon: 'none'
 								})
+								this.$emit('success',this.files)
 							})
 						}
 					}
@@ -76,7 +86,6 @@
 			},
 			chooseImageEvent() {
 				this.getUploadToken();
-				console.log(this.xType)
 				uni.chooseImage({
 					count: 9,
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -97,12 +106,12 @@
 									'x:type': this.xType,
 									'x:owner': this.userInfo.owner,
 									'x:creator': this.userInfo.id,
+									'x:target':0
 								},
 								success: (uploadFileRes) => {
-									console.log(uploadFileRes.data);
 									let res = JSON.parse(uploadFileRes.data);
 									this.files.push(res.data);
-									this.$emit('success',this.files)
+
 								}
 							});
 							uploadTask.onProgressUpdate((res) => {
@@ -112,6 +121,7 @@
 										title: '上传成功',
 										icon: 'none'
 									})
+									this.$emit('success',this.files)
 
 								}
 							}, (error) => {
