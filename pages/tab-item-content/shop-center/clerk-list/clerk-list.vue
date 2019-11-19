@@ -5,7 +5,7 @@
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >门店详情</view></block>
 		</cu-custom>
 		<view class="shop-info  borderTop bg-white">
-			<!-- <image :src="shopItem.coverurl?shopItem.coverurl:'../../../../static/img/default.png'" class="shop-img" @click="showModal($event)" data-target="imageModal"></image> -->
+			<image :src="shopItem.coverurl?shopItem.coverurl:'../../../../static/img/default.png'" class="shop-img" @click="showModal($event)" data-target="imageModal" mode="aspectFill" lazy-load></image>
 
 			<view class="flex justify-start" style="margin-bottom:8px;">
 				<view class="color-normal font-size-middle font-weight-bold" style="margin-right:8px;">{{shopItem.name || ''}}</view>
@@ -25,41 +25,48 @@
 				<template v-if="shopItem.managerName">
 					<common-item intro="店长" :content="`${shopItem.managerName || ''}/${shopItem.managerMobile || ''}`" type="unNormal"></common-item>
 				</template>
-				<common-item intro="品牌名称:" :content="shopItem.brandName" type="normal" :isPadding="false"></common-item>
-				<common-item intro="所属区域:" :content="shopItem.zoneName" type="normal" :isPadding="false"></common-item>
+				<common-item intro="品牌名称:" :content="shopItem.brandName || ''" type="normal" :isPadding="false"></common-item>
+				<common-item intro="所属区域:" :content="shopItem.zoneName || ''" type="normal" :isPadding="false"></common-item>
 				<template v-if="shopItem.catalog">
-					<common-item intro="经营类别:" :content="shopItem.catalog" type="normal" :isPadding="false"></common-item>
+					<common-item intro="经营类别:" :content="shopItem.catalog || ''" type="normal" :isPadding="false"></common-item>
 				</template>
 
 			</view>
 
 			<view class="shop-time flex justify-start align-center borderBottom">
-				<view class="flex justify-start shop-duedate" >
+				<view class="flex justify-start shop-duedate align-center" >
 					<view class="cuIcon-time color-placeholder" style="font-size:18px;" ></view>
-					<view style="margin-left:7px;">开业日期:</view><view style="margin-left:7px;">{{shopItem.duedate | formatTime('YMD')}}</view>
+					<view style="margin:0 2px;">开业日期:</view><view >{{shopItem.duedate | formatTime('YMD')}}</view>
 				</view>
-				<view class="flex justify-start " style="padding-left:20px;">
+				<view class="flex justify-start align-center " style="padding-left:20px;">
 					<view class="cuIcon-time color-placeholder" style="font-size:18px;" ></view>
-					<view style="margin-left:7px;">营业天数:</view><view style="margin-left:7px;">{{shopItem.days>0? shopItem.days:0}}</view>
+					<view style="margin:0 2px;">营业天数:</view><view >{{shopItem.days>0? shopItem.days:0}}</view>
 				</view>
 
 			</view>
 
 			<view class="flex justify-between shop-address align-center">
-				<view class="flex justify-start">
+				<view class="flex justify-start flex-1">
 					<view class="cuIcon-location color-placeholder" style="font-size:18px;"></view>
 					<view style="margin-left:7px;">{{shopItem.provinceName  || '' }}{{shopItem.cityName  || '' }}{{shopItem.districtName  || ''}}{{shopItem.address || ''}}</view>
 				</view>
-				<view class="color-blue" @tap="editAddress">
+				<view class="color-blue" @tap="editAddress" style="width:100px;">
 					<text class="cuIcon-edit"></text>
 					<text>修改地址</text>
 				</view>
 			</view>
 		</view>
-		<normal-title content="店员列表"></normal-title>
+		<view class="flex text-center bg-white borderBottom  justify-around" >
+			<block  v-for="(item,index) in tabList" :key="index">
+				<tabNav :item="item" :index="index" :TabCur="clerkTab" @tabSelect="chooseClerkTab"></tabNav>
+			</block>
+		</view>
 		<view class="member-container">
 			<block v-for="(item ,index) in userList" :key="index" >
-				<ClerkListItem :item="item" :index="index" @checkItemInfo="checkItemInfo" :shopItem="shopItem"></ClerkListItem>
+				<ClerkListItem :item="item" :index="index"
+				@joinSuccess="joinSuccess"
+				@checkItemInfo="checkItemInfo"
+				:shopItem="shopItem" @joinrefuse="joinrefuse"></ClerkListItem>
 			</block>
 		</view>
 
@@ -88,6 +95,12 @@
 		<simpleModel :isShow="secondModal=='download'" @hideSimpleModel="hideSecondModal()" v-if="secondModal=='download'">
 			<block slot="content">下载成功</block>
 		</simpleModel>
+
+		<showModel :isShow="modalName=='refuseModal'" @hideModel="hideModal"
+				   v-if="modalName=='refuseModal'"
+				   @confirmDel="confirmDelete">
+			<block slot="content">确定要拒绝{{unNormalItem.name}}吗?</block>
+		</showModel>
 	</view>
 </template>
 
@@ -104,8 +117,9 @@
 	import ClerkListItem from '../../../../components/shop/clerk-list-item.vue'
 	import commonItem from '../../../../components/common-item.vue'
 	import normalTitle from '../../../../components/common/normal-title.vue'
+	import tabNav from '../../../../components/common/tab-nav.vue'
 	export default{
-	    computed:mapState(['userInfo','shopTypeZn','shopStatusZn','userStatus','shoperObj']),
+	    computed:mapState(['userInfo','shopStatusZn','userStatus','shoperObj']),
 		data(){
 			return{
 				modalName:null,
@@ -113,7 +127,10 @@
 				shopItem:{},
 				shopID:'',//门店ID
 				userList:[],//店员列表
-
+				tabList:[{id:1,name:'门店人员'},{id:2,name:'区域人员'}],
+				clerkTab:1,
+				clerkItem:{},
+				unNormalItem:{}
 			}
 		},
 		components:{
@@ -125,9 +142,29 @@
 			bottomBtnOne,
 			ClerkListItem,
 			commonItem,
-			normalTitle
+			normalTitle,
+			tabNav
 		},
 		methods:{
+			confirmDelete(){
+				this.$ajax('AcceptSalesman',{
+					shop:this.shopItem.id,
+					user:this.unNormalItem.id,
+					reject:1
+				},res=>{
+					uni.showToast({
+						title:'拒绝加入成功',
+						icon:'none'
+					})
+					this.hideModal()
+					this.checkClerkList(this.shopID)
+					this.checkShopDetail(this.shopID)
+				})
+			},
+			joinrefuse(item){
+				this.unNormalItem=item;
+				this.modalName='refuseModal'
+			},
 			goBack(){
 				uni.navigateBack({
 					delta: 1
@@ -141,22 +178,21 @@
 			},
 			//查看店员详情
 			checkItemInfo(item){
+				if(item.status!=this.userStatus.normal) return;
 				let obj={
 					shopItem:this.shopItem,
 					clerkItem:item,
 
 				}
 				uni.navigateTo({
-					url:"../clerk-item-info/clerk-item-info",
-					success: () => {
-						this.$fire.fire('clerk',obj)
-					}
+					url:"../clerk-item-info/clerk-item-info?shopID="+this.shopID+"&clerkItem="+JSON.stringify(item)
+					
 				})
 			},
 			//记一笔
 			record(){
 				uni.navigateTo({
-					url:"../../work-center/statistics-center/record-money/record-money?id="+this.shopID
+					url:"../../work-center/statistics-center/record-money/record-money?type=save&shopID="+this.shopID
 				})
 			},
 			downImg(){
@@ -185,7 +221,11 @@
 			hideSecondModal(){
 				this.secondModal=null;
 			},
-
+			chooseClerkTab(item){
+				this.clerkTab=item.id;
+				this.clerkItem=item;
+				this.checkClerkList(this.shopID)
+			},
 
 
 
@@ -301,14 +341,35 @@
 			  	}
 			  },
 			 */
-
+			// joinrefuse(item){
+			// 	this.modalName='refuseModel'
+			// },
+			joinSuccess(){
+				this.checkClerkList(this.shopID)
+				this.checkShopDetail(this.shopID)
+			},
 			//获得门店详情
 			checkShopDetail(id){
 				this.$ajax('ChainShop',{id:id},res=>{
 					this.shopItem=res;
 				})
+
+			},
+			checkClerkList(id){
 				this.$ajax('ShopSalesmen',{shop:id},res=>{
-					this.userList=res;
+					let arr1=[];
+					let arr2=[]
+					res.forEach(item=>{
+						if(item.motto=='manager'){
+							//区域 人员
+							arr1.push(item);
+						}else{
+							arr2.push(item)
+						}
+					})
+					this.userList=this.clerkTab==1?arr2:arr1;
+
+
 				})
 			},
 			//录入店员
@@ -326,6 +387,7 @@
 					});
 
 					this.checkShopDetail(this.shopID)
+					this.checkClerkList(this.shopID)
 				},true,code=>{
 					if(code==-31){
 						this.secondModal='exist';
@@ -337,16 +399,39 @@
 		onLoad(option){
 		   if(option){
 		   		this.shopID=option.shopID;
-               this.checkShopDetail(option.shopID)
+               this.checkShopDetail(option.shopID);
+			   this.checkClerkList(option.shopID)
 		   }
 		},
 		onShow(){
 			this.checkShopDetail(this.shopID)
+			this.checkClerkList(this.shopID)
 		}
 	}
 </script>
 
 <style lang="less">
+	.clerk-container{
+		padding-top:46upx;
+		padding-left:40upx;
+	}
+	.clerk-container-tab{
+		// border:1upx solid #EEEEED;
+		// border-radius:20upx;
+		flex:1
+	}
+	// .clerk-container-tab>view{
+	// 	flex:1;
+	// 	padding:10upx 4upx;
+	// }
+	// .clerk-container-tab>view:first-child{
+	// 	border-right: 1upx solid #EEEEED;
+	// 	border-radius: 20upx 0 0 20upx;
+	// }
+	// .clerk-container-tab>view:last-child{
+	// 	border-radius:  0 20upx   20upx 0;
+	// }
+
 	//营业中
 	.shop-business{
 		background:#E5FFF5;color:#16B176;

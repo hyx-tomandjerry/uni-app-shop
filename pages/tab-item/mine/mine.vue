@@ -1,24 +1,24 @@
 <template>
 	<view class="position_relative">
-		<view style="position:relative;">
+		<view class="position_relative">
 			<view class="header-content flex justify-between">
 				<view class="flex justify-start align-center" @click="operateItem('user')">
 					<image :src="userInfo.headurl?userInfo.headurl:'../../../static/img/avatar.jpg'"
-						style="width:70px;height:70px;vertical-align: bottom;margin-right:25px;border-radius: 50%;"
+						class="user-img"
 					></image>
-					<view>
-						<text class="header-title">{{userInfo.name || ''}}</text>
-						<text class="header-tel">{{userInfo.account}}</text>
+					<view class="flex-1">
+						<view class="header-title borderBottom">{{userInfo.name || ''}}</view>
+						<view class="color-regular"> 状态 : {{userInfo.status==userStatus.normal?'在职' :''}}</view>
 					</view>
 				</view>
 			</view>
-			
+
 				<view class="list-content">
-					<view class="flex justify-between  align-center list-content-item" 
-						
+					<view class="flex justify-between  align-center list-content-item"
+
 						@click="operateItem('user')">
 						<view class="flex justify-start align-center">
-							<image src="../../../static/img/mine/set.png" 
+							<image src="../../../static/img/mine/set.png"
 							class="img-user"></image>
 							<view class="font-size-normal">基本设置</view>
 						</view>
@@ -27,10 +27,10 @@
 						</view>
 					</view>
 					<view class="flex justify-between  align-center list-content-item"
-						
+
 						@click="operateItem('password')">
 						<view class="flex justify-start align-center">
-							<image src="../../../static/img/mine/passowrd.png" 
+							<image src="../../../static/img/mine/passowrd.png"
 							class="img-set"
 							></image>
 							<view class="font-size-normal">修改密码</view>
@@ -39,12 +39,23 @@
 							<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
 						</view>
 					</view>
-					
+					<view class="flex justify-between  align-center list-content-item  flex-all"
+
+						@click="operateItem('company')">
+						<view class="flex justify-start align-center">
+							<image src="../../../static/img/mine/set.png"
+							class="img-user"></image>
+							<view class="font-size-normal">退出公司</view>
+						</view>
+						<view>
+							<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
+						</view>
+					</view>
 				</view>
-			
-			<view class="list-content" style="margin-top:13px;">
+
+			<view class="list-content margin-top-13">
 				<view class="flex justify-between  align-center quit-item"
-					
+
 					@click="operateItem('quit')">
 					<view class="flex justify-start align-center">
 						<image src="../../../static/img/mine/quit.png" class="img-quit"></image>
@@ -54,154 +65,121 @@
 						<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
 					</view>
 				</view>
-				
+
 			</view>
-			
-			<showModel :isShow="isQuit" @hideModel="hideModal('cancel')" @confirmDel="hideModal('agree')" v-if="isQuit">
+
+			<showModel :isShow="modalName=='quitAccount'" @hideModel="hideModal()" @confirmDel="confirmModel('account')" v-if="modalName=='quitAccount'">
 				<block slot="content">确定要退出登录吗?</block>
 			</showModel>
+			<showModel :isShow="modalName=='quitCompany'" @hideModel="hideModal()" @confirmDel="confirmModel('company')" v-if="modalName=='quitCompany'">
+				<block slot="content">确定要退出<text class="color-blue font-weight-bold">{{userInfo.ownerName}}</text>吗?</block>
+			</showModel>
 		</view>
-		<tabbarBtn @gotoItem="gotoItem"  tabCur="mine" :num="todoNum"></tabbarBtn>
 	</view>
-	
+
 </template>
 
 <script>
 	import showModel from '../../../components/show-model.vue'
-	import tabbarBtn from '../../../components/common/tabbar-btn.vue'
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex';
 
 	export default{
-		computed: mapState(['hasLogin','userInfo','shoperObj','userStatus','todoNum']),
-		components:{showModel,tabbarBtn},
+		computed: mapState(['hasLogin','userInfo','shoperObj','userStatus']),
+		components:{showModel},
 		data(){
 			return{
-				isQuit:false,
-				
+				modalName:""
+
 			}
+		},
+		onLoad(){
 		},
 		methods:{
 			...mapMutations(['logout','login']),
-			gotoItem(type){
+			confirmModel(type){
 				switch(type){
-					case 'index':
-					uni.redirectTo({
-						url:'../index/index'
-					})
+					case 'company':
+						this.$ajax('RemoveSalesman',{
+							shop:0,
+							users:this.userInfo.id,
+							permanent:1
+						},res=>{
+							uni.showToast({
+								title:'您已成功退出公司',
+								icon:'none'
+							})
+							this.hideModal();
+							this.logout();
+							uni.redirectTo({
+								url:'../../login-design/login/login'
+							})
+						})
 					break;
-					case 'work':
-					uni.redirectTo({
-						url:'../work/work'
-					})
-					break;
-					case 'notice':
-					uni.redirectTo({
-						url:"../../tab-item-content/notice-center/notice-index/notice-index"
-					})
+					case 'account':
+						this.hideModal();
+						this.logout();
+						uni.redirectTo({
+							url:'../../login-design/login/login'
+						})
 					break;
 				}
 			},
+			
 			hideModal(type){
-				
-				if(type=='agree'){
-					this.isQuit=false;
-					this.logout();
-					uni.redirectTo({
-						url:'../../login-design/login/login'
-					})
-				}else if(type=='cancel'){
-					this.isQuit=false;
-				}
+
+				this.modalName=null;
 
 			},
+			getTodoList(){
+				this.$ajax('MyEventNumbers',{},res=>{
+					if(res>0){
+						uni.setTabBarBadge({
+						  index: 1,
+						  text:res.toString()
+						
+						})
+					}
+				})
+			},
 			operateItem(type){
-				
+
 					switch(type){
 						case 'user':
 						//基本设置
 						uni.navigateTo({
 							url:'../../tab-item-content/mine-center/basic-setting/basic-setting'
 						})
-						
+
 						break;
 						case 'password':
 						//修改密码
 						uni.navigateTo({
 							url:'../../tab-item-content/mine-center/edit-password/edit-password'
 						})
-						
+
 						break;
 						case 'quit':
-						this.isQuit=true;
+						this.modalName="quitAccount"
+						break;
+						case 'company':
+						this.modalName="quitCompany"
+						break;
 					}
 				}
-				
-			
+
+
+		},
+		onLoad(){
+			this.getTodoList()
 		}
 	}
 </script>
 
-<style lang="less">
-	@import "../../../static/css/demo";
-	.header-content{
-		background-image: url("../../../static/img/mine/img.png") ;
-		background-size: 100%;
-		background-repeat: no-repeat;
-		.mixPadding(29px;16px;23px;22px);
-		.mixMarginBottom(13px);
-		.mixBorderRadius(4px);
-		.header-title{
-			.mixFont(16px;bold);
-			 display: block;
-			.mixPaddingTop(5px);
-			.mixPaddingLeft(5px);
-		}
-		.header-tel{
-			color:@intro_color;
-			display: block;
-			.mixPadding(5px;5px;5px;5px);
-		}
-	}
-	.list-content{
-		background-color: @white_color;
-		.mixPadding(7px;21px;0;16px);
-		.list-content-item{
-			.mixHeight(53px);
-			.lineHeight(53px);
-			.mixBorderBottom(1px;solid;#EEEEED);
-			.mixWidth(100%);
-			.img-user{
-
-				.mixImg(21px;21px);
-				.mixMarginRight(13px);
-			}
-			.img-set{
-
-				.mixImg(21px;24px);
-				.mixMarginRight(13px);
-			}
-			
-		}
-		.quit-item{
-
-			.mixHeight(47px);
-			.lineHeight(47px);
-			.mixWidth(100%);
-			.img-quit{
-
-				.mixImg(21px;21px);
-				.mixMarginRight(13px);
-			}
-		}
-
-		.arrow-right{
-			.mixWidth(6px);
-			.mixHeight(12px)
-		}
-	}
+<style scoped>
+	@import url("./mine.css");
 </style>
 
 

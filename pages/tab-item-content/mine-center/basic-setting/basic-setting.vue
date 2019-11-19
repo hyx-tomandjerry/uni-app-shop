@@ -292,8 +292,8 @@
 				/*width:47px;*/
 				/*height:47px;*/
 				/*vertical-align: middle*/
-				.mixImg(47px;47px);
-				.mixBorderRadius(50%)
+				.mixImg(100upx;100upx);
+				.mixBorderRadius(10%)
 			}
 		}
 	}

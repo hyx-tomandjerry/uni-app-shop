@@ -1,6 +1,7 @@
 <template>
 	<view class="btn-container"  @tap="showModal" :data-target="dataTarget" >
-		<view class="btn">{{content}}</view>
+		<!-- <view class="btn">{{content}}</view> -->
+		<button type="primary" :disabled="disabled" :loading="loading">{{content}}</button>
 	</view>
 </template>
 
@@ -9,6 +10,8 @@
 		props:{
 			content:String,//按钮内容
 			dataTarget:String,//数据对象
+			disabled:Boolean,
+			loading:Boolean
 		},
 		methods:{
 			showModal(){

@@ -13,11 +13,11 @@
 					<view>{{item.title}}</view>
 				</view>
 			</block>
-		
-		
+
+
 		</view>
 	</view>
-	
+
 </template>
 
 <script>

@@ -6,65 +6,79 @@
 			</block>
 			<block slot="content">
 				<view class="font-weight-bold font-size-big color-normal">
-					销售榜
+					<text class="color-blue">{{timeObj.year}}年<text class="color-blue">{{timeObj.month}}月</text></text>门店销售榜
 				</view>
 			</block>
 			<block slot="right" >
 				<view @click="searchEvent" style="margin-right:20px;" class="color-normal">筛选</view>
 			</block>
 		</cu-custom>
-
 		<view class="shop-rank-container borderTop bg-white">
-			<view class="shop-rank-t flex justify-start font-size-normal">
-				<view class="flex-1 text-center shop-rank-tab"
-					  @click="tabSelect(item)"
-					  v-for="(item,index) in tabList"
-					  :class="{'tab-active':tabCur==item.value}"
-					  :key="index">{{item.title}}</view>
-			</view>
-			<view v-if="threeList[0]&&threeList[0].field">
-				<view class="rank-three-container flex justify-start " >
-					<view class=" second-rank flex-litter bg-white">
-						<image src="../../../../../../static/img/work/statistics/rank/two.png" mode="" class="rank-second-img"></image>
-						<!-- 头像 -->
-						 <image :src="threeList[1]&&threeList[1].afield?threeList[1].afield:'../../../../../../static/img/default.png'" mode="" class="rank-avatar"></image>
-						<!--tag-->
-						 <image src="../../../../../../static/img/work/statistics/rank/two_tag.png" class="rank-tag"></image>
-				
-						<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal">
-							<view>{{threeList[1]?threeList[1].field : ''}}</view>
-							<view class="color-red font-weight-bold">￥{{threeList[1]&&threeList[1].actual || 0}}</view>
-						</view>
-					</view>
-					<view class=" first-rank flex-1">
-						<image src="../../../../../../static/img/work/statistics/rank/one.png" mode="" class="rank-one-img"></image>
-						<image :src="threeList[0]&&threeList[0].afield?threeList[0].afield:'../../../../../../static/img/default.png'" mode="" class="rank-one-avatar"></image>
-						<image src="../../../../../../static/img/work/statistics/rank/one_tag.png" class="one-tag"></image>
-				
-						<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal">
-							<view>{{threeList[0]?threeList[0].field : ''}}</view>
-							<view class="color-red font-weight-bold">￥{{threeList[0]&&threeList[0].actual || 0}}</view>
-						</view>
-					</view>
-					<view class=" three-rank flex-litter">
-						<image src="../../../../../../static/img/work/statistics/rank/three.png" mode="" class="rank-three-img"></image>
-						<!--&lt;!&ndash; 头像&ndash;&gt;-->
-						<image :src="threeList[2]&&threeList[2].afield?threeList[2].afield:'../../../../../../static/img/default.png'" mode="" class="rank-avatar"></image>
-				
-						<image src="../../../../../../static/img/work/statistics/rank/three_tag.png" class="rank-tag"></image>
-						<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal">
-							<view>{{threeList[2]?threeList[2].field : ''}}</view>
-							<view class="color-red font-weight-bold">￥{{threeList[2]&&threeList[2].actual || 0}}</view>
-						</view>
-					</view>
+			<view class="rank-tab-container flex justify-between">
+				<view class="rank-tab-l">
+					<block  v-for="(item,index) in tabList"  :key="index">
+						<view  @click="tabSelect(item)" :class="{'tab-active':tabCur==item.value}">{{item.title}}</view>
+					</block>
 				</view>
+				<view class="rank-tab-r" @tap="changeDesc">
+					<view>
+						<image
+							:src="desc?'../../../../../../static/img/up.png':'../../../../../../static/img/down.png'"
+							mode="widthFix"
+							lazy-load>
+						</image>
+					</view>
+					<view>{{desc?'降序':'升序'}}</view>
+				</view>
+			</view>
+			<template v-if="desc">
+				<view v-if="threeList[0]&&threeList[0].name">
+					<view class="rank-three-container flex justify-start " >
+						<view class=" second-rank flex-litter bg-white">
+							<image src="../../../../../../static/img/work/statistics/rank/two.png" mode="" class="rank-second-img"></image>
+							<!-- 头像-->
+							 <image :src="threeList[1]&&threeList[1].field?threeList[1].field:'../../../../../../static/img/default.png'" mode="widthFix" class="rank-avatar"></image>
+							<!--tag-->
+							 <image src="../../../../../../static/img/work/statistics/rank/two_tag.png" class="rank-tag"></image>
+					
+							<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal" style="bottom:-40upx;">
+								<view>{{threeList[1]?threeList[1].name : ''}}</view>
+								<view class="color-red font-weight-bold">￥{{threeList[1]&&threeList[1].actual || 0}}</view>
+							</view>
+						</view>
+						<view class=" first-rank flex-1">
+							<image src="../../../../../../static/img/work/statistics/rank/one.png" mode="" class="rank-one-img"></image>
+							<image :src="threeList[0]&&threeList[0].field?threeList[0].field:'../../../../../../static/img/default.png'" mode="" class="rank-one-avatar"></image>
+							<image src="../../../../../../static/img/work/statistics/rank/one_tag.png" class="one-tag"></image>
+					
+							<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal" style="bottom:-30upx;">
+								<view>{{threeList[0]?threeList[0].name : ''}}</view>
+								<view class="color-red font-weight-bold">￥{{threeList[0]&&threeList[0].actual || 0}}</view>
+							</view>
+						</view>
+						<view class=" three-rank flex-litter">
+							<image src="../../../../../../static/img/work/statistics/rank/three.png" mode="" class="rank-three-img"></image>
+							<!--&lt;!&ndash; 头像&ndash;&gt;-->
+							<image :src="threeList[2]&&threeList[2].field?threeList[2].field:'../../../../../../static/img/default.png'" mode="" class="rank-avatar"></image>
+					
+							<image src="../../../../../../static/img/work/statistics/rank/three_tag.png" class="rank-tag"></image>
+							<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal" style="bottom:-40upx;">
+								<view>{{threeList[2]?threeList[2].name : ''}}</view>
+								<view class="color-red font-weight-bold">￥{{threeList[2]&&threeList[2].actual || 0}}</view>
+							</view>
+						</view>
+					</view>
+					
+				</view>
+			</template>
+			<template v-if="otherList.length">
 				<view class="rank-list-container">
 					<view class="rank-list-item borderBottom" v-for="(item,index) in otherList" :key="index">
 						<view class="flex justify-start align-center">
-							<view class="margin-right">{{index+3}}</view>
+							<view class="margin-right">{{desc?index+3:index+1}}</view>
 							<view>
-								<image :src="item.afield?item.afield:'../../../../../../static/img/default.png'" class="sale-avatar"></image>
-								<text>{{item?item.field :''}}</text>
+								<image :src="item.field?item.field:'../../../../../../static/img/default.png'" class="sale-avatar"></image>
+								<text>{{item?item.name :''}}</text>
 							</view>
 						</view>
 						<view>
@@ -73,8 +87,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
-			
+			</template>
 			<view v-else>
 				<LxEmpty></LxEmpty>
 			</view>
@@ -94,22 +107,28 @@
 				timeObj:{
 					year:new Date().getFullYear(),
 					month:new Date().getMonth()+1,
-					day:new Date().getDate()
+					// day:new Date().getDate()
 				},
 				shopZone:'',
 				threeList:[],
-				otherList:[]
+				otherList:[],
+				desc:true,//降序
+				brandID:''
 			}
 		},
 		components:{
 			LxEmpty
 		},
 		methods:{
+			//升序还是降序
+			changeDesc(){
+				this.desc=!this.desc;
+				this.getShopRank()
+			},
 			//选择年度帮单还是月度帮单
 			tabSelect(item){
 				this.tabCur=item.value;
-				let flag=this.tabCur=='month';
-				this.getShopRank(flag)
+				this.getShopRank()
 			},
 			//返回
 			goBack(){
@@ -124,23 +143,32 @@
 				})
 			},
 			//获得门店列表
-			getShopRank(flag){
-				
-				this.$ajax('ZoneShopPerformancesList',{
+			getShopRank(){
+				this.$ajax('ShopRanking',{
 					year:this.timeObj.year,
-					month:flag?this.timeObj.month:'',
-					area:1,
-					type:2,
-					target:this.shopZone
-				},res=>{
+					month:this.tabCur=='month'?this.timeObj.month:'',
+					zone:this.shopZone,//门店区域
+					brand:this.brandID,//门店品牌
+					desc:this.desc,
 					
-					this.threeList=[]
-					this.threeList[0]=res[0]?res[0]:{};
-					this.threeList[1]=res[1]?res[1]:{};
-					this.threeList[2]=res[2]?res[2]:{};
-					this.otherList=res.splice(3);
+				},res=>{
+					if(res){
+						if(this.desc){
+							//降序
+							let arr=[];
+							arr[0]=res[0]?res[0]:{};
+							arr[1]=res[1]?res[1]:{};
+							arr[2]=res[2]?res[2]:{};
+							this.threeList=arr;
+							this.otherList=res.splice(3);
+						}else{
+							//升序
+							
+							this.otherList=res
+						}
+						
+					}
 				})
-				
 			}
 		},
 		onLoad(options){
@@ -153,20 +181,58 @@
 					this.timeObj.year=result.year;
 					this.timeObj.month=result.month;
 					this.shopZone=result.target;
-					if(this.timeObj.month){
-						// this.getShopRank(true)
-					}
-					// this.getShopRank()
-					
-					
-					
+					this.brandID=result.brand;
+					this.getShopRank()
 				}
+				
 			})
-			// this.getShopRank()
+			this.getShopRank()
 		},
 	}
 </script>
 <style lang="less">
+	.rank-tab-container{
+		padding:20upx 10upx 20upx 20upx;
+		align-content: center;
+	}
+	.rank-tab-l{
+		flex:1;
+		border:1upx solid #42B0ED;
+		border-radius: 10upx;
+		height:70upx;
+		line-height:70upx;
+		text-align: center;
+		display: flex;
+		justify-content: flex-start;
+		align-content: center;
+	}
+	.rank-tab-l>view{
+		flex:1
+	}
+	.rank-tab-l>view:first-child{
+		border-radius: 10upx 0 0 10upx;
+	}
+	.rank-tab-l>view:last-child{
+		border-radius: 0 10upx 10upx 0;
+	}
+	.rank-tab-r{
+		width:100upx;
+		display: flex;
+		flex-direction: column;
+		align-content: center;
+		justify-content: center;
+		text-align: center;
+	}
+	.rank-tab-r>view:first-child{
+		display: flex;
+		align-content: center;
+		justify-content: center;
+	}
+	.rank-tab-r>view:first-child>image{
+		width:40upx;
+		height:40upx !important;
+		
+	}
 	page{
 		background-color: #fff;
 	}
@@ -200,7 +266,7 @@
 			.first-rank{
 				position:relative;
 				.rank-one-img{
-					height: 180px;
+					height: 180px !important;
 					position:absolute;
 					top:-20px;
 					left:0;
@@ -260,7 +326,7 @@
 			}
 			.tank-intro{
 				text-align: center;
-				bottom:-30px;
+				bottom:0;
 				left:50%;
 				transform:translateX(-50%);
 			}

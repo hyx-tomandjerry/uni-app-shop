@@ -1,5 +1,5 @@
 <template>
-	<view class="box" style="position: fixed;bottom:0;z-index:1000;left:0;right:0;">
+	<view class="box borderBottom" style="position: fixed;bottom:0;z-index:1000;left:0;right:0;">
 		<view class="cu-bar tabbar bg-white">
 				<view class="action" @tap="gotoItem('index')">
 					<view class="cuIcon-cu-image">

@@ -1,0 +1,36 @@
+page{
+		background:#FFFFFF;
+
+	}
+	.img-tag{
+		width:95upx;
+		height:95upx;
+	
+	}
+	.work-tag{
+		width:86upx;
+		height:95upx;
+		
+	}
+	.tab-title{
+		font-size:24px;
+		font-family:PingFangSC-Semibold;
+		font-weight:600;
+		color:rgba(70,69,69,1);
+		margin-bottom:50upx;
+		
+
+
+	}
+	.tab-container{
+
+		padding-top:16px;
+		padding-left:30px;
+		
+
+
+	}
+	.tab-list{
+
+		text-align: center;
+	}

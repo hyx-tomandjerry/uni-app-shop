@@ -13,7 +13,7 @@
 		<view v-else>
 			<LxEmpty></LxEmpty>
 		</view>
-		
+
 		<showModel :isShow="modalName=='noClick'" @hideModel="hideModal" @confirmDel="hideModal" v-if="modalName=='noClick'">
 			<block slot="content">该门店没有营业，不可查看</block>
 		</showModel>
@@ -40,20 +40,6 @@
 				shopList:[],//门店列表
 				page:1,
 				type:'',//shop是门店人员列表，statistics是绩效
-				/**
-				 fromType:'',//判断从快递还是从我的门店
-				 inputValue:0,
-				  radio:'',
-				  shopRadioList:[
-						{id:1,name:'录入门店'},
-						{id:2,name:'选择门店'}
-					],
-				isShow:false,
-				 */
-				
-				
-				
-
 			};
 		},
 		onPullDownRefresh(){
@@ -84,7 +70,7 @@
 		// 			}
 		// 		})
 		// 	},1000)
-		// 
+		//
 		// },
 		components:{
 			LxEmpty,
@@ -126,7 +112,7 @@
 						}
 						break;
 					}
-					
+
 				}
 			},
 			//获得门店列表
@@ -157,5 +143,5 @@
 		margin-right:15px;
 		margin-left:10px;
 	}
-	
+
 </style>

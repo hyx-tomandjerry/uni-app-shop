@@ -14,11 +14,17 @@
 					<view class="picker-calendar-view" v-for="(week,index) in weeks" :key="index - 7">
 						<view class="picker-calendar-view-item">{{week}}</view>
 					</view>
-					<view class="picker-calendar-view" v-for="(date,dateIndex) in calendar" :key="dateIndex" @click="onSelectDate(date)">
+					<view class="picker-calendar-view"
+						
+					 v-for="(date,dateIndex) in calendar"
+					 :key="dateIndex" @click="onSelectDate(date)">
 						<!-- 背景样式 -->
 						<view v-show="date.bgStyle.type" :class="'picker-calendar-view-'+date.bgStyle.type" :style="{background: date.bgStyle.background}"></view>
 						<!-- 正常和选中样式 -->
-						<view class="picker-calendar-view-item" :style="{opacity: date.statusStyle.opacity, color: date.statusStyle.color, background: date.statusStyle.background}">
+						<view class="picker-calendar-view-item" :style="{opacity: date.statusStyle.opacity, color: date.statusStyle.color, background: date.statusStyle.background}" :class="{
+							'bg-color-normal':new Date(date.dateObj).getTime()-new Date().getTime()>0 && isBegin,
+							'color-regular':new Date(date.dateObj).getTime()-new Date().getTime()>0 && isBegin
+						}">
 							<text>{{date.title}}</text>
 						</view>
 						<!-- 小圆点样式 -->
@@ -282,7 +288,8 @@
 			endText: {
 				type: String,
 				default: '结束'
-			}
+			},
+			isBegin:Boolean
 		},
 		data() {
 			return {
@@ -460,6 +467,7 @@
 			},
 			//选中日期
 			onSelectDate(date) {
+				if(this.isBegin && new Date(date.dateObj).getTime()-new Date().getTime()>0) return;
 				if (~this.type.indexOf('range') && this.checkeds.length == 2) this.checkeds = [];
 				else if (!(~this.type.indexOf('range')) && this.checkeds.length) this.checkeds = [];
 				this.checkeds.push(new Date(date.dateObj));

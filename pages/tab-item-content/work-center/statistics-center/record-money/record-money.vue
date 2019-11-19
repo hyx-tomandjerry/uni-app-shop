@@ -12,7 +12,7 @@
 		</view>
 
 		<view class="btn-container bg-white position_absolute" style="width:100%;bottom:0px;">
-			<view class="btn-tag" @click="recordMoney('edit')" v-if="saleID">修改</view>
+			<view class="btn-tag" @click="recordMoney('edit')" v-if="paramItem.type=='edit'">修改</view>
 			<view class="btn-tag" @click="recordMoney('save')" v-else>保存</view>
 
 		</view>
@@ -29,7 +29,8 @@
 				summary:'',
 				shopID:'',
 				saleID:'',
-				windowHeight:''
+				windowHeight:'',
+				paramItem:{}
 			}
 		},
 		methods: {
@@ -38,7 +39,7 @@
 					delta: 1
 				});
 			},
-			recordMoney(type){
+			check(){
 				if(isNaN(this.num)){
 					uni.showToast({
 						title:'你输入的不是数字，请重新输入',
@@ -47,17 +48,30 @@
 							this.num=''
 						}
 					})
-				}else{
+					return false;
+				}	
+				if(this.num<0){
+					uni.showToast({
+						title:'你输入的负数请重新输入',
+						icon:'none',
+						success: () => {
+							this.num=''
+						}
+					})
+					return false;
+				}
+				return true;
+			},
+			recordMoney(type){
+				if(this.check()){
 					switch(type){
 						case 'edit':
-						this.$ajax('SetSalesmanDailyPerformance',{
-							shop:this.shopID,
-							// year:new Date().getFullYear(),
-							// month:new Date().getMonth()+1,
-							// day:new Date().getDate(),
-							date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`,
+						//SetSalesmanDailyPerformance-> ChangeSalesmanAmount
+						this.$ajax('ChangeSalesmanAmount',{
+							shop:this.paramItem.shopID,
+							date:`${this.paramItem.year}-${this.paramItem.month>9?this.paramItem.month:'0'+this.paramItem.month}-${this.paramItem.day>9?this.paramItem.day:'0'+this.paramItem.day}`,
 							amount:this.num,
-							account:this.saleID,
+							account:this.paramItem.saleID,
 						},res=>{
 							uni.showToast({
 								title:'修改员工绩效成功',
@@ -71,15 +85,12 @@
 						})
 						break;
 						case 'save':
-						this.$ajax('NewPersonalPerformance',{
-							shop:this.shopID,
-							// year:new Date().getFullYear(),
-							// month:new Date().getMonth()+1,
-							// day:new Date().getDate(),
+						// NewPersonalPerformance->RecordMySalesAmount
+						this.$ajax('RecordMySalesAmount',{
+							shop:this.paramItem.shopID,
 							date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`,
 							amount:this.num,
-							account:this.userInfo.id,
-							// summary:this.summary?this.summary:''
+							account:this.userInfo.id
 						},res=>{
 							uni.showToast({
 								title:'成功记录一笔',
@@ -94,21 +105,28 @@
 						break;
 					}
 				}
+				
 
 
 			}
 		},
 		onLoad(params){
-			console.log(params);
-			if(params.id){
-				this.shopID=params.id;
+			if(params.type=='save'){
+				this.paramItem.shopID=params.shopID;
+			}else if(JSON.parse(params.obj)){
+				this.paramItem=JSON.parse(params.obj)
+				this.num=this.paramItem.money;
 			}
-			if(params.saleID){
-				this.saleID=params.saleID;
-			}
-			if(params.money){
-				this.num=params.money;
-			}
+			console.log(this.paramItem)
+			// if(params.id){
+			// 	this.shopID=params.id;
+			// }
+			// if(params.saleID){
+			// 	this.saleID=params.saleID;
+			// }
+			// if(params.money){
+			// 	this.num=params.money;
+			// }
 			uni.getSystemInfo({
 				success:(res)=>{
 					console.log(res.windowHeight)

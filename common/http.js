@@ -1,4 +1,4 @@
-import store from '../store/index'
+import config from './config.js'
 const errorText = require('./errorText')
 const ajax=(api,param,resp,reqCache=true,failResp)=>{
 	if(reqCache){
@@ -28,7 +28,9 @@ const ajax=(api,param,resp,reqCache=true,failResp)=>{
 	}
 }
 const httpMethod = (api,param,baseParam,resp,failResp)=>{
-	let real_params
+	let real_params;
+	// let url=config.xiaoxiongUrl;
+	let url=config.proUrl;
 	Object.keys(param).forEach(item=>{
 		if(baseParam[item]){
 			delete baseParam[item]
@@ -36,7 +38,7 @@ const httpMethod = (api,param,baseParam,resp,failResp)=>{
 	})
 	real_params = Object.assign({f:api},baseParam,param)
 	uni.request({
-		url:store.getters.url,
+		url:url,
 		data:real_params,
 		method:'POST',
 		header: {

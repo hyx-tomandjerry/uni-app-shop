@@ -1,5 +1,5 @@
 <template>
-	<view class="apply-item flex align-center bg-white  borderBottom animated slideInLeft " 
+	<view class="apply-item flex align-center bg-white  borderBottom animated slideInLeft "
 	@tap="checkDetail" hover-class="bg-color-normal" >
 		<image :src="item.img"
 			mode="widthFix" lazy-load>
@@ -64,7 +64,7 @@
 							</image>
 						</template>
 					</template>
-					
+
 				</view>
 			</view>
 		</view>
@@ -73,12 +73,12 @@
 
 <script>
 	import {mapState} from 'vuex'
-	
+
 	export default {
 		computed:mapState(['applyStatusZn','userInfo','approvalMode','repairStatus']),
 		data() {
 			return {
-				
+
 			};
 		},
 		props:{
@@ -89,7 +89,7 @@
 		methods:{
 			checkDetail(){
 				this.$emit('checkDetail',this.item)
-				
+
 			}
 		}
 	}

@@ -55,7 +55,7 @@
 			</view>
 		</view>
 		<bottomBtnOne content="确定" @showModal="confirmSearch"></bottomBtnOne>
-		
+
 	</view>
 </template>
 

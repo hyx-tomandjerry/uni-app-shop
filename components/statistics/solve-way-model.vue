@@ -1,12 +1,9 @@
 <template>
-	<view class="resolveModal data-choose-container"  v-if="isShowRadio">
-	
-		<view class="choose-content">
-			<image src='../../../../../static/icon/close.png'  @tap="cancelRadio" class="close_img"></image>
-			<view style="text-align:center;">
-				<image :src="radio==resolveWayZn.day?'../../../../../static/img/work/statistics/resolve-day.png':'../../../../../static/img/work/statistics/resolve-week.png'" class="choose-way-img" mode="widthFix" lazy-load></image>
-			</view>
-			<view class="resolve-content" >
+	<view class="data-choose-container"  v-if="isShowRadio">
+		<view class="choose-content font-size-normal">
+			<image src=../../../../../static/icon/close.png mode="widthFix" class="close_img" lazy-load @tap="cancelRadio"></image>
+			<image src="../../../../../static/img/work/statistics/resolve-day.png" mode="widthFix" class="choose-way-img" lazy-load></image>
+			<view class="way-desc font-weight-bold font-size-normal">
 				<view class="font-size-big color-normal" style="margin-bottom:10px;">{{year}}年{{month}}月</view>
 				<view class="margin-bottom-mini">月目标 :	<text  class="resolve-content-text">{{shopMonthAim.monthAim || 0}}元</text></view>
 				<view v-show="radio==resolveWayZn.day">
@@ -16,8 +13,22 @@
 					<view class="margin-bottom-mini">周末天数 :	<text class="resolve-content-text">{{countWeek}}天</text></view>
 					<view class="margin-bottom-mini">普通天数 :	<text class="resolve-content-text">{{monthDay-countWeek}}天</text></view>
 				</view>
+				<view class="flex align-center" v-show="month==new Date().getMonth()+1">
+					<text 
+							class="font-size-back color-regular"
+							@tap="changeCheck"
+							:class="{
+								'cuIcon-round':!checked,
+								'cuIcon-roundcheck':checked,
+							}"
+					>
+				
+					</text><text style="margin-left:10upx;" class="color-regular">在本月剩余天数中分配</text>
+				</view>
 			</view>
-			<view class="resolve-btn" @tap="radioSelect()">确定</view>
+			<view class="btn-container" >
+				<button type="primary" class="resolve-btn" @tap="radioSelect">确定</button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -26,6 +37,11 @@
 	import {mapState} from 'vuex'
 	export default{
 		computed:mapState(['resolveWayZn']),
+		data(){
+			return{
+				checked:false
+			}
+		},
 		props:{
 			isShowRadio:Boolean,
 			radio:Number,
@@ -37,11 +53,14 @@
 			monthDay:Number
 		},
 		methods:{
+			changeCheck(){
+				this.checked=!this.checked;
+			},
 			cancelRadio(){
 				this.$emit('cancelRadio')
 			},
 			radioSelect(){
-				this.$emit('radioSelect')
+				this.$emit('radioSelect',this.checked)
 			}
 		}
 	}
@@ -52,17 +71,25 @@
 		width:100%;min-height:800px;background:rgba(0,0,0,0.2);position:absolute;z-index:9999;top:0;left:0;
 	}
 	.choose-content{
-		width:263px;height:219px;
+		padding-top:100upx;
+		border-radius: 20upx;
+		width:550upx;height:460upx;
 		background:#fff;border:1px solid #ccc;
 		position:absolute;
 		transform: translate(-50%,-50%);
 		left:50%;top:50%;transition: all 1s;padding-bottom:5px;
 	}
+	.way-desc{
+		padding-left:50upx;
+	}
 	.close_img{
-		width:24px;height:24px;margin-top:-10px;position:absolute;right:-10px;
+		width:50upx;height:50upx;top:-20upx;position:absolute;right:-16upx;
 	}
 	.choose-way-img{
-		width:137px;height:90px;margin-top:-40px;margin-left:6px;
+		position:absolute;
+		top:-68upx;
+		left:120upx;
+		width:280upx;height:180upx !important;
 	}
 	.resolve-content{
 		padding-top:4px;padding-left:20px;margin-bottom:17px;
@@ -74,6 +101,9 @@
 		margin-bottom: 10upx;
 	}
 	.resolve-btn{
-		height:30px;line-height:30px;text-align: center;background: url('../../static/img/work/statistics/btn-bg.png') no-repeat center;margin:0 13px;color:#fff;
+		height:70upx;line-height:70upx;
+	}
+	.btn-container{
+		margin:40upx 30upx
 	}
 </style>

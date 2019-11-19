@@ -7,7 +7,7 @@
 		<view class="flex text-center bg-white borderBottom  justify-around" >
 			<block  v-for="(item,index) in statusList" :key="index">
 				<tabNav :item="item" :index="index" :TabCur="TabCur" @tabSelect="tabSelect"></tabNav>
-			</block>	
+			</block>
 		</view>
 		<template v-if="repairList.length">
 				<view class="order_content position_relative" >
@@ -17,12 +17,12 @@
 					<uni-load-more :contentText="content" :showIcon="true" :status="loading" color="rgb(39, 134, 245)"></uni-load-more>
 				</view>
 		</template>
-			
+
 		<template v-else>
 			<lx-empty></lx-empty>
 		</template>
-		
-		<positionImg @createOperate="createRepair" 
+
+		<positionImg @createOperate="createRepair"
 		:position_img="true"
 		:src="'../../../static/img/add.png'"></positionImg>
 		<showModel :isShow="modalName=='DialogModal'" @hideModel="hideModal" @confirmDel="delOrder" v-if="modalName=='DialogModal'">
@@ -174,7 +174,7 @@
 			//新增报修
 			createRepair(){
 				uni.navigateTo({
-					url:'./create-order/create-order'
+					url:'./create-order/create-order?newOrEdit=create'
 				})
 			},
 			tabSelect(e) {
@@ -227,7 +227,7 @@
 	// }
 	// .page.show {
 	// 	overflow: hidden;
-	// } */		
+	// } */
 
 </style>
 

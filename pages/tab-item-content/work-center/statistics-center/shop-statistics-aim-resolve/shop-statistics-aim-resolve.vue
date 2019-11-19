@@ -23,8 +23,6 @@
 				<resolveMonthItem 
 				 :item="item" 
 				 :index="index"
-				 :shopBgnYear="Number(shopBgnYear)"
-				 :shopBgndate="Number(shopBgndate)"
 				 @editAim="editAim"
 				 @checkItem="checkItem"
 				></resolveMonthItem>
@@ -96,7 +94,6 @@
 			},
 			setShopAim(num){
 				let min=(this.monthTabCur.mon-Number(num)).toFixed(0);//获得当前月份值和输入的值的差
-				// let x=Number(this.numList[this.numList.length-1].mon)+Number(min);
 				let x=Number(this.numList[this.numList.length-1].mon)+Number(min);
 				if(x<0){
 					this.isShow=true;
@@ -111,26 +108,29 @@
 				this.confirmShopAim()						
 			},
 			checkItem(item){
-				uni.navigateTo({
-					url: '../shop-statistics-month-resolve/shop-statistics-month-resolve?item='+JSON.stringify(item)+"&shopID="+this.shopID
-				});
+				if(!Number(item.mon)){
+					uni.showToast({
+						title:'绩效目标还未分解',
+						icon:'none'
+					})
+				}else{
+					uni.navigateTo({
+						url: '../shop-statistics-month-resolve/shop-statistics-month-resolve?item='+JSON.stringify(item)+"&shopID="+this.shopID
+					});
+				}
+				
 			},
 			/*确认门店绩效*/
 			confirmShopAim(){
-				this.$ajax('NewShopMonthlyPerformance',{
-					month1:this.numList[0].mon,
-					month2:this.numList[1].mon,
-					month3:this.numList[2].mon,
-					month4:this.numList[3].mon,
-					month5:this.numList[4].mon,
-					month6:this.numList[5].mon,
-					month7:this.numList[6].mon,
-					month8:this.numList[7].mon,
-					month9:this.numList[8].mon,
-					month10:this.numList[9].mon,
-					month11:this.numList[10].mon,
-					month12:this.numList[11].mon,
-					id:this.shopSaleResolve.id
+				let arr=[]
+				this.numList.forEach(item=>{
+					arr.push(item.mon)
+				})
+				this.$ajax('BreakDownYearlySalesPlan',{
+					year:new Date().getFullYear(),
+					shop:this.shopID,
+					amount:this.shopSaleResolve.expect,
+					months:arr.join(',')
 				},res=>{
 					uni.showToast({
 						title:'设置门店绩效成功!',
@@ -144,59 +144,69 @@
 			},
 			/*获得门店绩效数据*/
 			getShopAim(id){
-				this.$ajax('ShopMonthlyPerformance',{
+				this.$ajax('ShopYearlySalesPlan',{
 					shop:id,
-					year:new Date().getFullYear()
+					year:new Date().getFullYear(),
+					withActual: 1
 				},res=>{
 					if(res){
 						this.shopSaleResolve=res;
-						this.shopBgndate=new Date(res.shopBgndate).getMonth()+1;
-						this.shopBgnYear=new Date(res.shopBgndate).getFullYear()
+						this.shopBgndate=new Date(res.bgndate).getMonth()+1;
+						this.shopBgnYear=new Date(res.bgndate).getFullYear();
 						this.numList.forEach(item=>{
-				
-							//如果当前年大于开业日期的年分
-							if(new Date().getFullYear()>this.shopBgnYear){
-				
-								if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
-										||res['month9']||res['month10']||res['month11']||res['month12']){
-											//如果一个有数据，就赋值
+							if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
+									||res['month9']||res['month10']||res['month11']||res['month12']){
+										//如果一个有数据，就赋值
+								item.mon=res[`${item.value}`];
+								item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+							}else{
+								if(item.id==12){
+									item.mon=this.shopSaleResolve.expect;
+									item.pre=this.shopSaleResolve.expect?Number(item.mon/this.shopSaleResolve.expect*100).toFixed(2):0
+								}else{
 									item.mon=res[`${item.value}`];
 									item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
-								}else{
-									if(item.id==12){
-										item.mon=this.shopSaleResolve.expect;
-										item.pre=item.mon/this.shopSaleResolve.expect*100
-									}else{
-										item.mon=res[`${item.value}`];
-										item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
-									}
-								}
-				
-				
-				
-							}else if(new Date().getFullYear()==this.shopBgnYear){
-								//如果12月份有值，就不管
-								if(item.id!=12){
-									if(item.id<this.shopBgndate){
-										item.mon=0;
-										item.pre=0
-									}else{
-										item.mon=res[`${item.value}`];
-										item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
-									}
-				
-								}else if(item.id==12){
-									if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
-											||res['month9']||res['month10']||res['month11']||res['month12']){
-										item.mon=res[`${item.value}`];
-										item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
-									}else{
-										item.mon=this.shopSaleResolve.expect;
-										item.pre=item.mon/this.shopSaleResolve.expect*100
-									}
-				
 								}
 							}
+				// 			//如果当前年大于开业日期的年分
+				// 			if(new Date().getFullYear()>this.shopBgnYear){
+				// 				if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
+				// 						||res['month9']||res['month10']||res['month11']||res['month12']){
+				// 							//如果一个有数据，就赋值
+				// 					item.mon=res[`${item.value}`];
+				// 					item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+				// 				}else{
+				// 					if(item.id==12){
+				// 						item.mon=this.shopSaleResolve.expect;
+				// 						item.pre=item.mon/this.shopSaleResolve.expect*100
+				// 					}else{
+				// 						item.mon=res[`${item.value}`];
+				// 						item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+				// 					}
+				// 				}
+				// 			}else if(new Date().getFullYear()==this.shopBgnYear){
+				// 				//如果12月份有值，就不管
+				// 				if(item.id!=12){
+				// 					if(item.id<this.shopBgndate){
+				// 						item.mon=0;
+				// 						item.pre=0
+				// 					}else{
+				// 						item.mon=res[`${item.value}`];
+				// 						item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+				// 					}
+				
+				// 				}else if(item.id==12){
+				// 					if(res['month1']||res['month2']||res['month3']||res['month4']||res['month5']||res['month6']||res['month7']||res['month8']
+				// 							||res['month9']||res['month10']||res['month11']||res['month12']){
+				// 						item.mon=res[`${item.value}`];
+				// 						item.pre=res.expect?Number(item.mon/res.expect*100).toFixed(2):0
+				// 					}else{
+				// 						item.mon=this.shopSaleResolve.expect;
+				// 						item.pre=item.mon/this.shopSaleResolve.expect*100
+				// 					}
+				
+				// 				}
+				// 			}
 				
 						})
 					}
@@ -213,7 +223,6 @@
 			/*编辑门店目标*/
 			editAim(item){
 				this.monthTabCur=item;
-				console.log(this.monthTabCur)
 				this.monthTabID=item.id;
 				this.num=this.monthTabCur.mon
 				this.modalName='Modal';
@@ -236,7 +245,6 @@
 
 		},
 		onShow(){
-
 			this.getShopAim(this.shopID)
 		}
 	}
@@ -250,7 +258,8 @@
 	}
 	/*门店目标 start*/
 	.shop-aim-container{
-		background:url("../../../../../static/img/work/statistics/bg.png") no-repeat;
+		background:url("../../../../../static/img/work/statistics/bg.png") no-repeat center center;
+		background-size: cover;
 		padding:20px  15px 30px 72upx;	
 	}
 	

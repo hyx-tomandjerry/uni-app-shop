@@ -41,8 +41,18 @@
 		:weekList="weekList"
 		@editAim="editAim"
 		:lastMonthDaysList="lastMonthDaysList"></calendar-list>
+		
+		<statistics-edit-model 
+			:monthTabCur="editDayItem"
+			:isShow="isShowEditDay"
+			@hideModal="hideModal"
+			@setShopAim="setShopAim"
+			v-if="isShowEditDay"
+		>
+			
+		</statistics-edit-model>
 		<!-- 显示修改框 -->
-		<view v-if="isShowEditDay" class="bg-white edit-day-content animated bounceInUp" >
+		<!-- <view class="bg-white edit-day-content animated bounceInUp" >
 			<view class="color-normal font-size-big ">
 				{{new Date().getFullYear()}}-{{monthItem.id>=10?monthItem.id:'0'+monthItem.id}}-{{editDayItem.day>=10?editDayItem.day:'0'+editDayItem.day}}
 			</view>
@@ -54,7 +64,12 @@
 				<view  @click="setShopAim">确定</view>
 			</view>
 			
-		</view>
+		</view> -->
+		<simpleModel :isShow="isShow" @hideSimpleModel="hideSecondModal()" v-if="isShow">
+			<block slot="content">
+				<view>12月份绩效目标为负值，请重新修改</view>
+			</block>
+		</simpleModel>
 	</view>
 </template>
 
@@ -63,8 +78,10 @@
 	import solveWay from '../../../../../components/statistics/solve-way.vue'
 	import solveWayModel from '../../../../../components/statistics/solve-way-model.vue'
 	import calendarList from '../../../../../components/statistics/calendar-list.vue'
+	import statisticsEditModel from '../../../../../components/statistics/statistics-edit-model.vue'
+	import simpleModel from '../../../../../components/simple-model.vue'
 	export default {
-		components:{resolveTitle,solveWay,solveWayModel,calendarList},
+		components:{resolveTitle,solveWay,solveWayModel,calendarList,statisticsEditModel,simpleModel},
 		data() {
 			return {
 				dayTabID:'',
@@ -84,42 +101,47 @@
 				countWeek:0,//本月有几个周末
 				isShowRadio:false,//显示分解方法弹出框
 				isShowEditDay:false,//是否显示修改每天的弹出框
-				editDayItem:''
+				editDayItem:{},
+				isShow:false,//最后一天为负数,显示
 			}
 		},
 		methods: {
-			setShopAim(){
-				let dayMin=(Number(this.dayTabCur.num)-Number(this.num)).toFixed(2);//两者之间的差
-				
+			hideSecondModal(){
+				this.isShow=false;
+			},
+			hideModal(){
+				this.isShowEditDay=false;
+			},
+			setShopAim(num){
+				let dayMin=0;
+				dayMin=(Number(this.dayTabCur.num)-Number(num)).toFixed(2);//两者之间的差
 				let last=(Number(this.currentMonthDaysList[this.currentMonthDaysList.length-1].num)+Number(dayMin)).toFixed(2);//最后一个值
 				if(last<0){
-					uni.showToast({
-						title:'最后一天的绩效目标为负值，请重新输入',
-						icon:'none'
-					})
+					this.isShow=true;
 					return;
 				}
+				
 				this.currentMonthDaysList[this.currentMonthDaysList.length-1].num=last;
 				this.currentMonthDaysList.forEach((item=>{
-						if(item.day==this.dayTabCur.day){
-							item.num=this.num
-						}
+					if(item.day==this.dayTabCur.day){
+						item.num=num
+					}	
 				}))
-				this.confirmShopAim()
+				this.confirmShopAim(num)
 			},
-			confirmShopAim(){
-				this.$ajax('SetShopDailyPerformance',{
+			confirmShopAim(num){
+				this.$ajax('ChangeShopDailySalesPlan',{
 					shop:this.shopID,
 					date:`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-${this.dayTabCur.day>=10?this.dayTabCur.day:'0'+this.dayTabCur.day}`,
-					expect:this.dayTabCur.num
+					expect:num
 				},res=>{
+					this.isShowEditDay=false;
 					uni.showToast({
 						title:'设置门店绩效成功!',
 						icon:'none'
 					})
-					this.isShowEditDay=false;
-					this.getShopAimByMonth(this.shopID);
-					this.getCalendar(this.year,this.monthItem.id);
+					this.getCalendar(this.year,this.monthItem.id)
+					this.getShopAimByMonth(this.shopID)
 				})
 				
 			},
@@ -182,17 +204,21 @@
 				this.getWeek();//获得有几个周末
 			},
 			//周末加备或者平坦选定
-			radioSelect() {
-				this.renderByWay(this.radio);
+			radioSelect(checked) {
+				
+				this.renderByWay(this.radio,checked);
 				this.isShowRadio=false;
 				this.radio=0;
 			
 			},
 			/*按周末加倍,或者按天平摊渲染数据*/
-			renderByWay(id){
-				this.$ajax('NewShopDailyPerformance',{
-					date:`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`,
-					target:this.shopID,
+			renderByWay(id,flag){
+				this.$ajax('BreakDownMonthlySalesPlan',{
+					// date:`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`,
+					// target:this.shopID,
+					// doubled:id==2?1:''//传1就是加倍 不穿就是均摊
+					shop:this.shopID,
+					date:flag?`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-${new Date().getDate()>9?new Date().getDate():'0'+new Date().getDate()}`:`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`,
 					doubled:id==2?1:''//传1就是加倍 不穿就是均摊
 				},res=>{
 					this.isShowResolveWay=false;
@@ -267,23 +293,32 @@
 			getShopAimByMonth(shopID){
 				
 				//上半部分目标绩效内容
-				this.$ajax('ShopMonthlyPerformance',{
+				this.$ajax('ShopYearlySalesPlan',{
 					shop:shopID,
 					year:new Date().getFullYear()
-				},res=>{
-					if(res){
+					},res=>{
 						res.monthAim=res[`month${this.monthItem.id}`];
-						res.monthPre=res['expect']?Number(res[`month${this.monthItem.id}`]/res['expect']*100).toFixed(0):0;
-						this.shopMonthAim=res;
-					}
+						res.monthPre=res['expect']?Math.floor(res[`month${this.monthItem.id}`]/res['expect']*100):0;
+						this.shopMonthAim=res;			
+					})
+			// 	this.$ajax('ShopMonthlyPerformance',{
+			// 		shop:shopID,
+			// 		year:new Date().getFullYear()
+			// 	},res=>{
+			// 		if(res){
+			// 			res.monthAim=res[`month${this.monthItem.id}`];
+			// 			res.monthPre=res['expect']?Number(res[`month${this.monthItem.id}`]/res['expect']*100).toFixed(0):0;
+			// 			this.shopMonthAim=res;
+			// 		}
 			
-				})
-				this.$ajax('ShopMonthlyPerformance',{
+			// 	})
+				this.$ajax('ShopMonthlySalesPlan',{
 					shop:shopID,
 					date:`${new Date().getFullYear()}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`
 				},res=>{
 					if(res){
 						let sum=0;
+						// this.currentMonthDaysList=[];
 						this.currentMonthDaysList.forEach(item=>{
 							for(let k in  res){
 								if(item.id==k){
@@ -291,6 +326,7 @@
 									sum+=Number(item.num);
 								}
 							}
+							
 						})
 						if(sum==0){
 							this.isShowResolveWay=true;
@@ -300,13 +336,8 @@
 			},
 		},
 		onLoad(options){
-			if(options.item){
-				this.monthItem=JSON.parse(options.item)
-			}
-			if(options.shopID){
-				
-				this.shopID=options.shopID
-			}
+			this.monthItem=JSON.parse(options.item)
+			this.shopID=options.shopID
 			this.getShopAimByMonth(this.shopID);
 			this.getCalendar(this.year,this.monthItem.id);
 		}
@@ -315,8 +346,9 @@
 
 <style scoped>
 	.shop-aim-container{
-		background:url("../../../../../static/img/work/statistics/bg.png") no-repeat;
-		padding:20px  15px 30px 72upx;
+		background:url("../../../../../static/img/work/statistics/bg.png") no-repeat center center; 
+		background-size: cover;
+		padding:40upx 30upx;
 	}
 	.edit-day-content>view:first-child{
 		padding:10upx 0;

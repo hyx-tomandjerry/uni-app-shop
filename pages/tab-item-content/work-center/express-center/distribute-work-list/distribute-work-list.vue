@@ -41,16 +41,37 @@
 
 						<view class="flex-1 text-ellipse font-size-normal">
 							<view class="font-size-normal color-normal" style="margin-bottom:5px;">
-								{{item.applyShopName || ''}}
+								{{item.supplyShopName || ''}}
 							</view>
 							<view class="font-size-mini color-regular">
-								({{item.applierName || ''}}/{{item.applierMobile || ''}})
+								({{item.supplierName || ''}}/{{item.supplierMobile || ''}})
+								
 							</view>
 						</view>
 						<view><image src="../../../../../static/img/work/express/other/express-arrow.png" style="width:44px;height:11px;margin:0 15px;"></image></view>
 						<view class="flex-1 text-ellipse font-size-normal" style="padding-left:10px;">
-							<view class="font-size-normal color-normal" style="margin-bottom:5px;">{{item.supplyShopName || ''}}</view>
-							<view class="font-size-mini color-regular">({{item.supplierName || ''}}/{{item.supplierMobile || ''}})</view>
+							<view class="font-size-normal color-normal" style="margin-bottom:5px;">
+								
+								<template v-if="item.recverMobile && item.recverName">
+									<!-- 代发 -->
+									{{item.recverName || ''}}
+								</template>
+								<template v-else>
+									<!-- 到店 -->
+									{{item.applyShopName || ''}}
+								</template>
+							</view>
+							<view class="font-size-mini color-regular">
+								<template v-if="item.recverMobile && item.recverName">
+									<!-- 代发 -->
+									({{item.recverMobile || ''}})
+								</template>
+								<template v-else>
+									<!-- 到店 -->
+									({{item.applierName || ''}}/{{item.applierMobile || ''}})
+								</template>
+								
+							</view>
 						</view>
 					</view>
 

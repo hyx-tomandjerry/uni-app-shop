@@ -1,27 +1,27 @@
 <template>
 	<view class="login_container position_relative">
-
-		<view class="title">
-			<view class="font-size-supper font-weight-super" style="margin-bottom:6px;">登录</view>
-			<view class="color-normal font-size-normal font-weight-normal">
-				<text class="color-regular">还没有账号,</text>&nbsp;
-				<text style="margin-left:10px;" class="color-blue" @click="toDesign()">
-					立即注册
-				</text>
-			</view>
-		</view>
+		<login-head name="登录">
+			<block slot="extra">
+				<view class="color-normal font-size-normal font-weight-normal">
+					<text class="color-regular">还没有账号,</text>&nbsp;
+					<text style="margin-left:10px;" class="color-blue" @tap="toOperate('design')">
+						立即注册
+					</text>
+				</view>
+			</block>
+		</login-head>
 		<view class="login_form">
 			<view class="login-form-item flex justify-start borderBottom align-center">
 				<image src="../../../static/icon/icon-denglu-account.png"  class="imgAccount"></image>
 				<input type="number" placeholder="请输入账号"
-						v-model="designer.account"
-						style="width:78%;"
+						v-model="account"
+						style="flex:1;padding-right:80upx;"
 						class="font-size-big font-weight-normal"
-						:class="designer.account?'text-black':'color-placeholder'"
+						:class="account?'text-black':'color-placeholder'"
 						@focus="hideTabbar()"
-					   @blur="checkTelEvent(designer.account)"
+						@blur="checkTelEvent(account)"
 						maxlength="11">
-				<text class="text-gray">{{designer.account.length}}/11</text>
+				<text class="text-gray" style="width:80upx;">{{account.length}}/11</text>
 			</view>
 			<view class="login-form-item flex justify-start borderBottom position_relative align-center">
 				<image src="../../../static/icon/icon-denglu-pwd.png"  class="imgPwd"></image>
@@ -29,47 +29,47 @@
 					   placeholder="请输入密码"
 					   @blur="showTabbar()"
 					   v-if="isShowPwd"
-					   v-model="designer.token"
+					   v-model="token"
 					   class="font-size-big font-weight-normal"
-					   :class="designer.token?'text-black':'color-placeholder'">
+					   :class="token?'text-black':'color-placeholder'">
 				<input type="password"
 					   placeholder="请输入密码"
 						@blur="showTabbar()"
 						v-else
-						v-model="designer.token"
+						v-model="token"
 						class="font-size-big font-weight-normal"
-						:class="designer.token?'text-black':'color-placeholder'">
-				<div v-if="isShowPwd" @click="showPwd()" class="flex-1" style="width:200upx;height:20px;">
+						:class="token?'text-black':'color-placeholder'">
+				<div v-if="isShowPwd" @click="showPwd()" class="flex-1" style="width:200upx;height:100%;">
 					<image src="../../../static/icon/zhengkaiyanjing.png" class="imgEye" ></image>
 				</div>
-				<div v-else @click="showPwd()" class="flex-1"  style="height:100%;width:100%">
+				<div v-else @click="showPwd()" class="flex-1"  style="height:100%;width:200upx">
 					<image src="../../../static/icon/eye.png" class="imgEyeOpen"></image>
 				</div>
 			</view>
 
 			<view class="text-center btn_container" >
 
-				<button  @click="loginEvent()"
-						:disabled="isInput"
-						:class="{
-							'inputStyle':designer.account || designer.token,
-							'noInputStyle':!designer.account && !designer.token
-						}">登录</button>
+				<button  @tap="loginEvent" type="primary"
+						:disabled="disabled"
+						>登录</button>
 
 			</view>
-			<view class="font-size-normal font-weight-normal color-normal" >
-				<text @click="toFindPassword()">忘记密码?</text>
+			<view class="font-size-normal font-weight-normal color-normal flex justify-between align-center" >
+				<text @tap="toOperate('forget')">忘记密码?</text>
+				<view @tap="remeberPwd" class="flex align-center">
+					<text :class="checked?'cuIcon-squarecheck':'cuIcon-square'"></text>
+					<text style="margin-left:6upx;">记住密码</text>
+				</view>
 			</view>
 		</view>
 		<view class="copyright font-size-mini color-regular" v-if="tabbar">
-			登录/注册即表示同意<text class="color-blue" @click="signPro">《门店助手软件用户许可协议》</text>
+			登录/注册即表示同意<text class="color-blue" @tap="toOperate('pro')">《门店助手软件用户许可协议》</text>
 		</view>
 		<loading
 				ref="loading"
 				:custom="false"
 				:shadeClick="true"
-				:type="1"
-				@callback="callback()">
+				:type="1">
 			<!-- <view class="test">自定义</view> -->
 		</loading>
 	</view>
@@ -78,83 +78,101 @@
 
     import im from '../../../common/im'
 	import loading from '../../../components/xuan-loading.vue'
+	import loginHead from '../../../components/login/login-head.vue'
 	import {
 		mapState,
 	    mapMutations
 	} from 'vuex';
 	export default{
-		computed: mapState(['hasLogin','userInfo','shoperObj','user','userStatus','shopType']),
+		computed: mapState(['hasLogin','userInfo','shoperObj','user','userStatus','shopType','remeber']),
 		data(){
 			return{
-				designer:{
-					account:'',
-					token:''
-				},
+				checked:false,
+				disabled:true,
+				account:'',
+				token:'',
 				isShowPwd:false,//显示密码
-				isInput:false,
-				modalName:'',
 				tabbar:true,//用于键盘隐藏，
 				windowHeight:'',
 
 			}
 		},
+		watch:{
+			account(val){this.change()},
+			token(val){this.change()}
+		},
 		onShow(){
-			const userName=uni.getStorageSync('userName');
-			const userPsw=uni.getStorageSync('userPsw');
-			if(userName&& userPsw){
-				this.designer={
-					account:userName,
-					token:userPsw
-				}
-			}else{
-				this.designer={
-					account:'',
-					token:''
-				}
-			}
-			uni.getStorage({
-				key:'userInfo',
-				success: (res) => {
-					 if(res.data.status==this.userStatus.normal){
-						uni.redirectTo({
-							url:"../../tab-item/index/index"
-						})
-					}
 
+			if(this.remeber){
+				console.log(this.remeber)
+				this.checked=this.remeber;
+				const userName=uni.getStorageSync('userName');
+				const userPsw=uni.getStorageSync('userPsw');
+				console.log(userName)
+				console.log(userPsw)
+				if(userName&& userPsw){
+					this.account=userName,
+					this.token=userPsw
+				}else{
+					this.account="",
+					this.token=""
 				}
-			})
+				// uni.getStorage({
+				// 	key:'userInfo',
+				// 	success: (res) => {
+				// 		 if(res.data.status==this.userStatus.normal){
+				// 			uni.switchTab({
+				// 				url:"../../tab-item/index/index"
+				// 			})
+				// 		}
+
+				// 	}
+				// })
+			}
+
 		},
 		onLoad(){
-			uni.getSystemInfo({
-				success: (res) => {
-					this.windowHeight=res.windowHeight;
-				}
-			})
-			uni.onWindowResize((res)=>{
-				if(res.size.windowHeight<this.windowHeight){
-					this.tabbar=false;
-				}else{
-					this.tabbar=true;
-				}
-			})
+			this.changeTabbar()
 			this.$fire.on('login',res=>{
 					this.inInput=false;
-					this.designer.account=res.account;
-					this.designer.token=res.token;
+					this.account=res.account;
+					this.token=res.token;
 			})
 
 
 		},
 
 		methods:{
+			changeTabbar(){
+				uni.getSystemInfo({
+					success: (res) => {
+						this.windowHeight=res.windowHeight;
+					}
+				})
+				uni.onWindowResize((res)=>{
+					if(res.size.windowHeight<this.windowHeight){
+						this.tabbar=false;
+					}else{
+						this.tabbar=true;
+					}
+				})
+			},
+			change(){
+				if(this.account && this.account !=null && this.token && this.token!=null){
+					this.disabled=false;
+					return;
+				}
+				this.disabled=true;
+			},
+			remeberPwd(){
+				this.checked=!this.checked;
+				this.setRember(this.checked)
+			},
 			close(){
 				 this.$refs.loading.close();
 			},
 			open(){
 				this.$refs.loading.open();
-			},
-			callback(){
-
 			},
 			//验证电话号码
 			checkTelEvent(event){
@@ -179,27 +197,27 @@
 			hideTabbar(){
 				this.tabbar=false;
 			},
-
-			hideModal(){
-				this.modalName=null;
-			},
 			showPwd(){
-
 				this.isShowPwd=!this.isShowPwd;
 			},
-
-			//注册
-			toDesign(){
-				uni.navigateTo({
-					url:"../design/design?type="+this.shoperObj.type
-				})
-			},
-			//忘记密码
-			toFindPassword(){
-
-				uni.navigateTo({
-					url:'../find-password/find-password'
-				})
+			toOperate(type){
+				switch(type){
+					case 'design':
+					uni.navigateTo({
+						url:"../design/design?type="+this.shoperObj.type
+					})
+					break;
+					case 'forget':
+					uni.navigateTo({
+						url:'../find-password/find-password'
+					})
+					break;
+					case 'pro':
+					uni.navigateTo({
+						url:"../protocol/protocol"
+					})
+					break;
+				}
 			},
 			toLogin(account,token){
 
@@ -211,13 +229,13 @@
 					},res=>{
 						if(res.type==this.shoperObj.type){
 							this.login(res);
-							im.webimLogin()
-							this.isInput=true;
+							// im.webimLogin()
 							this.close();
 							uni.showToast({
 								title:'登录成功',
 								icon:'none'
 							})
+
 							uni.setStorageSync('userName', account);
 							uni.setStorageSync('userPsw',token);
 							setTimeout(()=>{
@@ -225,16 +243,17 @@
 									uni.redirectTo({
 										url:"../../tab-item/search-company/search-company"
 									})
+									this.disabled=false;
 								}else if(this.userInfo.status==this.userStatus.normal){
-									uni.redirectTo({
+									uni.switchTab({
 										url:"../../tab-item/index/index"
 									})
+									this.disabled=false;
 								}
 							},500)
 						}else{
 
 							setTimeout(()=>{
-
 								uni.showToast({
 									title: `您的账号无法在“门店助手”登录`,
 									mask: false,
@@ -266,34 +285,55 @@
 				},1000)
 
 			},
+			check(){
+				if(!this.account){
+					uni.showToast({
+						title:'请输入账号',
+						icon:'none'
+					})
+					return;
+				}
+				if(!this.token){
+					uni.showToast({
+						title:'请输入密码',
+						icon:'none'
+					})
+					return}
+				if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.account)){
+					uni.showToast({
+						title:'电话号码不存在',
+						icon:'none'
+					})
+					return;
+				}
+				if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.token)){
+					uni.showToast({
+						title:'密码格式不正确',
+						icon:'none'
+					})
+					return;
+				}
+				return true;
+			},
 			loginEvent(){
-				if(!this.designer.account || !this.designer.token){
-					uni.showToast({
-						title: '请输入账号或密码',
-						icon:'none'
-					});
-				}else if(
-						(this.designer.account && (/^[1][3,4,5,7,8][0-9]{9}$/.test(this.designer.account)))
-						&&
-						(this.designer.token && (/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.token)))
-				){
-					this.toLogin(this.designer.account,this.designer.token);
-				}else{
-					uni.showToast({
-						title: '账号或者密码格式不正确',
-						icon:'none'
-					});
+				if(this.check()){
+					this.disabled=true;
+					this.toLogin(this.account,this.token);
 				}
 			},
 
-			 ...mapMutations(['login','setAccount'])
+			 ...mapMutations(['login','setAccount','setRember'])
 		},
-		components:{loading}
+		components:{loading,loginHead}
 	}
 </script>
 
 <style lang="less">
 	@import url('../../../static/css/demo.less');
+	.cuIcon-square,.cuIcon-squarecheck{
+		font-size:22px;
+		color:rgba(137,136,136,1);
+	}
 	.cu-dialog{
 		min-width:331px;
 	}

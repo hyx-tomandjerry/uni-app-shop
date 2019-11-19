@@ -8,7 +8,7 @@
 				<view class="font-size-big font-weight-bold text-white">{{new Date().getMonth()+1}}.{{new Date().getDate()}}日门店绩效审核</view>
 			</block>
 		</cu-custom>
-		<uChartModel  :todayNum="today.todayFact || totalPerform" :aimNum="today.todayAim" :type="'today'">
+		<uChartModel  :todayNum="today.todayFact" :aimNum="today.todayAim" :type="'today'">
 			<block slot="canvas">
 				<view class="qiun-charts3">
 					 <canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
@@ -17,33 +17,25 @@
 		</uChartModel>
 		<view class="rank-container bg-white">
 			<view class="nav flex justify-around borderBottom">
-				<view class="flex-1 text-center">头像</view>
-				<view class="flex-1 text-center">昵称</view>
+				<view class="flex-1 text-center">姓名</view>
 				<view class="flex-1 text-center">销售额</view>
 				<view class="flex-1 text-center">占比</view>
-				<view class="flex-1 text-center" v-if="userInfo.id==managerID&&today.todayFact==0">编辑</view>
+				<view class="flex-1 text-center" v-if="userInfo.id==managerID">编辑</view>
 			</view>
-			<view class="rank-list">
-				<view class="rank-list-item flex justify-around" v-for="(item,index) in salemanList" :key="index" >
-					<view class="flex-1 text-center">
-						<!-- <image src="../../../../../static/img/work/statistics/first.png" class="ring-img"> </image> -->
-						<image :src="item.headurl?item.headurl:'../../../../../static/img/default.png'" class="ring-img"></image>
-					</view>
-					<view class="flex-1 text-center text-ellipse">
-
-						<text >{{item.name || ''}}</text>
-					</view>
-					<view class="num flex-1 text-center">{{item.value || 0}}</view>
-					<view class="precent flex-1 text-center">{{item.pre || 0}}%</view>
-					<view @tap="checkItem(item)" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID&&today.todayFact==0">编辑</view>
-				</view>
-			</view>
+			<scroll-view class="rank-list" scroll-y="true" style="max-height: 250px;">
+				<block v-for="(item,index) in salemanList" :key="index">
+					<sale-check-item
+					:managerID="managerID"
+					:item="item"
+					 :index="index" @checkItem="checkItem"></sale-check-item>
+				</block>
+			</scroll-view>
 
 		</view>
 
-		<button class="btn-container position_absolute" @tap="showModel($event)" 
-			data-target="noticeModel"
-			v-if="userInfo.id==managerID" :disabled="today.todayFact!=0">提交当天绩效</button>
+		<button class="btn-container" @tap="showModel($event)" 
+			data-target="noticeModel" :loading="loading" :disabled="disabled"
+			 >提交当天绩效</button>
 		
 		<showModel :isShow="modelName=='noticeModel'" @hideModel="hideModel" v-if="modelName=='noticeModel'" @confirmDel="confirmPerform">
 			<block slot="content">
@@ -58,10 +50,13 @@
 	import uChartModel from '../../../../../components/uchart-model.vue'
 	import {mapState} from 'vuex'
 	import showModel from '../../../../../components/show-model.vue'
+	import saleCheckItem from '../../../../../components/statistics/sale-check-item.vue'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
 			return {
+				disabled:false,
+				loading:false,
 				today:{
 					todayFact:0,//判断今日是否审核过
 					todayAim:0,//今天的总目标
@@ -81,13 +76,18 @@
 				shopID:'',
 				salemanList:[],
 				managerID:'',//店长的ID
-				totalPerform:'',//总的绩效之和
-				modelName:''
+				modelName:'',
+				timeObj:{
+					year:new Date().getFullYear(),
+					month:new Date().getMonth()+1,
+					day:new Date().getDate()
+				}
 			}
 		},
 		components: {
 			uChartModel,
-			showModel
+			showModel,
+			saleCheckItem
 		},
 		methods: {
 			hideModel(){
@@ -98,13 +98,9 @@
 			},
 			//确认今天绩效
 			confirmPerform(){
-			
-				this.$ajax('ConfirmShopDailyPerformance',{
+				this.$ajax('ConfirmShopSalesAmount',{
 					shop:this.shopID,
-					// year:new Date().getFullYear(),
-					// month:new Date().getMonth()+1,
-					// day:new Date().getDate(),
-					date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
+					date:`${this.timeObj.year}-${this.timeObj.month}-${this.timeObj.day}`
 				},res=>{
 					uni.showToast({
 						title:'确认绩效成功',
@@ -114,65 +110,69 @@
 						uni.navigateBack({
 							delta:1
 						})
-					},800)
+					},900)
 
 				})
 			},
 			/*获得今日绩效信息*/
-			getShopPerformByDay(id){
-				this.$ajax('ShopMonthlyPerformance',{
+			getShopPerformByDay(id,timeObj){
+				//获得店员绩效
+				
+				this.$ajax('SalesmenSalesAmount',{
 					shop:id,
-					date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
+					year:timeObj.year,
+					month:timeObj.month,
+					date:timeObj.day
 				},res=>{
-					let day=new Date().getDate();
-					this.today={
-						todayFact:res[`aday${day}`]?Number(res[`aday${day}`]).toFixed(2):0,
-						todayAim:res[`day${day}`]?Number(res[`day${day}`]).toFixed(2):0,
-						todayPre:res[`day${day}`]?Number(res[`aday${day}`]/res[`day${day}`]).toFixed(2):0
+					if(res){
+						this.today={
+							todayFact:res['actual']?Number(res['actual']).toFixed(2):0,
+							todayAim:res['expect']?Number(res['expect']).toFixed(2):0,
+							todayPre:res['expect']?Number(res['actual']/res['expect']).toFixed(2):0
+						}
+						console.log(this.today.todayPre)
+						this.chartData.series=[
+							{
+								name:'门店日占比',
+								data:this.today.todayPre,
+								color: '#2fc25b'
+												
+							}
+						]
+						this.showArcbar('canvasArcbar1',this.chartData);	
+						if(res.salesmen){
+							res.salesmen.forEach(item=>{
+								item.pre=this.today.todayFact>0 ? Number(item.value/(this.today.todayFact)*100).toFixed(2):0;
+							})
+							this.salemanList=res.salesmen;
+						}	
 					}
-					console.log(this.today.todayFact/this.today.todayAim);
-					this.chartData.series=[
-						{
-							name:'门店日占比',
-							data:res[`day${day}`]?(this.today.todayFact/res[`day${day}`]).toFixed(2):0,
-							color: '#2fc25b'
-
-						}
-					]
-					console.log(this.chartData);
-					this.showArcbar('canvasArcbar1',this.chartData);
-					//获得店员绩效
-
-					this.$ajax('SalesmenDailyPerformance',{
-						shop:id,
-						date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
-					},res=>{
-						if(res){
-							this.totalPerform=0;
-							res.forEach(item=>{
-								this.totalPerform+=item.value;
-							})
-							res.forEach(item=>{
-								item.pre=this.today.todayFact || this.totalPerform ?Number(item.value/(this.today.todayFact || this.totalPerform)*100).toFixed(0):0;
-							})
-							this.salemanList=res;
-						}
-					})
-					// this.totalPerform=0;
-					// if(res.salesmen){
-					// 	res.salesmen.forEach(item=>{
-					// 		this.totalPerform+=Number(item.actual)
-					//
-					//
-					// 	})
-					// 	res.salesmen.forEach(item=>{
-					// 		item.pre=this.salemanPerform.expect || this.totalPerform?Number(item.actual/(this.salemanPerform.expect || this.totalPerform)*100).toFixed(2):0
-					// 	})
-					// 	this.salemanList=res.salesmen;
-					//
-					// }
-
+					
 				})
+				// this.$ajax('ShopMonthlyPerformance',{
+				// 	shop:id,
+				// 	date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
+				// },res=>{
+				// 	let day=new Date().getDate();
+				// 	let pre=0;
+				// 	this.today={
+				// 		todayFact:res[`aday${day}`]?Number(res[`aday${day}`]).toFixed(2):0,
+				// 		todayAim:res[`day${day}`]?Number(res[`day${day}`]).toFixed(2):0,
+				// 		todayPre:res[`day${day}`]?Number(res[`aday${day}`]/res[`day${day}`]).toFixed(2):0
+				// 	}
+				// 	pre=res[`day${day}`]?(this.today.todayFact/res[`day${day}`]).toFixed(2):0
+				// 	this.chartData.series=[
+				// 		{
+				// 			name:'门店日占比',
+				// 			data:pre,
+				// 			color: '#2fc25b'
+
+				// 		}
+				// 	]
+				// 	this.showArcbar('canvasArcbar1',this.chartData);
+					
+
+				// })
 			},
 			goBack(){
 				uni.navigateBack({
@@ -181,12 +181,24 @@
 			},
 			/*查看单个店员的绩效*/
 			checkItem(item){
-
+				let obj={
+					saleID:item.id,
+					shopID:this.shopID,
+					money:item.value,
+					year:this.timeObj.year,
+					month:this.timeObj.month,
+					day:this.timeObj.day,
+					type:'edit'
+				}
 				uni.navigateTo({
-					url:'../record-money/record-money?saleID='+item.id+'&money='+item.value+'&id='+this.shopID
+					url:"../record-money/record-money?obj="+JSON.stringify(obj)
 				})
 			},
-
+			_initChart(){
+				this.cWidth=uni.upx2px(200);
+				this.cHeight=uni.upx2px(200);
+				this.arcbarWidth=uni.upx2px(24);
+			},
 
 			/*显示圆弧*/
 			showArcbar(canvasId,chartData){
@@ -225,21 +237,22 @@
 
 
 		},
+		onShow(){
+			this.getShopPerformByDay(this.shopID,this.timeObj)
+		},
 		onLoad(param){
-			this.cWidth=uni.upx2px(250);
-			this.cHeight=uni.upx2px(250);
-			this.arcbarWidth=uni.upx2px(24);
+			this._initChart()
 			if(param){
-				// this.getShopSaleManList(param.id)
-				this.shopID=param.id;
-				this.managerID=param.managetID;
-				this.getShopPerformByDay(param.id)
+				this.shopID=param.shopID;
+				this.managerID=param.managerID;
+				this.timeObj={
+					year:param.year,
+					month:Number(param.month)>9?param.month:'0'+param.month,
+					day:Number(param.day)>9?param.day:'0'+param.day
+				}
+				this.getShopPerformByDay(param.shopID,this.timeObj)
 
 			}
-		},
-		onShow(){
-			this.getShopPerformByDay(this.shopID)
-
 		}
 	}
 </script>
@@ -249,55 +262,27 @@
 		font-family: "DINAlternate";
 	}
 	.qiun-charts3{
-		width: 100%;
-		height: 166px;
+		width:200upx;
+		height: 200upx;
 		position:relative;
 	}
 	.charts3{
 		position:absolute;
-		width: 250px;
-		height: 250px;
-		top:20px;
-		left:25px;
+		width: 200upx;
+		height: 200upx;
+		top:24px;
+		left:27px;
 	}
 	.rank-container{
 		.nav{
 			height:37px;
 			line-height:37px;
 
-		}
-		.rank-list{
-			.rank-list-item{
-				height:65px;
-				line-height:65px;
-				.ring-img{
-					width: 28px;
-					height: 28px;
-					border-radius: 50%;
-					vertical-align: middle;
-				}
-				.avatar{
-					width: 42px;
-					height: 42px;
-					vertical-align: middle;
-					border-radius:50%;
-				}
-				.num{
-					font-size:14px;
-					font-family:PingFangSC-Semibold;
-					font-weight:600;
-					color:rgba(255,72,103,1);
-				}
-				.precent{
-					font-size:14px;
-					font-family:PingFangSC-Semibold;
-					font-weight:600;
-					color:rgba(161,41,255,1);
-				}
-			}
-		}
+		}	
 	}
 	.btn-container{
+		z-index:100;
+		position:fixed;
 		width:93%;
 		bottom:0;
 		left:15px;

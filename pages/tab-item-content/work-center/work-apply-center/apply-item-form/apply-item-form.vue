@@ -80,11 +80,11 @@
 				<block  v-for="(item,index) in items" :key="index">
 					<repayForm
 					:items="items"
-					@deleteIndex="delIndex" 
+					@deleteIndex="delIndex"
 					@uploadData="uploadData"
 					:index="index" ></repayForm>
 				</block>
-				
+
 				<view class="flex-all bg-white text-center repay-btn" @click="addTemp">
 					增加报销
 				</view>
@@ -179,7 +179,7 @@
 		},
 		methods: {
 			changeSplice(){
-				
+
 				this.isSplice=false;
 			},
 			goBack(){
@@ -280,7 +280,7 @@
 					if(this.newOrEdit=='edit'){
 						this.getTimeInfo(this.start,this.end)
 					}
-					
+
 
 				}
 			},
@@ -303,7 +303,7 @@
 			submitApply(){
 				switch(Number(this.type)){
 					case this.approvalMode.absence:
-						
+
 						// 请假
 						if(!this.shop.id){
 							uni.showToast({
@@ -332,7 +332,7 @@
 								icon:'none'
 							});
 						}else{
-						
+
 							let value={
 								shop:this.shop.id,//门店ID
 								xtype:this.newOrEdit=='edit'?Number(this.xType):(Number(this.xType)?Number(this.xType)+1:1),//请假类型
@@ -541,9 +541,9 @@
 									})
 								}, 10);
 							}
-							
+
 							this.applyItem=res;
-							
+
 						})
 						break;
 						//通用

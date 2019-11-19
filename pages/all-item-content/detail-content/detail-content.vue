@@ -17,7 +17,7 @@
 			<commonTitle :itemInfo='itemInfo' :type="'article'">
 				<block slot="title">{{itemInfo.name}}</block>
 				<block slot='senderName'>{{itemInfo.applierName}}</block>
-				<block slot="time">{{itemInfo['applyDate'] | formatTime('YMDHMS')}}</block>
+				<block slot="time">{{itemInfo['applyDate']}}</block>
 				<block slot="content">
 					<view class="article-text">{{itemInfo.content}}</view>
 				</block>
@@ -48,7 +48,7 @@
 				this.$ajax('Article',{id:id},res=>{
 					res.applyDate=this.$moment(res.applyDate).format('YYYY-MM-DD hh:mm:ss')
 					this.itemInfo=res;
-				
+
 				})
 			},
 			goBack(){
@@ -71,7 +71,7 @@
 	}
 	.detail >>> div{
 		margin-bottom:15px;
-		
+
 	}
 	.article-text{
 		white-space: pre-wrap;

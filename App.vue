@@ -17,6 +17,7 @@
 		methods:{
 		},
 		onLaunch() {
+			this.$utils.onNet()
 			uni.getSystemInfo({
 						success: function(e) {
 							// #ifndef MP

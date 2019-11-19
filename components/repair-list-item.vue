@@ -21,9 +21,9 @@
 			</view>
 			<view class="list-content">
 				<view @tap="orderDetail">
-					<common-item  type="img" intro="门店名称" 
+					<common-item  type="img" intro="门店名称"
 					:content="item.name" src="../../../static/icon/icon-mengdian@2x.png"></common-item>
-					<common-item  
+					<common-item
 					type="img" intro="报修人" :content="`${item.applierName}/${item.applierMobile}`" src="../../../static/icon/icon-dneglu-zhanghu@2x.png"></common-item>
 
 				</view>
@@ -61,7 +61,7 @@
 			font-weight:400;
 			color:rgba(42,42,42,1);
 			margin-bottom:10px;
-	
+
 		}
 	}
 	.list-content-item{
@@ -70,5 +70,5 @@
 		color:rgba(137,136,136,1);
 		margin-bottom:15px;
 	}
-	
+
 </style>

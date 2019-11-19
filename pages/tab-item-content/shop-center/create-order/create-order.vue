@@ -5,7 +5,7 @@
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >新增报修</view></block>
 		</cu-custom>
 		<view >
-			<view class="cu-form-group borderBottom position_relative" @click="toNearShopList()">
+			<view class="cu-form-group borderBottom position_relative" @tap="toNearShopList">
 				<view class="title font-size-normal font-weight-normal" >
 					<text class="text-red" style="margin-right:4rpx;">*</text>选择门店
 				</view>
@@ -13,7 +13,7 @@
 					<view class="dateStyle" v-if="shop.name" style="margin-right:20px;">
 						<text  class="font-size-normal font-weight-normal">{{shop.name}}</text>
 					</view>
-					<view v-if="!repaitItem">
+					<view v-if="newOrEdit=='create'">
 						<text class="cuIcon-right  position_absolute color-placeholder" style="font-size:16px;right:17px;bottom:14px;" >
 						</text>
 					</view>
@@ -23,23 +23,14 @@
 			<view class="userInfo" >
 				<view class="cu-form-group">
 					<view class=" font-size-normal font-weight-normal"><text class="text-red">*</text>报修人</view>
-					<input placeholder="请输入报修人" name="input" style="text-align:right;" class="font-size-normal font-weight-normal text-black" v-model="designer.name"></input>
+					<!-- <input placeholder="请输入报修人" name="input" style="text-align:right;" class="font-size-normal font-weight-normal text-black" v-model="designer.name"></input> -->	<view>{{userInfo.name}}</view>
 				</view>
 
 				<view class="cu-form-group">
 					<view class=" font-size-normal font-weight-normal"><text class="text-red">*</text>联系方式</view>
-					<input placeholder="请输入联系方式" name="input" @blur="checkTelEvent($event)" style="text-align:right;"  class="font-size-normal font-weight-normal text-black" v-model="designer.telephone"></input>
+					<!-- <input placeholder="请输入联系方式" name="input" @blur="checkTelEvent($event)" style="text-align:right;"  class="font-size-normal font-weight-normal text-black" v-model="designer.telephone"></input> -->
+					<view>{{userInfo.account}}</view>
 				</view>
-
-				<!-- <view class="cu-form-group position_relative"  @click="onShowDatePicker('date')">
-					<view class=" font-size-normal font-weight-normal" >
-						<text class="text-red" style="margin-right:4rpx;">*</text>上门日期
-					</view>
-					<view >
-						<view class="dateStyle color-normal" v-if="designer.date" style="margin-right:20px;">{{ designer.date}}</view>
-						<view><text class="cuIcon-right position_absolute color-placeholder" style="font-size:20px;right:17px;bottom:12px;"></text></view>
-					</view>
-				</view> -->
 			</view>
 			<view class="repair-item"></view>
 			<view class="repair-info">
@@ -58,7 +49,7 @@
 					</view>
 				</view>
 
-				<view class="cu-form-group bg-white font-size-normal margin-bottom-normal" v-show="subItem" style="padding:10px 15px;">
+				<view class="cu-form-group bg-white font-size-normal margin-bottom-normal" v-show="subItem.name" style="padding:10px 15px;">
 					<view class="flex-all">
 						<view class="flex justify-start repair-detail-list-item" >
 							<view class="color-regular reapir-intro" >维修子类别名称</view>
@@ -123,7 +114,7 @@
 					</view>
 				</view>
 
-				<view class="cu-form-group borderBottom position_relative" @tap="chooseWorkflow" v-if="!repaitItem">
+				<view class="cu-form-group borderBottom position_relative" @tap="chooseWorkflow" v-if="newOrEdit=='create'">
 					<view class="title font-size-normal font-weight-normal" >
 						<text class="text-red" style="margin-right:4rpx;">*</text>审批流程
 					</view>
@@ -135,7 +126,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="workflow-contaienr bg-white" v-show="workFlowItem['steps']&& !repaitItem ">
+				<view class="workflow-contaienr bg-white" v-show="workFlowItem['steps']&&  newOrEdit=='create' ">
 					<view>
 						<view></view>
 						<view class="font-size-normal font-weight-bold color-normal">审批步骤</view>
@@ -145,16 +136,14 @@
 							<workflowItem :workflow="item" :index="index"></workflowItem>
 						</block>
 					</view>
-				
+
 				</view>
 			</view>
 		</view>
 		<view style="height:200upx"></view>
-		<bottom-btn-one :content="repaitItem.status==repairStatus.submit && repaitItem.approval==applyStatusZn.rejected?'修改订单':'提交订单'" @showModal="createOrder"></bottom-btn-one>
-		
-		<mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true"
-			@confirm="onSelected($event)" @cancel="onSelected($event)"
-		 />
+		<bottom-btn-one :content="repaitItem.status==repairStatus.submit && repaitItem.approval==applyStatusZn.rejected?'修改订单':'提交订单'" @showModal="createOrder" :disabled="disabled" :loading="iconloading"></bottom-btn-one>
+
+
 		</view>
 	</view>
 </template>
@@ -164,30 +153,15 @@
 	import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
 	import {mapState} from 'vuex'
 	import workflowItem from '../../../../components/workflow-item.vue'
-	// import moment from 'moment'
 	export default{
 	    computed:mapState(['userInfo','repairStatus','repairTypeZn','approvalMode','applyStatusZn']),
 		data(){
 			return{
-				showPicker: false,//显示日期弹出框
-				// isShow:false,
-				// modalName:null,
-				 value: '',//显示日期弹出框
-				 type:'rangetime',//显示日期弹出框
-				// CustomBar: this.CustomBar,
 				shop:{
 					id:'',
 					name:''
 				},
-
-				// amapPlugin:null,//地图组件
-				// key:'4c523fb1857f99ba7f2d683d9e88ec1e',//地图key
 				shopList:[],
-				designer:{
-					name:'',
-					telephone:'',
-					date:''
-				},
 				repairObj:{
 					bigName:'',
 					bigID:'',
@@ -196,33 +170,35 @@
 					summary:'',
 
 				},
-				subItem:'',//维修子类别
+				subItem:{},//维修子类别
 				subItemImg:[],
-
 				files:[],
 				imgList:[],
-				// address:'',获取位置
 				token:'',
-				loading:false,
-				repaitItem:'',//报修详情,
-				workFlowItem:'',//审批详情
+				repaitItem:{},//报修详情,
+				workFlowItem:{},//审批详情
+				disabled:true,
+				iconloading:false,
+				newOrEdit:'create'
 			}
 		},
+		watch:{
+			shop(val){this.change()},
+			repairObj(val){this.change()},
+			files(val){this.change()},
+			workFlowItem(val){this.change()}
+		},
 		components:{
-			MxDatePicker,
 			bottomBtnOne,
 			workflowItem
 		},
 
 		onLoad(options){
+			this.newOrEdit=options.newOrEdit
 			if(options.id){
 				this.getRepairInfo(options.id)
 			}
-			// //进行定位
-			// this.amapPlugin=new amap.AMapWX({
-			// 	key:this.key
-			// })
-			// this.getLocationInfo();
+
 			this.getUploadToken();
 			this.$fire.on('createOrderShopID',result=>{
 				if(result){
@@ -253,18 +229,23 @@
 					this.repairObj.summary=this.repaitItem.summary;
 				}
 			})
-			if(this.userInfo){
-                this.designer.name=this.userInfo.name;
-                this.designer.telephone=this.userInfo.account;
-			}
 			this.$fire.on('workFlow',res=>{
-				console.log(res)
 				this.workFlowItem=res;
 			})
 
 
 		},
 		methods:{
+			change(){
+				if(this.newOrEdit=='create'){
+					if(this.shop.id && this.repairObj.bigID && this.files.length!=0 && this.workFlowItem.id && this.repairObj.summary){
+						this.disabled=false;
+						return;
+					}
+					this.disabled=true;
+				}
+
+			},
 			goBack(){
 				uni.navigateBack({
 					delta: 1
@@ -275,11 +256,6 @@
 				uni.navigateTo({
 					url:'../work-flow/work-flow?type='+this.approvalMode.repair_service
 				})
-			},
-			getOpenDate(){
-				var date=new Date();
-				// return this.format(date,'YMD')
-				return this.$moment(Date.now()).format('YYYY-MM-DD')
 			},
 			checkSubItemImg(event){
 				uni.previewImage({
@@ -292,6 +268,7 @@
 				this.$ajax('ServiceOrder',{
 					id:id
 				},res=>{
+					this.disabled=false;
 					this.repaitItem=res;
 					this.designer={
 					name:this.repaitItem.applierName,
@@ -320,86 +297,96 @@
 					}
 				})
 			},
+			check(){
+				if(!this.shop.name){
+					uni.showToast({
+						title:'请选择门店进行报修',
+						icon:'none'
+					})
+					return false;
+				}
+				if(!this.repairObj.bigID){
+					uni.showToast({
+						title:'请选择报修类别',
+						icon:'none'
+					})
+					return false;
+				}
+				if(!this.repairObj.summary){
+					uni.showToast({
+						title:'请输入报修描述',
+						icon:'none'
+					})
+					return false;
+				}
+				if(this.files.length===0){
+					uni.showToast({
+						title:'未上传图片，或者图片正上传，请稍等',
+						icon:'none'
+					})
+					return false;
+				}
+				if(!this.workFlowItem.id){
+
+					uni.showToast({
+						title:'请选择审批流程',
+						icon:'none'
+					})
+					return false;
+				}
+				return true;
+			},
 			//提交报修
 			createOrder(){
-				if(this.repaitItem){
+				if(this.newOrEdit=='edit'){
+					this.iconloading=true;
 					this.$ajax('SetServiceOrder',{
 						id:this.repaitItem.id,
 						category:this.repairObj.subID?this.repairObj.subID:'',
 						type:this.repairObj.bigID?this.repairObj.bigID:'',
 					    summary:this.repairObj.summary,
 					    files:this.files?this.files.join(','):'',
-					    contractor:this.designer.name?this.designer.name:this.userInfo.name,
-					    telephone:this.designer.telephone?this.designer.telephone:this.userInfo.account,
+					    contractor:this.userInfo.name,
+					    telephone:this.userInfo.account,
 						workflow:this.repaitItem.workflow
 					},res=>{
-					    this.loading = true
+
 					    uni.showToast({
 					        title:'重新派单成功',
-					        icon:'success'
+					        icon:'icon'
 					    });
 					    setTimeout(()=>{
 					        uni.navigateBack({
 					            delta:1
 					        })
 					    },1000)
-					
+
 					})
-					
-				}else{
 
-					if(!this.shop.name){
-						uni.showToast({
-							title:'请选择门店进行报修',
-							icon:'none'
-						})
-					}else if(!this.repairObj.bigID){
-						uni.showToast({
-							title:'请选择报修类别',
-							icon:'none'
-						})
-					}else if(!this.repairObj.summary){
-						uni.showToast({
-							title:'请输入报修描述',
-							icon:'none'
-						})
-					}else if(this.files.length===0){
-						uni.showToast({
-							title:'未上传图片，或者图片正上传，请稍等',
-							icon:'none'
-						})
-					}else if(!this.workFlowItem.id){
-						
-						uni.showToast({
-							title:'请选择审批流程',
-							icon:'none'
-						})
-					}else{
-						
-					    this.$ajax('NewServiceOrder',{
-					        category:this.repairObj.subID?this.repairObj.subID:'',
-							type:this.repairObj.bigID?this.repairObj.bigID:'',
-					        creator:this.userInfo.id,
-					        shop:this.shop.id,
-					        summary:this.repairObj.summary,
-					        files:this.files?this.files.join(','):'',
-					        contractor:this.designer.name?this.designer.name:this.userInfo.name,
-					        telephone:this.designer.telephone?this.designer.telephone:this.userInfo.account,
-							workflow:this.workFlowItem.id//流程模板
-					    },res=>{
-					        this.loading = true
-					        uni.showToast({
-					            title:'新增报修成功',
-					            icon:'none'
-					        });
-					        setTimeout(()=>{
-					            uni.navigateBack({
-					                delta:1
-					            })
-					        },1000)
+				}else if(this.newOrEdit=='create' && this.check()){
+					this.iconloading=true;
+					this.$ajax('NewServiceOrder',{
+					    category:this.repairObj.subID?this.repairObj.subID:'',
+						type:this.repairObj.bigID?this.repairObj.bigID:'',
+					    creator:this.userInfo.id,
+					    shop:this.shop.id,
+					    summary:this.repairObj.summary,
+					    files:this.files?this.files.join(','):'',
+					    contractor:this.userInfo.name,
+					    telephone:this.userInfo.account,
+						workflow:this.workFlowItem.id//流程模板
+					},res=>{
+					    uni.showToast({
+					        title:'新增报修成功',
+					        icon:'none'
+					    });
+					    setTimeout(()=>{
+					        uni.navigateBack({
+					            delta:1
+					        })
+					    },1000)
 
-					    })
-					}
+					})
 				}
 
 			},
@@ -491,42 +478,20 @@
 									icon:'none'
 								})
 							})
-						
-						}	
-					}	
+
+						}
+					}
 				})
-			},
-			onSelected(e) {//选择
-			    this.showPicker = false;
-			    if(e) {
-			        this[this.type] = e.value;
-			        this.designer.date=e.value.replace(/\//g,'-');
-			    }
-			},
-			 onShowDatePicker(type){//显示
-			    this.type = type;
-			    this.showPicker = true;
-			    this.value = this[type];
 			},
 			//显示最近的门店
 			toNearShopList(){
-				if(this.repaitItem){
+				if(this.newOrEdit=='edit'){
 					return;
 				}
 				uni.navigateTo({
 					url:'../near-shop-list/near-shop-list?cat=createOrder'
 				})
 			},
-			//验证电话号码
-			checkTelEvent(event){
-				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event.detail.value))){
-					uni.showToast({
-						title:'手机号码不存在',
-						icon:'none'
-					})
-					return false;
-				}
-			}
 		}
 	}
 </script>

@@ -3,7 +3,8 @@
 	:class="{
 		'border-Left-red':border_left_r,
 		'border-left-y':border_left_y,
-		'border-left-g':border_left_g
+		'border-left-g':border_left_g,
+		'border-left-p':border_left_p
 	}"
 		v-show="show" hover-class="bg-color-normal" @click="goToItem">
 		<view class="font-size-big font-weight-bold color-normal">
@@ -41,7 +42,8 @@
 			check_img:Boolean,
 			border_left_r:Boolean,
 			border_left_y:Boolean,
-			border_left_g:Boolean
+			border_left_g:Boolean,
+			border_left_p:Boolean
 		},
 		methods:{
 			goToItem(){
@@ -71,6 +73,9 @@
 	}
 	.border-left-y{
 		border-left:12upx solid #FFB126;
+	}
+	.border-left-p{
+		border-left:12upx solid #3343C9;
 	}
 	.check_img{
 		width:76upx;

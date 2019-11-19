@@ -1,79 +1,92 @@
 <template>
 	<view class="position_relative">
 		<view class="findPwd-container">
-			<view class="font-size-supper font-weight-super text-black">密码找回</view>
+			<login-head name="密码找回"></login-head>
 		</view>
 		<view class="findPwd-info">
 			<view class="findPwd-info-item flex justify-start borderBottom align-center">
 				<image src="../../../static/icon/icon-zhuce-shouji@2x.png"
 					   class="findPwd-info-item-tel-img"></image>
 				<input type="text" placeholder="请输入手机号"
-					   v-model="designer.mobile"
+					   v-model="mobile"
 					   :class="{
-					   		'color-placeholder':!designer.mobile,
-					   		'color-normal':designer.mobile
+					   		'color-placeholder':!mobile,
+					   		'color-normal':mobile
 					   }"
 					   class=" font-size-big font-weight-normal findPwd-info-item-tel-input"
-					   @blur="checkTelEvent(designer.mobile)"  @focus="hideTabbar()"
+					   @blur="checkTelEvent(mobile)"  @focus="hideTabbar()"
 					   maxlength="11">
-				<text class="color-placeholder">{{designer.mobile.length}}/11</text>
+				<text class="color-placeholder">{{mobile.length}}/11</text>
 			</view>
 			
 			<view class="findPwd-info-item flex justify-start borderBottom align-center">
 				<image src="../../../static/icon/icon-zhuce-youxiang@2x.png"
-					   class="findPwd-info-item-vscode-img"></image>
-				<input type="text" placeholder="请输入短信验证码" v-model="designer.vcode"
+					   class="findPwd-info-item-vscode-img"></image> 
+				<input type="text" placeholder="请输入短信验证码" v-model="vcode" maxlength="8"
 					   :class="{
-					   		'color-placeholder':!designer.vcode,
-					   		'color-normal':designer.vcode
+					   		'color-placeholder':!vcode,
+					   		'color-normal':vcode
 					   }"
-					   class="font-size-big font-weight-normal findPwd-info-item-vscode-input"  @blur="showTabbar()">
+					   class="font-size-big font-weight-normal findPwd-info-item-vscode-input"  @blur="showTabbar">
 				<button type="default"   v-if="isSend"  class="default-btn font-size-small font-weight-normal position_absolute" >{{num}}s</button>
-				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @click="sendCode()">发送验证码</button>
+				<button type="primary"  v-else  class="btn-area font-size-small font-weight-normal position_absolute"   @tap="sendCode">发送验证码</button>
 			</view>
 			
 			<view class="design-submit">
-				<button  :class="{'bg-gray':!designer.mobile,
-					'bg-blue':designer.mobile
-					}" @click="toNextPage()">下一步</button>
+				<button  type="primary" :disabled="disabled" @tap="toNextPage">下一步</button>
 			</view>
 			
 		</view>
 		<view class=" font-size-small color-normal login_btn_container" >
-			<view @click="toLogin()">已有账号?<text class="color-blue" >登录</text></view>
+			<view @tap="toOperate('login')">已有账号?<text class="color-blue" >登录</text></view>
 		</view>
 		<view class="copyright font-size-mini color-normal font-weight-normal" v-if="tabbar">
-			登录/注册即表示同意<text class="color-blue" @click="signPro">《门店助手软件用户许可协议》</text>
+			登录/注册即表示同意<text class="color-blue" @tap="toOperate('pro')">《门店助手软件用户许可协议》</text>
 		</view>
 	</view>
 </template>
 <script>
+	import loginHead from '../../../components/login/login-head.vue'
 	export default{
 		data(){
 			return{
-				designer:{
-					mobile:'',
-					vcode:''
-				},
+				mobile:'',
+				vcode:'',
 				isSend:false,
 				num:60,
 				tabbar:true,
-				windowHeight:''
+				windowHeight:'',
+				disabled:true,
 			}
 		},
+		watch:{
+			mobile(val){this.change()},
+			vcode(val){this.change()}
+		},
 		components:{
-			
+			loginHead
 		},
 		methods:{
-			signPro(){
-				uni.redirectTo({
-					url:"../protocol/protocol"
-				})
+			change(){
+				if(this.mobile && this.mobile != null && this.vcode && this.vcode!=null){
+					this.disabled=false;
+					return ;
+				}
+				this.disabled=true;
 			},
-			toLogin(){
-				uni.navigateBack({
-					delta:1
-				})
+			toOperate(type){
+				switch(type){
+					case 'login':
+					uni.navigateBack({
+						delta:1
+					})
+					break;
+					case 'pro':
+					uni.navigateTo({
+						url:"../protocol/protocol"
+					})
+					break;
+				}
 			},
 			showTabbar(){
 				this.tabbar=true;
@@ -93,27 +106,37 @@
 				}
 			},
 			toNextPage(){
-				
-				if(!this.designer.mobile || !this.designer.vcode){
-					uni.showToast({
-						title:'请完善基本信息',
-						icon:'none'
-					})
-				}else{
-					
+				if(this.check()){
 					uni.navigateTo({
-						url:'../reset-password/reset-password?mobile='+this.designer.mobile+'&vcode='+this.designer.vcode
+						url:'../reset-password/reset-password?mobile='+this.mobile+'&vcode='+this.vcode
 					})
 				}
 			},
+			check(){
+				if(!this.mobile){
+					uni.showToast({
+						title:'请输入电话号码',
+						icon:'none'
+					})
+					return false;
+				}
+				if(!this.vcode){
+					uni.showToast({
+						title:'请输入验证码',
+						icon:'none'
+					})
+					return false;
+				}
+				return true;
+			},
 			sendCode(){
-				if(!this.designer.mobile){
+				if(!this.mobile){
 					uni.showToast({
 						title:'请输入手机号',
 						icon:'none'
 					})
 				}else{
-					this.$ajax('SendVerCode',{mobile:this.designer.mobile},res=>{
+					this.$ajax('SendVerCode',{mobile:this.mobile},res=>{
 						uni.showToast({
 							title:'短信已发送，请注意接受',
 							icon:'none'
@@ -132,20 +155,23 @@
 				}
 				
 			},
+			changeTabbar(){
+				uni.getSystemInfo({
+					success: (res) => {
+						this.windowHeight=res.windowHeight;
+					}
+				})
+				uni.onWindowResize((res)=>{
+					if(res.size.windowHeight<this.windowHeight){
+						this.tabbar=false;
+					}else{
+						this.tabbar=true;
+					}
+				})
+			}
 		},
 		onLoad(){
-			uni.getSystemInfo({
-				success: (res) => {
-					this.windowHeight=res.windowHeight;
-				}
-			})
-			uni.onWindowResize((res)=>{
-				if(res.size.windowHeight<this.windowHeight){
-					this.tabbar=false;
-				}else{
-					this.tabbar=true;
-				}
-			})
+			this.changeTabbar()
 		},
 	}
 </script>

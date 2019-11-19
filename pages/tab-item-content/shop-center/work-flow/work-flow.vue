@@ -9,10 +9,10 @@
 			<block v-for="(item,index) in workFlowList" :key="index" >
 				<checkProgressItem :item="item" :index="index" @chooseItem="selectFlow"></checkProgressItem>
 			</block>
-			
+
 		</view>
 	</view>
-	
+
 </template>
 
 <script>
@@ -62,5 +62,5 @@
 </script>
 
 <style lang="less">
-	
+
 </style>

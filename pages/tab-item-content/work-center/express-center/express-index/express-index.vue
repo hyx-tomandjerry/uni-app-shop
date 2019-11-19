@@ -76,53 +76,90 @@
 				})
 			},
 			goBack(){
-				uni.redirectTo({
+				uni.switchTab({
 					url:"../../../../tab-item/index/index"
 				})
 			},
 			expressTabClick(type){
-				if(!this.userInfo.idnum){
-					this.modalName='showModal'
-				}else{
-
-					switch(type){
-						case 'speed':
-							//速记寄件
-							uni.navigateTo({
-								url:"../create-express/create-express?type=speed"
-							})
-							//速记
-							break;
-						case 'logistics':
-							// //物流
-							// uni.navigateTo({
-							// 	url:"../create-express/create-express?type=logistics"
-							// })
-							break;
-						case 'local':
-							// 同城寄件
-							uni.navigateTo({
-								url:"../create-express/create-express?type=local"
-							})
-							break;
-						case 'distribute':
-							//调拨下单
-							uni.navigateTo({
-								url:"../distribute-work-list/distribute-work-list"
-							})
-
-							//调拨代发
-							break;
-						case 'check':
-							//调拨任务
-							uni.navigateTo({
-								url:"../express-list/express-list"
-							})
-							
-							break;
-
-					}
+				switch(type){
+					case 'speed':
+						//速记寄件
+						uni.navigateTo({
+							url:"../create-express/create-express?type=speed"
+						})
+						//速记
+						break;
+					case 'logistics':
+						// //物流
+						// uni.navigateTo({
+						// 	url:"../create-express/create-express?type=logistics"
+						// })
+						break;
+					case 'local':
+						// 同城寄件
+						uni.navigateTo({
+							url:"../create-express/create-express?type=local"
+						})
+						break;
+					case 'distribute':
+						//调拨下单
+						uni.navigateTo({
+							url:"../distribute-work-list/distribute-work-list"
+						})
+				
+						//调拨代发
+						break;
+					case 'check':
+						//调拨任务
+						uni.navigateTo({
+							url:"../express-list/express-list"
+						})
+						
+						break;
+				
 				}
+				// if(!this.userInfo.idnum){
+				// 	this.modalName='showModal'
+				// }else{
+
+				// 	switch(type){
+				// 		case 'speed':
+				// 			//速记寄件
+				// 			uni.navigateTo({
+				// 				url:"../create-express/create-express?type=speed"
+				// 			})
+				// 			//速记
+				// 			break;
+				// 		case 'logistics':
+				// 			// //物流
+				// 			// uni.navigateTo({
+				// 			// 	url:"../create-express/create-express?type=logistics"
+				// 			// })
+				// 			break;
+				// 		case 'local':
+				// 			// 同城寄件
+				// 			uni.navigateTo({
+				// 				url:"../create-express/create-express?type=local"
+				// 			})
+				// 			break;
+				// 		case 'distribute':
+				// 			//调拨下单
+				// 			uni.navigateTo({
+				// 				url:"../distribute-work-list/distribute-work-list"
+				// 			})
+
+				// 			//调拨代发
+				// 			break;
+				// 		case 'check':
+				// 			//调拨任务
+				// 			uni.navigateTo({
+				// 				url:"../express-list/express-list"
+				// 			})
+							
+				// 			break;
+
+				// 	}
+				// }
 
 			}
 			

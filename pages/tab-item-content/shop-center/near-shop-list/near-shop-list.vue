@@ -18,7 +18,7 @@
 		<showModel :isShow="modalName=='shopModal'" @hideModel="hideShopModel" @confirmDel="hideShopModel" v-if="modalName=='shopModal'">
 			<block slot="content">该门店没有营业，不能进行操作!</block>
 		</showModel>
-		
+
  	</view>
  </template>
  <script>
@@ -43,7 +43,7 @@
 					contentnomore: "没有更多数据了"
 					},
 				loading:'more',
-				
+
 
  			}
  		},
@@ -76,10 +76,10 @@
 										this.loading='noMore'
 									},900)
 								}
-							
+
 							})
 						}else if(this.cat=='article'){
-							this.$ajax('ShopsByReport',{
+							this.$ajax('UnreplyShops',{
 								user:this.userInfo.id,
 								id:this.articleID,
 								offset:this.$utils.getOffset(this.page)
@@ -97,20 +97,19 @@
 										this.loading='noMore'
 									},900)
 								}
-															
-							
+
+
 							})
 						}
 					},1000)
-				
+
 				},
  		components:{
 			LxEmpty,showModel,uniLoadMore,shopListItem
  		},
  		onLoad(options){
-			
+
 			this.cat=options.cat;
-			console.log(options)
 			if(options.id){
 				this.articleID=options.id;
 			}
@@ -139,7 +138,7 @@
 					})
 				}else if(this.cat=='article'){
 					// 新建文章回执
-					this.$ajax('ShopsByReport',{
+					this.$ajax('UnreplyShops',{
 						user:this.userInfo.id,
 						id:this.articleID,
 						offset:this.$utils.getOffset(this.page)
@@ -150,7 +149,7 @@
 				}
 
 			},
-			
+
 			choseShop(item){
 				if(this.cat=='article'){
 					this.shopIndex=item.id;
@@ -176,7 +175,7 @@
 						})
 					},500)
 				}
-				
+
 
 			}
 		}
@@ -195,8 +194,8 @@
 			 margin-right: 10px;
 			.shop-img{
 				height:86px;
-				border-radius:6px;		 
-			} 
+				border-radius:6px;
+			}
 		 }
 		 .shop-info-area{
 			 margin-top: -10px;
@@ -211,7 +210,7 @@
 				 margin-left: 5px;
 			 }
 		 }
-		 
+
 	 }
 
 

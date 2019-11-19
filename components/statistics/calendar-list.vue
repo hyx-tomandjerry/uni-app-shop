@@ -9,8 +9,8 @@
 				<view class="day position_relative" @tap="editAim(item)" :class="{'day-active':dayTabID==item.day}">
 					<view class="margin-b-m">{{item.day}}</view>
 					<view 
-						:class="{'noHas-active':item.num==0}"
-						class="font-size-mini color-regular"
+						:class="{'noHas-active':item.num==0,'color-blue':item.num!=0,'color-regular':item.num==0}"
+						class="font-size-mini "
 					>{{item.num | numStyle}}</view>
 				</view>
 			</block>

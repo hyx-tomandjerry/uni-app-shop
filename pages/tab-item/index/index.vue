@@ -33,8 +33,7 @@
 							'repairImg':index==1 || index==2
 						}"
 					></image></view>
-					<view><text class="operate-title">{{item.text}}</text></view>
-					<view  v-if="todoNum>0 && item.isCheck" class="notice-tag">{{todoNum }}</view>
+					<view>{{item.text}}</view>
 				</view>
 			</view>
 			<!-- tab end -->
@@ -46,77 +45,60 @@
 				<view>
 					<view class="cu-bar bg-white ">
 						<view class="action">
-
 							<text class="card-title">销售公告</text>
 						</view>
 						<view class="action">
-							<text class="card-more" @click="showMoreInfo('skill')">更多<text class="cuIcon-right" ></text></text>
+							<text  @click="showMoreInfo('skill')">更多<text class="cuIcon-right" ></text></text>
 						</view>
 					</view>
 
-					<view v-if="noticeList1.length==0" style="text-align: center;padding:42px 0 68px;">
-
-						<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
-						<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
-					</view>
-					<view class="flex justify-start  position_relative borderBottom" v-for="(item,index) in noticeList1" :key="index" @click="detailContent(item,'skill')" style="padding:23px 0 25px;;width:100%;align-items:center"  v-else>
-
-						<view style="width:70%;margin-right:7px;">
-							<view class="font-weight-super font-weight-middle color-normal" style="margin-bottom:7px;">{{item.name}}</view>
-							<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">{{item.applyDate | formatTime('YMDHMS')}}</view>
+					<template v-if="noticeList1.length">
+						<block v-for="(item,index) in noticeList1" :key="index">
+							<index-sale :item="item" :index="index" @detailContent="detailContent"></index-sale>
+						</block>
+					</template>
+					<template v-else>
+						<view  style="text-align: center;padding:42px 0 68px;">
+							<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
+							<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 						</view>
-						<view style="width:29%;margin-right:15px;">
-							<image :src="item.coverurl" mode="aspectFill" style="
-
-							height:79px;border-radius: 10px;vertical-align: middle;"></image>
-						</view>
-
-						<image src="../../../static/img/huizhi1.png"
-						style="right:15px;"
-						mode="aspectFill"
-						class="position_absolute operateImg" v-if="item.report==1"></image>
-					</view>
-
-
+					</template>
 				</view>
 			</view>
 		</view>
-		<view class="bg-white" style="margin-top:13px;padding-right:14px;padding-left:18px;">
+		<view class="bg-white" style="margin-top:13px;padding-right:14px;padding-left:18px;padding-bottom:50px;">
 			<view class="cu-bar bg-white " >
 				<view class="action">
 					<text class="card-title">陈列公告</text>
 				</view>
 				<view class="action">
-					<text class="card-more" @click="showMoreInfo('example')">更多<text class="cuIcon-right" ></text></text>
+					<text  @click="showMoreInfo('example')">更多<text class="cuIcon-right" ></text></text>
 				</view>
 			</view>
+			<template v-if="noticeList2.length">
+				<block v-for="(item,index) in noticeList2 " :key="index">
+					<index-example :item="item" :index="index" @detailContent="detailContent"></index-example>
+				</block>
+			</template>
+			<template v-else>
+				<view  style="text-align: center;padding:42px 0 68px;">
+					<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
+					<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
+				</view>
+			</template>
 
-			<view v-if="noticeList2.length==0" style="text-align: center;padding:42px 0 68px;">
-				<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
-				<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
-			</view>
-			<view class="example-list  position_relative" style="padding:21px 0 18px;" v-for="(item,index) in noticeList2 " :key="index" @click="detailContent(item,'example')" v-else>
-				<div 	class="coverImg"
-						:style="[{ backgroundImage:'url(' + item.coverurl+ ')' }]"></div>
-				<view class=" font-weight-super font-weight-middle color-normal" style="margin-bottom:3px;margin-top:5px;">{{item.name}}</view>
-				<view class="font-size-small font-weight-normal" style="color: rgb(137, 136, 136)">{{item.applyDate | formatTime('YMDHMS')}}</view>
-				<image src="../../../static/img/huizhi1.png"  mode="aspectFill" class="operateImg position_absolute" style="top:21px;right:0;"
-					   v-if="item.report==report"></image>
-			</view>
 
 
 		</view>
 		<!-- article end -->
-		<tabbar-btn 
-			@gotoItem="gotoItem" tabCur="index" :num="todoNum"
-		></tabbar-btn>
     </view>
 </template>
 <script>
 	import simpleModel from '../../../components/simple-model.vue';
 	import showModel from '../../../components/show-model.vue'
 	import {mapState,mapMutations} from 'vuex'
-	import tabbarBtn from '../../../components/common/tabbar-btn.vue'
+	import indexSale from '../../../components/index/index-sale.vue'
+	import indexExample from '../../../components/index/index-example.vue'
 	export default{
 		computed:mapState(['userInfo','userStatus','shoperObj','report']),
 		data(){
@@ -142,31 +124,11 @@
 					{image:'../../../static/img/index/index-shop.png',text:'我的门店',value:'shop'},
 					{image:'../../../static/img/index/index-statistics.png',text:'销售绩效',value:'statistics'},
 					],
-				todoNum:0,
 				statusBarHeight:''
 			}
 		},
 
 		methods:{
-			gotoItem(type){
-				switch(type){
-					case 'notice':
-					uni.redirectTo({
-						url:"../../tab-item-content/notice-center/notice-index/notice-index"
-					})
-					break;
-					case 'work':
-					uni.redirectTo({
-						url:'../work/work'
-					})
-					break;
-					case 'mine':
-					uni.redirectTo({
-						url:'../mine/mine'
-					})
-					break;
-				}
-			},
 			/*记一笔*/
 			recordMoney(){
 				uni.navigateTo({
@@ -177,8 +139,14 @@
 			/*获得代办数量*/
 			getTodoList(){
 				this.$ajax('MyEventNumbers',{},res=>{
-					this.todoNum=res;
-					this.setTodoNum(res)
+					
+					if(res>0){
+						uni.setTabBarBadge({
+						  index: 1,
+						  text:res.toString()
+						 
+						})
+					}
 				})
 			},
 
@@ -212,16 +180,6 @@
 					}
 				})
 			},
-			/*
-			*查看详情
-			toNoticeContent(item){
-				console.log(item.value)
-				uni.navigateTo({
-					url:'../../all-item-content/index-more/index-more?value='+item.value
-				})
-			},
-			*/
-
 		   /*点击更多*/
 			showMoreInfo(type){
 				if(type=='skill'){
@@ -236,27 +194,14 @@
 				}
 			},
 			/*查看文章详情*/
-			detailContent(item,type){
+			detailContent(event){
+				console.log(event)
 					uni.navigateTo({
-						url:'../../all-item-content/detail-content/detail-content?type='+type+'&id='+item.id
+						url:'../../all-item-content/detail-content/detail-content?type='+event.type+'&id='+event.item.id
 					})
 			},
 			/*刷新*/
 			refreshInfo(){
-				// if(this.userInfo){
-				// 		if(this.userInfo.status==this.userStatus.normal){
-				// 			console.log('kkk')
-				// 			this.login(this.userInfo);
-				// 			this.company={
-				// 				name:this.userInfo['ownerName'],
-				// 				cover:this.userInfo['ownerLogoUrl']
-				// 			}
-				// 			this.getTodoList()
-				// 			this.showArticles();
-					
-				// 		}
-				// }
-				
 				this.$ajax('RefreshOnlineUser',{},res=>{
 					if(res.status==this.userStatus.normal){
 						this.login(res);
@@ -273,13 +218,6 @@
 			/*nav操作*/
 			showOperateItem(event){
 				switch(event){
-// 					case '':
-// 						//通知公告
-// 						uni.navigateTo({
-//
-// 							url:'../../tab-item-content/notice-center/notice-index/notice-index'
-// 						})
-// 						break;
 					case 'repair':
 						//门店报修
 						uni.navigateTo({
@@ -310,191 +248,31 @@
 
 			},
 
-			...mapMutations(['login','setTodoNum'])
+			...mapMutations(['login'])
 
 		},
 		components:{
 			simpleModel,
 			showModel,
-			tabbarBtn
+			indexSale,
+			indexExample
 		},
 
 		onLoad(){
+			
 			this.getTodoList()
 			this.showArticles();
 
 		},
 		onShow(){
 			this.refreshInfo();
-			// console.log(moment(Date.now()).format('YYYY-MM-DD hh:mm:ss'))
-
 		}
 
 	}
 </script>
 <style scoped>
-	.head-container{
-		padding-top:48px;
-		padding-bottom:10px;
-		position:fixed;left:16px;z-index:100;background:#fff;width:100%;top:48p
-	}
-	.companyImg{
-		width:35px;height:35px;margin-right:8px;
+@import url("./index.css");
 
-		border-radius: 50%;
-		vertical-align: middle;
-	}
-	.operateImg{
-		width:40px;height:36px;top:22px;
-	}
-	.notice-tag{
-		position: absolute;
-		top: 1px;
-		font-size: 10px;
-		right: -5px;
-		color: #fff;
-		background: #f43f3b;
-		border-radius: 10px;
-		padding: 0px 8px;
-	}
-
-.screen-swiper{
-	min-height:120px;
-	margin-top:10px;
-}
-.uni-swiper .uni-swiper-wrapper{
-	min-height:120px;
-}
-.uni-swiper .uni-swiper-dots-horizontal{
-	bottom:38px;
-}
-.index-container{
-	padding:89px 14px 15px 18px;
-
-}
-.notice_container{
-	margin-top:13px;
-	background:#fff;
-
-	padding-right:14px;
-	padding-left:18px;
-
-}
-
-	.cu-bar .action:first-child{
-		margin-left:0;
-	}
-
-.operateItem{
-	padding-top:16px;
-	padding-left:10px;
-	padding-right:9px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.tower-swiper .tower-item {
-		transform: scale(calc(0.5 + var(--index) / 10));
-		margin-left: calc(var(--left) * 100upx - 150upx);
-		z-index: var(--index);
-}
-
-.cu-bar .content{
-	font-size:12px;
-	font-weight: 400;
-	color:rgba(42,42,42,1);
-	width:calc(100%-84px)
-}
-
-.card-swiper .uni-swiper-item{
-	padding:0;
-}
-.index-container{
-	background:#fff;
-}
-.operate-title{
-
-font-size:14px;
-
-font-weight:400;
-color:rgba(42,42,42,1);
-
-}
-.card-title{
-	font-size:18px;
-
-font-weight:800;
-color:rgba(42,42,42,1);
-}
-.card-more{
-	font-size:14px;
-
-font-weight:400;
-color:rgba(137,136,136,1);
-}
-.cu-card.article>.cu-item .content{
-	padding:0;
-}
-.cu-card.article>.cu-item .title{
-	padding:0;
-}
-
-.cu-dialog{
-	background:#fff;
-	max-width:263px;
-
-}
-.cu-bar{
-	min-height:42px;
-}
-.cu-bar .action:last-child{
-	margin-right:0;
-}
-.padding-xl{
-	font-size:15px;
-	font-family:PingFangSC-Regular;
-	font-weight:400;
-	color:rgba(42,42,42,1);
-	padding:28px 16px 0px 13px;
-	margin-bottom:17px;
-}
-
-
-.company{
-	font-size:18px;
-	font-family:PingFangSC-Semibold;
-	font-weight:600;
-	color:rgba(64,64,64,1);
-}
-.desc >>>span{
-	padding:3px;
-	font-size:12px !important;
-}
-	.coverImg{
-		width:100%;height:143px;background-repeat: no-repeat;
-		background-position: center;
-		background-size: cover;
-		border-radius:6px;
-	}
-	.company-info-item{
-		margin-bottom:6px;
-	}
-	.company-info-desc{
-		color:#898888;width:30%;text-align:right
-	}
-	.company-info-content{
-		margin-left:5px;color:#2A2A2A;flex:1;text-align:left;
-	}
-
-	.repairImg{
-		width: 60px;
-		height: 60px;
-	}
-	.operateIcon{
-		width: 58px;
-		height: 58px;
-	}
-	
 </style>
 
 

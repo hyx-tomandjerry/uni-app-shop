@@ -1,7 +1,5 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/page
-
-
 		{
 			"path" : "pages/login-design/login/login",
 			"style": {
@@ -122,6 +120,17 @@
 	  	}
 	  },
 
+	{
+	    "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-count-alone/sale-count-alone",
+	    "style" : {
+			"navigationStyle":"custom",
+			"app-plus":{
+				"bounce":"none",
+				"scrollIndicator":"none",
+				"titleNView":false
+			}
+		}
+	},
 
 	{
 	     "path" : "pages/tab-item-content/mine-center/edit-password/edit-password",
@@ -461,6 +470,8 @@
             "style" : {
 				"navigationStyle":"custom",
 				"app-plus":{
+					"scrollIndicator":"none",
+					"bounce":"none",
 					"titleNView":false
 				}
 			}
@@ -500,6 +511,7 @@
             "path" : "pages/tab-item-content/work-center/task-center/task-index/task-index",
             "style" : {
 				"navigationStyle":"custom",
+				"enablePullDownRefresh":true,
 				"app-plus":{
 					"titleNView":false
 				}
@@ -580,9 +592,12 @@
         ,{
             "path" : "pages/tab-item-content/shop-center/clerk-item-info/clerk-item-info",
             "style" : {
-				"navigationStyle":"custom",
 				"app-plus":{
-					"titleNView":false
+					"scrollIndicator":"none",
+					"bounce":"none",
+					"titleNView":{
+						"type":"transparent"
+					}
 				}
 			}
         }
@@ -676,50 +691,72 @@
 				}
 			}
         }
+        ,{
+            "path" : "pages/tab-item-content/work-center/statistics-center/statistics-check-list/statistics-check-list",
+            "style" : {
+				"enablePullDownRefresh":true,
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/statistics-center/sale-return-center/sale-return-form/sale-return-form",
+            "style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":false
+				}
+			}
+        }
+       
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
-// 	"tabBar":{
-// 		"color":"#2A2A2A",
-// 		"selectedColor":"#42B0ED",
-// 		"list":[
+	"tabBar":{
+		"color":"#2A2A2A",
+		"selectedColor":"#42B0ED",
+		"list":[
+			{
+				"pagePath":"pages/tab-item/index/index",
+				"iconPath":"static/img/footer/index.png",
+				"selectedIconPath":"static/img/footer/index_color.png",
+				"text":"首页"
+			},
+			{
+				"pagePath":"pages/tab-item-content/notice-center/notice-index/notice-index",
+				"iconPath":"static/img/footer/message.png",
+				"selectedIconPath":"static/img/footer/message_color.png",
+				"text":"消息"
+			},
 // 			{
-// 				"pagePath":"pages/tab-item/index/index",
-// 				"iconPath":"static/img/footer/index.png",
-// 				"selectedIconPath":"static/img/footer/index_color.png",
-// 				"text":"首页"
+//
+// 					"pagePath":"pages/tab-item/message/message",
+// 					"iconPath":"static/img/footer/message.png",
+// 					"selectedIconPath":"static/img/footer/message_color.png",
+// 					"text":"消息"
 // 			},
-// 			{
-// 				"pagePath":"pages/tab-item-content/notice-center/notice-index/notice-index",
-// 				"iconPath":"static/img/footer/message.png",
-// 				"selectedIconPath":"static/img/footer/message_color.png",
-// 				"text":"消息"
-// 			},
-// // 			{
-// //
-// // 					"pagePath":"pages/tab-item/message/message",
-// // 					"iconPath":"static/img/footer/message.png",
-// // 					"selectedIconPath":"static/img/footer/message_color.png",
-// // 					"text":"消息"
-// // 			},
-// 			{
+			{
 
-// 					"pagePath":"pages/tab-item/work/work",
-// 					"iconPath":"static/img/footer/work.png",
-// 					"selectedIconPath":"static/img/footer/work_color.png",
-// 					"text":"工作"
-// 			},
-// 			{
-// 				"pagePath":"pages/tab-item/mine/mine",
-// 				"iconPath":"static/img/footer/mine.png",
-// 				"selectedIconPath":"static/img/footer/mine_color.png",
-// 				"text":"个人中心"
-// 			}
-// 		]
-// 	},
+					"pagePath":"pages/tab-item/work/work",
+					"iconPath":"static/img/footer/work.png",
+					"selectedIconPath":"static/img/footer/work_color.png",
+					"text":"工作"
+			},
+			{
+				"pagePath":"pages/tab-item/mine/mine",
+				"iconPath":"static/img/footer/mine.png",
+				"selectedIconPath":"static/img/footer/mine_color.png",
+				"text":"个人中心"
+			}
+		]
+	},
 	"condition" : { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [

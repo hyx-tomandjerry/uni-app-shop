@@ -5,7 +5,7 @@
 			<block slot="content"><view class="font-size-big font-weight-bold text-white" >销售绩效</view></block>
 		</cu-custom>
 		<view class="sale-container">
-			
+
 			<operateTabItem  :show="userInfo.id==managerID"
 			name="绩效分解"
 			value="resolve"
@@ -13,15 +13,15 @@
 			:sale_resolve_img="true"
 			:border_left_y="true"
 			:src="'../../../../../static/img/work/statistics/tab/resolve.png'"></operateTabItem>
-			
-			<operateTabItem 
+
+			<operateTabItem  :show="userInfo.id==managerID"
 			name="绩效审核"
 			value="check"
 			@goToItem="goToItem"
 			:sale_check_img="true"
 			:border_left_r="true"
 			:src="'../../../../../static/img/work/statistics/tab/check.png'"></operateTabItem>
-			
+
 			<operateTabItem
 			name="绩效榜单"
 			value="rank"
@@ -29,7 +29,7 @@
 			:sale_resolve_img="true"
 			:border_left_g="true"
 			:src="'../../../../../static/img/work/statistics/tab/rank.png'"></operateTabItem>
-			
+
 			<operateTabItem
 			name="绩效统计"
 			value="count"
@@ -37,9 +37,17 @@
 			:sale_resolve_img="true"
 			:border_left_y="true"
 			:src="'../../../../../static/img/work/statistics/tab/count.png'"></operateTabItem>
+
+			<operateTabItem :show="userInfo.id==managerID"
+			name="退货处理"
+			value="quit"
+			@goToItem="goToItem"
+			:sale_resolve_img="true"
+			:border_left_p="true"
+			:src="'../../../../../static/img/work/statistics/tab/return.png'"></operateTabItem>
 		</view>
 		<positionImg :src="'../../../../../static/img/edit.png'" :record_img="true" @createOperate="record"></positionImg>
-	
+
 	</view>
 </template>
 <script>
@@ -61,7 +69,7 @@
 		},
 		onLoad(options){
 			if(options.id){
-				this.shopID=options.id;	
+				this.shopID=options.id;
 			}
 			this.managerID=options.manager?options.manager:0
 			this.shopZone=options.zone?options.zone:0;
@@ -81,8 +89,11 @@
 					break;
 					case 'check':
 					uni.navigateTo({
-						url:"../statistics-check/statistics-check?id="+this.shopID+'&managetID='+this.managerID
+						url:"../statistics-check-list/statistics-check-list?id="+this.shopID
 					})
+					// uni.navigateTo({
+					// 	url:"../statistics-check/statistics-check?id="+this.shopID+"&managetID="+this.managerID
+					// })
 					break;
 					case 'rank':
 					uni.navigateTo({
@@ -92,18 +103,24 @@
 					case 'count':
 					uni.navigateTo({
 						url:"../sale-statistics-center/sale-statistics/sale-statistics?id="+this.shopID
-					
+
 					})
+					break;
+					case 'quit':
+					uni.navigateTo({
+						url:"../sale-return-center/sale-return-form/sale-return-form?shopID="+this.shopID
+					})
+					//退货处理
 					break;
 				}
 			},
 			//记一笔
 			record(){
 				uni.navigateTo({
-					url:"../record-money/record-money?id="+this.shopID
+					url:"../record-money/record-money?type=save&shopID="+this.shopID
 				})
 			}
-				
+
 		}
 	}
 </script>
@@ -112,7 +129,7 @@
 		background-color: rgba(247,247,247,1)
 	}
 	.sale-container{
-		padding-top:160upx;
+		padding-top:60upx;
 		display: flex;
 		height:300upx;
 		flex-direction: column;
@@ -120,5 +137,5 @@
 		background:url(../../../../../static/img/sale_bg.png) no-repeat ;
 		background-size:cover;
 	}
-		
+
 </style>

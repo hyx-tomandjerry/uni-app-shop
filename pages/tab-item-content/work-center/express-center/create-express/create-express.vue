@@ -82,7 +82,7 @@
 
 				<view class="goods-item flex justify-between borderBottom align-center" @click="showModal($event)" data-target="goodsInfo">
 					<view class="font-weight-normal font-size-normal item-name"><text class="text-red">*</text>包裹信息</view>
-					<view style="width:75%;text-align:right;padding-top:2px;" class="text-ellipse">
+					<view style="width:60%;text-align:right;padding-top:2px;" class="text-ellipse">
 						<text class="color-normal font-size-normal" v-if="expressTypeValue || goods.summary">
 							<text v-if="goods.size">{{goods.size}}平方米/</text>
 							{{goods.weight}}kg
@@ -97,7 +97,7 @@
 					<text class="cuIcon-right right-icon"></text>
 				</view>
 
-				<view class="goods-item flex justify-between borderBottom align-center" @click="savePrice()">
+				<view class="goods-item flex justify-between borderBottom align-center">
 					<view class="font-weight-normal font-size-normal item-name" style="padding-left:15px;">保价</view>
 					<view style="width:80%;text-align:right">
 						<input type="text" placeholder="未保价货品最高赔付9倍运费，建议保价"

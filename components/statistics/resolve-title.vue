@@ -8,7 +8,7 @@
 					<view class="intro-l flex justify-start flex-1">
 						<image src="../../../../../static/icon/icon-time@2x.png" class="intro-i"></image>
 						<view>
-							<view class="shop-date" v-if="shopSaleResolve.shopBgndate">{{shopSaleResolve.shopBgndate | formatTime('YMD')}}</view>
+							<view class="shop-date" v-if="shopSaleResolve.bgndate">{{shopSaleResolve.bgndate | formatTime('YMD')}}</view>
 							<view class="shop-date" v-else>时间未知</view>
 							<view class="font-size-mini" style="color:#7C81A3">开业日期</view>
 						</view>
@@ -28,12 +28,11 @@
 				<view class="text-white">{{new Date().getFullYear()}} 年{{month}}目标</view>
 				<view class="shop-aim">¥ {{shopSaleResolve.monthAim  | numStyle}}</view>
 				<view class="shop-intro flex justify-between align-center">
-					<view class="text-white" style="width:55%;">{{month}}占全年比重</view>
+					<view class="text-white" style="width:50%;">{{month}}占全年比重</view>
 					<view class="cu-progress round sm striped active" style="margin:0 5px;">
-			
 						<view class="bg-color-purple"  :style="[{ width:`${shopSaleResolve.monthPre}%`}]"></view>
 					</view>
-					<view class="font-family-num font-size-middle  font-weight-bold color-purple">{{shopSaleResolve.monthPre}}%</view>
+					<view class="font-family-num font-size-middle  font-weight-bold color-purple">{{shopSaleResolve.monthPre || 0}}%</view>
 				</view>
 			</view>
 		</template>

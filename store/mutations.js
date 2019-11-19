@@ -29,6 +29,9 @@ export default {
             data:provider
         })
     },
+	setRember(state,provider){
+		state.remeber=provider;
+	},
     logout(state){
         //退出登录
         state.hasLogin= true;

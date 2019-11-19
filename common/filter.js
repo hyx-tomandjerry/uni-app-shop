@@ -1,62 +1,61 @@
 import Vue from 'vue'
-import store from '../store/index.js'
+import config from './config.js'
 import moment from 'moment';//时间日期格式化
 //保修单状态
 Vue.filter('repairStatus', function (value) {
     if (!value) return ''
-    return store.state.repairStatusZn[value]
+    return config.repairStatusZn[value]
 })
 //保修单状态字段
 Vue.filter('repairTypePipe', (value) => {
     if (!value) return ''
-    return store.state.repairTypeZn[value]
+    return config.repairTypeZn[value]
 })
 //审批状态
 Vue.filter('approvalStatusPipe',  (value)=> {
     // if (!value) return ''
-    return store.state.approvalStatusZn[value]
+    return config.approvalStatusZn[value]
 })
 //快递状态
 Vue.filter('expressStatusPipe', (value) => {
     if (!value) return ''
-    return store.state.expressStatus[value]
+    return config.expressStatus[value]
 })
 //门店状态
 Vue.filter('shopStatus', (value) => {
     if (!value) return ''
-    return store.state.shopStatus[value];
+    return config.shopStatus[value];
 })
-
-/*经营类别*/
-Vue.filter('operateZn', (value) => {
-    if (!value) return ''
-    return store.state.runCatalogZn[value]
+//店员状态
+Vue.filter('userStatusZnPipe',value=>{
+	if (!value) return ''
+	return config.userStatusZn[value];
 })
 //任务状态
 Vue.filter('taskStatusPipe', (value) => {
     if (!value) return ''
-    return store.state.taskStatus[value];
+    return config.taskStatus[value];
 })
 //任务状态
 Vue.filter('taskStatusZnPipe', (value) => {
     if (!value) return ''
-    return store.state.taskStatusZn[value];
+    return config.taskStatusZn[value];
 })
 /*快递调拨类型*/
 Vue.filter('distributeStatusPipe', (value) => {
     if (!value) return ''
-    return store.state.distributeStatus[value]
+    return config.distributeStatus[value]
 })
 
 //审批类型
 Vue.filter('approvalModeZnPipe',(value)=>{
 	if (!value) return ''
-	return store.state.approvalModeZn[value]
+	return config.approvalModeZn[value]
 })
 //请假类型
 Vue.filter('absenceTypeZnPipe',(value)=>{
 	if (!value) return ''
-	return store.state.absenceTypeZn[value]
+	return config.absenceTypeZn[value]
 })
 //时间日期格式化
 Vue.filter('formatTime', function (value, type) {
@@ -85,6 +84,11 @@ Vue.filter('formatTime', function (value, type) {
 })
 //千分符
 Vue.filter('numStyle',(value)=>{
-	if(!value) {return}
+	if(!value) {return 0}
 	return (value.toString().indexOf ('.') !== -1) ? value.toLocaleString() : value.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+})
+
+Vue.filter('wanStyle',value=>{
+	if(!value) {return 0}
+	return value/10000;
 })

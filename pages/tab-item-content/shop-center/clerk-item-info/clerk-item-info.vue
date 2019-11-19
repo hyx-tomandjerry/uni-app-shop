@@ -1,33 +1,19 @@
 <template>
 	<view class="clerk-item-container" >
-		<view class="user-info-container position_relative">
-			<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="" class="user-info-img"></image>
-			<text class="cuIcon-back font-size-back position_absolute arrow-back color-normal" @tap="goBack" style="left:15px;top:15px;"></text>
-			<view class="name align-center flex justify-start">
-				<text class="font-size-supper font-weight-bold text-white">{{clerkItem.name || ''}}</text>
-				<text class="status-tag">在职</text>
-			</view>
-		</view>
+		<clerk-info-head :clerkItem="clerkItem"></clerk-info-head>
+		
 		<view class="clerk-info-container bg-white">
-			<view class="clerk-info-item flex justify-between borderBottom">
-				<view>门店名称</view>
-				<view>{{shopItem.name}}</view>
-			</view>
-			<view class="clerk-info-item flex justify-between borderBottom">
-				<view>手机号</view>
-				<view>{{clerkItem.account}}</view>
-			</view>
-			<view class="clerk-info-item flex justify-between borderBottom">
-				<view>职位</view>
-				<view>{{shopItem.manager==clerkItem.id?'店长':'店员'}}</view>
-			</view>
+			<clerk-info-item intro="门店名称" :content="shopItem.name"></clerk-info-item>
+			<clerk-info-item intro="手机号码" :content="clerkItem.account"></clerk-info-item>
+			<clerk-info-item intro="工作状态" content="在职"></clerk-info-item>
+			<clerk-info-item  type="job" :shopItem="shopItem" :clerkItem="clerkItem"></clerk-info-item>
 		</view>
 		<!-- v-if="shopItem.manager==userInfo.id && clerkItem.id!=shopItem.manager" -->
-		<view class="operate-container bg-white" v-if="shopItem.manager==userInfo.id && clerkItem.id!=shopItem.manager">
+		<view class="operate-container bg-white" v-if="shopItem.manager==userInfo.id && clerkItem.id!=shopItem.manager  && clerkItem.motto!='manager'">
 			<view class="operate-item color-blue borderBottom" @click="setManager">设为店长</view>
 			<view class="operate-item color-red" @click="deleteClerk">删除</view>
 		</view>
-
+		
 		<!-- 设置店长 -->
 		<showModel :isShow="modalName=='setModel'" @hideModel="hideModal" @confirmDel="setShoper" v-if="modalName=='setModel'">
 			<block slot="content">	确定要将{{clerkItem.name}}设置店长吗?</block>
@@ -36,7 +22,7 @@
 		<showModel :isShow="modalName=='deleteModel'" @hideModel="hideModal"
 				   v-if="modalName=='deleteModel'"
 				   @confirmDel="confirmDelete">
-			<block slot="content">确定要将{{clerkItem.name}}删除吗?</block>
+			<block slot="content">确定要将{{clerkItem.name}}从{{selectIndex==1?'公司':'门店'}}删除吗?</block>
 		</showModel>
 	</view>
 
@@ -47,17 +33,25 @@
 
 	import {mapState} from 'vuex'
 	import showModel from '../../../../components/show-model.vue'
+	import clerkInfoHead from '../../../../components/shop/clerk-info-head.vue'
+	import clerkInfoItem from '../../../../components/shop/clerk-info-item.vue'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
 			return {
-				clerkItem:"",//店员信息
-				shopItem:"",//门店信息
-				modalName:''
+				clerkItem:{},//店员信息
+				shopItem:{},//门店信息
+				modalName:'',
+				selectIndex:0,	
 			}
 		},
-		components:{showModel},
+		components:{showModel,clerkInfoHead,clerkInfoItem},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			//设置店长
 			setManager(){
 				this.modalName='setModel'
@@ -81,13 +75,38 @@
 			},
 			//删除店员
 			deleteClerk(){
-				this.modalName='deleteModel'
+				// this.modalName='deleteModel'
+				uni.showActionSheet({
+				    itemList: ['从公司彻底删除', '从门店删除', '取消'],
+				    success:(res)=> {
+						this.selectIndex=res.tapIndex+1;
+						switch(res.tapIndex+1){
+							case 1:
+							this.modalName='deleteModel'
+							break;
+							case 2:
+							this.modalName='deleteModel'
+							break;
+						}
+				    },
+				    fail: function (res) {
+				        console.log(res.errMsg);
+				    }
+				});
+			},
+			checkShopDetail(id){
+				this.$ajax('ChainShop',{id:id},res=>{
+					this.shopItem=res;
+					console.log(res.manager)
+				})
+			
 			},
 			// 确认删除店员
 			confirmDelete(){
 				this.$ajax('RemoveSalesman',{
-					shop:this.shopItem.id,
+					shop:this.selectIndex==1?0:this.shopItem.id,
 					users:this.clerkItem.id,
+					permanent:this.selectIndex==1?1:0
 				},res=>{
 					uni.showToast({
 						title:'删除店员成功',
@@ -97,59 +116,49 @@
 					this.goBack()
 				})
 			},
-			goBack(){
-				uni.navigateBack({
-					delta:1
-				})
-			},
-
 		},
-		onLoad(){
-
-			this.$fire.on('clerk',result=>{
-				if(result){
-					this.shopItem=result.shopItem;
-					this.clerkItem=result.clerkItem
-				}
-			})
+		onLoad(options){
+			if(options.shopID){
+				this.checkShopDetail(options.shopID)
+			}
+			this.clerkItem=options.clerkItem?JSON.parse(options.clerkItem):{};
+			console.log(this.clerkItem)
 		},
 
 	}
 </script>
 
 <style lang="less">
+	
+	.user-info-img{
+		background-color: #fff;
+		width:200upx;
+		height:200upx !important;
+		border-radius: 100%;
+		flex-shrink: 0;
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform: translate(-50%,-50%);
+	}
+	
 	.user-info-container{
-		.user-info-img{
-			width:100%;
-			border-radius: 0;
-			height:267px;
-		}rank
+		height:500upx;
 		.arrow-back{
-			left:20px;
-			top:45px;
+			left:80upx;
+			top:90upx;
 		}
 		.name{
 			position:absolute;
 			bottom:15px;
 			left:25px;
-			.status-tag{
-				margin-left:20upx;
-				background:rgba(32,208,158,1);
-				border-radius:13px;
-				font-size:22upx;
-				color:#fff;
-				padding:0px 10upx;
-			}
+			
 		}
 
 	}
 	.clerk-info-container{
 		margin-bottom: 60px;
-		.clerk-info-item{
-			height:53px;
-			line-height:53px;
-			padding:0 15px;
-		}
+		
 	}
 	.operate-container{
 		.operate-item{

@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<cu-custom :isBack="true" bgColor="bg-white">
-			<!--<block slot="left"><text class="cuIcon-back font-size-back font-weight-bold"  @click="goBack()"></text></block>-->
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >消息</view></block>
 		</cu-custom>
 		<view class="flex text-center bg-white borderBottom  justify-around" >
@@ -25,25 +24,16 @@
 				</view>
 			</view>
 		</view>
-		<tabbar-btn @gotoItem="gotoItem"
-			indexImg="../../../../static/img/footer/index.png"
-			noticeImg="../../../../static/img/footer/message.png"
-			workImg="../../../../static/img/footer/work.png"
-			mineImg="../../../../static/img/footer/mine.png"
-			 tabCur="notice"
-			 :num="todoNum"
-		></tabbar-btn>
 	</view>
 </template>
 <script>
-	import tabbarBtn from '../../../../components/common/tabbar-btn.vue'
 	import tabNav from '../../../../components/common/tab-nav.vue'
 	import LxEmpty from "../../../../lx_components/lx-empty.vue";
 	import uniLoadMore from "../../../../components/uni-load-more.vue"
 	import noticeItem from '../../../../components/notice/notice-item.vue'
 	import {mapState,mapMutations} from 'vuex'
 	export default{
-	    computed:mapState(['userInfo','todoNum','approvalMode']),
+	    computed:mapState(['userInfo','approvalMode']),
 		data(){
 			return{
 				TabCur: 0,
@@ -63,7 +53,6 @@
 			uniLoadMore,
 			noticeItem,
 			tabNav,
-			tabbarBtn
 		},
 		onLoad(){
 			this.switchTabCur(this.TabCur);
@@ -150,31 +139,17 @@
 			}
 		},
 		methods:{
-			...mapMutations(['setTodoNum']),
 			/*获得代办数量*/
 			getTodoList(){
 				this.$ajax('MyEventNumbers',{},res=>{
-					this.setTodoNum(res)
+					if(res>0){
+						uni.setTabBarBadge({
+						  index: 1,
+						  text:res.toString()
+						
+						})
+					}
 				})
-			},
-			gotoItem(type){
-				switch(type){
-					case 'index':
-					uni.redirectTo({
-						url:'../../../tab-item/index/index'
-					})
-					break;
-					case 'work':
-					uni.redirectTo({
-						url:"../../../tab-item/work/work"
-					})
-					break;
-					case 'mine':
-					uni.redirectTo({
-						url:'../../../tab-item/mine/mine'
-					})
-					break;
-				}
 			},
 			checkMessageItem(item){
 				switch(this.TabCur){
@@ -192,7 +167,7 @@
 						 });
 						 break;
 					}
-					
+
 					break;
 					case 1:
 					break;

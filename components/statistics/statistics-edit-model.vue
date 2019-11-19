@@ -2,7 +2,7 @@
 	<view class="cu-modal" :class="isShow?'show':''" style="z-index:1000 !important">
 		<view class="cu-dialog">
 			<view class=" bg-white justify-end" >
-				<view class="content text-left">{{monthTabCur.name}}目标金额,原目标金额: <text class="color-blue font-weight-bold">{{monthTabCur.mon | numStyle}}</text></view>
+				<view class="content text-left">目标金额: <text class="color-blue font-weight-bold">{{monthTabCur.mon || monthTabCur.num | numStyle}}</text></view>
 			</view>
 	
 			<view class=" bg-white borderBottom " >
@@ -47,15 +47,19 @@
 			},//选择的月份
 			
 		},
+		
 		methods:{
 			hideModal(){
 				this.$emit('hideModal')
+				setTimeout(()=>{
+					this.num=""
+				},1000)
 			},
 			setShopAim(){
 				this.$emit('setShopAim',this.num);
 				setTimeout(()=>{
-					this.num="";
-				},900)
+					this.num=""
+				},1000)
 			}
 		}
 	}

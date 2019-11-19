@@ -11,7 +11,7 @@
 						<text v-if="workflow.acceptRole>0 && workflow.acceptRoleName" class="margin-right-mini">{{workflow.acceptRoleName}} </text>
 						<text v-if="workflow.acceptor && workflow.acceptorName">{{workflow.acceptorName}}</text>
 				</view>
-				<view v-if="workflow.reviewDate " class="flex-sm " style="font-size:22upx;">{{workflow.reviewDate | formatTime('YMDHMS')}}</view>
+				<view v-if="workflow.reviewDate " class="flex-1 " style="font-size:22upx;">{{workflow.reviewDate | formatTime('YMDHMS')}}</view>
 			</view>
 			<view style="margin-top:5px;margin-bottom:5px;"><text class="color-blue">{{workflow.status | approvalStatusPipe}}</text></view>
 			<view class="color-regular" v-if="workflow.comment">备注：{{workflow.comment|| ''}}</view>

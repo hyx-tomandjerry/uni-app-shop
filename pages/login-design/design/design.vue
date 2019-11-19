@@ -1,15 +1,18 @@
 <template>
 	<view  class="position_relative">
 		<view class="design-container">
-			<view class=" font-weight-super font-size-supper design-container-title" >注册</view>
-			<view class="color-regular font-weight-normal font-size-normal">您好！欢迎来到乐象门店助手</view>
+			<login-head name="注册" >
+				<block slot="extra">
+					<view class="color-regular font-weight-normal font-size-normal">您好！欢迎来到乐象门店助手</view>
+				</block>	
+			</login-head>
 		</view>
 		<view class="design-info">
 			<view class="design-info-item flex justify-start borderBottom align-center">
 				<image src="../../../static/icon/icon-dneglu-zhanghu@2x.png" class="design-info-item-name"></image>
 
-				<input type="text" placeholder="请输入姓名" v-model="designer.name"
-					   :class="designer.name?'explain-color':'color-placeholder'"
+				<input type="text" placeholder="请输入姓名" v-model="name"
+					   :class="name?'explain-color':'color-placeholder'"
 					   class=" font-size-big font-weight-normal design-info-item-input"  @focus="hideTabbar()">
 			</view>
 			
@@ -19,12 +22,12 @@
 					
 					<input type="number" placeholder="请输入手机号"
 						   maxlength="11"
-						   v-model="designer.mobile"
-						   :class="designer.mobile?'explain-color':'color-placeholder'"
-						   class=" font-size-big font-weight-normal design-info-item-tel-input" @blur="checkTelEvent(designer.mobile)">
+						   v-model="mobile"
+						   :class="mobile?'explain-color':'color-placeholder'"
+						   class=" font-size-big font-weight-normal design-info-item-tel-input" @blur="checkTelEvent(mobile)">
 				</view>
 				<view>
-					<text  class="text-gray">{{designer.mobile.length}}/11</text>
+					<text  class="text-gray">{{mobile.length}}/11</text>
 				</view>
 			</view>
 			
@@ -32,11 +35,11 @@
 				<view class="flex justify-start">
 					<image src="../../../static/icon/icon-dneglu-mima@2x.png"
 						   class="design-info-item-pwd"></image>
-					<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(designer.token)" v-if="isShowPwd" v-model="designer.token"
-						   class="font-size-big font-weight-normal" :class="designer.token?'explain-color':'color-placeholder'">
-					<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(designer.token)"
-						   v-else v-model="designer.token" class="font-size-big font-weight-normal"
-						   :class="designer.token?'explain-color':'color-placeholder'">
+					<input type="text" placeholder="请输入密码"  @blur="checkPwdEvent(token)" v-if="isShowPwd" v-model="token"
+						   class="font-size-big font-weight-normal" :class="token?'explain-color':'color-placeholder'">
+					<input type="password" placeholder="请输入密码" @blur="checkPwdEvent(token)"
+						   v-else v-model="token" class="font-size-big font-weight-normal"
+						   :class="token?'explain-color':'color-placeholder'">
 				</view>
 				
 				<view style="width:200upx;height:20px;">
@@ -61,8 +64,8 @@
 					<image src="../../../static/icon/icon-zhuce-youxiang@2x.png"
 						   class="design-info-item-vscode"></image>
 					
-					<input type="number" placeholder="请输入验证码" v-model="designer.vcode"
-						   :class="designer.vcode?'explain-color':'color-placeholder'"
+					<input type="number" placeholder="请输入验证码" v-model="vcode"
+						   :class="vcode?'explain-color':'color-placeholder'"
 						   class=" font-size-big font-weight-normal" style="width:80%" @blur="hideTabbar()">
 				</view>
 				<view>
@@ -74,51 +77,53 @@
 		</view>
 		
 		<view class="design-submit">
-			<button  class="design-submit-btn" :class="{'bg-gray':!designer.name,
-				'bg-blue':designer.name
-				}" @click="designerSubmit()" :disabled="isInput">注册</button>
+			<button  class="design-submit-btn"  type="primary"
+			 :disabled="disabled"
+			 @tap="designerSubmit" >注册</button>
 		</view>
 		<view class="font-size-small font-weight-normal  color-normal flex justify-between submit-intro">
 			<view>已有账号？<text class="color-blue" @click="operateClickEvent('login')">登录</text></view>
 		</view>
 		<view class="copyright font-size-mini font-weight-normal color-normal" v-if="tabbar">
-			登录/注册即表示同意<text class="color-blue"  @click="signPro">《门店助手软件用户许可协议》</text>
+			登录/注册即表示同意<text class="color-blue"  @tap="operateClickEvent('pro')">《门店助手软件用户许可协议》</text>
 		</view>
 		<loading
 				ref="loading"
 				:custom="false"
 				:shadeClick="true"
-				:type="1"
-				@callback="callback()">
-			<!-- <view class="test">自定义</view> -->
+				:type="1">
 		</loading>
 	</view>
 </template>
 <script>
 	import loading from '../../../components/xuan-loading.vue'
+	import loginHead from '../../../components/login/login-head.vue'
 	export default{
 		data(){
 			return{
 				isShow:false,
-				designer:{
-					name:'',
-					mobile:'',
-					token:'',
-					vcode:''
-				},
+				name:'',
+				mobile:'',
+				token:'',
+				vcode:'',
 				num:60,
+				disabled:true,
 				isSend:false,
-				modalName:'',
-				isInput:false,
 				isShowPwd:false,
-				isRightTel:true,
 				tabbar:true,//用于键盘，
 				windowHeight:'',
 				type:'',//用于区分销售人员还是渠道商个人注册
 			}
 		},
+		watch:{
+			name(val){this.change()},
+			mobile(val){this.change()},
+			token(val){this.change()},
+			vcode(val){this.change()}
+		},
 		components:{
-			loading
+			loading,
+			loginHead
 		},
 		onLoad(options){
 			if(options.type){
@@ -138,19 +143,18 @@
 			})
 		},
 		methods:{
+			change(){
+				if(this.name && this.mobile && this.token && this.vcode){
+					this.disabled=false;
+					return;
+				}
+				this.disabled=true;
+			},
 			close(){
 				 this.$refs.loading.close();
 			},
 			open(){
 				this.$refs.loading.open();
-			},
-			callback(){
-				
-			},
-			signPro(){
-				uni.redirectTo({
-					url:"../protocol/protocol"
-				})
 			},
 			showTabbar(){
 				this.tabbar=true;
@@ -164,68 +168,90 @@
 			operateClickEvent(type){
 				switch(type){
 					case 'login':
-						uni.navigateTo({
+						uni.redirectTo({
 							url:'../login/login'
 						})
 						break;
-					case 'choose':
+					case 'pro':
 						uni.navigateTo({
-							url:'../design-type/design-type'
+							url:"../protocol/protocol"
 						})
+						break;
 				}
 			},
-			designerSubmit(){
-				this.open();
-				if(!this.isRightTel){
+			check(){
+				if(!this.name){
 					uni.showToast({
-						title:'电话号码不存在',
-						icon:'none',
-						success:()=>{
-							this.close()
-						}
+					title:'请输入姓名',
+					icon:'none'
 					})
-				}else if(!this.designer.name || !this.designer.mobile || !this.designer.token){
+					this.close()
+					return false;
+				}
+				if(!this.mobile){
 					uni.showToast({
-						title:'请完善基本信息',
-						icon:'none',
-						success:()=>{
-							this.close()
-						}
+					title:'请输入手机号',
+					icon:'none'
 					})
-				}else if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.token)){
+					this.close()
+					return false;
+				}
+				if(!this.vcode){
+					uni.showToast({
+					title:'请输入验证码',
+					icon:'none'
+					})
+					this.close()
+					return false;
+				}
+				if(!this.token){
+					uni.showToast({
+					title:'请输入密码',
+					icon:'none'
+					})
+					this.close()
+					return false;
+				}
+				if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.token)){
 					uni.showToast({
 						title:'密码不能含有非法字符，长度在6-12之间',
 						icon:'none',
-						success:()=>{
-							this.close()
-						}
+						
 					})
-				} else if(!this.designer.vcode){
+					this.close();
+					return false;
+				}
+				if(!(/^[1][3,4,5,7,8][0-9]{9}$/.test(this.mobile))){
 					uni.showToast({
-						title:'请输入验证码',
+						title:'电话号码不存在',
 						icon:'none',
-						success:()=>{
-							this.close()
-						}
+						
 					})
-				}else{
+					this.close();
+					return false;
+				}
+				return true;
+			},
+			designerSubmit(){
+				this.open();
+				if(this.check()){
 					this.$ajax('Signup',{
-						name:this.designer.name,
-						token:this.designer.token,
-						mobile:this.designer.mobile,
+						name:this.name,
+						token:this.token,
+						mobile:this.mobile,
 						gender:this.$store.state.genderZn.man,
 						// type:this.$store.state.shoperObj.type,
 						type:this.type,
-						vcode:this.designer.vcode,
+						vcode:this.vcode,
 					},res=>{
-						console.log(res)
-						this.isInput=true;
+					
 						
 						uni.showToast({
 							title:'用户注册成功',
 							icon:'none',
 							success:()=>{
-								this.close()
+								this.close();
+								this.disabled=false;
 							}
 						})
 						setTimeout(()=>{
@@ -233,8 +259,8 @@
 								url:"../login/login",
 								success: () => {
 									this.$fire.fire('login',{
-										account:this.designer.mobile,
-										token:this.designer.token
+										account:this.mobile,
+										token:this.token
 									})
 									this.close()
 								}
@@ -245,15 +271,16 @@
 						
 					})
 				}
+				
 			},
 			sendCode(){
-				if(!this.designer.mobile){
+				if(!this.mobile){
 					uni.showToast({
 						title:'请输入手机号',
 						icon:'none'
 					})
 				}else{
-					this.$ajax('SendVerCode',{mobile:this.designer.mobile},res=>{
+					this.$ajax('SendVerCode',{mobile:this.mobile},res=>{
 						uni.showToast({
 							title:'短信已发送，请注意接受',
 							icon:'none'
@@ -271,9 +298,6 @@
 					},1000)
 				}
 				
-			},
-			clearPwd(){
-				this.designer.token=''
 			},
 			checkPwdEvent(event){
 				if(event){
@@ -294,11 +318,9 @@
 						title:'电话号码不存在',
 						icon:'none'
 					})
-					this.isRightTel=false;
+					return;
 					
-				} else {
-					this.isRightTel=true;
-				}
+				} 
 			}
 		}
 		

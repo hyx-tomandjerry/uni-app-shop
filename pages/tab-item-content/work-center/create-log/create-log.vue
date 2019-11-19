@@ -55,7 +55,7 @@
 
                 </view>
             </view>
-			<uploadImg  :xType="$store.state.doc.workReportShop" @success="success($event)"></uploadImg>
+			<uploadImg  :xType="$store.state.doc.workReportShop" @success="success($event)" v-if="files.length"></uploadImg>
         </view>
 
         <view class="create-log-bottom" style="position:fixed;bottom:0;">

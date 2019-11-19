@@ -9,26 +9,18 @@
 		<view class="borderTop">
 			<view v-if="skillList.length">
 				<view v-if="value=='skill'">
-					<view class="flex justify-start align-center borderBottom position_relative more-content" v-for="(item,index) in skillList" :key="index"  @click="checkItemInfo(item)" >
-						<view style="width:71%">
-							<view class="font-size-big font-weight-bold more-content-name">{{item.name}} </view>
-							<view class="font-size-litter font-weight-normal">{{item.applyDate | formatTime('YMDHMS')}}</view>
-						</view>
-						<view style="width:29%;">
-							<image :src="item.coverurl" mode="aspectFill"  class="more-content-cover"></image>
-						</view>
-						<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
-					</view>
+					<block v-for="(item,index) in skillList" :key="index">
+						<article-skill :item="item" :index="index" @checkItemInfo="checkItemInfo"></article-skill>
+					</block>
+					<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
 				</view>
 
 
 				<view class="cu-card case example-content" v-show="value=='example'" >
-					<view v-for="(item,index) in skillList" :key="index" @click="checkItemInfo(item)"  class="borderBottom position_relative example-content-list">
-						<image :src="item.coverurl" mode="aspectFill" class="example-content-cover"></image>
-						<view class="font-size-big font-weight-bold example-content-name" >{{item.name}}</view>
-						<view class="font-size-litter font-weight-normal color-placeholder">{{item.applyDate | formatTime('YMDHMS')}}</view>
-						<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
-					</view>
+					<block v-for="(item,index) in skillList" :key="index">
+						<article-example :item="item" :index="index" @checkItemInfo="checkItemInfo"></article-example>
+					</block>
+					<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
 				</view>
 			</view>
 
@@ -39,7 +31,7 @@
 		</view>
 
 
-		<uni-load-more :contentText="content" :showIcon="true" :status="loading"></uni-load-more>
+
 	</view>
 </template>
 
@@ -47,6 +39,8 @@
 	import LxEmpty from '../../../lx_components/lx-empty.vue';
 	import uniLoadMore from '../../../components/uni-load-more.vue'
 	import {mapState} from 'vuex'
+	import articleSkill from '../../../components/article/article-skill.vue'
+	import articleExample from '../../../components/article/article-example.vue'
 	export default{
 		computed:mapState(['report']),
 		data(){
@@ -68,7 +62,9 @@
 		},
 		components:{
 			LxEmpty,
-			uniLoadMore
+			uniLoadMore,
+			articleSkill,
+			articleExample
 
 		},
 		onPullDownRefresh(){
@@ -167,38 +163,11 @@
 		left:10px;
 		.mixWidth(calc(100%  - 30px - 10px))
 	}
-	.operateImg{
-		.img(37px;37px);
-		top:22px;
-		right:18px;
 
-	}
-	.more-content{
-		.mixPadding(23px;18px;21px;14px);
-		.more-content-name{
-			.mixMarginBottom(10px)
-		}
-		.more-content-cover{
-			.mixHeight(79px);
-			.mixBorderRadius(10px)
-		}
-
-	}
 	.example-content{
 		.mixMargin(7px;7px;7px;7px);
 		.mixBorderRadius(10px);
-		.example-content-list{
-			.mixPadding(23px;14px;21px;14px;);
-			.example-content-cover{
-				width:100%;
-				height:143px;
-				.mixBorderRadius(10px);
-				.mixMarginBottom(13px);
-			}
-			.example-content-name{
-				.mixMarginBottom(10px);
-			}
-		}
+
 	}
 </style>
 

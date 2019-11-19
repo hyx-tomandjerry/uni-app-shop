@@ -1,0 +1,30 @@
+.shop-img-area{
+	width:30%;
+	margin-right: 20upx;
+			
+}
+.shop-img{
+	height:180upx;
+	border-radius:12upx;
+}
+.shop-tag{
+	width:36upx;
+	height: 36upx;
+	margin-left: 10upx;
+}
+.shop-tag-canceled{
+	width: 112upx;
+	height: 38upx;
+	margin-left: 10upx;
+}
+.shop-info-area{
+	margin-top:-10px;
+}
+.shop-list-item{
+	margin-bottom:26upx;
+	padding:36upx 20upx 46upx 28upx;
+	width:100%;
+}
+page{
+		background:rgba(247,247,247,1);
+}

@@ -119,7 +119,7 @@
 				<view class="reject-btn flex-1">接受</view>
 			</view>
 			<!-- 已接受/已超期，未通过（申请验收） -->
-			<view class="submit-btn" 
+			<view class="submit-btn"
 			v-if="status==taskStatus.received || status== taskStatus.overdue || status==taskStatus.noPass"
 				@click="checkApply"
 			>申请验收</view>
@@ -133,7 +133,7 @@
 	import {mapState} from 'vuex'
 	export default {
 		computed:mapState(['taskStatus']),
-		
+
 		data() {
 			return {
 				status:3,//未接受
@@ -157,7 +157,7 @@
 			checkApply(){
 				uni.navigateTo({
 					url: '../check-apply/check-apply',
-					
+
 				});
 		}
 	},
@@ -193,7 +193,7 @@
 		padding:11px 13px;
 		text-align: center;
 		font-size:16px;
-				
+
 		font-weight:400;
 		.agree-btn{
 			margin-right: 10px;
@@ -208,9 +208,9 @@
 			line-height:40px;
 			background:rgba(66,176,237,1);
 			border-radius:5px;
-			
+
 			color:rgba(255,255,255,1);
-			
+
 		}
 		.submit-btn{
 			width: 100%;

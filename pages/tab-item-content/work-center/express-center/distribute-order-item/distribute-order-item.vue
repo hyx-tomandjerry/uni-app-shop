@@ -10,7 +10,7 @@
 					</view>
 					<!--<view class="color-regular font-size-litter" >上海市长宁区金钟路658号东华大学</view>-->
 				</view>
-				<image src="../../../../../static/img/work/express/other/track-img.png" class="track-img" style="top:35px;"></image>
+				<!-- <image src="../../../../../static/img/work/express/other/track-img.png" class="track-img" style="top:35px;"></image> -->
 			</view>
 			<view class="user-info-item  flex justify-start align-center">
 				<view class="email-tag text-white font-size-middle" style="background:rgba(66,176,237,1)">发</view>
@@ -21,7 +21,7 @@
 					</view>
 					<!--<view class="color-regular font-size-litter" >上海市长宁区金钟路658号东华大学</view>-->
 				</view>
-				<image src="../../../../../static/img/work/express/other/track-img.png" class="track-img" style="top:35px;" v-if="itemInfo.recverName && itemInfo.recverMobile"></image>
+				<!-- <image src="../../../../../static/img/work/express/other/track-img.png" class="track-img" style="top:35px;" v-if="itemInfo.recverName && itemInfo.recverMobile"></image> -->
 			</view>
 			<view class="user-info-item  flex justify-start align-center" v-if="itemInfo.recverName && itemInfo.recverMobile">
 				<view class="email-tag text-white font-size-middle" style="background:rgba(255,160,30,1);">收</view>
@@ -168,11 +168,11 @@
 			margin-bottom: 40px;
 			position:relative;
 			.email-tag{
-				font-size:12px;
+				font-size:20px;
 				border-radius: 50%;
-				width:20px;
-				height: 20px;
-				line-height:20px;
+				width:80upx;
+				height: 80upx;
+				line-height:80upx;
 				text-align: center;
 				margin-right: 12px;
 			}

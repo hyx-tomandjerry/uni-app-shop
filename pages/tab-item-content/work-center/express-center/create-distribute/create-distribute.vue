@@ -133,7 +133,7 @@
 		<view class="cu-modal" :class="modalName=='sendObjModal'?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end borderBottom">
-					<view class="content">选择调拨类型</view>
+					<view class="content">选择发件对象</view>
 					<view class="action" @tap="hideModal">
 						<text class="cuIcon-close text-red"></text>
 					</view>
@@ -141,7 +141,7 @@
 				<view class=" bg-white text-left">
 					<view v-for="(item,index ) in sendTargetList" :key="index" @click="chooseItem(item,'sendTarget')" class="type-item flex justify-between align-center">
 						{{item.name}}
-						<image :src="sendTargetTabcur==item.value?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong .png'" style="width:20px;height:20px;"></image>
+						<image :src="sendTargetTabcur==item.value?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'" style="width:20px;height:20px;"></image>
 					</view>
 				</view>
 			</view>

@@ -10,7 +10,7 @@
 						<view class="border-tag"></view>
 						<view class="font-size-big color-normal font-weight-bold">基本信息</view>
 					</view>
-					
+
 					<template v-if="detailInfo.approval==applyStatusZn.wait">
 						<image src="../../../../../static/img/work/apply/my-apply/waiting_tag.png"
 						mode="widthFix" lazy-load></image>
@@ -64,7 +64,7 @@
 					<block v-for="(workflow,index) in detailInfo.steps" :key="index">
 						<workflowItem :workflow="workflow" :index="index"></workflowItem>
 					</block>
-				</view>	
+				</view>
 			</view>
 		<view style="height:200upx;"></view>
 		<!-- 按钮 是申请人是本人，approve是1，curnode=1-->
@@ -78,7 +78,7 @@
 		<!-- 如果被驳回可以重新编辑 -->
 		<template v-if="cat=='notice'">
 			<BottomBtnTwo
-			refuse_btn_con="拒绝" 
+			refuse_btn_con="拒绝"
 			@hideModal="hideModel"
 			refuse_data_target="refuseModel"
 			agree_btn_con="同意"

@@ -96,7 +96,10 @@ image {
 /* ==================
           图片
  ==================== */
-
+uni-button[disabled][type=primary]{
+	background:#EEEEED;
+	color:#CCCCCC
+}
 image {
 	max-width: 100%;
 	display: inline-block;
@@ -175,7 +178,11 @@ switch::before {
 	transform: scale(1, 1);
 	left: auto;
 }
-
+uni-button[type=primary]{
+	background:rgba(66,176,237,1);
+	border-radius:5px;
+	color:#fff;
+}
 switch[checked]::after,
 switch.checked::after {
 	transform: scale(1, 1);
@@ -208,9 +215,10 @@ radio .wx-radio-input,
 checkbox .wx-checkbox-input,
 radio .uni-radio-input,
 checkbox .uni-checkbox-input {
-	margin: 0;
-	width: 24px;
-	height: 24px;
+	margin: 1upx;
+	width: 18px;
+	height: 18px;
+
 }
 
 checkbox.round .wx-checkbox-input,

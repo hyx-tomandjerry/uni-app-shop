@@ -71,14 +71,17 @@
 			hideModel(){
 				this.districtList=[];
 				this.cityList=[];
+				console.log(this.districtTabCur,this.districtName)
 				this.$emit('hideModel',{
 					
 					provinceName:this.provinceName?this.provinceName:'',
 					province:this.provinceTabCur?this.provinceTabCur:'',
-					districtName:this.districtName?this.districtName:'',
-					district:this.districtTabCur?this.districtTabCur:'',
-					cityName:this.cityName?this.cityName:'',
-					city:this.cityTabCur?this.cityTabCur:''
+					// districtName:this.districtName?this.districtName:'',
+					districtName:this.cityName?this.cityName:'',
+					// district:this.districtTabCur?this.districtTabCur:'',
+					district:this.cityTabCur?this.cityTabCur:'',
+					cityName:this.districtName?this.districtName:'',
+					city:this.districtTabCur?this.districtTabCur:''
 				})
 			},
 			chooseProvince(item,type){

@@ -67,13 +67,12 @@
 
 <style lang="less">
 	.chart-container{
-		height:265px;
-		padding-top:10px;
+		height:230px;
 		background:url("../static/img/work/statistics/bg.png") no-repeat center center;
 		background-size:cover;
 		.chart-content{
-			width: 166px;
-			height: 166px;
+			width: 150px;
+			height: 150px;
 			position:relative;
 			margin: 0 auto;
 			image{

@@ -34,7 +34,7 @@
 		<view class="search-item borderTop" @click="selectModal('brand')" >
 			<view class="font-size-normal color-normal">品牌</view>
 			<view class="color-regular">
-				<text>{{areaItem.name || ''}}</text>
+				<text>{{brandItem.name || ''}}</text>
 				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text>
 			</view>
 		</view>
@@ -58,7 +58,7 @@
 			</view>
 		</view>
 		<!-- 月份弹出框 -->
-		<view class="cu-modal bottom-modal" :class="modalName=='MonthBottomModal'?'show':''">
+		<!-- <view class="cu-modal bottom-modal" :class="modalName=='MonthBottomModal'?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white">
 					<view class="action text-blue" @tap="hideModel">取消</view>
@@ -72,7 +72,7 @@
 					</picker-view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 区域弹出框 -->
 		<view class="cu-modal bottom-modal" :class="modalName=='areaBottomModal'?'show':''">
 			<view class="cu-dialog">
@@ -114,7 +114,7 @@
 			const date = new Date()
 			const years = []
 			const months = []
-			for (let i = 1990; i <= date.getFullYear()+10; i++) {
+			for (let i = date.getFullYear()-10; i <= date.getFullYear()+10; i++) {
 				years.push(i)
 			}
 			for (let i = 1; i <= 12; i++) {
@@ -135,8 +135,8 @@
 				type:'',//用于区分门店，区域，公司
 				shopID:'',
 				areaList:[],
-				areaItem:'',
-				brandItem:'',
+				areaItem:{},
+				brandItem:{},
 				brandList:[]
 			}
 		},
@@ -160,7 +160,8 @@
 						this.$fire.fire('search',{
 							year:this.year?this.year:new Date().getFullYear(),
 							month:this.month,
-							target:this.areaItem?this.areaItem.id:''
+							target:this.areaItem?this.areaItem.id:'',
+							brand:this.brandItem?this.brandItem.id:''
 						})
 					}
 				})
@@ -177,11 +178,10 @@
 					this.getTree(res)
 				})
 			},
-			bindChange: function (e) {
+			bindChange(e) {
 				const val = e.detail.value;
 				this.year=this.years[val[0]];
-				this.month=this.months[val[1]]?this.months[val[1]]:'01'
-				console.log(this.year,this.month)
+				this.month=this.months[val[1]]?this.months[val[1]]:'1'
 			},
 			/*选择开始时间*/
 			selectModal(type){

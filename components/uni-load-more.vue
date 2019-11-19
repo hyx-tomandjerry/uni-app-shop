@@ -45,7 +45,7 @@
 				type: Object,
 				default () {
 					return {
-						contentdown: "",
+						contentdown: "下拉加载更多",
 						contentrefresh: "正在加载...",
 						contentnomore: "没有更多数据了"
 					};

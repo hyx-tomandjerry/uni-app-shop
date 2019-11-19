@@ -5,7 +5,7 @@
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >{{type=='apply'?'我的申请':'我的审核'}}</view></block>
 		</cu-custom>
 		<view class="borderTop">
-			
+
 			<template v-if="list.length">
 				<block v-for="(item,index) in list" :key="index" >
 					<applyListItem :item="item" :index="index" @checkDetail="checkDetail" :type="type"></applyListItem>
@@ -15,10 +15,10 @@
 			<template v-else>
 				<LxEmpty></LxEmpty>
 			</template>
-			
+
 		</view>
 	</view>
-	
+
 </template>
 
 <script>
@@ -41,7 +41,7 @@
 					contentnomore: "没有更多数据了"
 				},
 				loading:'more'
-				
+
 			}
 		},
 		onReachBottom(){
@@ -64,7 +64,7 @@
 							switch(Number(item.formType)){
 								//报修
 								case this.approvalMode.repair_service:
-									item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"		
+									item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"
 								break;
 								//通用报销
 								case this.approvalMode.common:
@@ -73,7 +73,7 @@
 								//请假报销
 								case this.approvalMode.absence:
 									item.img="../../../../../static/img/work/apply/my-apply/qingjia_icon.png"
-								break;	
+								break;
 								//报销报销
 								case this.approvalMode.expense:
 									item.img="../../../../../static/img/work/apply/my-apply/baoxiao_icon.png"
@@ -82,13 +82,13 @@
 							this.list=this.list.concat(item);
 						})
 						this.loading='loading';
-						
+
 						setTimeout(()=>{
 							this.loading='noMore'
 						},900)
-						
+
 					}
-					
+
 				})
 				break;
 				case 'check':
@@ -102,7 +102,7 @@
 							switch(Number(item.formType)){
 								//报修
 								case this.approvalMode.repair_service:
-									item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"		
+									item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"
 								break;
 								//通用报销
 								case this.approvalMode.common:
@@ -111,7 +111,7 @@
 								//请假报销
 								case this.approvalMode.absence:
 									item.img="../../../../../static/img/work/apply/my-apply/qingjia_icon.png"
-								break;	
+								break;
 								//报销报销
 								case this.approvalMode.expense:
 									item.img="../../../../../static/img/work/apply/my-apply/baoxiao_icon.png"
@@ -123,7 +123,7 @@
 						setTimeout(()=>{
 							this.loading='noMore'
 						},900)
-						
+
 					}
 				})
 				break;
@@ -138,13 +138,13 @@
 		methods: {
 			checkDetail(item){
 				switch(Number(item.formType)){
-					
+
 					// 报修
 					case this.approvalMode.repair_service:
 					uni.navigateTo({
 						url: '../../../shop-center/repair-order-item/repair-order-item?id='+item.form+"&type=check"
 					});
-					
+
 					break;
 					default:
 					uni.navigateTo({
@@ -172,7 +172,7 @@
 								switch(Number(item.formType)){
 									//报修
 									case this.approvalMode.repair_service:
-										item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"		
+										item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"
 									break;
 									//通用报销
 									case this.approvalMode.common:
@@ -181,17 +181,17 @@
 									//请假报销
 									case this.approvalMode.absence:
 										item.img="../../../../../static/img/work/apply/my-apply/qingjia_icon.png"
-									break;	
+									break;
 									//报销报销
 									case this.approvalMode.expense:
 										item.img="../../../../../static/img/work/apply/my-apply/baoxiao_icon.png"
 									break;
 								}
 							})
-						
+
 							this.list=res;
 						}
-						
+
 					})
 					break;
 					case 'check':
@@ -201,7 +201,7 @@
 								switch(Number(item.formType)){
 									//报修
 									case this.approvalMode.repair_service:
-										item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"		
+										item.img="../../../../../static/img/work/apply/my-apply/repair_icon.png"
 									break;
 									//通用报销
 									case this.approvalMode.common:
@@ -210,14 +210,14 @@
 									//请假报销
 									case this.approvalMode.absence:
 										item.img="../../../../../static/img/work/apply/my-apply/qingjia_icon.png"
-									break;	
+									break;
 									//报销报销
 									case this.approvalMode.expense:
 										item.img="../../../../../static/img/work/apply/my-apply/baoxiao_icon.png"
 									break;
 								}
 							})
-						
+
 							this.list=res;
 						}
 					})
@@ -241,6 +241,6 @@
 </script>
 
 <style scoped>
-	
-	
+
+
 </style>

@@ -60,9 +60,9 @@
 						contentrefresh: "正在加载...",
 						contentnomore: "没有更多数据了"
 					},
-					loading:'more',			
+					loading:'more',
 
-				
+
 			}
 		},
 		components: {
@@ -121,15 +121,19 @@
 			},
 
 			confirmShop(){
-				this.$ajax('Signup',{
-					owner:this.companyID,
-					name: this.userInfo.name,
-					mobile: this.userInfo.mobile,
-					type: this.shoperObj.type,
-					team: this.shopItem.id
+				this.$ajax('ApplyOrInvite2Join',{
+					owner:0,
+					org:this.companyID,
+					shop:this.shopItem.id,
+					user:this.userInfo.id
+					// owner:this.companyID,
+					// name: this.userInfo.name,
+					// mobile: this.userInfo.mobile,
+					// type: this.shoperObj.type,
+					// team: this.shopItem.id
 				},res=>{
 					uni.showToast({
-						title:`您已成功加入${this.shopItem.name}门店`,
+						title:`您已成功向${this.shopItem.name}发送请求,等待店长同意`,
 						icon:'none'
 					})
 					this.hideModel();
@@ -142,13 +146,13 @@
 					if(code==-31){
 						this.modelName='exit'
 					}
-					
+
 				})
 			},
 			chooseShop(item){
 				this.shopItem=item;
 				this.modelName='shop';
-				
+
 			},
 			hideModel(){
 				this.modelName=null;
@@ -177,49 +181,11 @@
 				}
 				this.getShopList()
 			})
-			
+
 		}
 	}
 </script>
 
-<style lang="less">
-
-	@import "../../../static/css/demo";
-
-	page{
-		background:rgba(247,247,247,1);
-	}
-
-
-
-
-
-	.shop-list-item{
-		margin-bottom:13px;
-		padding:18px 10px 23px 14px;
-		width:100%;
-		.shop-img-area{
-			width:30%;
-			margin-right: 10px;
-			.shop-img{
-
-				height:86px;
-				border-radius:6px;
-			}
-		}
-		.shop-info-area{
-			margin-top:-10px;
-			.shop-tag{
-				width:18px;
-				height: 18px;
-				margin-left: 5px;
-			}
-			.shop-tag-canceled{
-				width: 56px;
-				height: 18px;
-				margin-left: 5px;
-			}
-		}
-
-	}
+<style scoped>
+	@import url("./join-shop.css");
 </style>
