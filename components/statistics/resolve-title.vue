@@ -28,7 +28,7 @@
 				<view class="text-white">{{new Date().getFullYear()}} 年{{month}}目标</view>
 				<view class="shop-aim">¥ {{shopSaleResolve.monthAim  | numStyle}}</view>
 				<view class="shop-intro flex justify-between align-center">
-					<view class="text-white" style="width:50%;">{{month}}占全年比重</view>
+					<view class="text-white flex-litter" >{{month}}占比</view>
 					<view class="cu-progress round sm striped active" style="margin:0 5px;">
 						<view class="bg-color-purple"  :style="[{ width:`${shopSaleResolve.monthPre}%`}]"></view>
 					</view>

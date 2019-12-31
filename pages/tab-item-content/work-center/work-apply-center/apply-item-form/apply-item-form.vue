@@ -1,27 +1,27 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >{{title}}</view></block>
-		</cu-custom>
 		<!-- form区域开始 -->
 		<view class="form-container borderTop">
-			<view class="cu-form-group" @tap="chooseShop">
-				<view class="title "><text class="color-red">*</text> 选择门店</view>
-				<view :class="{'color-normal':shop.name,'color-regular':!shop.name}">
-					{{shop.name || '选择门店'}}
-					<text class="cuIcon-right font-size-big color-regular margin-l" ></text>
-				</view>
-
-			</view>
+			<common-flex 
+				leftContent="选择门店" 
+				:rightContent="shop.name || ''"
+				@operateItem="chooseShop"
+				:type="shopCount!=1?'navigate':'normal'"
+				></common-flex>
+				
 			<template v-if="type==approvalMode.absence">
 				<view class="cu-form-group">
 					<view class="title "><text class="color-red">*</text> 请假类型</view>
-					<picker @change="PickerChange" :value="xType" :range="picker">
-							<view class="picker" :class="{'color-normal':picker[xType],'color-regular':!picker[xType]}">
-								{{xType>-1?picker[xType]:'请假类型'}}
+					<view class="flex justify-around vacation-type">
+						<block v-for="(item,index) in vacationType" :key="index">
+							<view @tap="chooseVacationType((item))">
+								<image 
+									:src="xType==item.id?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'"
+									 mode="widthFix" class="xuanze-img"></image>
+								<text>{{item.name}}</text>
 							</view>
-					</picker>
+						</block>
+					</view>
 				</view>
 				<view class="cu-form-group">
 					<view class="title "><text class="color-red">*</text> 开始时间</view>
@@ -31,7 +31,7 @@
 										'color-normal':this.start,
 										'color-regular':!this.start
 									}"
-									:placeholder="start?start:'选择开始时间'" ></dyDateTime>
+									 :placeholder="start?start:'选择开始时间'"></dyDateTime>
 						<text class="cuIcon-right font-size-big color-regular"></text>
 					</view>
 				</view>
@@ -54,10 +54,9 @@
 						<text v-if="time.hours">{{time.hours}}小时</text>
 						<text v-if="time.minutes">{{time.minutes}}分钟</text>
 						<text v-if="time.seconds">{{time.seconds}}秒</text>
-						<text class="cuIcon-right font-size-big color-regular"></text>
 					</view>
-
 				</view>
+				
 			</template>
 			<template v-if="type==approvalMode.common">
 				<view class="cu-form-group borderBottom">
@@ -70,54 +69,41 @@
 			<!-- 请假原因 start-->
 			<template v-if="type==approvalMode.absence ||type==approvalMode.common ">
 				<view class="text-area">
-					<view class="font-size-normal color-normal"><text class="color-red">*</text>请假事由</view>
-					<textarea  placeholder="请输入请假事由" v-model="reason"/>
+					<view class="font-size-normal color-normal"><text class="color-red">*</text>申请事由</view>
+					<textarea  placeholder="请输入申请事由" v-model="reason"/>
 				</view>
 			</template>
 			<!-- 请假原因end -->
 			<!-- 报销申请start -->
 			<template v-if="type==approvalMode.expense">
-				<block  v-for="(item,index) in items" :key="index">
-					<repayForm
-					:items="items"
-					@deleteIndex="delIndex"
-					@uploadData="uploadData"
-					:index="index" ></repayForm>
-				</block>
+				<repayForm 
+				v-for="(item,index) in items" :key="index"
+				:item="item"
+				@deleteIndex="delIndex"
+				@onChooseExpenseItem="onChooseExpenseItem"
+				:index="index" ></repayForm>
 
 				<view class="flex-all bg-white text-center repay-btn" @click="addTemp">
 					增加报销
 				</view>
 			</template>
-			<view class="cu-bar bg-white " >
-				<view class="title font-size-normal font-weight-normal" style="font-size:13px;padding-left:10px;"><text class="text-red" style="margin-right:4rpx;">*</text>上传附件</view>
-			</view>
-
-			<view class="cu-form-group margin-bottom-normal">
-				<view class="grid col-4 grid-square flex-sub">
-					<view class="padding-xs bg-img" :style="[{backgroundImage:'url(' + imgList[index] +')'}]" v-for="(item,index) in imgList"
-						  :key="index" @tap="ViewImage(index) " :data-url="imgList[index]">
-						<view class="cu-tag bg-red" @tap.stop="DelImg(index)" :data-index="index">
-							<text class='cuIcon-close'></text>
-						</view>
-					</view>
-					<view class="padding-xs solids" v-if="imgList.length<4">
-						<image src='../../../../../static/img/work/camera.png' mode="" @tap="ChooseImageEvent()"  style="width:78px;height:78px;"></image>
-					</view>
-
-				</view>
-			</view>
+			<file-upload
+				:isRed="true"
+				@upload="uploadSuccess"
+				:inImgList="imgList"
+				:inFiles="files"
+				src="../../../../../static/img/work/camera.png" 
+				:xType="fileType" 
+				xTarget="0"></file-upload>
 			<!-- 上传附件end-->
 
 			<!-- 审批流程start -->
-			<view class="cu-form-group borderBottom" @tap="chooseWorkFlow" v-show="newOrEdit=='create'">
-				<view class="title "><text class="color-red">*</text>审批流程</view>
-				<view>
-					<text>{{workflow.name || ''}}</text>
-					<text class="cuIcon-right font-size-big color-regular"></text>
-				</view>
-
-			</view>
+			<common-flex 
+					v-if="newOrEdit=='create'"
+					type="navigate"
+					@operateItem="chooseWorkFlow"
+					leftContent="审批流程" 
+					:rightContent="workflow.name || ''"></common-flex>
 			<view class="workflow-contaienr bg-white" v-show="workflow['steps'] ">
 				<view>
 					<view></view>
@@ -134,29 +120,68 @@
 		</view>
 		<view style="height:200upx;"></view>
 		<!-- form区域结束 -->
-		<bottomBtnOne  content='确定' @showModal="submitApply" ></bottomBtnOne>
+		<common-btn-one
+			type="primary" 
+			:disabled="disabled" 
+			content="提交申请"
+			@operateBtn="submitApply" :isPos="true"></common-btn-one>
 	</view>
 </template>
 
 <script>
 	import {mapState} from 'vuex'
-	import repayForm from '../../../../../components/repay-form.vue'
-	import uploadImg from '../../../../../components/upload-img.vue'
+	import fileUpload from '../../../../../components/common/file-upload.vue'
+	import repayForm from '../../../../../components/work-apply/repay-form.vue'
 	import dyDateTime from '../../../../../components/lanxiujuan-dyDateTime/lanxiujuan-dyDateTime.vue'
-	import workflowItem from '../../../../../components/workflow-item.vue'
-	import bottomBtnOne from '../../../../../components/common/bottom-btn-one.vue'
+	import workflowItem from '../../../../../components/common/workflow-item.vue'
+	import commonBtnOne from '../../../../../components/common/common-btn-one.vue'
+	import commonFlex from '../../../../../components/common/common-flex.vue'
+	import {ChainShopApi} from '../../../../../api/shop_api.js'
+	import {NewRoutineAppApi,ApplyExpenseApi,NewCommonFormApi,ExpenseApi,CommonFormApi,RoutineAppApi} from '../../../../../api/apply_api.js'
+	const getDate =(type)=> {
+			 const date = new Date();
+			 let year = date.getFullYear();
+			 let month = date.getMonth() + 1;
+			 let day = date.getDate();
+			 			
+			 if (type === 'start') {
+			     year = year - 60;
+			 } else if (type === 'end') {
+			     year = year + 2;
+			 }
+			 month = month > 9 ? month : '0' + month;;
+			 day = day > 9 ? day : '0' + day;
+			 return `${year}-${month}-${day}`;           
+	}
+	const defaultFormItem = {
+		detail:'',
+		xType:'',
+		occdate: getDate({
+			    format: true
+			}),
+		amount:'',
+		xTypeName:''
+	}
 	export default {
-		computed:mapState(['constants','approvalMode','doc','userInfo']),
-		components:{uploadImg,repayForm,dyDateTime,workflowItem,bottomBtnOne},
+		computed:{
+			...mapState(['userInfo','shopCount','shopOnlyObj']),
+			approvalMode(){return this.config.approvalMode}
+		},
+		components:{repayForm,dyDateTime,workflowItem,commonBtnOne,commonFlex,fileUpload},
 		data() {
 			return {
 					type:'',//请假类型
 					title:'',//标题内容
 					fileType:'',//上传附件类
-					items:[{}],
+					items:[defaultFormItem],
 					shop:'',
 					//请假类型
-					xType:0,
+					xType:1,
+					vacationType:[
+						{id:this.config.absenceType.affair,name:"事假"},
+						{id:this.config.absenceType.sick,name:"病假"},
+						{id:this.config.absenceType.change,name:"调休"},
+					],
 					picker: ['事假', '病假', '调休'],
 					start:'',//开始时间
 					end:'',//结束时间
@@ -169,116 +194,28 @@
 					},
 					reason:'',//请假事由
 					workflow:'',//审批流程
-					files:[],//附件
 					applyName:'',//申请名称
 					newOrEdit:'',//判断是新建还是修改
 					applyItem:'',//要修改的内容
+					disabled:false,
 					imgList:[],
-					isSplice:false,
+					files:[],//附件
+					token:''
 			}
 		},
-		methods: {
-			changeSplice(){
-
-				this.isSplice=false;
+		methods: {			
+			uploadSuccess(event){
+				this.files=event;
 			},
-			goBack(){
-				uni.navigateBack({
-					delta: 1
-				});
-			},
-			//获得上传图片的token
-			getUploadToken(){
-				this.$ajax('UploadToken',{},res=>{
-					this.token=res
-				})
-			},
-			ChooseImageEvent(){
-				uni.chooseImage({
-					count:9,
-					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['camera','album'],
-					success: (res) => {
-						const tempFilePaths=res.tempFilePaths;
-						if (this.imgList.length != 0) {
-							this.imgList = this.imgList.concat(res.tempFilePaths)
-						} else {
-							this.imgList = res.tempFilePaths
-						}
-
-						for(var i=0;i<res.tempFilePaths.length;i++){
-							let  uploadTask=uni.uploadFile({
-								url:this.$store.state.uploadHostUrl+this.token,
-								filePath:tempFilePaths[i],
-								name:'file',
-								formData:{
-									'x:type':this.fileType,
-									'x:owner': this.userInfo.owner,
-									'x:creator': this.userInfo.id,
-									"x:target":0
-								},
-								success: (uploadFileRes) => {
-									let res=JSON.parse(uploadFileRes.data);
-									this.files.push(res.data);
-								},
-
-							});
-							uploadTask.onProgressUpdate((res)=>{
-								if(res.progress==100){
-									uni.showToast({
-										title:'上传成功',
-										icon:'none'
-									})
-								}
-							},(error)=>{
-								uni.showToast({
-									title:'上传失败',
-									icon:'none'
-								})
-							})
-
-						}
-
-
-
-
-					}
-				})
-
-			},
-			ViewImage(event){
-				uni.previewImage({
-					urls: this.imgList,
-					current: event
-				});
-			},
-			DelImg(event){
-				uni.showModal({
-					content: '确定删除？',
-					cancelText: '取消',
-					confirmText: '确定',
-					success: res => {
-						if (res.confirm) {
-							this.imgList.splice(event, 1);
-							this.$ajax('RemoveFiles',{
-								files:this.files[event],
-							},res=>{
-								this.files.splice(event,1)
-								uni.showToast({
-									title:'删除成功',
-									icon:'none'
-								})
-							})
-
-						}
-					}
-				})
+			onChooseExpenseItem(event){
+				const {item,index} = event	
+				this.$set(this.items,index,item )
 			},
 			getDataStart(event){
 				if(event){
 					this.start=event;
 					if(this.newOrEdit=='edit'){
-						this.getTimeInfo(this.start,this.end)
+						this.time=this.$timer.getTimeInfo(this.start,this.end)
 					}
 
 
@@ -286,13 +223,12 @@
 			},
 			getDataEnd(event){
 				if(!this.start){
-					uni.showToast({
-						title: '请选择开始时间',
-						icon:'none'
-					});
+					
+					this.$utils.showToast('请选择开始时间')
 				}else if(event){
+					this.time=this.$timer.getTimeInfo(this.start,event);
 					this.end=event;
-					this.getTimeInfo(this.start,this.end)
+					
 				}
 			},
 			uploadData(val){
@@ -300,42 +236,31 @@
 				 this.items[index] = val.data
 			},
 			//提交流程
-			submitApply(){
+			async submitApply(){
 				switch(Number(this.type)){
 					case this.approvalMode.absence:
 
 						// 请假
 						if(!this.shop.id){
-							uni.showToast({
-								title: '请选择门店',
-								icon:'none'
-							});
+							
+							this.$utils.showToast('请选择门店')
 						}else if(!this.start){
-							uni.showToast({
-								title: '请选择开始时间',
-								icon:'none'
-							});
+							
+							this.$utils.showToast('请选择开始时间')
 						}else if(!this.end){
-							uni.showToast({
-								title: '请选择结束时间',
-								icon:'none'
-							});
+							
+							this.$utils.showToast('请选择结束时间')
 						}else if(!this.reason){
-							uni.showToast({
-								title: '请选择请假类型',
-								icon:'none'
-							});
-						}
-						else if(this.newOrEdit=='create'&&!this.workflow.id){
-							uni.showToast({
-								title: '请选择审批流程',
-								icon:'none'
-							});
+							
+							this.$utils.showToast('请选择请假类型')
+						}else if(this.newOrEdit=='create'&&!this.workflow.id){
+							
+							this.$utils.showToast('请选择审批流程')
 						}else{
-
+							this.disabled=true;
 							let value={
 								shop:this.shop.id,//门店ID
-								xtype:this.newOrEdit=='edit'?Number(this.xType):(Number(this.xType)?Number(this.xType)+1:1),//请假类型
+								xtype:this.xType,//请假类型
 								bgn:this.newOrEdit=='edit'?this.start:this.$moment(new Date(this.start)).format('YYYY-MM-DD HH:ss:mm'),//开始时间
 								due:this.newOrEdit=='edit'?this.end:this.$moment(new Date(this.end)).format('YYYY-MM-DD HH:ss:mm'),//结束时间
 								detail:this.reason,//请假事由
@@ -343,81 +268,71 @@
 								workflow:this.newOrEdit=='edit'?this.applyItem.workflow:this.workflow.id,//流程名称,
 								id:this.newOrEdit=='edit'?this.applyItem.id:''
 							}
-							this.$ajax('NewRoutineApp',value,res=>{
-								uni.showToast({
-									title: '请假申请成功',
-									icon:'none',
-									success: () => {
-										setTimeout(()=>{
-											uni.redirectTo({
-												url: '../my-apply-list/my-apply-list?type=apply'
-											});
-										},800)
-									}
-								});
-
-							})
-
+							
+							if(await NewRoutineAppApi(value)){
+								this.$utils.showToast('请假申请成功');
+								setTimeout(()=>{
+									uni.navigateBack({
+										delta:this.newOrEdit=='edit'?2:1
+									});
+								},800)
+							}
 						};
 
 						break;
 					case  this.approvalMode.expense:
 						// 报销
 						if(!this.shop.id){
-							uni.showToast({
-								title: '请选择门店',
-								icon:'none'
-							});
+							
+							this.$utils.showToast('请选择门店')
+							this.disabled=false;
 						}else{
-							let str='';
-							console.log(this.items)
+							
+							let arr=[];
 							this.items.forEach(item=>{
-								str+=`${Number(item.xType)},${item.detail},${item.amount},${item.occdate}/`
+								if(item.amount && item.xType && item.detail){
+									arr.push(`${Number(item.xType)},${item.detail},${item.amount},${item.occdate}`)
+								}
+								
 							})
 							let flag=false;
 							this.items.forEach(item=>{
-								if(!item.detail  || !item.amount || !item.occdate || !item.xType){
+								if(!item.detail  || !item.amount  || !item.xType){
 									flag=true;
 								}
 							})
 							if(flag){
-								uni.showToast({
-									title: '请添加报销明细',
-									icon:'none'
-								});
+								
+								this.$utils.showToast('请添加报销明细')
+								this.disabled=false;
 							}else if(this.newOrEdit=='create'&&!this.workflow.id){
-								uni.showToast({
-									title: '请选择审批流程',
-									icon:'none'
-								});
+								
+								this.$utils.showToast('请选择审批流程')
+								this.disabled=false;
 							}else{
 								let value1={
 									shop:this.shop.id,
 									files:this.files?this.files.join(','):'',
 									workflow:this.newOrEdit=='edit'?this.applyItem.workflow:this.workflow.id,//流程名称,
-									details:str,
+									details:arr.join('/'),
 									id:this.newOrEdit=='edit'?this.applyItem.id:''
 								}
-								this.$ajax('ApplyExpense',value1,res=>{
-									uni.showToast({
-										title: '报销申请成功',
-										icon:'none',
-										success: () => {
-											setTimeout(()=>{
-												uni.redirectTo({
-													url: '../my-apply-list/my-apply-list?type=apply'
+								if(await ApplyExpenseApi(value1)){
+									this.$utils.showToast('报销申请成功');
+									setTimeout(()=>{
+										uni.navigateBack({
+											delta:this.newOrEdit=='edit'?2:1
+										});
+									},800)
+								}
 
-												});
-											},800)
-										}
-									});
-								})
 							}
 						}
 
 
 						break;
 					case this.approvalMode.common:
+						this.disabled=true;
 						let value2={
 							shop:this.shop.id,//门店名称
 							name:this.applyName,//申请名称
@@ -426,20 +341,15 @@
 							workflow:this.newOrEdit=='edit'?this.applyItem.workflow:this.workflow.id,//流程名称,
 							id:this.newOrEdit=='edit'?this.applyItem.id:''
 						}
-						this.$ajax('NewCommonForm',value2,res=>{
-							uni.showToast({
-								title: '通用申请成功',
-								icon:'none',
-								success: () => {
-									setTimeout(()=>{
-										uni.redirectTo({
-											url: '../my-apply-list/my-apply-list?type=apply'
-										});
-									},800)
-								}
-							});
+						if(await NewCommonFormApi(value2)){
+							this.$utils.showToast('通用申请成功');
+							setTimeout(()=>{
+								uni.navigateBack({
+									delta: this.newOrEdit=='edit'?2:1
+								});
+							},800)
+						}
 
-						})
 						// 通用
 						break;
 				}
@@ -455,53 +365,24 @@
 			successUpload(event){
 				this.files=event;
 			},
-			//获得时间差
-			getTimeInfo(start,end){
-				//计算相差的天数
-				let date=new Date(end).getTime()-new Date(start).getTime()
-				let days=Math.floor(date/(24*3600*1000));
-				// 计算小时
-				let leave1=date%(24*3600*1000);//计算天数后的毫秒数
-				var hours=Math.floor(leave1/(3600*1000))
-				//计算分钟数
-				let leave2=leave1%(3600*1000);
-				let minutes=Math.floor(leave2/(60*1000));
-
-				//计算秒数
-				let leave3=leave2%(60*1000);
-				let second=Math.floor(leave3/1000);
-				this.time={
-					days:days,
-					hours:hours,
-					minutes:minutes,
-					seconds:second
-				}
-			},
-			//选择请假类型
-			PickerChange(e) {
-				this.xType = e.detail.value
+			
+			chooseVacationType(item){
+				this.xType=item.id;
 			},
 			//获得门店信息
-			getShopInfo(id){
-				this.$ajax('ChainShop',{id:id},res=>{
-					this.shop=res;
-				})
+			async getShopInfo(id){
+				this.shop =await ChainShopApi(id)
 			},
 			// 选择门店
 			chooseShop(){
+				if(this.shopCount==1) return;
 				uni.navigateTo({
 					url: '../../../shop-center/near-shop-list/near-shop-list?cat=apply'
 				});
 			},
 			//添加模板
 			addTemp(){
-				this.items.push({
-						detail:'',
-						xType:'',
-						occdate:'',
-						amount:'',
-						xTypeName:''
-				})
+				this.items.push(defaultFormItem)
 			},
 			delIndex(index){
 				 if (index !== 0) {
@@ -509,135 +390,130 @@
 				}
 			},
 			//获得申请内容
-			getApplyItemInfo(id,type){
+			
+			async getApplyItemInfo(id,type){
+				let result ={}
 				switch(Number(type)){
 						//报销
+					
 					case this.approvalMode.expense:
-						this.$ajax('Expense',{
-							id:id,
-							step:1
-						},res=>{
-							if(res.files && res.files.length){
-								res.files.forEach(item=>{
-									this.imgList.push(item.url);
-									this.files.push(item.id)
-								})
-							}
-							this.shop={id:res.shop,name:res['shopName']};
-							if(res.details){
-								res.details.forEach(item=>{
-									item.occdate=this.$moment(item.occdate).format('YYYY-MM-DD')
-									item.xType=item.subject;
-									item.xTypeName=item.subjectName
-								})
-								this.items=res.details;
-								setTimeout(()=> {
-									this.items.push({
-											detail:'',
-											xType:'',
-											occdate:'',
-											amount:'',
-											xTypeName:''
-									})
-								}, 10);
-							}
+						result = await ExpenseApi(id);
+						if(result.files &&  result.files.length){
+							this.imgList=this.$utils.getFiles(result.files).img;
+							this.files=this.$utils.getFiles(result.files).file;
+						}
+						this.shop={id:result.shop,name:result['shopName']};
+						if(result.details){
+							let arr=[];
+							result.details.forEach((item)=>{
+								arr = [...arr,{
+									detail:item.detail,
+									xType:item.subject,
+									occdate:this.$moment(item.occdate).format('YYYY-MM-DD'),
+									amount:item.amount,
+									xTypeName:item.subjectName,
+								}]
+							})
+							this.items = arr;
+						}
+													
+						this.applyItem=result;
 
-							this.applyItem=res;
-
-						})
 						break;
 						//通用
 					case this.approvalMode.common:
-						this.$ajax('CommonForm',{
-							id:id,
-							step:1
-						},res=>{
-							if(res.files && res.files.length){
-								res.files.forEach(item=>{
-									this.imgList.push(item.url);
-									this.files.push(item.id)
-								})
-							}
-							this.shop={
-								id:res.shop,
-								name:res['shopName']
-							}
-							this.applyName=res.name;
-							this.reason=res.summary?res.summary:''
-							this.applyItem=res;
-						})
+						 result = await CommonFormApi(id);
+						if(result.files &&  result.files.length){
+							this.imgList=this.$utils.getFiles(result.files).img;
+							this.files=this.$utils.getFiles(result.files).file;
+						}
+						this.shop={
+							id:result.shop,
+							name:result['shopName']
+						}
+						this.applyName=result.name;
+						this.reason=result.summary?result.summary:''
+						this.applyItem=result;
+						
+
 						break;
 						//请假
 					case this.approvalMode.absence:
-						this.$ajax('RoutineApp',{id:id,step:1},res=>{
-							this.files=[];
-							this.filesID=[]
-							if(res.files && res.files.length){
-								res.files.forEach(item=>{
-									this.imgList.push(item.url);
-									this.files.push(item.id)
-								})
-							}
-							//门店
-							this.shop={
-								id:res.shop,
-								name:res['shopName']
-							}
-							//请假类型
-							this.xType=res.xtype;
-							this.start=this.$moment(res.bgndate).format('YYYY/MM/DD hh:mm')
-							this.end=this.$moment(res.duedate).format('YYYY/MM/DD hh:mm')
-							this.getTimeInfo(this.start,this.end)
-							this.reason=res.detail?res.detail:''
-							this.applyItem=res;
-						})
+						 result = await RoutineAppApi(id);
+						 if(result.files &&  result.files.length){
+							 
+						 	this.imgList=this.$utils.getFiles(result.files).img;
+						 	this.files=this.$utils.getFiles(result.files).file;
+						 }
+						 //门店
+						 this.shop={
+						 	id:result.shop,
+						 	name:result['shopName']
+						 }
+						 //请假类型
+						 this.xType=result.xtype;
+						 this.start=this.$moment(result.bgndate).format('YYYY/MM/DD hh:mm')
+						 this.end=this.$moment(result.duedate).format('YYYY/MM/DD hh:mm')
+						 this.time=this.$timer.getTimeInfo(this.start,this.end)
+						 this.reason=result.detail?result.detail:''
+						 this.applyItem=result;
+
 						break;
 				}
 			}
 		},
+		onShow(){
+			this.$fire.on('workFlow',result=>{
+				if(result){
+					this.workflow=result;
+				}
+			})
+			this.$fire.on('createOrderShopID',result=>{
+				if(result){
+					this.getShopInfo(result)
+				}
+			
+			})
+		},
 		onLoad(options){
+			if(this.shopCount==1){
+				this.shop=this.shopOnlyObj
+			}
 			this.newOrEdit=options.cat;
 			switch(Number(options.type)){
 				case this.approvalMode.absence:
 					this.type=this.approvalMode['absence'];
 					this.title='请假申请';
-					this.fileType=this.doc['routineApp']
+					this.fileType=this.config.doc['routineApp']
 					break;
 				case this.approvalMode.expense:
 					this.type=this.approvalMode['expense']
 					this.title='报销申请';
-					this.fileType=this.doc['expense']
+					this.fileType=this.config.doc['expense']
 					break;
 				case this.approvalMode.common:
 					this.type=this.approvalMode['common']
 					this.title='通用申请';
-					this.fileType=this.doc['commonForm']
+					this.fileType=this.config.doc['commonForm']
 					break;
 			}
-			// uni.setNavigationBarTitle({
-			// 	title: this.title
-			// });
-			this.getUploadToken()
+			uni.setNavigationBarTitle({
+				title: this.title
+			});
 			if(options.cat=='edit'){
 				this.getApplyItemInfo(options.id,options.type)
 			}
-			this.$fire.on('createOrderShopID',result=>{
-				if(result){
-					this.getShopInfo(result)
-				}
-
-			})
-			this.$fire.on('workFlow',result=>{
-				if(result){
-					this.workflow=result;
-				}
-
-			})
 		}
 	}
 </script>
 
 <style scoped>
+	.vacation-type>view{
+		margin:0 8upx;
+	}
+	.xuanze-img{
+		margin-right:6upx;
+	}
 	/* 报销start */
 	.repay-btn{
 			height:80upx;line-height:80upx;background:#42B0ED;color:#fff;

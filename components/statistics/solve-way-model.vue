@@ -6,10 +6,10 @@
 			<view class="way-desc font-weight-bold font-size-normal">
 				<view class="font-size-big color-normal" style="margin-bottom:10px;">{{year}}年{{month}}月</view>
 				<view class="margin-bottom-mini">月目标 :	<text  class="resolve-content-text">{{shopMonthAim.monthAim || 0}}元</text></view>
-				<view v-show="radio==resolveWayZn.day">
+				<view v-show="radio==resolveWay.day">
 					<view class="margin-bottom-mini">分解方式 :	<text class="resolve-content-text">按天平摊({{monthDay}}天)</text></view>
 				</view>
-				<view v-show="radio==resolveWayZn.week">
+				<view v-show="radio==resolveWay.week">
 					<view class="margin-bottom-mini">周末天数 :	<text class="resolve-content-text">{{countWeek}}天</text></view>
 					<view class="margin-bottom-mini">普通天数 :	<text class="resolve-content-text">{{monthDay-countWeek}}天</text></view>
 				</view>
@@ -34,9 +34,10 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
 	export default{
-		computed:mapState(['resolveWayZn']),
+		computed:{
+			resolveWay(){return this.config.resolveWay}
+		},
 		data(){
 			return{
 				checked:false
@@ -73,7 +74,7 @@
 	.choose-content{
 		padding-top:100upx;
 		border-radius: 20upx;
-		width:550upx;height:460upx;
+		width:550upx;
 		background:#fff;border:1px solid #ccc;
 		position:absolute;
 		transform: translate(-50%,-50%);

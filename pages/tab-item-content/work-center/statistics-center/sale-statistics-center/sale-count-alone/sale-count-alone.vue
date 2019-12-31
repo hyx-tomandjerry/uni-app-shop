@@ -1,27 +1,11 @@
 <template>
 	<view>
-		<cu-custom :is-back="true" bg-color="bg-color-perform">
-			<block slot="left"><view class="cuIcon-back text-white"  @click="goBack()"></view></block>
-			<block slot="content"><view class="font-size-big text-white "><text class="color-blue" style="margin-right:10upx;">{{manItem.name || ''}}</text>绩效统计</view></block>
-		</cu-custom>
 		<view class="num-container">
-			<view class=" font-size-back text-white  margin-bottom-mini">{{timeObj.year}}.{{timeObj.month>9?timeObj.month:'0'+timeObj.month}}</view>
-			<view class=" font-weight-bold count-num">¥ {{saleYear[`amonth${timeObj.month}`] | numStyle}}</view>
-			<view class="flex justify-between align-center text-white count-pre">
-				<view class="flex-1">
-					<view>
-						<image src="../../../../../../static/img/work/statistics/aim-money.png" mode="widthFix" lazy-load class="icon-money"></image> <text class="font-size-bigger text-white">¥ {{saleManItem.actual | numStyle}}</text>
-					</view>
-					<view class="color-regular">本月门店销售额</view>
-				</view>
-				<view class="flex-1">
-					<view >
-						<image src="../../../../../../static/img/work/statistics/count-money.png" mode="widthFix" lazy-load class="icon-money"></image>
-						<text class=" font-size-bigger text-white">{{saleManItem.alonePre}}%</text>
-					</view>
-					<view class="color-regular">店员绩效占比</view>
-				</view>
+			<view class=" font-size-back text-white  margin-bottom-mini">
+				{{timeObj.year}}年{{timeObj.month>9?timeObj.month:'0'+timeObj.month}}月
 			</view>
+			<view  class=" font-size-back text-white " style="margin:22upx 0;">{{manItem.name}}销售额</view>
+			<view class=" font-weight-bold count-num">¥ {{manItem.fvalue | numStyle}}</view>
 		</view>
 		<!-- 日历 -->
 		<calendar-list 
@@ -37,50 +21,62 @@
 
 <script>
 	import calendarList from '../../../../../../components/statistics/calendar-list.vue'
+	
+	import {mapState} from 'vuex'
+	import {ChainShopApi} from '../../../../../../api/shop_api.js'
+	import {SalesmenSalesAmountApi,SalesmanDailyAmountApi} from '../../../../../../api/statistics_api.js'
 	export default {
 		components:{calendarList},
+		computed:mapState(['userInfo']),
 		data() {
 			return {
 				shopID:'',
 				manItem:{},//单个店员的信息
 				timeObj:{},
-				saleYear:{},
 				lastMonthDaysList:[],//上个月的总天数
 				currentMonthDaysList:[],//当前月总天数
 				nextMonthDaysList:[],//下个月总天
 				weekList:['日','一','二','三','四','五','六'],
 				dayTabID:'',
 				shopItem:{},
-				saleManItem:{},//单个店员绩效的信息
 			}
 		},
 		methods: {
 			//查看门店详情
-			getShopInfo(id){
-				this.$ajax('ChainShop',{id:id},res=>{
-					this.shopItem=res;
-				})
+			async getShopInfo(id){
+				this.shopItem = await ChainShopApi(id)
+				this.getMonthPerformance()
 			},
-			goBack(){uni.navigateBack({delta:1})},
+			async getMonthPerformance(){
+				let result = await SalesmenSalesAmountApi(this.shopID,this.timeObj);
+				if(result && result.salesmen){
+					this.manItem=result.salesmen.find(item=>item.id==this.manID)
+				}
+				this.getSaleFromAlone()
+
+			},
 			//选择日
 			chooseItem(item){
-				this.dayTabID=item.day;
-				console.log(item)
-				let obj={
-					shopID:this.shopID,
-					shopName:this.shopItem.name,
-					manID:this.manItem.id,
-					manName:this.manItem.name,
-					money:item.num,
-					year:this.timeObj.year,
-					month:this.timeObj.month,
-					day:item.day
+				// 如果不是店长或者不是本人
+				if(this.shopItem.manager == this.userInfo.id || this.manItem.id == this.userInfo.id){
+					this.dayTabID=item.day;
+					let obj={
+						shopID:this.shopID,
+						shopName:this.shopItem.name,
+						manID:this.manItem.id,
+						manName:this.manItem.name,
+						money:item.num,
+						year:this.timeObj.year,
+						month:this.timeObj.month,
+						day:item.day
+					}
+					setTimeout(()=>{
+						uni.navigateTo({
+							url:"../../sale-return-center/sale-return-form/sale-return-form?type=count&obj="+JSON.stringify(obj)
+						})
+					},600)
 				}
-				setTimeout(()=>{
-					uni.navigateTo({
-						url:"../../sale-return-center/sale-return-form/sale-return-form?type=count&obj="+JSON.stringify(obj)
-					})
-				},600)
+				
 			},
 			getCalendar(year,month){
 				//获得该月份总天数
@@ -139,46 +135,33 @@
 				}
 				let tmonth=month+1;
 			},
-			getSaleFromAlone(){
-				this.$ajax('ShopYearlySalesPlan',{
-					year:this.timeObj.year,
-					shop:this.shopID,
-					withActual:1
-				},res=>{
-					if(res){this.saleYear=res;}
+			async getSaleFromAlone(){
+				let result = await SalesmanDailyAmountApi(this.shopID,this.manID,this.timeObj);
+				Object.keys(result).forEach(key=>{
+					this.currentMonthDaysList.forEach(item=>{
+						if(item.id==key){
+							item.num=result[key]
+						}
+					})
 				})
-				this.$ajax('SalesmanDailyAmount',{
-					shop:this.shopID,
-					salesman:this.manItem.id, 
-					year:this.timeObj.year,
-					month:this.timeObj.month
-				},res=>{
-					if(res){
-							let monthAim=this.saleYear[`amonth${this.timeObj.month}`] ;
-							res.alonePre=monthAim?Number(res.actual/monthAim*100).toFixed(2):0;
-							for(var key in res){
-								this.currentMonthDaysList.forEach(item=>{
-									if(item.id==key){
-										item.num=res[key]
-									}
-								})
-							}
-							this.saleManItem=res;
-					}
-				})
-			}
+
+			},
+		},
+		onShow(){
+			this.getCalendar(this.timeObj.year,this.timeObj.month)
+			this.getShopInfo(this.shopID)
 		},
 		onLoad(options){
-			if(options.id){this.shopID=options.id}
-			if(JSON.parse(options.item)){
-				this.manItem=JSON.parse(options.item)
-				console.log(this.manItem.name)
+			uni.setNavigationBarColor({
+			    frontColor: '#ffffff',
+			    backgroundColor: '#383D5B'
+			})
+			if(options){
+				this.shopID=options.id;
+				this.manID=options.manID;
+				this.timeObj.year=options.year;
+				this.timeObj.month=options.month;
 			}
-			if(JSON.parse(options.timeObj)){
-				this.timeObj=JSON.parse(options.timeObj)
-		
-			}
-			this.getSaleFromAlone();
 			this.getCalendar(this.timeObj.year,this.timeObj.month)
 			this.getShopInfo(options.id)
 			
@@ -220,6 +203,7 @@
 		height:30upx;
 		flex-shrink: 0;
 		margin-right:10upx;
+		vertical-align: bottom;
 	}
 	.count-num{
 		font-size:26px;font-weight: bold;

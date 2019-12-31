@@ -1,4 +1,5 @@
 <template>
+	<!-- 消息通知页面item -->
 	<view   class="animated fadeInLeft notice-item-container" @tap="checkMessageItem(item)">
 		<view class="text-center margin-bottom-normal" >
 			<view class="font-size-small font-weight-normal text-white">
@@ -18,7 +19,7 @@
 					<text>{{TabCur==2?'公告':'通知'}}</text>
 				</view>
 				<view class="notice-desc">
-					<view class="font-size-big  color-blue" style="margin-bottom:6px;">{{item.title}}</view>
+					<!-- <view class=" color-blue" style="margin-bottom:6px;">{{item.title}}</view> -->
 					<view v-html="item.content || item.message" class="notice-content"></view>
 				</view>
 			</view>
@@ -49,10 +50,10 @@
 		background:rgba(0,0,0,0.1);padding:2px 8px 2px 9px;border-radius: 4px;
 	}
 	.notice-tag{
-		height:90upx;
+		height:80upx !important;
 		margin-right:15px;
 		vertical-align: middle;
-		width:14%;
+		width:80upx;
 		flex-shrink: 0;
 	}
 	.notice-content{

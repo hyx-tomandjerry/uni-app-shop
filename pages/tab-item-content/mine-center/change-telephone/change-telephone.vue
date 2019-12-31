@@ -1,23 +1,18 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back font-size-back color-regular"  @click.stop="goBack()"></text></block>
-			<block slot="content"><view class="font-size-big color-regular">更换手机号</view></block>
-			<!-- <block slot="right"><view style="margin-right: 15px;"
-			@click="changeTelNext"
-			:class="{'color-noInput':!telephone,'color-blue':telephone}">确定</view ></block> -->
-		</cu-custom>
-		<view class="borderTop change-container">
+		<view class="borderTop change-container font-size-normal">
 			<view class="change-item borderBottom flex justify-between">
 				<view>
-					<input type="number" maxlength="11" placeholder="请输入手机号" style="font-size:14px;text-align: left;padding-left:20upx;" v-model="telephone">
+					<input type="number" maxlength="11" placeholder="请输入手机号" 
+					@blur="checkTel(telephone)"
+					style="text-align: left;padding-left:20upx;" v-model="telephone">
 				</view>
 				<view class="color-regular" style="margin-right:20px;">{{telephone.length}}/11</view>
 				
 			</view>
 			<view class="change-item borderBottom justify-between" style="padding-left:15px;">
 				<view>
-					<input type="number" maxlength="6" placeholder="请输入验证码" style="font-size:14px;" v-model="vscode">
+					<input type="number" maxlength="6" placeholder="请输入验证码" v-model="vscode">
 				</view>
 				<button class="cu-btn bg-blue" @tap="sendCode" :disabled="num<60&&num>0">
 					<text>发送验证码</text>
@@ -30,14 +25,12 @@
 					   placeholder="请输入密码"
 					   v-if="isShowPwd"
 					   v-model="pwd"
-					   class="font-size-small"
 					   style="padding-left:10px;"
 					   :class="pwd?'text-black':'color-placeholder'">
 				<input type="password"
 					   placeholder="请输入密码"
 						v-else
 						v-model="pwd"
-						class="font-size-small"
 						 style="padding-left:20upx;"
 						:class="pwd?'text-black':'color-placeholder'">
 				<div v-if="isShowPwd" @click="showPwd()" class="flex-1" style="height:100%;">
@@ -50,27 +43,20 @@
 			
 			
 		</view>
-		<view class="btn-container">
-			<button type="primary" :disabled="disabled" :loading="loading" @tap="changeTelNext">确定</button>
-		</view>
-		
-		<showModel :isShow="modalName=='introModel'" @hideModel="hideModal" @confirmDel="hideModal" v-if="modalName=='introModel'">
-			<block slot="content">
-				<view>修改登录手机号码后，下次</view>
-				<view>登录请使用 <text class="color-blue">新的手机号码</text>登录，同时更</view>
-				<view>新您的联系方式，登录密码不变。</view>
-			</block>
-		</showModel>
+		<common-btn-one
+			:type="btnType" 
+			:disabled="disabled" 
+			content="确定"
+			@operateBtn="changeTelNext" :isPos="false"></common-btn-one>
+			
 		
 	</view>
 </template>
 <script>
-	import showModel from '../../../../components/show-model'
-	import bottomBtnOne from '../../../../components/common/bottom-btn-one.vue'
-	import {
-		mapState,
-		mapMutations
-	} from 'vuex';
+	import commonBtnOne from '../../../../components/common/common-btn-one.vue'
+	import {SendVerCodeApi} from '../../../../api/login_api.js'
+	import {ChangeMobileApi} from '../../../../api/mine_api.js'
+	import {mapMutations} from 'vuex';
 	export default{
 		data(){
 			return{
@@ -80,59 +66,50 @@
 				vscode:'',
 				modalName:null,
 				pwd:'',
-				disabled:true,
-				loading:false,
-				isShowPwd:false
+				disabled:false,
+				isShowPwd:false,
+				btnType:'default'
 			}
 		},
 		watch:{
-			pwd(val){ this.check()},
-			vscode(val){this.check()},
-			telephone(val){this.check()}
+			pwd(val){ this.change()},
+			vscode(val){this.change()},
+			telephone(val){this.change()}
 		},
 		components:{
-			showModel,
-			bottomBtnOne
+			commonBtnOne
 		},
 		methods:{
-			showTabbar(){},
-			change(){
+			check(){
 				if(!this.pwd){
-					uni.showToast({
-						title:'请输入密码',
-						icon:'none'
-					})
+					this.$utils.showToast('请输入密码')
 					return false;
 				}
 				if(!this.telephone){
-					uni.showToast({
-						title:'请输入电话号码',
-						icon:'none'
-					})
+					
+					this.$utils.showToast('请输入电话号码')
 					return false;
 				}
-				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(this.telephone))){
-					uni.showToast({
-						title:'电话号码不存在',
-						icon:'none'
-					})
+				if(!(/^1[34578]\d{9}$/.test(this.telephone))){
+					
+					this.$utils.showToast('电话号码不存在')
 					return false;
 				}
 				if(!this.vscode){
-					uni.showToast({
-						title:'请输入验证码',
-						icon:'none'
-					})
+					this.$utils.showToast('请输入验证码')
+					
 					return false ;
 				}
 				return true;
 			},
-			check(){
+			change(){
 				if(this.vscode && this.pwd && this.telephone ){
 					this.disabled=false;
+					this.btnType='primary'
 					return;
 				}
 				this.disabled=true;
+				this.btnType='default'
 			},
 			showPwd(){
 				this.isShowPwd=!this.isShowPwd;
@@ -145,20 +122,13 @@
 				})
 			},
 			//发送验证码
-			sendCode(){
+			async sendCode(){
 				if(!this.telephone){
-					uni.showToast({
-						title:'请输入电话号码!',
-						icon:'none'
-					})
+					
+					this.$utils.showToast('请输入电话号码')
 				}else if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(this.telephone))){
-					uni.showToast({
-						title:'电话号码不存在!',
-						icon:'none',
-						success:()=>{
-							this.telephone=null;
-						}
-					})
+					this.$utils.showToast('电话号码不存在')
+					this.telephone=null;
 				}else{
 					this.isSend=true;
 					this.num=10;
@@ -170,56 +140,42 @@
 							this.isSend=false;
 						}
 					},1000)
-
-					this.$ajax('SendVerCode',{
-						mobile:this.telephone
-					},res=>{
-						uni.showToast({
-							title:`已经向${this.telephone}发送短信,请查看`,
-							icon:'none'
-						})
-					})
-
+					if(await SendVerCodeApi(this.telephone)){
+						this.$utils.showToast(`已经向${this.telephone}发送短信,请查看`)
+						
+					}
+				
 				}
 			},
-			changeTelNext(){
-				this.disabled=true;
-				this.loading=true;
-				if(this.change()){
-					this.$ajax('ChangeMobile',{
-						mobile:this.telephone,
-						token:this.pwd,
-						vcode:this.vscode
-					},res=>{
-						this.modalName='introModel'
-					})
+			async changeTelNext(){
+				
+				if(this.check()){
+					this.disabled=true;
+					if(await ChangeMobileApi(this.telephone,this.pwd,this.vscode)){
+						uni.showModal({
+							content:`修改登录手机号码后，下次登录请使用新的手机号码登录，同时更新您的联系方式，登录密码不变。`,
+							success: (res) => {
+								if(res.confirm){
+									this.logout();
+									uni.redirectTo({
+										url:'../../../login-design/login/login'
+									})
+								}else if(res.cancel){
+									this.logout();
+									uni.redirectTo({
+										url:'../../../login-design/login/login'
+									})
+								}
+							}
+						})
+						
+					}
+					this.disabled=false;
 				}
-				// this.$ajax('CheckVerCode',{
-				// 		mobile:this.telephone,
-				// 		code:this.vscode
-				// 	},res=>{
-				// 		this.modalName='introModel'
-				// 	})
-				// if(!this.vscode){
-				// 	uni.showToast({
-				// 		title:'请输入验证码',
-				// 		icon:'none'
-				// 	})
-				// }else{
-				// 	this.$ajax('CheckVerCode',{
-				// 		mobile:this.telephone,
-				// 		code:this.vscode
-				// 	},res=>{
-				// 		this.modalName='introModel'
-				// 	})
-				// }
 			},
 			checkTel(event){
-				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event))){
-					uni.showToast({
-						title:'电话号码不存在!',
-						icon:'none'
-					})
+				if(!(/^1[34578]\d{9}$/.test(event))){
+					this.$utils.showToast('电话号码不存在')
 				}
 			},
 			goBack(){
@@ -228,9 +184,6 @@
 				})
 			},
 			...mapMutations(['logout']),
-		},
-		onLoad(){
-
 		},
 	}
 </script>

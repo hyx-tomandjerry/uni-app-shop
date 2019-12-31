@@ -4,9 +4,9 @@
 		<view class="user-info flex justify-center align-center " style="flex-direction: column;">
 			<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="widthFix" lazy-load></image>
 			<!-- 姓名 -->
-			<view class="flex justify-center align-center font-size-big font-weight-bold text-white space">{{clerkItem.name || ''}}</view>
+			<view class="flex justify-center align-center  font-weight-bold text-white space font-size-back">{{clerkItem.name || ''}}</view>
 			<!-- 状态 -->
-			<view class="status-tag flex justify-center align-center">在职</view>
+			<view class="status-tag flex justify-center align-center">{{clerkItem.status | userStatusZnPipe}}</view>
 		</view>
 	</view>
 </template>

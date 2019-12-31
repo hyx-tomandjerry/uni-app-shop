@@ -1,14 +1,6 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-color-perform">
-			<block slot="left">
-				<view class="cuIcon-back   text-white" @click="goBack"></view>
-			</block>
-			<block slot="content">
-				<view class="font-size-big font-weight-bold text-white">{{new Date().getMonth()+1}}.{{new Date().getDate()}}日门店绩效审核</view>
-			</block>
-		</cu-custom>
-		<uChartModel  :todayNum="today.todayFact" :aimNum="today.todayAim" :type="'today'">
+		<uChartModel  :todayNum="today.todayFact" :aimNum="today.todayAim" >
 			<block slot="canvas">
 				<view class="qiun-charts3">
 					 <canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
@@ -22,7 +14,7 @@
 				<view class="flex-1 text-center">占比</view>
 				<view class="flex-1 text-center" v-if="userInfo.id==managerID">编辑</view>
 			</view>
-			<scroll-view class="rank-list" scroll-y="true" style="max-height: 250px;">
+			<scroll-view class="rank-list" scroll-y="true" :style="{height:contentHeight+'px'}" scroll-top="10" show-scrollbar="true">
 				<block v-for="(item,index) in salemanList" :key="index">
 					<sale-check-item
 					:managerID="managerID"
@@ -32,31 +24,26 @@
 			</scroll-view>
 
 		</view>
-
-		<button class="btn-container" @tap="showModel($event)" 
-			data-target="noticeModel" :loading="loading" :disabled="disabled"
-			 >提交当天绩效</button>
-		
-		<showModel :isShow="modelName=='noticeModel'" @hideModel="hideModel" v-if="modelName=='noticeModel'" @confirmDel="confirmPerform">
-			<block slot="content">
-				每天只能提交一次销售绩效，请确认您提交的是当天门店所有店员的全部销售金额!
-			</block>
-		</showModel>
+	
+		<common-btn-one
+				 	content="提交当天绩效"
+				 	type="primary"
+				 	@operateBtn="submitSale" :isPos="true"></common-btn-one>
 	</view>
 </template>
 
 <script>
 	import uCharts from '../../../../../components/u-charts/u-charts.js'
-	import uChartModel from '../../../../../components/uchart-model.vue'
-	import {mapState} from 'vuex'
-	import showModel from '../../../../../components/show-model.vue'
+	import uChartModel from '../../../../../components/statistics/sale-check/uchart-model.vue'
 	import saleCheckItem from '../../../../../components/statistics/sale-check-item.vue'
+	import commonBtnOne from '../../../../../components/common/common-btn-one.vue'
+	
+	import {mapState} from 'vuex'
+	import {SalesmenSalesAmountApi,ConfirmShopSalesAmountApi} from '../../../../../api/statistics_api.js'
 	export default {
 		computed:mapState(['userInfo']),
 		data() {
 			return {
-				disabled:false,
-				loading:false,
 				today:{
 					todayFact:0,//判断今日是否审核过
 					todayAim:0,//今天的总目标
@@ -76,115 +63,81 @@
 				shopID:'',
 				salemanList:[],
 				managerID:'',//店长的ID
-				modelName:'',
 				timeObj:{
 					year:new Date().getFullYear(),
 					month:new Date().getMonth()+1,
 					day:new Date().getDate()
-				}
+				},
+				contentHeight:300
 			}
 		},
 		components: {
 			uChartModel,
-			showModel,
-			saleCheckItem
+			saleCheckItem,
+			commonBtnOne
 		},
 		methods: {
-			hideModel(){
-				this.modelName=null;
+			getSystem(){
+				uni.getSystemInfo({
+					success: (res) => {
+						this.contentHeight=res.windowHeight-uni.upx2px(660)
+					}
+				})
 			},
-			showModel(event){
-				this.modelName=event.currentTarget.dataset.target
+			submitSale(){
+				uni.showModal({
+					content:'每天只能提交一次销售绩效，请确认您提交的是当天门店所有店员的全部销售金额!',
+					success: (res) => {
+						if(res.confirm){
+							this.confirmPerform()
+						}
+					}
+				})
 			},
 			//确认今天绩效
-			confirmPerform(){
-				this.$ajax('ConfirmShopSalesAmount',{
-					shop:this.shopID,
-					date:`${this.timeObj.year}-${this.timeObj.month}-${this.timeObj.day}`
-				},res=>{
-					uni.showToast({
-						title:'确认绩效成功',
-						icon:'none'
-					})
-					setTimeout(()=>{
-						uni.navigateBack({
-							delta:1
-						})
-					},900)
+			async confirmPerform(){
+				if(await ConfirmShopSalesAmountApi(this.shopID,`${this.timeObj.year}-${this.timeObj.month}-${this.timeObj.day}`)){
+					
+					this.$utils.showToast('确认绩效成功')
+					this.$utils.goBack()
+					this.$utils.hide()
+				}
 
-				})
 			},
 			/*获得今日绩效信息*/
-			getShopPerformByDay(id,timeObj){
+			async getShopPerformByDay(id,timeObj){
 				//获得店员绩效
-				
-				this.$ajax('SalesmenSalesAmount',{
-					shop:id,
-					year:timeObj.year,
-					month:timeObj.month,
-					date:timeObj.day
-				},res=>{
-					if(res){
-						this.today={
-							todayFact:res['actual']?Number(res['actual']).toFixed(2):0,
-							todayAim:res['expect']?Number(res['expect']).toFixed(2):0,
-							todayPre:res['expect']?Number(res['actual']/res['expect']).toFixed(2):0
-						}
-						console.log(this.today.todayPre)
-						this.chartData.series=[
-							{
-								name:'门店日占比',
-								data:this.today.todayPre,
-								color: '#2fc25b'
-												
-							}
-						]
-						this.showArcbar('canvasArcbar1',this.chartData);	
-						if(res.salesmen){
-							res.salesmen.forEach(item=>{
-								item.pre=this.today.todayFact>0 ? Number(item.value/(this.today.todayFact)*100).toFixed(2):0;
-							})
-							this.salemanList=res.salesmen;
-						}	
+				let result = await SalesmenSalesAmountApi(id,timeObj);
+				let num = 0;
+				if(result.salesmen){
+					num=result.salesmen.reduce((sum,item)=>{return sum + item.fvalue},0)
+					result.salesmen.forEach(item=>{
+						item.pre=this.today.todayFact>0 ? Number(item.fvalue/(this.today.todayFact)*100).toFixed(2):0;
+					})
+					this.salemanList=result.salesmen;
+				}
+				this.today={
+					todayFact:result['actual']?Number(result['actual']).toFixed(2):num.toFixed(2),
+					todayAim:result['expect']?Number(result['expect']).toFixed(2):0,
+					todayPre:result['expect']?Number(num/result['expect']).toFixed(2):0
+				}
+				this.chartData.series=[
+					{
+						name:'门店日占比',
+						data:this.today.todayPre,
+						color: '#2fc25b'
+										
 					}
-					
-				})
-				// this.$ajax('ShopMonthlyPerformance',{
-				// 	shop:id,
-				// 	date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`
-				// },res=>{
-				// 	let day=new Date().getDate();
-				// 	let pre=0;
-				// 	this.today={
-				// 		todayFact:res[`aday${day}`]?Number(res[`aday${day}`]).toFixed(2):0,
-				// 		todayAim:res[`day${day}`]?Number(res[`day${day}`]).toFixed(2):0,
-				// 		todayPre:res[`day${day}`]?Number(res[`aday${day}`]/res[`day${day}`]).toFixed(2):0
-				// 	}
-				// 	pre=res[`day${day}`]?(this.today.todayFact/res[`day${day}`]).toFixed(2):0
-				// 	this.chartData.series=[
-				// 		{
-				// 			name:'门店日占比',
-				// 			data:pre,
-				// 			color: '#2fc25b'
+				]
+				this.showArcbar('canvasArcbar1',this.chartData);		
 
-				// 		}
-				// 	]
-				// 	this.showArcbar('canvasArcbar1',this.chartData);
-					
-
-				// })
-			},
-			goBack(){
-				uni.navigateBack({
-					delta:1
-				})
 			},
 			/*查看单个店员的绩效*/
 			checkItem(item){
 				let obj={
 					saleID:item.id,
 					shopID:this.shopID,
-					money:item.value,
+					money:item.fvalue,
 					year:this.timeObj.year,
 					month:this.timeObj.month,
 					day:this.timeObj.day,
@@ -242,6 +195,7 @@
 		},
 		onLoad(param){
 			this._initChart()
+			this.getSystem();
 			if(param){
 				this.shopID=param.shopID;
 				this.managerID=param.managerID;
@@ -250,6 +204,13 @@
 					month:Number(param.month)>9?param.month:'0'+param.month,
 					day:Number(param.day)>9?param.day:'0'+param.day
 				}
+				uni.setNavigationBarColor({
+				    frontColor: '#ffffff',
+				    backgroundColor: '#383D5B',
+				})
+				uni.setNavigationBarTitle({
+					title:`${this.timeObj.month}.${this.timeObj.day}日门店绩效审核`
+				})
 				this.getShopPerformByDay(param.shopID,this.timeObj)
 
 			}

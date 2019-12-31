@@ -3,7 +3,7 @@
 		<view class="flex-1 text-center text-ellipse">
 			<text >{{item.name || ''}}</text>
 		</view>
-		<view class="num flex-1 text-center">{{item.value || 0}}</view>
+		<view class="num flex-1 text-center color-blue">{{item.fvalue || 0}}</view>
 		<view class="precent flex-1 text-center">{{item.pre || 0}}%</view>
 		<view @tap="checkItem" style="color:#42B0ED;" class="flex-1 text-center" v-if="userInfo.id==managerID">编辑</view>
 	</view>
@@ -47,7 +47,7 @@
 		font-size:14px;
 		font-family:PingFangSC-Semibold;
 		font-weight:600;
-		color:rgba(255,72,103,1);
+		
 	}
 	.precent{
 		font-size:14px;

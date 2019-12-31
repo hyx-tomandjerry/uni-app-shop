@@ -1,0 +1,18 @@
+	.status-tag{
+		color:#fff;
+		border-radius: 20upx;
+		padding:4upx 10upx;
+		line-height:1.5;
+	}
+	/* //待取件 */
+	.unpick{
+		background:#FF5C4D;
+	}
+	/* //已取件 */
+	.pick{
+		background:#FE992B;
+	}
+	/* //已发运 */
+	.travel{
+		background:#188FFF
+	}

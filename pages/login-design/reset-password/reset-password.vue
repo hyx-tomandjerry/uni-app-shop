@@ -1,78 +1,79 @@
-
 <template>
-	<view class="login_container">
-		<view class="title">
-			<view class="login_title font-size-supper font-weight-super">设置密码</view>
-		</view>
-		<view class="login_form">
-			<view class="login-form-item borderBottom flex justify-start position_relative align-center">
-				<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
-				<input type="text" placeholder="请输入密码" maxlength="12"
-					   v-model="designer.pwd" class="font-weight-normal font-size-big"
-					   v-if="isShowPwd" @blur="checkPwdEvent(designer.pwd)" @focus="hideTabbar()">
-				<input type="password" placeholder="请输入密码" v-model="designer.pwd" maxlength="12"
-					   class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)"
-					   @focus="hideTabbar()">
-
-				<div v-if="isShowPwd" @click="showPwd('pwd')">
-					<image src="../../../static/icon/icon-eye-open.png" class="login-form-item-eyeopen-img"></image>
-				</div>
-				<div v-else  @click="showPwd('pwd')">
-					<image src="../../../static/icon/eye.png" class="login-form-item-eye-img"></image>
-				</div>
-			</view>
-			<view class="login-form-item borderBottom flex justify-start position_relative align-center">
-				<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
-				<input type="text" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(designer.pwd)" maxlength="12">
-				<input type="password" placeholder="请再次输入密码" v-model="designer.confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(designer.pwd)" maxlength="12">
-
-				<div v-if="isShowConfrimPwd" @click="showPwd('confirm')">
-					<image src="../../../static/icon/icon-eye-open.png" class="login-form-item-eyeopen-img"></image>
-				</div>
-				<div v-else  @click="showPwd('confirm')">
-					<image src="../../../static/icon/eye.png" class="login-form-item-eye-img"></image>
-				</div>
-			</view>
-			
-			<view class="text-center btn_container" >
-				<button @click="resetPassword()" :disabled="disabled" :loading="loading"
-					:class="{
-						'inputStyle':designer.pwd || designer.confirmPwd,
-						'noInputStyle':! designer.pwd && ! designer.confirmPwd
-					}">
-					<text>确定</text>
-				</button>
-			</view>
-
-		</view>
-
-		<view class="copyright font-size-mini" v-if="tabbar">
-			登录/注册即表示同意<text class="color-blue" @click="signPro">《门店助手软件用户许可协议》</text>
-		</view>
+	<view>
+		<login-common title="设置密码" :tabbar="tabbar" @toPro="signPro">
+			<block slot="content">
+				<view class="login_form">
+					<view class="login-form-item borderBottom flex justify-start position_relative align-center">
+						<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
+						<input type="text" placeholder="请输入密码" maxlength="12"
+							   v-model="pwd" class="font-weight-normal font-size-big"
+							   v-if="isShowPwd" @blur="checkPwdEvent(pwd)" @focus="hideTabbar()">
+						<input type="password" placeholder="请输入密码" v-model="pwd" maxlength="12"
+							   class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(pwd)"
+							   @focus="hideTabbar()">
+				
+						<div v-if="isShowPwd" @click="showPwd('pwd')">
+							<image src="../../../static/icon/icon-eye-open.png" class="login-form-item-eyeopen-img"></image>
+						</div>
+						<div v-else  @click="showPwd('pwd')">
+							<image src="../../../static/icon/eye.png" class="login-form-item-eye-img"></image>
+						</div>
+					</view>
+					<view class="login-form-item borderBottom flex justify-start position_relative align-center">
+						<image src="../../../static/icon/icon-dneglu-mima@2x.png"  class="login-form-item-tel-img"></image>
+						<input type="text" placeholder="请再次输入密码" v-model="confirmPwd" class="font-weight-normal font-size-big" v-if="isShowConfrimPwd" @blur="checkPwdEvent(pwd)" maxlength="12">
+						<input type="password" placeholder="请再次输入密码" v-model="confirmPwd" class="font-weight-normal font-size-big" v-else @blur="checkPwdEvent(pwd)" maxlength="12">
+				
+						<div v-if="isShowConfrimPwd" @click="showPwd('confirm')">
+							<image src="../../../static/icon/icon-eye-open.png" class="login-form-item-eyeopen-img"></image>
+						</div>
+						<div v-else  @click="showPwd('confirm')">
+							<image src="../../../static/icon/eye.png" class="login-form-item-eye-img"></image>
+						</div>
+					</view>
+					<view class="font-size-mini color-blue" style="margin:10upx 30upx;">
+						密码长度为6-12位，由英文和数字组成
+					</view>
+				</view>
+				<common-btn-one
+					:type="btnType" 
+					:disabled="disabled" 
+					content="确定"
+					@operateBtn="resetPassword" :isPos="false" :isMargin="false"></common-btn-one>
+					<view style="margin-top:20upx;" @tap="toLogin">
+						返回<text class="color-blue font-weight-bold">登录</text>
+					</view>
+			</block>
+		</login-common>
 	</view>
 </template>
 <script>
-    export default{
-        data(){
-            return{
-               disabled:false,
-			   loading:false,
+	import loginCommon from '../../../components/login/login-common.vue';
+	import commonBtnOne from '../../../components/common/common-btn-one.vue'
+	import {InitPwdApi} from '../../../api/login_api.js'
+	export default{
+		components:{loginCommon,commonBtnOne},
+		data(){
+			return{
+				disabled:false,
+				btnType:'default',
 				isShowPwd:false,
 				isShowConfrimPwd:false,
 				designer:{
-					pwd:'',
-					confirmPwd:'',
 					mobile:'',
 					vcode:''
 				},
 				tabbar:true,//用于键盘，
-				windowHeight:''
-            }
-        },
-        components:{
-
-        },
-        onLoad(options){
+				windowHeight:'',
+				pwd:'',//密码
+				confirmPwd:'',//确认密码				
+			}
+		},
+		watch:{
+			pwd(){this.change()},
+			confirmPwd(){this.change()}
+		},
+		onLoad(options){
 			uni.getSystemInfo({
 				success: (res) => {
 					this.windowHeight=res.windowHeight;
@@ -87,12 +88,56 @@
 			})
 			this.designer.mobile=options.mobile;
 			this.designer.vcode=options.vcode
-        },
+		},
 		methods:{
-			signPro(){
+			toLogin(){
 				uni.redirectTo({
-					url:"../protocol/protocol"
-				})
+					url: '../login/login'
+				});
+			},
+			async resetPassword(){
+				this.showTabbar()
+				if(this.check()){
+					this.loading=true;
+					this.disabled=true;
+					if(await InitPwdApi(this.designer.vcode,this.confirmPwd,this.designer.mobile)){
+						uni.setStorageSync('userPsw',this.confirmPwd);
+						this.$utils.showToast('设置密码成功')
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'../../login-design/login/login'
+							})
+						},800)
+					}
+
+				}
+			},
+			//验证密码
+			checkPwdEvent(event){
+				if(event){
+					var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/;
+					if(reg.test(event)==false){
+						this.$utils.showToast('密码不能含有非法字符，长度在6-12之间')
+					}
+			
+				}
+			},
+			check(){
+				if(!this.pwd || !this.confirmPwd){
+					this.$utils.showToast('请填写密码')
+					return false;
+				}
+				if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.pwd) || 
+				(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.confirmPwd))){
+					this.$utils.showToast('密码不能含有非法字符，长度在6-12之间')
+					return false;
+				}
+				if(this.pwd!=this.confirmPwd){
+					this.$utils.showToast('两次输入的密码不一致')
+					return false;
+				}
+				return true;
+				
 			},
 			showTabbar(){
 				this.tabbar=true;
@@ -107,159 +152,47 @@
 					this.isShowConfrimPwd=!this.isShowConfrimPwd;
 				}
 			},
-			check(){
-				if(!this.designer.pwd || !this.designer.confirmPwd){
-					uni.showToast({
-						title:'请填写密码',
-						icon:none
-					})
-					return false;
-				}
-				if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.pwd) || 
-				(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(this.designer.confirmPwd))){
-					uni.showToast({
-						title:'密码不能含有非法字符，长度在6-12之间',
-						icon:'none'
-					})
-					return false;
-				}
-				if(this.designer.pwd!=this.designer.confirmPwd){
-					uni.showToast({
-						title:'两次输入的密码不一致',
-						icon:'none'
-					})
-					return false;
-				}
-				return true;
-				
+			signPro(){
+				uni.redirectTo({
+					url:"../protocol/protocol"
+				})
 			},
-			resetPassword(){
-				this.showTabbar()
-				if(this.check()){
-					this.loading=true;
-					this.disabled=true;
-					this.$ajax('InitPwd',{
-						vcode:this.designer.vcode,
-						token:this.designer.confirmPwd,
-						mobile:this.designer.mobile
-					},res=>{
-						uni.setStorageSync('userPsw',this.designer.confirmPwd);
-						uni.showToast({
-							title:'设置密码成功',
-							icon:'none'
-						})
-						setTimeout(()=>{
-							uni.redirectTo({
-								url:'../../login-design/login/login'
-							})
-						},800)
-					},false)
+			change(){
+				if(this.pwd && this.pwd !='' && this.confirmPwd && this.confirmPwd!=''){
+					this.disabled=false;
+					this.btnType='primary';
+					return;
 				}
-			},
-			//验证密码
-			checkPwdEvent(event){
-				if(event){
-					var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/;
-					if(reg.test(event)==false){
-						uni.showToast({
-							title:'密码不能含有非法字符，长度在6-12之间',
-							icon:'none'
-						})
-
-					}
-
-				}
+				this.disabled=true;
+				this.btnType='default'
 			},
 		}
-    }
+	}
 </script>
-<style lang="less">
-	@import url(../../../static/css/demo.less);
-	page{
-
-		.background(#fff)
+<style scoped>
+	.login-form-item-tel-img{
+		width:38upx;
+		height:46upx !important;
+		margin-right: 30upx;
 	}
-	.login_container{
-		.mixPadding(113px;12px;17px;15px);
-		.title{
-			.mixPaddingLeft(7px);
-			.login_title{
-				.mixHeight(42px);
-				.lineHeight(42px);
-
-			}
-		}
-		.login_form{
-			.mixMarginTop(47px);
-			.login-form-item{
-				.mixPadding(20px;12px;20px;15px);
-				.login-form-item-tel-img{
-					.mixImg(19px;23px;);
-					.mixMarginRight(15px)
-				}
-				.login-form-item-eye-img{
-					width:60upx;
-					height:50upx;
-					position: absolute;
-					right:22px;top:30px;
-
-				}
-				.login-form-item-eyeopen-img{
-					width:60upx;
-					height:50upx;
-					position: absolute;
-					right:22px;top:30px;
-				}
-			}
-		}
+	.login-form-item-eye-img{
+		width:60upx;
+		height:50upx;
+		position: absolute;
+		right:22px;top:30px;
+		
 	}
-	.cu-form-group{
-		.mixHeight(77px);
-		.lineHeight(77px);
+	.login-form-item-eyeopen-img{
+		width:60upx;
+		height:50upx;
+		position: absolute;
+		right:22px;top:30px;
 	}
-	.cu-form-group uni-input{
-		font-size:16px;
-		font-weight:400;
-		color:rgba(185,185,185,1);
-
+	.login_form{
+		margin-top: 100upx;
+		margin-bottom: 40upx;
 	}
-	.cu-form-group+.cu-form-group{
-		border-bottom:0.5px solid #eee;
-	}
-	.cu-btn{
-		background:rgba(255,255,255,1);
-		border:1px solid rgba(233,233,233,1);
-		text{
-			font-size:16px;
-			font-weight:400;
-			color:rgba(137,136,136,1);
-		}
-	}
-	.copyright{
-			left:59px;
-			color:rgba(137,136,136,1);
-			position:fixed;
-			bottom:17px;
-	}
-	.cu-form-group>uni-text{
-		font-size:14px;
-	}
-	.cu-btn uni-text{
-		font-size:14px;
-		font-weight:400;
-		color:#fff;
-	}
-	.inputStyle{
-		.background(rgba(66,176,237,1));
-		.color(#fff)
-	}
-	.noInputStyle{
-		.background(rgba(245,246,248,1));
-		.color(rgba(137,136,136,1))
-	}
-	.btn_container{
-		/*margin-top:34px;margin-bottom:9px;*/
-		.mixMarginBottom(9px);
-		.mixMarginTop(34px);
+	.login-form-item{
+		padding:40upx 24upx 40upx 30upx;
 	}
 </style>

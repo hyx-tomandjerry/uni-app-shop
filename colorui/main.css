@@ -96,10 +96,7 @@ image {
 /* ==================
           图片
  ==================== */
-uni-button[disabled][type=primary]{
-	background:#EEEEED;
-	color:#CCCCCC
-}
+
 image {
 	max-width: 100%;
 	display: inline-block;
@@ -179,9 +176,8 @@ switch::before {
 	left: auto;
 }
 uni-button[type=primary]{
-	background:rgba(66,176,237,1);
+	background:rgba(66,176,237,1) !important;
 	border-radius:5px;
-	color:#fff;
 }
 switch[checked]::after,
 switch.checked::after {
@@ -1738,8 +1734,9 @@ button.icon.lg {
 }
 
 .cu-bar .action:first-child {
-	margin-left: 30upx;
+	padding-left: 30upx;
 	font-size: 30upx;
+	height:100%
 }
 
 .cu-bar .action text.text-cut {
@@ -2131,7 +2128,7 @@ button.icon.lg {
 }
 
 ::-webkit-scrollbar {
-	display: none;
+	/* display: none; */
 }
 
 .nav .cu-item {
@@ -2602,7 +2599,7 @@ button.icon.lg {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	z-index: 1110;
+	z-index: 99999 !important;
 	opacity: 0;
 	outline: 0;
 	text-align: center;

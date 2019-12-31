@@ -3,15 +3,9 @@
 		<view class="head-container" >
 			<!-- header start  -->
 			<!-- 如果type=4&&status=2 加入门店-->
-			<view v-if="userInfo && (userInfo.type==shoperObj.type)">
-
-				<view v-if="userInfo.status==userStatus.applying">
-					<text class=" text-orange ">申请加入中</text>
-				</view>
-				<view class="flex justify-start"  v-else>
-					<image :src="company.cover?company.cover:'../../../static/img/default.png'" class="companyImg"></image>
-					<view style="padding-top:3px;"><text class="company">{{company.name || ''}}</text></view>
-				</view>
+			<view class="flex justify-start">
+				<image :src="company.cover?company.cover:'../../../static/img/default.png'" class="companyImg"></image>
+				<view style="padding-top:3px;"><text class="company">{{company.name || ''}}</text></view>
 			</view>
 			<!-- header end -->
 		</view>
@@ -26,7 +20,7 @@
 			<!-- swiper end -->
 			<!-- tab start -->
 			<view class="operateItem">
-				<view v-for="(item,index) in options" :key="index" @click="showOperateItem(item.value)" style="position: relative;">
+				<view v-for="(item,index) in options" :key="index" @click="operateItem(item.value)" style="position: relative;">
 					<view><image :src="item.image"
 						:class="{
 							'operateIcon':index==0 || index==3,
@@ -47,14 +41,14 @@
 						<view class="action">
 							<text class="card-title">销售公告</text>
 						</view>
-						<view class="action">
-							<text  @click="showMoreInfo('skill')">更多<text class="cuIcon-right" ></text></text>
+						<view class="action" @click="showMoreInfo('skill')">
+							<text  >更多<text class="cuIcon-right" ></text></text>
 						</view>
 					</view>
 
 					<template v-if="noticeList1.length">
 						<block v-for="(item,index) in noticeList1" :key="index">
-							<index-sale :item="item" :index="index" @detailContent="detailContent"></index-sale>
+							<article-skill :item="item" :index="index"  @checkItemInfo="detailContent"></article-skill>
 						</block>
 					</template>
 					<template v-else>
@@ -71,13 +65,13 @@
 				<view class="action">
 					<text class="card-title">陈列公告</text>
 				</view>
-				<view class="action">
-					<text  @click="showMoreInfo('example')">更多<text class="cuIcon-right" ></text></text>
+				<view class="action" @click="showMoreInfo('example')">
+					<text  >更多<text class="cuIcon-right" ></text></text>
 				</view>
 			</view>
 			<template v-if="noticeList2.length">
 				<block v-for="(item,index) in noticeList2 " :key="index">
-					<index-example :item="item" :index="index" @detailContent="detailContent"></index-example>
+					<article-example :item="item" :index="index" @checkItemInfo="detailContent"></article-example>
 				</block>
 			</template>
 			<template v-else>
@@ -86,30 +80,27 @@
 					<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 				</view>
 			</template>
-
-
-
 		</view>
 		<!-- article end -->
     </view>
 </template>
 <script>
-	import simpleModel from '../../../components/simple-model.vue';
-	import showModel from '../../../components/show-model.vue'
 	import {mapState,mapMutations} from 'vuex'
-	import indexSale from '../../../components/index/index-sale.vue'
-	import indexExample from '../../../components/index/index-example.vue'
+	import articleSkill from '../../../components/article/article-skill.vue'
+	import articleExample from '../../../components/article/article-example.vue'
+	import {getArticleList} from '../../../api/index_api.js'
+	import {getShopList,RefreshOnlineUser,getTodoList} from '../../../api/common_api.js'
 	export default{
-		computed:mapState(['userInfo','userStatus','shoperObj','report']),
+		computed:mapState(['shopCount','shopOnlyObj']),
 		data(){
 			return{
 				shopList:[
-					{id:0,url:"https://i01piccdn.sogoucdn.com/73d5a112b17c6806"},
-					{id:1,url:"https://i01piccdn.sogoucdn.com/4a0fbf1cf00509d2"},
-					{id:2,url:"https://i03piccdn.sogoucdn.com/c3a5ff7cbecc25f3"},
-					{id:3,url:"https://i02piccdn.sogoucdn.com/eb3f0b525a56d51c"},
-					{id:4,url:"https://i01piccdn.sogoucdn.com/1c6f37b86d604fb1"},
-					{id:5,url:"https://i02piccdn.sogoucdn.com/1a49f133f0b2edb5"}
+					{id:0,url:"https://i04piccdn.sogoucdn.com/41da27612e577928"},
+					{id:1,url:"https://i02piccdn.sogoucdn.com/f19f1950d032e713"},
+					{id:2,url:"https://i03piccdn.sogoucdn.com/e5ab27310ecbc5f8"},
+					{id:3,url:"https://i02piccdn.sogoucdn.com/c382398752cc1021"},
+					{id:4,url:"https://i02piccdn.sogoucdn.com/3e8b9bc55bc0a4d1"},
+					{id:5,url:"https://i01piccdn.sogoucdn.com/50a1d0976d455b0d"}
 				],
 				company:{
 					name:'',
@@ -118,17 +109,21 @@
 				noticeList1:[],//销售技巧
 				noticeList2:[],//陈述案例
 				options:[
-					// {image:'../../../static/img/index/index-message.png',text:'通知公告',isCheck:true,value:'message'},
 					{image:'../../../static/img/index/index-repair.png',text:'门店报修',value:'repair'},
 					{image:'../../../static/img/index/index-express.png',text:'快递包裹',value:'express'},
 					{image:'../../../static/img/index/index-shop.png',text:'我的门店',value:'shop'},
 					{image:'../../../static/img/index/index-statistics.png',text:'销售绩效',value:'statistics'},
-					],
-				statusBarHeight:''
+					]
 			}
 		},
 
 		methods:{
+			//获得门店数量
+			async getShopCount(){
+				let result=await getShopList();
+				this.setShopCount(result.length);
+				if(result.length==1) this.setShopOnlyObj(result[0])
+			},
 			/*记一笔*/
 			recordMoney(){
 				uni.navigateTo({
@@ -137,48 +132,29 @@
 			},
 
 			/*获得代办数量*/
-			getTodoList(){
-				this.$ajax('MyEventNumbers',{},res=>{
-					
-					if(res>0){
-						uni.setTabBarBadge({
-						  index: 1,
-						  text:res.toString()
-						 
-						})
-					}
-				})
+			async getTodoList(){
+				let result =await getTodoList();
+				if(result>0){
+					uni.setTabBarBadge({
+					  index: 1,
+					  text:result.toString()
+					 
+					})
+				}else{
+					uni.hideTabBarRedDot({
+						index:1
+					})
+				}
 			},
 
 			/*文章列表*/
-			showArticles(){
-				this.$ajax('MyArticles',{
-					offset:0,
-					type:0
-				},res=>{
-					if(res){
-						let array1=[],array2=[]
-						res.forEach(item=>{
-							if(item.type==1){
-								array1.push(item)
-							}else if(item.type==2){
-								array2.push(item)
-							}
-						})
-						array1.forEach(item=>{
-							if(!item.coverurl){
-								item.coverurl="../../../static/img/default.png"
-							}
-						})
-						array2.forEach(item=>{
-							if(!item.coverurl){
-								item.coverurl="../../../static/img/default.png"
-							}
-						})
-						this.noticeList1=Array.from(new Set(array1));
-						this.noticeList2=Array.from(new Set(array2));
-					}
-				})
+			async showArticles(){
+				let result= await getArticleList({offset:0,type:0});
+				if(result.length>0){
+					this.noticeList1 = result.filter(item=>item.type==1);
+					this.noticeList2 = result.filter(item=>item.type==2)
+				}
+				
 			},
 		   /*点击更多*/
 			showMoreInfo(type){
@@ -195,74 +171,90 @@
 			},
 			/*查看文章详情*/
 			detailContent(event){
-				console.log(event)
+					let type=event.type==1?'skill':'example'
 					uni.navigateTo({
-						url:'../../all-item-content/detail-content/detail-content?type='+event.type+'&id='+event.item.id
+						url:'../../all-item-content/detail-content/detail-content?type='+type+'&id='+event.id
 					})
 			},
 			/*刷新*/
-			refreshInfo(){
-				this.$ajax('RefreshOnlineUser',{},res=>{
-					if(res.status==this.userStatus.normal){
-						this.login(res);
-						this.company={
-							name:res['ownerName'],
-							cover:res['ownerLogoUrl']
-						}
-						this.getTodoList()
-						this.showArticles();
-
+			async refreshInfo(){
+				let result =await RefreshOnlineUser();
+				this.login(result);
+				if(result.status == this.config.userStatus.normal){
+					this.company = {
+						name:result['ownerName'],
+						cover:result['ownerLogoUrl']
 					}
-				})
+					this.getTodoList()
+					this.showArticles();
+					this.getShopCount()
+				}else{
+					uni.redirectTo({
+						url:"../../login-design/login/login"
+					})
+				}
+
 			},
 			/*nav操作*/
-			showOperateItem(event){
-				switch(event){
-					case 'repair':
-						//门店报修
+			operateItem(type){
+				this.getShopCount()
+				if(this.shopCount==1){
+					//只有一个门店
+					switch(type){
+						case 'repair':
+							uni.navigateTo({
+								url:'../../tab-item-content/shop-center/shop-center?type=all&id='+this.shopOnlyObj.id
+							})
+						break;
+						case 'express':
+							uni.navigateTo({
+								url:'../../tab-item-content/work-center/express-center/express-index/express-index?id='+this.shopOnlyObj.id
+							})
+						break;
+						case 'shop':
 						uni.navigateTo({
-
-							url:'../../tab-item-content/shop-center/shop-center?type=all'
+							url:"../../tab-item-content/shop-center/clerk-list/clerk-list?shopID="+this.shopOnlyObj.id
 						})
 						break;
-					case 'express':
-						//我的门店
+						case 'statistics':
 						uni.navigateTo({
-							url:'../../tab-item-content/work-center/express-center/express-index/express-index'
+							url:"../../tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item?id="+this.shopOnlyObj.id
 						})
 						break;
-					case 'shop':
-						//工作日志
+					}
+				}else{
+					//有多条门店
+					switch(type){
+						case 'repair':
+							uni.navigateTo({
+								url:'../../tab-item-content/shop-center/shop-list/shop-list?type='+type
+							})
+						break;
+						case 'express':
+							uni.navigateTo({
+								url:'../../tab-item-content/shop-center/shop-list/shop-list?type='+type
+							})
+						break;
+						case 'shop':
 						uni.navigateTo({
 							url:'../../tab-item-content/shop-center/shop-list/shop-list?type=shop'
 						})
 						break;
-
-					case 'statistics':
+						case 'statistics':
 						uni.navigateTo({
 							url:'../../tab-item-content/shop-center/shop-list/shop-list?type=statistics'
 						})
 						break;
-
+					}	
 				}
-
 			},
-
-			...mapMutations(['login'])
+			
+			...mapMutations(['login','setShopCount','setShopOnlyObj'])
 
 		},
 		components:{
-			simpleModel,
-			showModel,
-			indexSale,
-			indexExample
-		},
-
-		onLoad(){
-			
-			this.getTodoList()
-			this.showArticles();
-
+			articleSkill,
+			articleExample
 		},
 		onShow(){
 			this.refreshInfo();

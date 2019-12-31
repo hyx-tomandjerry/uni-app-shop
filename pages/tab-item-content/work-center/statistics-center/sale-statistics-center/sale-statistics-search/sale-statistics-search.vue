@@ -1,201 +1,116 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left">
-				<view class="cuIcon-back" @click="goBack"></view>
-			</block>
-			<block slot="content">
-				<view class="font-weight-bold font-size-big color-normal">
-					筛选
-				</view>
-			</block>
-		</cu-custom>
 		<!--销售明星筛选-->
 		<view class="search-item borderTop" @click="selectModal('year')">
 			<view class="font-size-normal color-normal">日期</view>
 			<view class="color-regular" >
-				<text v-if="year && month">{{year}}年{{month}}月</text>
+				<text v-if="searchObj.year && searchObj.month">{{searchObj.year}}年{{searchObj.month}}月</text>
 				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text></view>
 		</view>
-		<!--<view class="search-item borderTop" @click="selectModal('month')">-->
-			<!--<view class="font-size-normal color-normal">月</view>-->
-			<!--<view class="color-regular">-->
-			<!--<text v-if="month">{{month}}月</text>-->
-
-			<!--<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text></view>-->
-		<!--</view>-->
 		<view class="search-item borderTop" @click="selectModal('area')" >
 			<view class="font-size-normal color-normal">区域</view>
 			<view class="color-regular">
-				<text>{{areaItem.name || ''}}</text>
+				<text>{{searchObj.areaName || ''}}</text>
 				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text>
 			</view>
 		</view>
 		<view class="search-item borderTop" @click="selectModal('brand')" >
 			<view class="font-size-normal color-normal">品牌</view>
 			<view class="color-regular">
-				<text>{{brandItem.name || ''}}</text>
+				<text>{{searchObj.brandName || ''}}</text>
 				<text class="cuIcon-right font-size-big" style="margin-left:8px;"></text>
 			</view>
 		</view>
 		<!-- 年份弹出框 -->
-		<view class="cu-modal bottom-modal" :class="modalName=='yearBottomModal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white">
-					<view class="action text-blue" @tap="hideModel">取消</view>
-					<view class="action text-green" @click="hideModel">确定</view>
-				</view>
-				<view >
-					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange" style="height:400px;">
-						<picker-view-column style="line-height:55px;">
-							<view class="item" v-for="(item,index) in years" :key="index">{{item}}年</view>
-						</picker-view-column>
-						<picker-view-column style="line-height:55px;">
-							<view class="item" v-for="(item,index) in months" :key="index">{{item}}月</view>
-						</picker-view-column>
-					</picker-view>
-				</view>
-			</view>
-		</view>
-		<!-- 月份弹出框 -->
-		<!-- <view class="cu-modal bottom-modal" :class="modalName=='MonthBottomModal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white">
-					<view class="action text-blue" @tap="hideModel">取消</view>
-					<view class="action text-green" @click="hideModel">确定</view>
-				</view>
-				<view >
-					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange" style="height:400px;">
-						<picker-view-column style="line-height:55px;">
-							<view class="item" v-for="(item,index) in months" :key="index">{{item}}月</view>
-						</picker-view-column>
-					</picker-view>
-				</view>
-			</view>
-		</view> -->
+		<year-month-model 
+				:isShow="modalName=='yearBottomModal'" 
+				:value="value" 
+				@bindChange="bindChange"
+				@hideModel="hideModel"></year-month-model>
 		<!-- 区域弹出框 -->
-		<view class="cu-modal bottom-modal" :class="modalName=='areaBottomModal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white">
-					<view class="action text-blue" @tap="hideModel">取消</view>
-					<view class="action text-green" @click="hideModel">确定</view>
-				</view>
-				<view >
-					<mix-tree :list="areaList" @treeItemClick="treeItemClick"></mix-tree>
-				</view>
-			</view>
-		</view>
-		
+		<bottom-area-model 
+			:isShow="modalName=='areaBottomModal'"
+			@hideModel="hideModel"
+			@treeItemClick="treeItemClick"
+		></bottom-area-model>
+		 
 		<!-- 品牌弹出框 -->
-		<view class="cu-modal bottom-modal" :class="modalName=='brandBottomModal'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white">
-					<view class="action text-blue" @tap="hideModel">取消</view>
-					<view class="action text-green" @click="hideModel">确定</view>
-				</view>
-				<view >
-					<view class="brand-list-item align-center" v-for="(item,index) in brandList" :key="index" @click="chooseBrand(item)">
-						<view>{{item.name}}</view>
-						<image  :src="brandItem.id==item.id?'../../../../../../static/icon/icon-xuanzhong.png':'../../../../../../static/icon/icon-weixuanzhong.png'" mode="" class="icon-choose"></image>
-						
-					</view>
-				</view>
-			</view>
-		</view>
-		
+		<bottom-show-model 
+					:isShow="modalName=='brandBottomModal'"
+					:list="brandList"
+					chooseImg="../../../../../../static/icon/icon-xuanzhong.png"
+					noChooseImg="../../../../../../static/icon/icon-weixuanzhong.png"
+					@hideModel="hideModel"
+					@chooseItem="chooseBrand"
+		 ></bottom-show-model>
+		 
+		 <common-btn-one
+		 	content="确定"
+		 	type="primary"
+		 	@operateBtn="confirmSearch" :isPos="true"></common-btn-one>
 
 	</view>
 </template>
 
 <script>
-	import mixTree from '../../../../../../components/mix-tree/mix-tree.vue'
+	import bottomAreaModel from '../../../../../../components/common/bottom-area-model.vue'
+	import bottomShowModel from '../../../../../../components/common/bottom-show-model.vue'
+	import yearMonthModel from '../../../../../../components/common/year-month-model.vue'
+	import commonBtnOne from '../../../../../../components/common/common-btn-one.vue'
+	import {MyBrandsApi} from '../../../../../../api/common_api.js'
 	export default {
 		data() {
-			const date = new Date()
-			const years = []
-			const months = []
-			for (let i = date.getFullYear()-10; i <= date.getFullYear()+10; i++) {
-				years.push(i)
-			}
-			for (let i = 1; i <= 12; i++) {
-				months.push(i)
-			}
-
 			return {
-				provinceList:[],
-				timeType:'',//判断是开始时间还是结束时间
 				modalName:'',
-				title: '',
-				years,
-				year:'',
-				months,
-				month:'',
-				value: [],
-				indicatorStyle: `height: ${Math.round(uni.getSystemInfoSync().screenWidth/(750/100))}px;`,
-				type:'',//用于区分门店，区域，公司
-				shopID:'',
-				areaList:[],
-				areaItem:{},
-				brandItem:{},
-				brandList:[]
+				year:new Date().getFullYear(),
+				month:new Date().getMonth()+1,
+				value: [10,new Date().getMonth()],
+				brandList:[],
+				searchObj:{
+					year:new Date().getFullYear(),
+					month:new Date().getMonth()+1,
+					areaID:'',
+					areaName:'',
+					brandID:'',
+					brandName:''
+				}
 			}
 		},
 		methods: {
+			confirmSearch(){
+				this.$utils.goBack();
+				this.$fire.fire('search',this.searchObj)
+			},
 			//点击最后一级时触发该事件
-			treeItemClick(item) {
-				let {
-					id,
-					name,
-					parentId
-				} = item;
-				this.areaItem=item;
-
+			treeItemClick(item) {			
+				this.searchObj.areaID=item.id;
+				this.searchObj.areaName=item.name
 			},
 			goBack(){
-				
-				uni.navigateBack({
-					delta:1,
-					success:()=>{
-						
-						this.$fire.fire('search',{
-							year:this.year?this.year:new Date().getFullYear(),
-							month:this.month,
-							target:this.areaItem?this.areaItem.id:'',
-							brand:this.brandItem?this.brandItem.id:''
-						})
-					}
-				})
+				this.$utils.goBack()
+				this.$fire.fire('search',this.searchObj)
 			},
 			chooseBrand(item){
-				this.brandItem=item;
+				this.searchObj.brandID=item.id,
+				this.searchObj.brandName=item.val
 			},
-			//获得区域
-			getAreaList(){
-				this.$ajax('Departments',{
-					type:4,
-					parent:-1
-				},res=>{
-					this.getTree(res)
-				})
-			},
-			bindChange(e) {
-				const val = e.detail.value;
-				this.year=this.years[val[0]];
-				this.month=this.months[val[1]]?this.months[val[1]]:'1'
+			
+			bindChange(event) {
+				if(event){
+					this.searchObj.year=event.year;
+					this.searchObj.month=event.month;
+				}
 			},
 			/*选择开始时间*/
 			selectModal(type){
-				this.timeType=type;
+				
+				
 				switch(type){
 					case 'year':
 					this.modalName='yearBottomModal';
 					break;
-					case 'month':
-					this.modalName='MonthBottomModal';
-					break;
 					case 'area':
 					this.modalName='areaBottomModal';
-					this.getAreaList()
 					break;
 					case 'brand':
 					this.modalName='brandBottomModal';
@@ -207,54 +122,17 @@
 				this.modalName=null;
 				uni.stopPullDownRefresh();
 			},
-			getBrandList(){
-				this.$ajax('MyBrands',{},res=>{
-					if(res){
-						this.brandList=res;
-					}
-				})
-			},
-			//转为树形图数据
-			getTree(data){
-				//删除所有children ,防止多次调用
-				data.forEach(item=>{
-					delete item.children;
-				})
-				//将数据存储为id为key的map索引
-				let map={};
-				data.forEach(item=>{
-					map[item.id]=item;
-				})
+			async getBrandList(){
+				this.brandList= await MyBrandsApi();
 
-				let val=[];
-				data.forEach((item)=>{
-					//以当前遍历项，的parent去map对象中找到索引的id;
-					let parent=map[item.parent];
-					//如果找到索引，那说明此项不在顶级中，需要把此项添加到对应的父级中
-					if(parent){
-						(parent.children || (parent.children=[])).push(item)
-					}else{
-						val.push(item);//顶级父级
-					}
-				})
-				this.areaList = val
 			}
-
-
 		},
 		components:{
-			mixTree
+			bottomShowModel,
+			yearMonthModel,
+			bottomAreaModel,
+			commonBtnOne
 		},
-		onLoad(params){
-			if(params.type){
-				this.type=params.type;
-			}
-			if(params.id){
-				this.shopID=params.id;
-			}
-
-
-		}
 	}
 </script>
 

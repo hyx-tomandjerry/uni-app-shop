@@ -86,7 +86,7 @@
 		color:rgba(185,185,185,1);
 	}
 	.margin-bottom-normal{
-		margin-bottom:13px;
+		margin-bottom:26upx;
 	}
 	.explain-color{
 		color:#2A2A2A
@@ -118,7 +118,7 @@
 		color:rgba(182,89,255,1) ;
 	}
 	.bg-color-green{
-		background-color: #52C41A;
+		background-color:#13BB83;
 	}
 	.bg-color-blue{
 		background:#42B0ED !important
@@ -147,6 +147,9 @@
 	.flex-all{
 		width:100%;
 	}
+	.height-all{
+		height:100%;
+	}
 	.flex-mini{
 		width:15%
 	}
@@ -160,4 +163,15 @@
 		display: flex;
 		align-content: center;
 		justify-content: center;
+	}
+	.backImg{
+		width:24upx;
+		height:38upx !important;
+		flex-shrink: 0;
+	}
+	.xuanze-img{
+		width:40upx;
+		height:40upx !important;
+		vertical-align: middle;
+		flex-shrink: 0;
 	}

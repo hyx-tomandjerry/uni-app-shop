@@ -3,7 +3,7 @@
 		<commonTitle :itemInfo="noticeItem" :type="'notice'">
 			<block slot="title">{{noticeItem.title}}</block>
 			<block slot='senderName'>{{noticeItem.applierName}}</block>
-			<block slot="time">{{noticeItem.applyDate}}</block>
+			<block slot="time">{{noticeItem.applyDate | formatTime('YMDHMS')}}</block>
 			<block slot="content">
 				<view  v-html="noticeItem.message"  ></view>
 			</block>
@@ -11,8 +11,8 @@
 	</view>
 </template>
 <script>
-	import commonTitle from '../../../../components/common-title.vue'
-	// import moment from 'moment'
+	import commonTitle from '../../../../components/article/common-title.vue'
+	import {MessageApi} from '../../../../api/index_api.js'
 	export default{
 		data(){
 			return{
@@ -28,13 +28,12 @@
 			}
 		},
 		methods:{
-			getNoticeItemInfo(id){
-				this.$ajax('Message',{id:id},res=>{
-					// res.applyDate=this.format(res.applyDate,'YMDHMS');
-					res.applyDate=this.$moment(res.applyDate).format('YYYY-MM-DD hh:mm:ss')
-					this.noticeItem=res;
-					console.log(this.noticeItem)
-				})
+			async getNoticeItemInfo(id){
+				let result = await MessageApi(id);
+				if(result.files && result.files.length){
+					result.files= result.files.map(item=>item.url)
+				}
+				this.noticeItem=result;
 			}
 		}
 	}

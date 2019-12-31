@@ -1,0 +1,34 @@
+	/* 营业中 */
+	.shop-business{
+		/* border:1px solid #16B176;color:#16B176; */
+		background:#16B176;color:#FFFFFF;
+		border-radius: 10upx;
+	}
+	/* 筹备中 */
+	.shop-prepare{
+		background:#42B0ED;color:#FFFFFF;
+		border-radius: 10upx;
+	}
+	/* 施工中 */
+	.shop-execution{
+	
+		background:#F58123;color:#FFFFFF;
+		border-radius: 10upx;
+	}
+	/* 已撤柜 */
+	.shop-canceled{
+	
+		background:#FFECE9;color:#FFFFFF;
+		border-radius: 10upx;
+	}
+	/* 已重装 */
+	.shop-renovated{
+		
+		background:#3FD7B5;color:#FFFFFF;
+		border-radius: 10upx;
+	}
+	/* 已移位 */
+	.shop-moved{
+		background:#EBF4FF;color:#FFFFFF;
+		border-radius: 10upx;
+	}

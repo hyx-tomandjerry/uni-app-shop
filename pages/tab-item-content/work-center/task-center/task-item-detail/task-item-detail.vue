@@ -1,225 +1,230 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >任务详情</view></block>
-		</cu-custom>
 		<!--任务详情 start-->
 		<view class="task-detail borderTop margin-bottom-normal">
 			<view class="task-title  flex justify-between">
-				<view class="font-size-big color-normal font-weight-bold">上海zara旗舰店01001</view>
-				<view class="item-tag">已接受</view>
+				<view class="font-size-big color-blue font-weight-bold flex-1">{{taskItem.name || ''}}</view>
+				<view class="flex-xs">
+					<view
+						class="item-tag"
+						:class="{
+							'created':taskItem.status==taskStatus.created,
+							'assigned':taskItem.status==taskStatus.assigned,
+							'refused':taskItem.status==taskStatus.refused,
+							'accepted':taskItem.status==taskStatus.accepted,
+							'delayed':taskItem.status==taskStatus.delayed,
+							'finished':taskItem.status==taskStatus.finished,
+							'rejected':taskItem.status==taskStatus.rejected,
+							'receipted':taskItem.status==taskStatus.receipted,
+							'aborted':taskItem.status==taskStatus.aborted,
+							'canceled':taskItem.status==taskStatus.canceled,
+							}"
+					
+					>{{taskItem.status | taskStatusZnPipe}}</view>
+				</view>
 			</view>
-			<view class="item-detail flex justify-start">
-				<view style="width:18%;" class="text-left color-regular">任务名称 : </view>
-				<view style="flex:1;text-align:left;" class="color-normal">门店陈列整改</view>
-			</view>
-			<view class="item-detail flex justify-start">
-				<view style="width:18%;" class="text-left color-regular">派发人 : </view>
-				<view style="flex:1;text-align:left;" class="color-normal">张三</view>
-			</view>
-			<view class="item-detail flex justify-start">
-				<view style="width:18%;" class="text-left color-regular">验收人 : </view>
-				<view style="flex:1;text-align:left;" class="color-normal">张三</view>
-			</view>
-			<view class="item-detail flex justify-start">
-				<view style="width:18%;" class="text-left color-regular">执行人 : </view>
-				<view style="flex:1;text-align:left;" class="color-normal">张三</view>
-			</view>
-			<view class="item-detail flex justify-start">
-				<view style="width:18%;" class="text-left color-regular">开始时间 : </view>
-				<view style="flex:1;text-align:left;" class="color-normal">2019-03-29  </view>
-			</view>
-			<view class="item-detail flex justify-start">
-				<view style="width:18%;" class="text-left color-regular">结束时间 : </view>
-				<view style="flex:1;text-align:left;" class="color-normal">2019-05-29  </view>
-			</view>
-			<view class="item-detail flex justify-start">
-				<view style="width:12%;" class="text-left color-regular">备注 : </view>
-				<view style="flex:1;text-align:left;" class="color-normal">啦啦啦啦啊啦啦啦啦啦啦啦～</view>
-			</view>
+			<normal-detail-item 
+				leftIntro="任务名称"  :leftPadding="true"
+				:rightContent=" taskItem.name || ''" :marginBottom="true"></normal-detail-item>
+			<normal-detail-item
+					leftIntro="执行人"  :leftPadding="true"
+					:rightContent="taskItem.executorName || ''" :marginBottom="true"></normal-detail-item>
+					
+			<normal-detail-item
+					leftIntro="派发人"  :leftPadding="true"
+					:rightContent="taskItem.assignerName || ''" :marginBottom="true"></normal-detail-item>
+			
+			<normal-detail-item
+					leftIntro="开工时间"  :leftPadding="true"
+					:rightContent="taskItem.bgndate | formatTime('YMD')" :marginBottom="true"></normal-detail-item>
+			
+			<normal-detail-item
+					leftIntro="竣工时间"  :leftPadding="true"
+					:rightContent="taskItem.duedate | formatTime('YMD')" :marginBottom="true"></normal-detail-item>
+			
+			<normal-detail-item
+					leftIntro="任务备注"  :leftPadding="true"
+					:rightContent="taskItem.summary || ''" :marginBottom="true"></normal-detail-item>
+			
 		</view>
 		<!--任务详情 end-->
 		<!--任务附件 start-->
-		<view class="task-files bg-white margin-bottom-normal">
-			<view class="font-size-normal color-normal font-weight-bold" style="margin-bottom:15px;">附件</view>
-			<view class="grid col-4 grid-square">
-				<view class="bg-img" v-for="(item,index) in avatar" :key="index" :style="[{ backgroundImage:'url(' + avatar[index] + ')' }]"></view>
-			</view>
-		</view>
+		<files-content :files="filesObj.files" ></files-content>
+		<!-- 验收附件 -->
+		<files-content :files="filesObj.xFiles" v-if="taskItem.status==taskStatus.finished" title="验收附件" ></files-content>
 		<!--任务附件 end-->
 		<!--任务动态 start-->
+	<!-- 	<normal-title content="任务动态" :isTag="true"></normal-title> -->
+		<normal-detail-title title="任务动态" :isTag="false"></normal-detail-title>
 		<view class="task-trend bg-white margin-bottom-normal">
-			<view class="font-size-normal color-normal font-weight-bold" style="margin-bottom:15px;">任务动态</view>
 			<view class="task-trend-list">
-				<view class="trend-item flex justify-start " >
-					<view class="item-time text-center">
-						<view style="font-size:11px;" class="color-normal">18：32</view>
-						<view style="font-size:9px;" class="color-regular">2019-03-29</view>
+				<block v-for="(item,index) in progressList" :key="index">
+					<view class="margin-bottom-normal">
+						<view class="flex align-center">
+							<view class="flex-com"><view class="index-tag"></view></view>
+							<view>{{item.content || ''}}</view>
+						</view>
+						<view style="font-size:9px;margin-top:8upx;" class="color-regular text-right">{{item.occtime | formatTime('YMD')}}</view>
 					</view>
-					<view style="margin:0 13px;">
-						<view style="width:14px;height:14px;border-radius:50%;background:rgba(66,176,237,1);"></view>
-						<view style="width:1px;height:50px;background:#ccc;margin-left:6px;"></view>
-					</view>
-					<view >张晓晓创建任务</view>
-				</view>
-				<view class="trend-item flex justify-start" >
-					<view class="item-time text-center">
-						<view style="font-size:11px;" class="color-normal">18：32</view>
-						<view style="font-size:9px;" class="color-regular">2019-03-29</view>
-					</view>
-					<view style="margin:0 13px;">
-						<view style="width:14px;height:14px;border-radius:50%;background:rgba(66,176,237,1);"></view>
-						<view style="width:1px;height:50px;background:#ccc;margin-left:6px;padding-bottom:10px;"></view>
-					</view>
-					<view >张晓晓创建任务</view>
-				</view>
-				<view class="trend-item flex justify-start" >
-					<view class="item-time text-center">
-						<view style="font-size:11px;" class="color-normal">18：32</view>
-						<view style="font-size:9px;" class="color-regular">2019-03-29</view>
-					</view>
-					<view style="margin:0 13px;">
-						<view style="width:14px;height:14px;border-radius:50%;background:rgba(66,176,237,1);"></view>
-						<view style="width:1px;height:50px;background:#ccc;margin-left:6px;"></view>
-					</view>
-					<view >张晓晓创建任务</view>
-				</view>
-				<view class="trend-item flex justify-start" >
-					<view class="item-time text-center">
-						<view style="font-size:11px;" class="color-normal">18：32</view>
-						<view style="font-size:9px;" class="color-regular">2019-03-29</view>
-					</view>
-					<view style="margin:0 13px;">
-						<view style="width:14px;height:14px;border-radius:50%;background:rgba(66,176,237,1);"></view>
-						<view style="width:1px;height:50px;background:#ccc;margin-left:6px;"></view>
-					</view>
-					<view >张晓晓创建任务</view>
-				</view>
-				<view class="trend-item flex justify-start" >
-					<view class="item-time text-center">
-						<view style="font-size:11px;" class="color-normal">18：32</view>
-						<view style="font-size:9px;" class="color-regular">2019-03-29</view>
-					</view>
-					<view style="margin:0 13px;">
-						<view style="width:14px;height:14px;border-radius:50%;background:rgba(66,176,237,1);"></view>
-					</view>
-					<view >张晓晓创建任务</view>
-				</view>
-
+				</block>
 			</view>
 		</view>
 		<!--任务动态 end-->
 
 		<!--按钮 start-->
-		<view class="btn-container bg-white">
-			<view v-if="status==taskStatus.waiting" class="flex justify-between">
-				<!-- 未接受（接受/拒绝） -->
-				<view class="agree-btn flex-sm">拒绝</view>
-				<view class="reject-btn flex-1">接受</view>
-			</view>
-			<!-- 已接受/已超期，未通过（申请验收） -->
-			<view class="submit-btn"
-			v-if="status==taskStatus.received || status== taskStatus.overdue || status==taskStatus.noPass"
-				@click="checkApply"
-			>申请验收</view>
-		</view>
+		<template v-if="(fromType=='notice' && (taskItem.status==taskStatus.assigned)  ) || (taskItem.status==taskStatus.created && fromType=='list')">
+			<bottom-btn-two
+			 refuse_btn_con="拒绝任务"
+			refuse_data_target="refuseModel"
+			agree_btn_con="接受任务"
+			@refuseBtn="refuseTask"
+			@agressBtn="operateOrder('agree')"></bottom-btn-two>
+		</template>
+		<template v-if="(taskItem.status==taskStatus.accepted || taskItem.status== taskStatus.delayed || taskItem.status==taskStatus.rejected) && fromType=='list'">
+			<common-btn-one
+				type="primary"
+				content="申请验收"
+				@operateBtn="checkApply"></common-btn-one>
+		</template>
 		<!--按钮 end-->
-
+		
+		<!-- 拒绝理由 -->
+		<show-model-refuse :isShow="isShowRefuse"
+		 @hideModal="hideModel" content='拒绝理由'
+		 @refuse="refuseOrder"></show-model-refuse>
 	</view>
 </template>
 
 <script>
-	import {mapState} from 'vuex'
+	import filesContent from '../../../../../components/common/files-content.vue'
+	import BottomBtnTwo from '../../../../../components/common/bottom-btn-two.vue'
+	import showModelRefuse from '../../../../../components/common/show-model-refuse.vue'
+	import commonBtnOne from '../../../../../components/common/common-btn-one.vue'
+	import normalDetailItem from '../../../../../components/common/normal-detail-item.vue'
+	import normalDetailTitle from '../../../../../components/common/normal-detail-title.vue'
+	
+	import {TaskEventFlowsApi,ProcessTaskApi,RefuseTaskApi,AcceptTaskApi} from '../../../../../api/task.js'
 	export default {
-		computed:mapState(['taskStatus']),
-
+		computed:{
+			taskStatus(){return this.config.taskStatus}
+		},
+		components:{normalDetailItem,normalDetailTitle,filesContent,BottomBtnTwo,showModelRefuse,commonBtnOne},
 		data() {
 			return {
-				status:3,//未接受
-				avatar:['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg',
-					'https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg',
-					'https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg',
-					'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg',
-					'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg',
-					'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg',
-				],
-
+				fromType:'list',//判断从通知还是从列表（从通知要同意和拒绝)
+				taskID:'',//任务详情ID
+				taskItem:{},
+				progressList:[],
+				isShowRefuse:false,
+				filesObj:{
+					files:[],
+					xFiles:[]
+				}
 			}
 		},
 		methods: {
-			goBack(){
-				uni.navigateBack({
-					delta: 1
-				});
+			refuseTask(){
+				uni.showModal({
+					content:'确定要拒绝该任务?',
+					success: (res) => {
+						if(res.confirm){
+							this.operateOrder('refuse')
+						}
+					}
+				})
+			},
+			//拒绝任务
+			async refuseOrder(item){
+				if(await RefuseTaskApi(this.taskID,item)){
+					this.$utils.showToast('拒绝任务')
+					this.isShowRefuse=false;
+					this.$utils.goBack()
+					this.$utils.hide()
+					
+					
+				}
+
+			},
+			hideModel(){
+				if(this.isShowRefuse){this.isShowRefuse=false}
+				
+			},
+			async operateOrder(type){
+				switch(type){
+					case 'agree':
+					if(await AcceptTaskApi(this.taskID)){
+						this.$utils.showToast('接受任务')
+						this.$utils.goBack()
+						this.$utils.hide()
+					}
+
+					break;
+					case 'refuse':
+					this.isShowRefuse=true;
+					break;
+				}
+			},
+			//获得任务详情和流程详情
+			async getTaskInfo(id){
+				this.progressList = await TaskEventFlowsApi(id)
+			   let result = await ProcessTaskApi(id);
+			   if(result.files && result.files.length){
+					this.filesObj.files=result.files.map(item=>item.url)
+			   }
+			   if(result.xfiles && result.xfiles.length){
+					this.filesObj.xFiles= result.xfiles.map(item=>item.url)
+			   }
+			   this.taskItem=result;
+
 			},
 			//申请验收
 			checkApply(){
 				uni.navigateTo({
-					url: '../check-apply/check-apply',
-
+					url: '../check-apply/check-apply?id='+this.taskID
 				});
+			}
+	},
+	onLoad(options){
+		if(options){
+			this.fromType=options.type;
+			this.taskID=options.id;
+			this.getTaskInfo(options.id)
 		}
 	},
+	onShow(){
+		this.getTaskInfo(this.taskID)
+	}
 }
 </script>
 
 <style lang="less">
+@import "../../../../../common/css/task.css";
+	.index-tag{
+		width:15px;height:15px;border-radius:100%;background:rgba(66,176,237,1);margin-right:30upx;
+	}
 	.task-detail{
-		padding:14px 13px 22px;
+		padding:28upx 26upx 44upx;
 		background-color: #fff;
-		.task-title{
-			margin-bottom: 14px;
-			.item-tag{
-				width: 70px;
-				color:rgba(10,91,157,1);
-				height: 25px;
-				text-align: center;
-				line-height:25px;
-				background:rgba(180,226,254,1);
-				border-radius:11px;
-			}
-		}
+		
+	}
+	.task-title{
+		margin-bottom: 28upx
+	}
+	.item-tag{
+		height: 50upx;
+		color:#fff;
+		text-align: center;
+		line-height:50upx;
+		border-radius:30upx;
+		padding:0 10upx;
 	}
 	.item-detail{
-		margin-bottom: 8px;
+		margin-bottom: 16upx;
+	}
+	.task-trend{
+		margin-bottom:200upx;
 	}
 	.task-files,.task-trend{
-		padding:17px 16px 19px 14px ;
-	}
-	.btn-container{
-		width: 100%;
-		background: #fff;
-		padding:11px 13px;
-		text-align: center;
-		font-size:16px;
-
-		font-weight:400;
-		.agree-btn{
-			margin-right: 10px;
-			height:40px;
-			line-height:40px;
-			border-radius:5px;
-			border:1px solid rgba(66,176,237,1);
-			color:rgba(66,176,237,1);
-		}
-		.reject-btn{
-			height:40px;
-			line-height:40px;
-			background:rgba(66,176,237,1);
-			border-radius:5px;
-
-			color:rgba(255,255,255,1);
-
-		}
-		.submit-btn{
-			width: 100%;
-			background:rgba(66,176,237,1);
-			border-radius:5px;
-			height: 40px;
-			line-height: 40px;
-			font-size:16px;
-			color:#fff;
-		}
+		padding:34upx 32upx 38upx 28upx ;
 	}
 </style>

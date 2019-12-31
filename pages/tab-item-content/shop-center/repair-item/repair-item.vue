@@ -1,10 +1,5 @@
 <template>
 	<view class="borderTop">
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back" @click="goBack()"></text></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >维修详情</view></block>
-			<block slot="right"><view class="font-size-normal color-regular" style="margin-right:15px;" @click="chooseRepairItem">确定</view></block>
-		</cu-custom>
 		<view class="content">
 			<view class="nav">
 				<view class="nav-left">
@@ -39,9 +34,12 @@
 
 <script>
 	import uniTag from '../../../../components/uni/uni-tag/uni-tag.vue'
-	import {mapState} from 'vuex'
+	import {ServiceCatalogsApi} from '../../../../api/common_api.js'
 	export default {
-		computed:mapState(['repairTypeZn','repairTypeArray','repairType']),
+		computed:{
+			repairTypeArray(){return this.config.repairTypeArray},
+		},
+		components:{uniTag},
 		data(){
 			return{
 
@@ -65,57 +63,29 @@
 
 			}
 		},
-		components:{
-			uniTag
+		onNavigationBarButtonTap(event){
+			if(event.index==0){
+				this.chooseRepairItem()
+			}
 		},
 		methods:{
 			leftNavSelect(item){
-				// console.log(item)
-				// if(item.id==7){
-				// 	uni.navigateBack({
-				// 		delta:1,
-				// 		success:(res)=>{
-				// 			this.$fire.fire('repair',{
-				// 				bigID:item.id,
-				// 				bigName:item.name,
-				// 			})
-				// 		}
-				// 	})
-				// }
 				this.leftNavTabCur=item.id;
 				this.leftNavItem=item;
+				setTimeout(()=>{
+					uni.hideLoading()
+				},600)
+				
 				this.getRepairList(item.id)
 			},
-			getRepairList(id){
-				this.rightNavList=[];
-				this.$ajax('ServiceCatalogs',{},res=>{
-					if(res){
-						res.forEach(item=>{
-							if(item.catalog==id){
-								this.rightNavList.push(item);
-							}
-						})
+			async getRepairList(id){
+				let result = await  ServiceCatalogsApi();
+				this.rightNavList =result.filter(item=>item.catalog ==id)
 
-					}
-				})
 			},
 			rightNavSelect(item){
 				this.rightNavTabCur=item.id;
 				this.rightNav=item;
-				// setTimeout(()=>{
-				// 	uni.navigateBack({
-				// 		delta:1,
-				// 		success:(res)=>{
-				// 			this.$fire.fire('repair',{
-				// 				bigID:this.leftNavItem.id?this.leftNavItem.id:this.repairTypeArray[0].id,
-				// 				bigName:this.leftNavItem.name?this.leftNavItem.name:this.repairTypeArray[0].name,
-				// 				subID:item.id,
-				// 				subName:item.name
-				// 			})
-				// 		}
-				// 	})
-				// },900)
-
 			},
 			goBack(){
 				uni.navigateBack({
@@ -156,7 +126,7 @@
 			},800)
 
 		},
-		onLoad:function(){
+		onLoad(){
 			this.getRepairList(this.leftNavTabCur);
 			uni.getSystemInfo({
 				success: res => {
@@ -177,11 +147,10 @@
 	.nav-left {
 		width: 30%;
 		background:rgba(247,247,247,1);
-		border-right:0.5px solid rgba(255,255,255,1);
+		border-right:1upx solid rgba(255,255,255,1);
 	}
 	.nav-left-item {
-
-		padding:19px 10px;
+		padding:38upx 20upx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -190,17 +159,17 @@
 	}
 	.nav-right {
 		width: 70%;
-		padding-left:20px;
-		padding-top: 22px;
+		padding-left:40upx;
+		padding-top: 44upx;
 	}
 	.nav-right-item {
 		background:rgba(247,247,247,1);
-		border-radius:4px;
+		border-radius:8upx;
 		width: 100%;
 		float: left;
-		margin: 10px;
+		margin: 20upx;
 		text-align: left;
-		padding: 7px;
+		padding: 14upx;
 		color:rgba(42,42,42,1);
 	}
 	.active {
@@ -214,24 +183,8 @@
 		background:rgba(66,176,237,1);
 		border-radius:4px;
 	}
-	.padding {
-		height: var(--status-bar-height);
-		width: 100%;
-		top: 0;
-		position: fixed;
-		background-color: #F24544;
-	}
 	.content {
 		width: 100%;
 	}
-	.noPadding{
-		padding-top:0;
-	}
-	.choseBtn{
-		position:absolute;
-		right:20px;bottom:50px;padding: 3px 18px;
-		color: #fff;
-		background: deepskyblue;
-		border-radius: 15px
-	}
+	
 </style>

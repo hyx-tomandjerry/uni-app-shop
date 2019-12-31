@@ -1,7 +1,7 @@
 <template>
 	<view class="btn-container flex-com">
 		<view class="first-btn flex-sm" :data-target="refuse_data_target" @tap="showLeftBtn">{{refuse_btn_con}}</view>
-		<view class="second-btn flex-1"  @tap="showRightBtn">{{agree_btn_con}}</view>
+		<view class="second-btn flex-1"  @tap="showRightBtn" :data-target="agree_data_target">{{agree_btn_con}}</view>
 	</view>
 </template>
 
@@ -11,13 +11,19 @@
 			refuse_btn_con:String,//左边按钮内容
 			agree_btn_con:String,//右边按钮内容
 			refuse_data_target:String,//数据对象
+			agree_data_target:String
 		},
 		methods:{
 			showLeftBtn(){
 				this.$emit('refuseBtn',this.refuse_data_target)
 			},
 			showRightBtn(){
-				this.$emit('agressBtn')
+				if(this.agree_data_target){
+					this.$emit('agressBtn',this.agree_data_target)
+				}else{
+					this.$emit('agressBtn')
+				}
+				
 			}
 		}
 		

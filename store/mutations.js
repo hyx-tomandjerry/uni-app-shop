@@ -1,40 +1,29 @@
 export default {
-    setUserInfo(state,userInfo){
-        state.userInfo=userInfo;
-    },
-    setProvince(state,province){
-        state.province=province;
-    },
-    setAddress(state,address){
-        state.address=address;
-    },
-    setLoginInfo(state,loginInfo){
-        state.loginInfo=loginInfo
-    },
-    setImInfo (state, imInfo) {
-        state.imInfo = imInfo
-    },
-	setAccount(state,param){
-		state.user=param,
-		uni.setStorage({
-			key:'account',
-			data:param
+	//设置门店数量
+	setShopCount(state,value){
+		state.shopCount=value;
+		uni.getStorage({
+			key:'shopCount',
+			data:value
+		})
+	},
+	//设置单个门店内容
+	setShopOnlyObj(state,value){
+		state.shopOnlyObj=value;
+		uni.getStorage({
+			key:'shopOnlyObj',
+			data:value
 		})
 	},
     login(state,provider){
-        state.hasLogin=true;
         state.userInfo=provider;
         uni.setStorage({
             key:'userInfo',
             data:provider
         })
     },
-	setRember(state,provider){
-		state.remeber=provider;
-	},
     logout(state){
         //退出登录
-        state.hasLogin= true;
         state.userInfo={};
         uni.removeStorage({
             key:'userInfo',
@@ -42,6 +31,7 @@ export default {
     },
 	setTodoNum(state,value){
 		state.todoNum=value
-	}
+	},
+	
 }
 

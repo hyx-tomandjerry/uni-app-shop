@@ -92,7 +92,6 @@
 				let list = this.treeList;
 				let id = item.id;
 				this.selectItemID=item.id;
-				console.log(item.id)
 				// if(item.lastRank === true){
 				// 	//点击最后一级时触发事件
 				// 	this.$emit('treeItemClick', item);
@@ -128,7 +127,6 @@
 	.mix-tree-list{
 		display: flex;
 		flex-direction: column;
-		padding-left: 30upx;
 	}
 	.mix-tree-item{
 		display: flex;

@@ -33,19 +33,20 @@
 			</view>
 		</view>
 		
-		
-		<view style="width:100%;position:absolute;bottom:7px;left:0;padding:10px 15px;background:#fff;">
-			<view class="cu-btn bg-blue" style="width:100%;border-radius: 8px;" @click="addAddress()">保存</view>
-		</view>
+			<common-btn-one
+				type="primary"
+				content="保存"
+				@operateBtn="addAddress" :isPos="true"></common-btn-one>		
 		<cityModel :isShow="isShow" :provinceList="provinceList" @hideModel="hideModel"></cityModel>
 	</view>
 </template>
 
 <script>
-	import cityModel from '../../../../../components/city-model.vue';
-	import {mapState} from 'vuex';
+	import cityModel from '../../../../../components/common/city-model.vue';
+	import commonBtnOne from '../../../../../components/common/common-btn-one.vue'
+	
+	import {DistrictsApi} from '../../../../../api/common_api.js'
 	export default {
-		computed:mapState(['expressItem']),
 		data() {
 			return {
 				isShow:false,
@@ -67,7 +68,7 @@
 			}
 		},
 		components: {
-			cityModel
+			cityModel,commonBtnOne
 		},
 		methods: {
 			
@@ -81,19 +82,13 @@
 				this.shop.districtName=e.districtName
 				this.provinceList=[];
 			},
-			getProvinceList(){
-				this.$ajax('Districts',{parent:0},res=>{
-					this.provinceList=res;
-				})
+			async getProvinceList(){
+				this.provinceList = await DistrictsApi(0)
 			},
 			checkTelEvent(event){
 				if(event){
 					if(!(/^[1][3,4,5,7,8][0-9]{9}$/.test(event.detail.value))){
-							uni.showToast({
-								title:'电话号码不存在',
-								icon:'none'
-							})
-							
+						this.$utils.showToast('电话号码不存在')	
 					}
 					return
 						
@@ -101,15 +96,11 @@
 			},
 			addAddress(){
 				if(!this.shop.name  || !this.shop.province || !this.shop.address || !this.shop.telephone){
-					uni.showToast({
-						title:'请填写完成信息',
-						icon:'none'
-					})
+					
+					this.$utils.showToast('请填写完成信息')
 				}else if(!(/^[1][3,4,5,7,8][0-9]{9}$/.test(this.shop.telephone))){
-					uni.showToast({
-						title:'电话号码不存在',
-						icon:'none'
-					})
+					
+					this.$utils.showToast('电话号码不存在')
 				}else{
 					setTimeout(()=>{
 						uni.navigateBack({
@@ -117,7 +108,7 @@
 							success:(res)=>{
 								this.$fire.fire('address',{
 									shoper:this.shop,
-									target:this.expressItem.customer
+									target:this.config.expressItem.customer
 								})
 							}
 						})

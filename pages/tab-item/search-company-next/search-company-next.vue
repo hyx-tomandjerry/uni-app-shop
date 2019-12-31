@@ -1,22 +1,5 @@
 <template>
 	<view class="borderTop">
-		<view class="search-container flex align-center bg-white">
-			<view class="search-input flex-1 position_relative">
-				<image src="../../../static/icon/icon-sousuo2.png" class="search-img"></image>
-				<input type="number"
-					   placeholder="请输入公司EID"
-					   class="input-style"
-					   v-model="eid"
-					   :class="{
-					   	'color-regular':!eid,
-					   	'color-normal':eid
-					   }"
-					   autofocus="autofocus"
-				>
-				<image src="../../../static/icon/icon-search-guanbi@2x.png" class="close-img"></image>
-			</view>
-			<view style="width:10%;margin-left:10px;" @click="searchCompany">搜索</view>
-		</view>
 		<view class="company-container borderTop bg-white"  v-if="companyObj">
 			<view class="company-info-item borderBottom">
 				<view>客户名称</view>
@@ -40,56 +23,52 @@
 				</view>
 			</view>
 		</view>
-		<view v-else class="noCompany">
-
+		<view v-else class="noCompany" :style="{height:screenHeight+'px'}">
+			
 		</view>
-		<view class="btn-container" v-if="companyObj && tabbar">
-			<view class="submit-btn font-size-big" @click="joinShop">确定</view>
-		</view>
+		<common-btn-one v-if="companyObj && tabbar"
+			content="确定"
+			type="primary"
+			@operateBtn="joinShop" :isPos="true"></common-btn-one>
 	</view>
 </template>
 
 <script>
+	import commonBtnOne from '../../../components/common/common-btn-one.vue'
+	import {getCompanyInfoApi} from '../../../api/common_api.js'
 	export default {
+		components:{commonBtnOne},
 		data() {
 			return {
 				eid:'',
 				companyObj:'',
 				tabbar:true,
+				screenHeight:500
+				
 			}
 		},
 		methods: {
-			searchCompany(){
-				if(!this.eid){
-					uni.showToast({
-						title:'请输入公司EID',
-						icon:'none'
-					})
-				}else{
-					this.$ajax('Customer',{
-						eid:this.eid
-					},res=>{
-						if(res.id==0){
-							uni.showToast({
-								title:'公司不存在',
-								icon:'none'
-							})
-							this.eid='';
-							this.companyObj=''
-						}else if(res.type==1){
-							uni.showToast({
-								title:'该公司是装修公司，不可加入',
-								icon:'none'
-							})
-							this.eid=''
-							this.companyObj=''
-						}else{
-							this.companyObj=res;
-							this.showTabbar()
-						}
-
-					})
+			getSystem(){
+				uni.getSystemInfo({
+					success: (res) => {
+						this.screenHeight=res.windowHeight;
+					}
+				})
+			},
+			clearInput(){
+				// #ifdef APP-PLUS
+				 let webView=this.$mp.page.$getAppWebview();
+				 webView.setTitleNViewSearchInputText("")
+				// #endif
+			},
+			async searchCompany(){
+				let result =await getCompanyInfoApi(this.eid)
+				if(!result){
+					this.clearInput()
+					this.companyObj=''
 				}
+				this.companyObj=result;
+				this.showTabbar()
 			},
 			hideTabbar(){
 				this.tabbar=false;
@@ -103,73 +82,53 @@
 				})
 
 			},
+		},
+		onNavigationBarButtonTap(event) {
+			if(event.index==0){
+				this.clearInput()
+			}
+		},
+		onNavigationBarSearchInputConfirmed(){
+			if(!this.eid){
+				this.$utils.showToast('请输入公司EID')
+				return;
+			}
+			this.searchCompany()
+		},
+		onNavigationBarSearchInputChanged(event) {
+			if(isNaN(event.text)){
+				this.$utils.showToast('请输入数字')	
+				this.clearInput()
+			}else{
+				this.eid=event.text
+			}
+			
+		},
+		onLoad(){
+			this.getSystem()
 		}
 	}
 </script>
 
-<style lang="less">
+<style scoped>
 	page{
 		background-color: rgba(247,247,247,1);
 	}
-	.search-container{
-		height:54px;
-		line-height:34px;
-		width:100%;
-		padding:10px 15px 10px 15px;
-
-	}
-	.input-style{
-		font-size:14px;
-		height:34px;
-		background:rgba(247,247,247,1);
-		border-radius:17px;
-		line-height:34px;
-		padding-left: 33px;
-	}
-	.search-img{
-		width: 17px;
-		height: 17px;
-		position:absolute;
-		top:9px;
-		left:9px;
-	}
-	.close-img{
-		width: 17px;
-		height: 17px;
-		position:absolute;
-		top:9px;
-		right:9px;
-	}
 	.company-info-item{
-		height:53px;
-		line-height:53px;
-		padding:0 12px 0 14px;
+		height:106upx;
+		line-height:106upx;
+		padding:0 24upx 0 28upx;
 		display: flex;
 		justify-content: space-between;
 		font-size:14px;
 		color:#2A2A2A;
 	}
 	.noCompany{
-		min-height:550px;
 		width:100%;
 		background:url("../../../static/img/kongzhuangtai@2x.png") no-repeat center center;
 		background-size:165px 113px;
 	}
-	.btn-container{
-		padding-right:12px;
-		padding-left:15px;
-		text-align: center;
-		width:100%;
-		position:fixed;
-		bottom:22px;
-		.submit-btn{
-			height:40px;
-			line-height:40px;
-			background:rgba(66,176,237,1);
-			border-radius:5px;
-			color:#fff;
-		}
-	}
+	
 </style>
 
 

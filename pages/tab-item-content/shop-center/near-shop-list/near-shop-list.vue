@@ -1,34 +1,26 @@
-
-
- <template>
+<template>
  	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >选择门店</view></block>
-		</cu-custom>
 		<view class="shop-content borderTop" v-if="shopList.length">
 			<block v-for="(item,index) in shopList" :key="index">
-				<shopListItem :item="item" :index="index"  @checkShopDetail="choseShop"></shopListItem>
+				<shopListItem :item="item" :index="index"  @checkShopDetail="choseShop" :showManager="cat!='article'"></shopListItem>
 			</block>
-			<uni-load-more :contentText="content" :showIcon="true" v-if="shopList.length" :status="loading"></uni-load-more>
+			<uni-load-more :contentText="content" :showIcon="true" v-if="shopList.length>5" :status="loading"></uni-load-more>
 		</view>
 		<view v-else>
 			<lx-empty></lx-empty>
 		</view>
-		<showModel :isShow="modalName=='shopModal'" @hideModel="hideShopModel" @confirmDel="hideShopModel" v-if="modalName=='shopModal'">
-			<block slot="content">该门店没有营业，不能进行操作!</block>
-		</showModel>
-
  	</view>
  </template>
  <script>
 	 import LxEmpty from '../../../../lx_components/lx-empty.vue'
 	 import {mapState} from 'vuex'
-	 import showModel from '../../../../components/show-model.vue'
-	 import uniLoadMore from '../../../../components/uni-load-more.vue'
-	 import shopListItem from '../../../../components/shop-list-item.vue'
+	 import uniLoadMore from '../../../../components/common/uni-load-more.vue'
+	 import shopListItem from '../../../../components/shop/shop-list-item.vue'
+	 import {getShopList} from '../../../../api/common_api.js'
+	 import {UnreplyShopsApi} from '../../../../api/index_api.js'
  	export default{
-		computed:mapState(['userInfo','shopStatusZn']),
+		computed:mapState(['userInfo']),
+		components:{LxEmpty,uniLoadMore,shopListItem},
  		data(){
  			return{
 				shopList:[],
@@ -38,7 +30,7 @@
 				page:1,
 				modalName:'',
 				content:{
-					contentdown: "",
+					contentdown: "下拉加载更多",
 					contentrefresh: "正在加载...",
 					contentnomore: "没有更多数据了"
 					},
@@ -54,59 +46,30 @@
 				this.getNearShopList()
 			},900)
 		},
-		onReachBottom(){
-					this.page++;
+		async onReachBottom(){
+			this.page++;
+			this.loading='loading';
+			if(this.cat=='article'){
+				let result = await UnreplyShopsApi(this.userInfo.id,this.articleID,this.page);
+				if(result.length == 0){
+					setTimeout(()=>{
+						this.loading='noMore'
+					},900)
+				}else{
+					result.forEach(item=>{
+						// this.shopList=this.shopList.concat(item)
+						this.shopList = [...this.shopList,item]
+					})
 					this.loading='loading';
 					setTimeout(()=>{
-						if(this.cat=='createOrder'){
-							this.$ajax('MyShops',{
-								address:'',
-								offset:this.$utils.getOffset(this.page)
-							},res=>{
-								if(res==''){
-									setTimeout(()=>{
-										this.loading='noMore'
-									},900)
-								}else{
-									res.forEach(item=>{
-										this.shopList=this.shopList.concat(item)
-									})
-									this.loading='loading';
-									setTimeout(()=>{
-										this.loading='noMore'
-									},900)
-								}
+						this.loading='noMore'
+					},900)
+				}
 
-							})
-						}else if(this.cat=='article'){
-							this.$ajax('UnreplyShops',{
-								user:this.userInfo.id,
-								id:this.articleID,
-								offset:this.$utils.getOffset(this.page)
-							},res=>{
-								if(res==''){
-									setTimeout(()=>{
-										this.loading='noMore'
-									},900)
-								}else{
-									res.forEach(item=>{
-										this.shopList=this.shopList.concat(item)
-									})
-									this.loading='loading';
-									setTimeout(()=>{
-										this.loading='noMore'
-									},900)
-								}
+			}	
 
-
-							})
-						}
-					},1000)
-
-				},
- 		components:{
-			LxEmpty,showModel,uniLoadMore,shopListItem
- 		},
+		},
+ 		
  		onLoad(options){
 
 			this.cat=options.cat;
@@ -116,36 +79,18 @@
 			this.getNearShopList()
  		},
 		methods:{
-			goBack(){
-				uni.navigateBack({
-					delta: 1
-				});
-			},
 			hideShopModel(){
 				if(this.modalName){
 					this.modalName=null;
 				}
 			},
- 		    getNearShopList(){
+ 		    async getNearShopList(){
 				// 新建报修或者报销申请
 				if(this.cat=='createOrder' || this.cat=='apply'){
-					this.$ajax('MyShops',{
-						address:'',
-						offset:this.$utils.getOffset(this.page)
-					},res=>{
-						this.shopList=res
-
-					})
+					this.shopList = await getShopList()
 				}else if(this.cat=='article'){
-					// 新建文章回执
-					this.$ajax('UnreplyShops',{
-						user:this.userInfo.id,
-						id:this.articleID,
-						offset:this.$utils.getOffset(this.page)
-					},res=>{
-						this.shopList=res;
-
-					})
+					
+					this.shopList = await UnreplyShopsApi(this.userInfo.id,this.articleID,this.page)
 				}
 
 			},
@@ -161,8 +106,10 @@
 							}
 						})
 					},500)
-				}else if(item.status!==this.shopStatusZn.businessing){
-					this.modalName='shopModal';
+				}else if(item.status!==this.config.shopStatus.businessing){
+					uni.showModal({
+					    content: '该门店没有营业，不能进行操作!'
+					});
 				}else if(this.cat=='createOrder' || this.cat=='apply'){
 					//新建报修选择门店
 					this.shopIndex=item.id;

@@ -2,19 +2,19 @@
 	<view class="cu-modal" :class="isShow?'show':''" style="z-index:1000 !important">
 		<view class="cu-dialog">
 			<view class=" bg-white justify-end" >
-				<view class="content text-left">目标金额: <text class="color-blue font-weight-bold">{{monthTabCur.mon || monthTabCur.num | numStyle}}</text></view>
+				<view class="content text-left font-size-big">
+					目标金额: <text class="color-blue font-weight-bold font-size-big">{{monthTabCur.mon || monthTabCur.num | numStyle}}
+				</text></view>
 			</view>
 	
 			<view class=" bg-white borderBottom " >
-				<view class="flex justify-between" style="padding: 3px 23px 14px 24px;">
+				<view class="flex justify-between" style="padding: 3px 23px 14px 21px;">
 					<view class="flex justify-start align-center">
-						<view style="width:30%;font-size:15px;color:#2A2A2A">金额 <text class="number-color font-weight-bold">￥</text></view>
-						<input type="number" placeholder="请输入金额" style="text-align:left;"
+						<view style="width:30%;font-size:16px;color:#2A2A2A">金额 <text class="font-size-big color-blue font-weight-bold">￥</text></view>
+						<input type="number" placeholder="请输入金额" style="text-align:left;margin-left:10upx;"
 							   :class="{
-							   	'number-color':num,
+							   	'color-blue':num,
 							   	'color-regular':!num,
-							   	'font-size-normal':!num,
-							   	'font-size-big':num,
 							   	'font-weight-bold':num
 							   	}" v-model="num">
 					</view>
@@ -67,9 +67,9 @@
 
 <style scoped>
 	.cu-dialog{
-		width: 263px;
+		min-width: 540upx;
 	}
 	.content{
-		padding:25px 23px 19px 23px;
+		padding:40upx;
 	}
 </style>

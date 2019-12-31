@@ -1,45 +1,36 @@
 <template>
-	<view :style="{height:windowHeight+'px'}" class="position_relative" id="test">
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >{{title.name}}</view></block>
-		</cu-custom>
-		<scroll-view scroll-y="true" :style="{minHeight:screenHeight+'px'}">
+	<view>
+		<scroll-view scroll-y="true" :style="{height:screenHeight+'px'}">
 			<view class="express-container borderTop bg-white">
-				<view class="user-info border-top ">
+				<view class="user-info border-top">
 					<view class="flex justify-start position_relative send-info borderBottom align-center" >
-						<view class="send-tag" >寄</view>
-						<view class="font-size-normal font-weight-normal shopInfo"
-						:class="{'borderRight':!distributeItem.id,'borderNo':distributeItem.id}"
-						>
+						<view class="send-tag express-tag" >寄</view>
+						<view class="font-size-normal font-weight-normal shopInfo ">
 							<view v-if="sendShop.name">
 								<view class="font-size-normal color-normal font-weight-bold">{{sendShop.name || ''}}</view>
-								<view  class="font-size-normal color-normal font-weight-bold"><text style="margin-right:10px;">{{sendShop.saleName || distributeItem.supplierName}}</text>{{sendShop.saleTel || distributeItem.supplierMobile}}</view>
-								<view style="font-size:12px;" class="color-placeholder">{{sendShop.provinceName || ''}}{{sendShop.cityName || ''}}{{sendShop.districtName || ''}}
+								<view  class="font-size-normal color-normal font-weight-bold"><text>{{sendShop.saleName || distributeItem.supplierName}}</text>{{sendShop.saleTel || distributeItem.supplierMobile}}</view>
+								<view style="font-size:12px;" class="color-placeholder text-ellipse">{{sendShop.provinceName || ''}}{{sendShop.cityName || ''}}{{sendShop.districtName || ''}}
 									{{sendShop.address || ''}}</view>
 							</view>
 							<view v-else style="color:#606060" class="font-size-normal">请填写/添加寄件人信息</view>
 						</view>
-						<text class=" position_absolute "
-						  v-if="!distributeItem.id"
-						 @click="chooseSenderItem('send')" style="right:21px;top:35px;color:#42B0ED">选择</text>
 					</view>
 					<view class="flex justify-start position_relative send-info borderBottom align-center">
-						<view class="receive-tag" >收</view>
-						<view class="font-size-normal font-weight-normal shopInfo"
+						<view class="receive-tag express-tag" >收</view>
+						<view class=" font-weight-normal shopInfo"
 							:class="{'borderRight':!distributeItem.id,'borderNo':distributeItem.id}"
-						>
+							>
 							<view v-if="receiverMan.name">
-								<view class="font-size-normal color-normal font-weight-bold">{{receiveShop.name || ''}}</view>
-								<view  class="font-size-normal color-normal font-weight-bold"><text style="margin-right:10px;">{{receiverMan.name}}</text>{{receiverMan.account || receiverMan.mobile}}</view>
-								<view style="font-size:12px;" class="color-placeholder">{{receiveShop.provinceName || ''}}{{receiveShop.cityName || ''}}
+								<view class=" color-normal font-weight-bold">{{receiveShop.name || ''}}</view>
+								<view  class=" color-normal font-weight-bold"><text>{{receiverMan.name}}</text>({{receiverMan.account || receiverMan.mobile}})</view>
+								<view style="font-size:12px;" class="color-placeholder text-ellipse">{{receiveShop.provinceName || ''}}{{receiveShop.cityName || ''}}
 									{{receiveShop.districtName || ''}}{{receiveShop.address || ''}}</view>
 							</view>
 							<view v-else style="color:#606060" class="font-size-normal">请填写/添加收件人信息</view>
 						</view>
-						<text class=" position_absolute  "
+						<view class=" position_absolute  " 
 						  v-if="!distributeItem.id"
-						 @click="chooseSenderItem('receiver')" style="right:21px;top:35px;color:#42B0ED">选择</text>
+						 @click="chooseSenderItem('receiver')" style="right:3px;color:#42B0ED;">选择</view>
 					</view>
 				</view>
 			</view>
@@ -75,38 +66,28 @@
 			</view>
 			<view style="height:13px;width:100%;background:rgba(247,247,247,1)"></view>
 			<view class="other-container bg-white" >
-				<view class="goods-item flex justify-between borderBottom align-center" >
-					<view class=" font-size-normal item-name"><text class="text-red">*</text>身份证号</view>
-					<view class="color-normal font-size-normal">{{userInfo.idnum}}</view>
-				</view>
-
 				<view class="goods-item flex justify-between borderBottom align-center" @click="showModal($event)" data-target="goodsInfo">
-					<view class="font-weight-normal font-size-normal item-name"><text class="text-red">*</text>包裹信息</view>
-					<view style="width:60%;text-align:right;padding-top:2px;" class="text-ellipse">
-						<text class="color-normal font-size-normal" v-if="expressTypeValue || goods.summary">
-							<text v-if="goods.size">{{goods.size}}平方米/</text>
+					<view class="font-weight-normal font-size-normal item-name flex-sm"><text class="text-red">*</text>包裹信息</view>
+					<view style="text-align:right;" class="text-ellipse flex-1">
+						<text class="color-regular font-size-normal" >
+							<text>{{goods.square}}m³/</text>
 							{{goods.weight}}kg
-							<text v-if="goodsTypeValue">/</text>{{goodsTypeValue}}
-							<text v-if="goods.summary">/</text>{{goods.summary}}
+							<text>/</text>{{goods.type}}
+							<text v-show="goods.summary">/</text>{{goods.summary}}
 						</text>
-						<text class="font-size-normal color-regular" v-else>
-							请选择包裹信息
-						</text>
-
 					</view>
 					<text class="cuIcon-right right-icon"></text>
 				</view>
-
-				<view class="goods-item flex justify-between borderBottom align-center">
-					<view class="font-weight-normal font-size-normal item-name" style="padding-left:15px;">保价</view>
-					<view style="width:80%;text-align:right">
-						<input type="text" placeholder="未保价货品最高赔付9倍运费，建议保价"
-							   :class="{'color-regular':!goods.price,'color-normal':goods.price}"
-							   class="font-size-normal" v-model="goods.price"></view>
-					<text class="cuIcon-right " style="font-size:18px;right:13px;top:30px;color:#898888;"></text>
-				</view>
+				
+				<common-flex 
+					leftContent="保价" 
+					type="navigate"
+					:isRed="false"
+					@operateItem="savePrice"
+					:rightContent="price?price:'未保价货品最高赔付9倍运费，建议保价'"></common-flex>
+					
 				<view class="goods-item flex justify-between borderBottom align-center" v-if="receiveTarget==expressItem.customer">
-					<view class="font-weight-normal font-size-normal item-name"><text class="text-red">*</text>是否到付</view>
+					<view class="font-weight-normal font-size-normal font-size-normal color-normal"><text class="text-red">*</text>是否到付</view>
 					<view>
 						<view>
 							<image :src="ispay=='pay'?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'" style="width:16px;height:16px;margin-right:3px;vertical-align: middle;"
@@ -122,151 +103,61 @@
 				</view>
 			</view>
 		</scroll-view>
-		<view class="btn-container   flex-all" >
-			<view class="font-size-mini  align-center protocol-area">
-				<image :src="isAccept?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'" style="width:16px;height:16px;margin-right:5px;vertical-align: middle;"  @click="changeAccpet()"
+		<view class="submit-container">
+			<view>
+				<image :src="isAccept?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'"  @click="changeAccpet()"
 				></image>
 				<text style="color:#2A2A2A;" >我已阅读并同意</text>
-				<text style="color:#42B0ED">《京东快件服务协议》《丽象服务协议》</text>
+				<text style="color:#42B0ED" @tap="goProtocol">《快件服务协议》</text>
 			</view>
-			<view class="flex justify-start ">
-				<view	class="submit-price-btn"
-						>预估计运费暂无</view>
-				<view 	class="submit-btn"
-						 @click="createExpress">下单</view>
+			<view class="submit-btn flex align-center">
+				<view class="flex-1">
+					预估运费 : <text class="font-size-bigger color-blue font-weight-bold">暂无</text>
+				</view>
+				<view class="flex-sm bg-blue" @click="submitOrder">下单</view>
 			</view>
-
 		</view>
-
-
-
 
 		<!--//包裹信息-->
-		<view class="cu-modal bottom-modal" :class="modalName=='goodsInfo'?'show':''">
-			<view class="cu-dialog">
-				<view class="cu-bar bg-white">
-					<view class="action text-green"></view>
-					<view class="font-size-big color-normal">包裹信息</view>
-					<view class="action text-blue font-size-normal" @tap="hideModal">确定</view>
-				</view>
-				<view class="padding-xl borderTop bg-white">
-					<view class="goods-info-item flex justify-between" style="margin-bottom:18px;">
-						<view class="font-size-big color-normal">体积</view>
-						<view class="flex justify-start">
-							<view class="num-tab " @click="goodsNumOperate('square','minus')">-</view>
-							<view style="background:#F5F5F5;padding:3px 12px;margin:0 9px;" class="font-size-normal color-normal">
-								{{goods.square}}m³
-							</view>
+		<goods-info
+			:isShow="modalName=='goodsInfo'"
+			@hideModal="getGoodsInfo"
+		></goods-info>
 
-							<view class="num-tab " @click="goodsNumOperate('square','add')">+</view>
-						</view>
-					</view>
-					<!--<view class="goods-info-item flex justify-between" style="margin-bottom:18px;">-->
-						<!--<view class="font-size-big color-normal">数量</view>-->
-						<!--<view>-->
-							<!--<text class="num-tab tab-add" @click="goodsNumOperate('qty','minus')">-</text>-->
-							<!--<text style="font-size:19px;"><text style="color:#2A2A2A;padding:0 20px;">{{goods.qty}}</text> <text style="color:#898888;margin-right:4px;">㎡</text></text>-->
-							<!--<text class="num-tab tab-minus" @click="goodsNumOperate('qty','add')">+</text>-->
-						<!--</view>-->
-					<!--</view>-->
-					<view class="goods-info-item flex justify-between" style="margin-bottom:18px;">
-						<view class="font-size-big color-normal">重量</view>
-						<view  class="flex justify-start">
-							<view class="num-tab " @click="goodsNumOperate('weight','minus')">-</view>
-							<view style="background:#F5F5F5;padding:3px 12px;margin:0 9px;" class="font-size-normal color-normal">
-								{{goods.weight}}kg
-
-							</view>
-							<view class="num-tab " @click="goodsNumOperate('weight','add')">+</view>
-						</view>
-					</view>
-					<view class="font-size-mini color-placeholder text-left" style="white-space: nowrap;margin-bottom:14px;">
-						(注：重量以快递员称重为准，快件“虚胖”要按体积收费哦～)
-					</view>
-					<view>
-						<view class="font-size-big color-normal text-left" style="margin-bottom:10px;">物品类型</view>
-						<view class="flex justify-around" style="margin-bottom:17px;" >
-							<view class="goods-type" v-for="(item,index) in goodType" :key="index"
-								  :class="{'bg-blue':goodsTypeTabCur==item.value,'text-white':goodsTypeTabCur==item.value}"
-								  @click="chooseItemOperate('goodsType',item)">
-								{{item.name}}
-							</view>
-						</view>
-					</view>
-					<view>
-						<view class="font-size-big color-normal text-left" style="margin-bottom:10px;">备注</view>
-						<view class="flex justify-around" style="margin-bottom:17px;">
-							<view class="goods-type" v-for="(item,index) in goodSummary" :key="index" :class="{
-								'bg-blue':goodSummaryTabCur==item.value,
-								'text-white':goodSummaryTabCur==item.value
-							}"  @click="chooseItemOperate('summary',item)">
-								{{item.name}}
-							</view>
-						</view>
-					</view>
-
-					<view class="position_relative">
-						<textarea  cols="30" rows="10" v-model="goods.summary" placeholder="请输入包裹备注信息" maxlength="100"
-							class="goods-summary text-left"
-						></textarea>
-
-						<view style="position:absolute;right:10px;bottom:10px;"><text class="text-blue">{{goods.summary.length}}</text>/100</view>
-					</view>
-				</view>
-			</view>
-		</view>
-
-
-		<showModel :isShow="modalName=='orderModal'" @hideModel="hideModel"
-				   @confirmDel="hideModel" v-if="modalName=='orderModal'">
-			<block slot="content">请遵守相关条例</block>
-		</showModel>
+		
 	</view>
 </template>
 <script>
+
+	import commonFlex from '../../../../../components/common/common-flex.vue'
+	import goodsInfo from '../../../../../components/express/goods-info.vue'
+	
 	import {mapState} from 'vuex'
-	import showModel from '../../../../../components/show-model.vue'
+	import {ChainShopApi} from '../../../../../api/shop_api.js'
+	import {NewWaybillApi,RequisitionApi} from '../../../../../api/express_api.js'
 	export default{
-		computed:mapState(['userInfo','expressStatusZn','expressCatalog','expressItem']),
+		computed:{
+			...mapState(['userInfo','shopCount','shopOnlyObj']),
+			expressItem(){return this.config.expressItem}
+		},
 		data(){
 			return{
 				title:{
 					name:'',
 					value:''
 				},//判断是速递订单还是物流订单
+				price:0,//报价
 				goods:{
-					name:'',
-					number:1,
-					weight:1,
-					price:'',
-					summary:'',
-					card:'',//身份证号
-					square:1,
-					size:1,//体积
-					qty:1,//数量
+					type:'衣物',//物品类型
+					weight:1,//重量
+					square:1,//体积
+					summary:'',//备注
 				},
 				ispay:'pay',//货到付款
 				isAccept:true,
 				modalName:'',
-				goodsTypeTabCur:0,//包裹类型
-				goodsTypeValue:'',//包裹类型
-				goodSummaryTabCur:0,//包裹备注
-				goodSummaryValue:'',//包裹备注
-				goodsSummaryList:[],
 				expressTypeValue:'',//寄件类型
 				expressTypeTabcur:0,//寄件类型
-				goodType:[
-					{name:'衣物',value:1},
-					{name:'文件',value:2},
-					{name:'数码产品',value:3},
-					{name:'其他',value:4},
-				],
-				goodSummary:[
-					{name:'带防水袋',value:1},
-					{name:'带文件封',value:2},
-					{name:'带纸箱',value:3},
-					{name:'上门请联系',value:4},
-				],
 				sendShop:{},
 				receiveShop:{
 					id:'',//如果是门店，则为门店id,
@@ -292,56 +183,196 @@
 				],
 				receiveTarget:'',//判断收件对象是门店还是消费者
 				distributeItem:{},//调拨单详情
-				windowHeight:'',
-				sTop:'',
-				screenHeight:''
+				newOrEdit:'new',
+				screenHeight:500
 
 			}
 		},
 		components:{
-			showModel
+			goodsInfo,commonFlex
 		},
-		mounted(){
-			this.viewTop()
+		onShow(){
+			this.getSystemInfo();
+			this.$fire.on('supplierShop',result=>{
+				this.receiveTarget=result.target;
+				if(result.shop){
+					this.receiveShop={
+						id:result.shop.id,
+						name:result.shop.name,
+						province:result.shop.province,
+						provinceName:result.shop.provinceName,
+						city:result.shop.city,
+						cityName:result.shop.cityName,
+						district:result.shop.district,
+						districtName:result.shop.districtName,
+						address:result.shop.address,
+					}
+				}
+				if(result.man){
+					this.receiverMan={
+						id:result.man.id,
+						name:result.man.name,
+						mobile:result.man.mobile || result.man.account
+					}
+				}
+			
+			
+			})
+			this.$fire.on('price',result=>{
+				this.price=result;
+				this.getSystemInfo()
+			})
+			this.$fire.on('address',result=>{
+				this.receiveTarget=result.target;
+				if(result){
+					this.receiveShop={
+						province:result.shoper.province,
+						provinceName:result.shoper.provinceName,
+						city:result.shoper.city,
+						cityName:result.shoper.cityName,
+						district:result.shoper.district,
+						districtName:result.shoper.districtName,
+						address:result.shoper.address,
+					}
+					this.receiverMan={
+						name:result.shoper.name,//联系人名称,
+						mobile:result.shoper.telephone,//电话
+					}
+				}
+			})
 		},
 		methods:{
-			/**
-			 * 获得页面的相对高度
-			 */
-			viewTop(){
-				uni.createSelectorQuery().select('#test').boundingClientRect((e)=>{
-					this.sTop=e.top
-
-				}).exec()
+			goProtocol(){
+				uni.navigateTo({
+					url:"../express-protocol/express-protocol"
+				})
 			},
+			getSystemInfo(){
+				uni.getSystemInfo({
+					success: (res) => {
+						this.screenHeight=res.windowHeight-uni.upx2px(150)
+					}
+				})
+			},
+			getGoodsInfo(event){
+				this.goods={
+					type:event.goodsType,
+					weight:event.weight,//重量
+					square:event.square,//体积
+					summary:event.goodSummary?event.goodSummary:'',//备注
+				}
+				this.hideModal()
+			},
+
 			hideModel(){
 				if(this.modalName){
 					this.modalName=null;
 				}
 			},
-			createExpress(){
+			editCheck(){
+				if(this.expressTypeTabcur==0){
+					
+					this.$utils.showToast('还没有选择寄件类型')
+					return false;
+				}
+				return true;
+			},
+			createCheck(){
+				//收件对象是门店并且没有收件人，收件对象是第三方并且没有收件人信息
+				if((this.receiveTarget==1 && !this.receiveShop)|| (this.receiveTarget==2 && !this.receiverMan)){
+					
+					this.$utils.showToast('还没有选择收件人')
+					return false;
+				}
+				if(this.expressTypeTabcur==0){
+					
+					this.$utils.showToast('还没有选择寄件类型')
+					return false;
+				}
+				if(!this.goods.weight || !this.goods.square){
+					
+					this.$utils.showToast('还没有选择包裹信息')
+					return false;
+				}
+				return true;
+			},
+			submitOrder(){
 				if(!this.isAccept){
-					this.modalName='orderModal'
+					uni.showModal({
+						content:'请遵守相关条例',
+						success: (res) => {
+							if(res.confirm){
+								this.isAccept=true;
+								this.createExpress()
+							}
+						}
+					})
 				}else{
-					if(this.distributeItem.id){
-						if(this.expressTypeTabcur==0){
-							uni.showToast({
-								title:'还没有选择寄件类型',
-								icon:'none'
-							})
-						}else if(!this.goods.weight || !this.goods.size){
-							uni.showToast({
-								title:'还没有选择包裹信息',
-								icon:'none'
-							})
-						}else{
-							this.$ajax('NewWaybill',{
+					this.createExpress()
+				}
+			},
+			async createExpress(){
+				switch(this.newOrEdit){
+					case 'new':
+					//新建快递
+					let newParams={};
+					let params={
+						destype:this.receiveTarget,
+						type:this.expressTypeTabcur,//寄件类型
+						catalog:this.goods.type,//判断物品类型
+						departure:this.sendShop.id,//门店id
+						deptype:this.expressItem.shop,//门店
+						volume:this.goods.square?this.goods.square:'',//体积
+						weight:this.goods.weight?this.goods.weight:'',//重量
+						insamount:this.price?this.price:'',//报价
+						summary:this.goods.summary?this.goods.summary:'',//备注
+					};
+					switch(this.receiveTarget){
+						case this.expressItem.shop://门店
+						newParams ={...params,destination:this.receiveShop.id,receiver:this.receiverMan.id}
+						break;
+						case this.expressItem.store://仓库
+							newParams = {...params,
+								destination:this.receiveShop.id,
+								recverName:this.receiverMan.name?this.receiverMan.name:'',
+								recverMobile:this.receiverMan.mobile?this.receiverMan.mobile:''}
+						break;
+						case this.expressItem.company://公司
+							newParams = {...params,
+								destination:this.receiveShop.id,
+								recverName:this.receiverMan.name?this.receiverMan.name:'',
+								recverMobile:this.receiverMan.mobile?this.receiverMan.mobile:''}
+						break;
+						case this.expressItem.customer://消费者
+						
+							newParams ={...params,
+								destination:0,
+								receiver:0,
+								desaddr:`${this.receiveShop.provinceName}${this.receiveShop.cityName}${this.receiveShop.districtName}${this.receiveShop.address}`,
+								destpay:this.ispay=='pay'?1:0,
+								recverName:this.receiverMan.name?this.receiverMan.name:'',
+								recverMobile:this.receiverMan.mobile?this.receiverMan.mobile:''
+							}
+						break
+					}
+					if(this.createCheck()){
+						if(await NewWaybillApi(newParams)){
+							this.$utils.showToast('下单成功')
+							this.$utils.goBack()
+							this.$utils.hide()
+						}
+
+					}
+					break;
+					case 'edit':
+					//调拨转快递
+					if(this.editCheck()){
+						let val={
 								type:this.expressTypeTabcur,//寄件类型
-								catalog:this.goodsTypeValue,//判断物品类型
+								catalog:this.goods.type,//判断物品类型
 								departure:this.sendShop.id,//门店id
 								deptype:this.expressItem.shop,//门店
 								//目的地如果receiverName存在就是0
-								// destination:this.receiveTarget==this.expressItem.customer?0:this.receiveShop.id,
 								destination:this.distributeItem.recverName && this.distributeItem.recverMobile ? 0:this.receiveShop.id,
 								destype:this.distributeItem.recverName && this.distributeItem.recverMobile ?this.expressItem.customer:this.expressItem.shop,
 								receiver:this.distributeItem.recverName && this.distributeItem.recverMobile?0:this.receiverMan.id,//店员
@@ -356,83 +387,16 @@
 								recverName:this.distributeItem.recverName && this.distributeItem.recverMobile?this.receiverMan.name:'',
 								recverMobile:this.distributeItem.recverName && this.distributeItem.recverMobile?this.receiverMan.mobile:'',
 								transfer:this.distributeItem.id
-							},res=>{
-								if(res==-75){
-									uni.showToast({
-										title:'收件人和寄件人不能相同!',
-										icon:'none'
-									})
-								}else{
-									uni.navigateTo({
-										url:"../success-send/success-send?way="+this.expressCatalog.express+'&id='+res+"&type=distribute"
-									})
-								}
-
-							})
 						}
-					}else{
-						if(!this.sendShop){
-							uni.showToast({
-								title:'还没有选择寄件人',
-								icon:'none'
-							})
-						}else if(
-						(this.receiveTarget==1 && !this.receiveShop)
-						|| (this.receiveTarget==2 && !this.receiverMan)){
-							uni.showToast({
-								title:'还没有选择收件人',
-								icon:'none'
-							})
-						}else if(this.expressTypeTabcur==0){
-							uni.showToast({
-								title:'还没有选择寄件类型',
-								icon:'none'
-							})
-						}else if(!this.goods.weight || !this.goods.size){
-							uni.showToast({
-								title:'还没有选择包裹信息',
-								icon:'none'
-							})
-						}else{
-							this.$ajax('NewWaybill',{
-								type:this.expressTypeTabcur,//寄件类型
-								catalog:this.goodsTypeValue,//判断物品类型
-								departure:this.sendShop.id,//门店id
-								deptype:this.expressItem.shop,//门店
-								destination:this.receiveTarget==this.expressItem.customer?0:this.receiveShop.id,
-								destype:this.receiveTarget,
-								receiver:this.receiveTarget==this.expressItem.customer?0:this.receiverMan.id,//店员
-								desaddr:this.receiveTarget==this.expressItem.customer?
-										`${this.receiveShop.provinceName}${this.receiveShop.cityName}${this.receiveShop.districtName}${this.receiveShop.address}`:'',//消费者的地址
-								volume:this.goods.square?this.goods.square:'',//体积
-								weight:this.goods.weight?this.goods.weight:'',//重量
-								// qty:this.goods.qty?this.goods.qty:'',//数量
-								insamount:this.goods.price?this.goods.price:'',//报价
-								destpay:this.ispay=='pay'?1:0,//是否到付
-								summary:this.goods.summary?this.goods.summary:'',//备注
-								recverName:this.receiveTarget==this.expressItem.customer?this.receiverMan.name:'',
-								recverMobile:this.receiveTarget==this.expressItem.customer?this.receiverMan.mobile:'',
-							},res=>{
-								if(res==-75){
-									uni.showToast({
-										title:'收件人和寄件人不能相同!',
-										icon:'none'
-									})
-								}else{
-									uni.navigateTo({
-										url:"../success-send/success-send?way="+this.expressCatalog.express+'&id='+res+"&type=create"
-									})
-								}
-
-							})
+						if(await NewWaybillApi(val)){
+							this.$utils.showToast('下单成功')
+							this.$utils.goBack()
+							this.$utils.hide()
 						}
+
 					}
-
-
-
+					break;
 				}
-
-
 			},
 			chooseExpressType(type){
 				this.expressTypeValue=type;
@@ -449,10 +413,8 @@
 						break;
 					case 'receiver':
 						if(!this.sendShop.name){
-							uni.showToast({
-								title:'请输入寄件信息',
-								icon:'none'
-							})
+							
+							this.$utils.showToast('请输入寄件信息')
 						}else{
 							uni.navigateTo({
 								url:"../shop-list-supplier/shop-list-supplier?type=emailReceiver&id="+this.sendShop.id
@@ -491,7 +453,7 @@
 				this.expressTab=item.id
 			},
 			goBack(){
-				uni.redirectTo({
+				uni.navigateTo({
 					url:'../express-index/express-index'
 				})
 			},
@@ -508,22 +470,34 @@
 			hideModal(){
 				this.modalName=null;
 			},
+			async getShopItem(id){
+				let result = await ChainShopApi(id);
+				this.sendShop={
+					id:result.id,
+					name:result.name,
+					address:result.address?result.address:'',
+					provinceName:result.provinceName?result.provinceName:'',
+					cityName:result.cityName?result.cityName:'',
+					districtName:result.districtName?result.districtName:'',
+					saleName:this.userInfo.name?this.userInfo.name:'',
+					saleTel:this.userInfo.mobile?this.userInfo.mobile:''
+				}
 
+			},
 			/**
 			 * @param {Object} type
 			 获得调拨单详情
 			 */
-			getDistributeInfo(id){
-				this.$ajax('Requisition',{id:id},res=>{
-					this.distributeItem=res;
-					this.sendShop={
-						id:res.supplyShop,
-						name:res.supplyShopName,
-
-					}
-					this.receiveShop={
-					id:res.applyShop?res.applyShop:'',//如果是门店，则为门店id,
-					name:res.applyShopName?res.applyShopName:'',//如果是门店则为门店名字，
+			async getDistributeInfo(id){
+				this.distributeItem = await RequisitionApi(id);
+				this.sendShop={
+					id:this.distributeItem.supplyShop,
+					name:this.distributeItem.supplyShopName,
+				
+				}
+				this.receiveShop={
+					id:this.distributeItem.applyShop?this.distributeItem.applyShop:'',//如果是门店，则为门店id,
+					name:this.distributeItem.applyShopName?this.distributeItem.applyShopName:'',//如果是门店则为门店名字，
 					province:'',
 					provinceName:'',
 					district:'',
@@ -535,20 +509,13 @@
 					teleophone:'',//消费者电话
 				}
 				this.receiverMan={
-					id:res.applier?res.applier:'',//如果是门店，则为门店的id,
-					name:res.recverName?res.recverName:res.applierName,//联系人名称,
-					mobile:res.recverMobile?res.recverMobile:res.applierMobile,//电话
+					id:this.distributeItem.applier?this.distributeItem.applier:'',//如果是门店，则为门店的id,
+					name:this.distributeItem.recverName?this.distributeItem.recverName:this.distributeItem.applierName,//联系人名称,
+					mobile:this.distributeItem.recverMobile?this.distributeItem.recverMobile:this.distributeItem.applierMobile,//电话
 				}
 
+			},
 
-				})
-			},
-			backFixationTop(){
-				uni.pageScrollTo({
-					scrollTop:this.sTop,
-					duration:10
-				})
-			},
 			goodsNumOperate(type,operate){
 				switch(type){
 					case 'square':
@@ -583,208 +550,173 @@
 			}
 		},
 		onLoad(options){
-			uni.getSystemInfo({
-				success:(res)=>{
-					this.screenHeight=res.screenHeight-100;
-				}
-			})
+			this.getSystemInfo()
+			this.newOrEdit=options.newOrEdit;
 			if(options.type=='speed'){
 				this.title={name:'速递寄件',value:'speed',catalog:1}
-			}else if(options.type=='logistics'){
-				this.title={name:'物流寄件',value:'logistics',catalog:2}
+				uni.setNavigationBarTitle({
+					title:this.title.name
+				})
+				
 			}
-			if(options.id){
-				//获得调拨单详情
-				this.getDistributeInfo(options.id)
+			switch(this.newOrEdit){
+				case 'new':
+				if(this.shopCount==1){
+					this.sendShop={
+						id:this.shopOnlyObj.id,
+						name:this.shopOnlyObj.name?this.shopOnlyObj.name:'',
+						address:this.shopOnlyObj.address?this.shopOnlyObj.address:'',
+						provinceName:this.shopOnlyObj.provinceName?this.shopOnlyObj.provinceName:'',
+						cityName:this.shopOnlyObj.cityName?this.shopOnlyObj.cityName:'',
+						districtName:this.shopOnlyObj.districtName?this.shopOnlyObj.districtName:'',
+						saleName:this.userInfo.name?this.userInfo.name:'',
+						saleTel:this.userInfo.mobile?this.userInfo.mobile:''
+					}
+				}else{
+					this.getShopItem(options.id)
+				}
+				break;
+				case 'edit':
+				if(options.id){
+					//获得调拨单详情
+					this.getDistributeInfo(options.id)
+				}
+				break;
 			}
+			
+			
 			//需求方
 			this.$fire.on('applierShop',result=>{
-				console.log(result)
 				this.sendShop=result;
 			})
-			this.$fire.on('supplierShop',result=>{
-				this.receiveTarget=result.target;
-				if(result.shop){
-					this.receiveShop={
-						id:result.shop.id,
-						name:result.shop.name,
-						province:result.shop.province,
-						provinceName:result.shop.provinceName,
-						city:result.shop.city,
-						cityName:result.shop.cityName,
-						district:result.shop.district,
-						districtName:result.shop.districtName,
-						address:result.shop.address,
-					}
-				}
-				if(result.man){
-					this.receiveTarget=result.target;
-					this.receiverMan={
-						id:result.man.id,
-						name:result.man.name,
-						mobile:result.man.mobile || result.man.account
-					}
-				}
-
-
-			})
-			this.$fire.on('price',result=>{
-				this.goods.price=result;
-				this.backFixationTop();
-			})
-			this.$fire.on('address',result=>{
-				this.receiveTarget=result.target;
-				if(result){
-					this.receiveShop={
-						province:result.shoper.province,
-						provinceName:result.shoper.provinceName,
-						city:result.shoper.city,
-						cityName:result.shoper.cityName,
-						district:result.shoper.district,
-						districtName:result.shoper.districtName,
-						address:result.shoper.address,
-					}
-					this.receiverMan={
-						name:result.shoper.name,//联系人名称,
-						mobile:result.shoper.telephone,//电话
-					}
-				}
-			})
-			uni.getSystemInfo({
-				success:(res)=>{
-					this.windowHeight=res.windowHeight;
-				}
-			})
+			
+			
+			
 		},
 	}
 </script>
 <style lang="less" >
+	
+	.submit-container>view:first-child{
+		padding:20upx 0 20upx 30upx;
+		background:rgba(247,247,247,1);
+		font-size:12px;
+	}
+	.submit-container>view:first-child>image{
+		width:32upx;height:32upx;margin-right:10upx;vertical-align: middle;
+	}
+	.submit-btn{
+		background-color: #fff;
+		height:100upx;
+		font-size:16px;
+		line-height:100upx;
+	}
+	.submit-btn>view:first-child{
+		margin-left:30upx;
+	}
+	.submit-btn>view:first-child>text{
+		margin-left:10upx;
+	}
+	.submit-btn>view:nth-child(2){
+		text-align: center;
+		font-size:20px;
+		color:#fff;
+	}
 	page{
 		background:rgba(247,247,247,1)
 	}
-	.express-container{
-		.user-info{
-			.send-info{
-				padding:23px 9px 22px 18px;
-
-			}
-			.send-tag{
-				width:45px;
-				height:45px;
-				border-radius: 50%;
-				color:#fff;
-				margin-right:14px;
-				text-align:center;
-				line-height:45px;
-				font-size:20px;
-				background:rgba(32,32,32,1);
-			}
-			.receive-tag{
-				width:45px;
-				height:45px;
-				border-radius: 50%;
-				color:#fff;
-				text-align:center;
-				line-height:45px;
-				font-size:20px;
-				margin-right:14px;
-				background:rgba(66,176,237,1);
-			}
-			.shopInfo{
-				width:60%;
-
-			}
-
-		}
-
+	.send-info>view:nth-child(1){
+		margin-left:46upx;
 	}
-	.goods-container,.other-container{
-
-
-		.goods-item{
-			padding:0px 9px 0px 15px;
-			height:53px;
-			line-height:53px;
-			.item-name{
-
-				font-size:15px;
-				color:#2A2A2A;
-			}
-			.right-icon{
-				font-size:18px;
-				color:#898888;
-			}
-
-		}
-		.goods-item-summary{
-			padding:17px 11px 24px 14px;
-			.goods-item-summary-name{
-				padding-bottom:10px;
-			}
-		}
-		.goods-item-area{
-			max-height:84px;
-			width:100%;
-			padding-top:8px;
-			padding-left:11px;
-			background:rgba(247,247,247,1);
-			border-radius:4px;
-		}
+	.send-info>view:nth-child(2){
+		margin:40upx 0 ;
 	}
-	.btn-container{
-		background:#fff;
-		.protocol-area{
-			padding-left:14px;height:36px;line-height:36px;background:rgba(247,247,247,1)
-		}
-		.submit-price-btn{
-			flex:1;padding-top:19px;padding-left:15px;padding-bottom:19px;font-size:16px;color:#2A2A2A
-		}
-		.submit-btn{
-			width:35%;padding-top:16px;background:rgba(66,176,237,1);font-size:20px;text-align: center;color:white
-		}
-
+	.send-info>view:nth-child(3){
+		padding:46upx;
 	}
-	.goods-info-item{
-		.num-tab{
-			display: inline-block;width:24px;height:24px;border-radius: 50%;text-align: center;
-			font-size:24px;
-			line-height:20px;
-		}
-		.tab-add{
-			background:#EEEEED;color:#2A2A2A;
-		}
-		.tab-minus{
-			background:#42B0ED;color:#fff;
-		}
-
+	.receive-tag{
+		
+		background:rgba(66,176,237,1);
 	}
+	.express-tag{
+		width:90upx;
+		height:90upx;
+		border-radius: 50%;
+		color:#fff;
+		margin-right:28upx;
+		text-align:center;
+		line-height:90upx;
+		font-size:20px;
+	}
+	.send-tag{
+		
+		background:rgba(32,32,32,1);
+	}
+	
+	.shopInfo{
+		width:60%;
+	
+	}
+	.goods-item{
+		padding:0px 18upx 0px 8upx;
+		height:106upx;
+		line-height:106upx;
+		
+	
+	}
+	.right-icon{
+		font-size:18px;
+		color:#898888;
+	}
+	.goods-item-summary-name{
+		padding-bottom:20upx;
+	}
+	.goods-item-summary{
+		padding:34upx 22upx 48upx 28upx;
+		
+	}
+	.goods-item-area{
+		max-height:168upx;
+		width:100%;
+		padding-top:16upx;
+		padding-left:22upx;
+		background:rgba(247,247,247,1);
+		border-radius:10upx;
+	}
+	
+	.goods-info-item .num-tab{
+		display: inline-block;width:48upx;height:48upx;border-radius: 50%;text-align: center;
+		font-size:24px;
+		line-height:40upx;
+	}
+	.goods-info-item .tab-add{
+		background:#EEEEED;color:#2A2A2A;
+	}
+	.goods-info-item .tab-minus{
+		background:#42B0ED;color:#fff;
+	}
+	
 	.goods-type{
-		border-radius:14px;
-		border:1px solid rgba(216,216,216,1);width:24%;padding:4px 0;text-align: center;
+		border-radius:28upx;
+		border:1px solid rgba(216,216,216,1);width:24%;padding:8upx 0;text-align: center;
 	}
 	.express-item-modal{
-		padding-top:20px;padding-left:14px;padding-bottom:5px;
-		.express-item-tab{
-			margin-bottom:19px;
-			.express-logo{
-				width: 44px;height:44px;vertical-align: middle;margin-right:16px;
-			}
-			.choose-item{
-				width:18px;height:18px;right:18px;top:15px;
-			}
-		}
+		padding-top:40upx;padding-left:28upx;padding-bottom:10upx;
+		
 	}
-	.goods-summary{
-		background:rgba(247,247,247,1);
-		border-radius:8px;
-		width:100%;
-		max-height:103px;
-		padding-left:10px;
-		padding-top:10px;
-		font-size:12px;
+	.express-item-tab{
+		margin-bottom:38upx;
+		
 	}
+	.express-logo{
+		width: 88upx;height:88upx;vertical-align: middle;margin-right:32upx;
+	}
+	.choose-item{
+		width:36upx;height:36upx;right:36upx;top:30upx;
+	}
+	
 	.time-info{
-		padding:11px 32px 10px 15px;
+		padding:22upx 64upx 20upx 30upx;
 	}
 	.borderNo{
 		border:none

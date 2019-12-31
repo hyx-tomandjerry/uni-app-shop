@@ -36,7 +36,7 @@
 			</swiper>
 			<view class="picker-modal-footer">
 				<view class="picker-modal-footer-info">
-					<block v-if="isMultiSelect">
+					<!-- <block v-if="isMultiSelect">
 						<view class="picker-display">
 							<text>{{beginText}}日期</text>
 							<text class="picker-display-text">{{BeginTitle}}</text>
@@ -49,15 +49,15 @@
 							<view v-if="isContainTime" class="picker-display-link" :hover-stay-time="100" hover-class="picker-display-link-active"
 							 :style="{color}" @click="onShowTimePicker('end')">{{EndTimeTitle}}</view>
 						</view>
-					</block>
-					<block v-else>
+					</block> -->
+					<!-- <block v-else> -->
 						<!-- <view class="picker-display">
 							<text>当前选择</text>
 							<text class="picker-display-text">{{BeginTitle}}</text>
 							<view v-if="isContainTime" class="picker-display-link" :hover-stay-time="100" hover-class="picker-display-link-active"
 							 :style="{color}" @click="onShowTimePicker('begin')">{{BeginTimeTitle}}</view>
 						</view> -->
-					</block>
+					<!-- </block> -->
 				</view>
 				<view class="picker-modal-footer-btn">
 					<view class="picker-btn" :hover-stay-time="100" hover-class="picker-btn-active" @click="onCancel">取消</view>

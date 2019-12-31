@@ -1,45 +1,19 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back"  @tap="goBack"></text></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >退货处理</view></block>
-		</cu-custom>
 		<view class="form-container borderTop ">
-			<view class="form-item borderBottom">
-				<view class="color-normal font-size-normal">
-					<text class="color-red">*</text>
-					<text>门店名称</text>
-				</view>
-				<view class="color-regular font-size-normal">{{shopItem.name || ''}}</view>
-			</view>
-			<view class="form-item borderBottom">
-				<view class="color-normal font-size-normal">
-					<text class="color-red">*</text>
-					<text>日期</text>
-				</view>
-				<view class="flex justify-end align-center" @tap="onShowDatePicker('date')">
-					<view class="color-regular">{{quitDate}}</view>
-					<view class="cuIcon-right font-size-big color-regular" v-show="fromType!='count'"></view>
-				</view>
-			</view>
+			<common-flex leftContent="门店名称" :rightContent="shopItem.name || ''"></common-flex>
+			<common-flex leftContent="日期" 
+				:rightContent="quitDate" 
+				:type="fromType!='count'?'navigate':'normal'"
+				@operateItem="onShowDatePicker('date')"></common-flex>
+			<common-flex 
 			
-			<view class="form-item borderBottom">
-				<view class="color-normal font-size-normal">
-					<text class="color-red">*</text>
-					<text>店员</text>
-				</view>
-				<view class="flex justify-end align-center" @tap="chooseMan">
-					<view class="color-regular">{{manItem.name || ''}}</view>
-					<view class="cuIcon-right font-size-big color-regular" v-show="fromType!='count'"></view>
-				</view>
-			</view>
-			<view class="form-item borderBottom">
-				<view class="color-normal font-size-normal">
-					<text class="color-red">*</text>
-					<text>店员销售金额</text>
-				</view>
-				<view class="color-blue font-weight-bold font-size-normal">{{manSaleCount || 0}}</view>
-			</view>
+				leftContent="店员" 
+				:rightContent="manItem.name || ''" 
+				:type="(fromType =='index') && ( shopItem.manager == userInfo.id)?'navigate':'normal'"
+				@operateItem="chooseMan"
+			></common-flex>
+			<common-flex :rightContent=" manSaleCount || 0" leftContent="店员销售金额" :isColorBlue="true"></common-flex>
 			<view class="form-item borderBottom">
 				<view class="color-normal font-size-normal">
 					<text class="color-red">*</text>
@@ -53,16 +27,25 @@
 		 <mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true"
 						@confirm="onSelected($event)" @cancel="onSelected($event)" :isBegin="true"/>
 	
-		<bottom-btn-one content="确定"  @showModal="submit" :disabled="disabled" :loading="loading"></bottom-btn-one>
+		<common-btn-one
+			:type="btnType" 
+			:disabled="disabled" 
+			content="确定"
+			@operateBtn="submit" :isPos="true"></common-btn-one>
 	</view>
 </template>
 
 <script>
 	
 	import MxDatePicker from "../../../../../../components/uni/mx-datepicker/mx-datepicker.vue"
-	import bottomBtnOne from '../../../../../../components/common/bottom-btn-one.vue'
+	import commonBtnOne from '../../../../../../components/common/common-btn-one.vue'
+	import commonFlex from '../../../../../../components/common/common-flex.vue'
+	
+	import {mapState} from 'vuex'
+	import {SalesmanDailyAmountApi,DeductSalesAmountApi} from '../../../../../../api/statistics_api.js'
+	import {ChainShopApi} from '../../../../../../api/shop_api.js'
 	export default {
-		
+		computed:mapState(['userInfo']),
 		data() {
 			const currentDate = this.getDate({
 				format: true
@@ -77,99 +60,78 @@
 				manItem:{},
 				money:'',
 				disabled:true,
-				loading:false,
 				fromType:'',
-				manSaleCount:0
+				manSaleCount:0,
+				btnType:'default'
 			}
 		},
-		components:{MxDatePicker,bottomBtnOne},
+		components:{MxDatePicker,commonBtnOne,commonFlex},
 		watch:{
 			quitDate(val){this.change()},
 			money(val){this.change()},
 			manItem(val){this.change()}
 		},
 		methods: {
-			submit(){
-				
-				
+			//获得月份的店员绩效
+			async getManPerformance(){
+				if(this.fromType=='count') return;
+				let arr=this.quitDate.split('-');
+				let result = await SalesmanDailyAmountApi(this.shopID,this.manItem.id?this.manItem.id:'',{year:arr[0],month:arr[1]});
+				this.manSaleCount=result[`aday${Number(arr[2])}`];
+
+			},
+			async submit(){	
 				if(this.check()){
-					console.log('kkkk')
 					this.disabled=true;
-					this.loading=true;
-					this.$ajax('DeductSalesAmount',{
-						shop:this.shopID,
-						date:this.quitDate,
-						amount:this.money,
-						salesman:this.manItem.id
-					},res=>{
-						uni.showToast({
-							title:'退货处理成功',
-							icon:'none'
-						})
-						setTimeout(()=>{
-							uni.navigateBack({
-								delta:1
-							})
-						},900)
-					})
+					if(await DeductSalesAmountApi(this.shopID,this.quitDate,this.money,this.manItem.id)){
+						this.$utils.showToast('退货处理成功')
+						this.$utils.goBack()
+						this.$utils.hide()
+					}else{
+						this.disabled=false;
+					}
+
 				}
 			},
 			change(){
 				if(this.quitDate && this.money && this.manItem.id){
 					this.disabled=false;
+					this.btnType='primary'
 					return;
 				}
 				this.disabled=true;
+				this.btnType='default'
 			},
 			check(){
-				if(this.fromType=='count'){
-					if(!this.money){
-						uni.showToast({
-							title:'请输入退货金额',
-							icon:'none'
-						})
-						return false;
-					}
-					if(this.money>this.manSaleCount){
-						uni.showToast({
-							title:'退货金额超出销售金额',
-							icon:'none'
-						})
-						this.money='';
-						return false;
-					}
-					return true;
-				}else{
-					if(!this.quitDate){
-						uni.showToast({
-							title:'请选择日期',
-							icon:'none'
-						})
-						return false;
-					}
-					if(!this.manItem.id){
-						uni.showToast({
-							title:'请选择店员',
-							icon:'none'
-						})
-						return false;
-					}
-					if(!this.money){
-						uni.showToast({
-							title:'请输入退货金额',
-							icon:'none'
-						})
-						return false;
-					}
-					return true;
+				if(!this.money){
+					
+					this.$utils.showToast('请输入退货金额')
+					return false;
 				}
-				
+				if(this.money<=0){
+					
+					this.$utils.showToast('退货金额要大于0')
+					this.money="";
+					return false;
+				}
+				if(this.money>this.manSaleCount){
+					
+					this.$utils.showToast('退货金额不能超出销售金额')
+					this.money='';
+					return false;
+				}
+				if(this.fromType=='index' && this.shopItem.manager==this.userInfo.id && !this.manItem.id){
+					
+					this.$utils.showToast('请选择要退货的店员')
+					return false;
+				}
+				return true;	
 			},
 			// 选择店员
 			chooseMan(){
-				if(this.fromType=='count') return;
+				if(this.fromType=='count' || this.shopItem.manager != this.userInfo.id) return;
 				uni.navigateTo({
-					url:"../../../express-center/express-shop-man/express-shop-man?id="+this.shopID
+					url:"../../../express-center/express-shop-man/express-shop-man?id="+this.shopID+"&type=sale"
 				})
 			},
 			getDate(type) {
@@ -187,26 +149,45 @@
 				this.showPicker = true;
 				this.value = this[type];		
 			},		
-			getShopInfo(id){
-				this.$ajax('ChainShop',{id:id},res=>{
-					this.shopItem=res;
-				})
-			},
-			goBack(){
-				uni.navigateBack({
-					delta:1
-				})
+			async getShopInfo(id){
+				this.shopItem = await ChainShopApi(id);
+				if(this.fromType == 'index'){
+					//如果是店员
+					this.manItem=this.userInfo;
+					this.getManPerformance()
+				}
+
 			},
 			onSelected(event){
 				this.showPicker = false;
 				if(event) {
-					this.quitDate=this.$moment(event.date).format('YYYY-MM-DD')
+					this.quitDate=this.$moment(event.date).format('YYYY-MM-DD');
+					this.getManPerformance()
 				}
 				
-			}
+			},
+			
+		},
+		onShow(){
+			this.$fire.on('man',result=>{
+				if(result){
+					this.manItem=result;
+					this.getManPerformance()
+				}
+			})
 		},
 		onLoad(options){
-			if(options.type=='count'){
+			this.fromType=options.type;
+			switch(options.type){
+				case 'index':
+				//从首页进入的
+				if(options.shopID){
+					this.shopID=options.shopID;
+					this.getShopInfo(options.shopID);
+					
+				}
+				break;
+				case 'count':
 				this.fromType=options.type;
 				let obj=JSON.parse(options.obj);
 				this.shopID=obj.shopID;
@@ -215,19 +196,9 @@
 				this.manItem.name=obj.manName;
 				this.manSaleCount=obj.money;
 				this.quitDate=`${obj.year}-${obj.month>9?obj.month:'0'+obj.month}-${obj.day>9?obj.day:'0'+obj.day}`
-			}else{
-				if(options.shopID){
-					this.shopID=options.shopID;
-					this.getShopInfo(options.shopID)
-				}
+				//从年月日进入的
+				break;
 			}
-			
-			this.$fire.on('man',result=>{
-				if(result){
-					this.manItem=result;
-					console.log(this.manItem)
-				}
-			})
 		}
 	}
 </script>

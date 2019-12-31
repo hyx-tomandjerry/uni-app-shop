@@ -43,12 +43,11 @@
 
 <script>
 	import {mapState,mapMutations} from 'vuex'
+	import {getTodoList} from '../../../api/common_api.js'
 	export default {
-		computed:mapState(['userInfo','userStatus']),
+		computed:mapState(['shopCount','shopOnlyObj']),
 		data() {
-			return {
-
-			}
+			return {}
 		},
 		onLoad(){
 			this.getTodoList()
@@ -59,33 +58,51 @@
 		methods: {
 			
 			/*获得代办数量*/
-			getTodoList(){
-				this.$ajax('MyEventNumbers',{},res=>{
-					if(res>0){
-						uni.setTabBarBadge({
-						  index: 1,
-						  text:res.toString()
-						
-						})
-					}
-				})
+			async getTodoList(){
+				let result = await getTodoList();
+				if(result>0){
+					uni.setTabBarBadge({
+					  index: 1,
+					  text:result.toString()
+					
+					})
+				}else{
+					uni.hideTabBarRedDot({
+						index:1
+					})
+				}
+
 			},
 			showItem(type){
 				switch(type){
 					case 'log':
 					uni.navigateTo({
-						url:'../../tab-item-content/work-center/work-log/work-log'
+						url:'../../tab-item-content/work-center/receipte-center/work-log/work-log'
 					});
 					break;
 					case 'express':
-					uni.navigateTo({
-						url:'../../tab-item-content/work-center/express-center/express-index/express-index'
-					});
+					if(this.shopCount==1){
+						uni.navigateTo({
+							url:'../../tab-item-content/work-center/express-center/express-index/express-index?id='+this.shopOnlyObj.id
+						});
+					}else{
+						uni.navigateTo({
+							url:"../../tab-item-content/shop-center/shop-list/shop-list?type="+type
+						})
+					}
+					
 					break;
 					case 'repair':
-					uni.navigateTo({
-						url:'../../tab-item-content/shop-center/shop-center?type=alone'
-					});
+					if(this.shopCount==1){
+						uni.navigateTo({
+							url:'../../tab-item-content/shop-center/shop-center?type=all&id='+this.shopOnlyObj.id
+						});
+					}else{
+						uni.navigateTo({
+							url:"../../tab-item-content/shop-center/shop-list/shop-list?type="+type
+						})
+					}
+					
 					break;
 					case 'count':
 					//统计

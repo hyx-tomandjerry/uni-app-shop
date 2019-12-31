@@ -1,9 +1,0 @@
-<!-- <view class="btn-container" > -->
-		
-			<!-- 待审批可以删除 -->
-			<!-- <view class="refuse-btn " @click="showModal($event)" data-target="deleteModel" >删除订单</view> -->
-			<!-- 已驳回可以修改 -->
-			<!-- <view class="refuse-btn " @click="showModal($event)" data-target="repairModel" v-if="repaitItem.approval==approvalStatus.rejected">修改订单</view>-->
-			
-		<!-- </view> -->
-		<!-- <view class="btn-area" v-else-if=" (repaitItem.status==repairStatus.waitManager || repaitItem.status==repairStatus.waitArea)" @click="showModal($event)" data-target="repairModel">修改订单</view> -->

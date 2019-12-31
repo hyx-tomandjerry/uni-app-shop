@@ -1,0 +1,27 @@
+	.search-container{
+			padding-top:54upx;
+			padding-left:46upx;
+		}
+		.serch-intro{
+			margin-bottom: 78upx;	
+		}
+		.title{
+			font-size:27px;
+			font-weight: bold;
+			margin-bottom: 6upx;
+		}
+		.input-container{
+			margin-right: 52upx;
+			padding-bottom: 36upx;
+			border-bottom:1px solid #EEEEED;
+		}
+		.search-img{
+			width: 100upx;
+			height: 100upx;
+			vertical-align: middle;
+			margin-right: 36upx;
+		}
+		.search-icon{
+			width: 26upx;
+			height: 26upx;
+		}

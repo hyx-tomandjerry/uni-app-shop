@@ -3,21 +3,48 @@
 		<view class="task-item-title margin-bottom-normal font-size-big  font-weight-bold color-blue">
 			{{task.name}}
 		</view>
-			<common-item :content="task.executorName" intro="执行人 : " :bottomLitterStyle="true"></common-item>
-			<common-item :content="task.assignerName" intro="派发人 : "  :bottomLitterStyle="true"></common-item>
-			<common-item :content="task.bgndate | formatTime('YMD')" intro="开始时间 : "  :bottomLitterStyle="true"></common-item>
-			<common-item :content="task.duedate | formatTime('YMD')" intro="截止时间 : " :bottomLitterStyle="true"></common-item>
+			<normal-detail-item
+				leftIntro="执行人 : "
+				width='25%'
+				:marginBNo="true"
+				:leftPadding="true"
+				
+				:rightContent="task.executorName"
+				></normal-detail-item>
+				
+				<normal-detail-item
+					leftIntro="派发人 : "
+					width='25%'
+					:leftPadding="true"
+					:marginBNo="true"
+					:rightContent="task.assignerName"
+					></normal-detail-item>
+				
+				<normal-detail-item
+					leftIntro="开始时间 : "
+					:leftPadding="true"
+					:marginBNo="true"
+					:rightContent="task.bgndate | formatTime('YMDHMS')"
+					></normal-detail-item>
+				
+				<normal-detail-item
+					leftIntro="结束时间 : "
+					:leftPadding="true"
+					:marginBNo="true"
+					:rightContent="task.duedate | formatTime('YMDHMS')"
+					></normal-detail-item>
 		<view class="item-tag "
 				:class="{
-					'waiting':task.status==taskStatus.waiting,
-					'noReceive':task.status==taskStatus.unReceive,
-					'received':task.status==taskStatus.received,
-					'checkpass':task.status==taskStatus.pass,
-					'checknopass':task.status==taskStatus.noPass,
-					'rejected':task.status==taskStatus.rejected,
-					'overdue':task.status==taskStatus.overdue,
-	
-	
+						'created':task.status==taskStatus.created,
+						'assigned':task.status==taskStatus.assigned,
+						'refused':task.status==taskStatus.refused,
+						'accepted':task.status==taskStatus.accepted,
+						'delayed':task.status==taskStatus.delayed,
+						'finished':task.status==taskStatus.finished,
+						'rejected':task.status==taskStatus.rejected,
+						'receipted':task.status==taskStatus.receipted,
+						'aborted':task.status==taskStatus.aborted,
+						'canceled':task.status==taskStatus.canceled,
 					}"
 	
 		>{{task.status | taskStatusZnPipe}}</view>
@@ -25,11 +52,12 @@
 </template>
 
 <script>
-	import commonItem from "../common-item.vue"
-	import {mapState} from 'vuex'
+	import normalDetailItem from '../common/normal-detail-item.vue'
 	export default{
-		components:{commonItem},
-		computed:mapState(['taskStatus']),
+		components:{normalDetailItem},
+		computed:{
+			taskStatus(){return this.config.taskStatus}
+		},
 		props:{
 			task:Object,
 			index:Number
@@ -51,6 +79,7 @@
 	}
 	.item-tag{
 		width:180upx;height:66upx;line-height:66upx;text-align: center;
+		color:#fff;
 		border-radius:34upx 0px 0px 37upx;position:absolute;top:50%;right:0;transform:translateY(-50%);font-size:15px;
 	}
 </style>

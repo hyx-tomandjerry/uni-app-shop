@@ -28,7 +28,6 @@
 		},
 		methods:{
 			selectResolveWay(item){
-				console.log('kkk')
 				this.$emit('selectResolveWay',item)
 			}
 		}

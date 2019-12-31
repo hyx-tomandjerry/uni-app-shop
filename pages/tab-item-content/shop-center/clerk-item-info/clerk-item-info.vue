@@ -1,29 +1,39 @@
 <template>
-	<view class="clerk-item-container" >
+	<view class="clerk-item-container position_relative" :style="{height:screenHeight+'px'}">
 		<clerk-info-head :clerkItem="clerkItem"></clerk-info-head>
 		
 		<view class="clerk-info-container bg-white">
-			<clerk-info-item intro="门店名称" :content="shopItem.name"></clerk-info-item>
-			<clerk-info-item intro="手机号码" :content="clerkItem.account"></clerk-info-item>
-			<clerk-info-item intro="工作状态" content="在职"></clerk-info-item>
-			<clerk-info-item  type="job" :shopItem="shopItem" :clerkItem="clerkItem"></clerk-info-item>
+			<common-flex leftContent="门店名称" :rightContent="shopItem.name" :isRed="false"></common-flex>
+			<common-flex leftContent="手机号码" :rightContent="clerkItem.account" :isRed="false"></common-flex>
+			<common-flex leftContent="工作状态" :rightContent="clerkItem.status | userStatusZnPipe" :isRed="false"></common-flex>
+			<common-flex  :shopItem="shopItem" :clerkItem="clerkItem"  :isRed="false" type="job" :clerkTab="clerkTab"></common-flex>
+			
 		</view>
-		<!-- v-if="shopItem.manager==userInfo.id && clerkItem.id!=shopItem.manager" -->
-		<view class="operate-container bg-white" v-if="shopItem.manager==userInfo.id && clerkItem.id!=shopItem.manager  && clerkItem.motto!='manager'">
-			<view class="operate-item color-blue borderBottom" @click="setManager">设为店长</view>
-			<view class="operate-item color-red" @click="deleteClerk">删除</view>
+		<view class="mask" v-if="isShowModel" @tap="hideModel"></view>
+		<view class="model-content" :style="{top:statusHeight+'px'}" v-if="isShowModel">
+			<template v-if="shopItem.manager==userInfo.id ">
+				<template v-if="clerkItem.status==userStatus.applying">
+					<!-- 如果店员的状态是申请中 -->
+					<view class="color-blue" @tap="operateClerk('agree')"><text class="cuIcon-friendadd " ></text>同意加入</view>
+					<view class="color-red" @tap="operateClerk('refuse')"><text class="cuIcon-cut " ></text>拒绝加入</view>
+				</template>
+				<template  v-else-if="clerkItem.id!=shopItem.manager && clerkItem.status==userStatus.normal">
+					<!-- 店员状态是在职，并且店员不是店长 -->
+					<view class="color-blue" @tap="operateClerk('manager')"><text class="cuIcon-selection" ></text>设为店长</view>
+					<view class="color-red" @tap="operateClerk('delete')"><text class="cuIcon-delete " ></text>删除店员</view>
+				</template>
+			</template>
+			
+			
+			
 		</view>
-		
-		<!-- 设置店长 -->
-		<showModel :isShow="modalName=='setModel'" @hideModel="hideModal" @confirmDel="setShoper" v-if="modalName=='setModel'">
-			<block slot="content">	确定要将{{clerkItem.name}}设置店长吗?</block>
-		</showModel>
-		<!-- //删除店员 -->
-		<showModel :isShow="modalName=='deleteModel'" @hideModel="hideModal"
-				   v-if="modalName=='deleteModel'"
-				   @confirmDel="confirmDelete">
-			<block slot="content">确定要将{{clerkItem.name}}从{{selectIndex==1?'公司':'门店'}}删除吗?</block>
-		</showModel>
+		<!-- 右上方弹框 -->
+		<top-right-pupop
+			@operateItem="operateClerk"
+			@hideModel="hideModel"
+			:statusHeight="statusHeight"
+			:topRightList="topRightList"
+			:isShowModel="isShowModel"></top-right-pupop>
 	</view>
 
 
@@ -32,139 +42,221 @@
 <script>
 
 	import {mapState} from 'vuex'
-	import showModel from '../../../../components/show-model.vue'
 	import clerkInfoHead from '../../../../components/shop/clerk-info-head.vue'
-	import clerkInfoItem from '../../../../components/shop/clerk-info-item.vue'
+	import commonFlex from '../../../../components/common/common-flex.vue'
+	import topRightPupop from '../../../../components/shop/top-right-pupop.vue'
+	import {ChainShopApi,ShopSalesmenApi,UsersApi,SetShopManagerApi} from '../../../../api/shop_api.js'
+	import {RemoveSalesman} from '../../../../api/common_api.js'
+	import {AcceptSalesmanApi} from '../../../../api/shop_api.js'
 	export default {
-		computed:mapState(['userInfo']),
+		computed:{
+			...mapState(['userInfo']),
+			userStatus(){return this.config.userStatus}},
+		components:{clerkInfoHead,commonFlex,topRightPupop},
 		data() {
 			return {
 				clerkItem:{},//店员信息
 				shopItem:{},//门店信息
-				modalName:'',
-				selectIndex:0,	
+				clerkTab:1,
+				clerkID:'',
+				statusHeight:44,
+				isShowModel:false,
+				screenHeight:500,
+				topRightList:[]
 			}
 		},
-		components:{showModel,clerkInfoHead,clerkInfoItem},
+		onNavigationBarButtonTap(event){
+			if(this.clerkTab==2) return;
+			if(event.index==0){
+				if(this.shopItem.manager==this.userInfo.id){
+					//如果是店长
+					if(this.clerkItem.status==this.userStatus.applying){
+						this.topRightList=[
+							{name:'同意加入',icon:'cuIcon-friendadd',value:'agree',color:'color-blue'},
+							{name:'拒绝加入',icon:'cuIcon-cut',value:'refuse',color:'color-red'},
+						]
+					}else if(this.clerkItem.id!=this.shopItem.manager && this.clerkItem.status==this.userStatus.normal){
+						this.topRightList=[
+							{name:'设为店长',icon:'cuIcon-selection',value:'manager',color:'color-blue'},
+							{name:'删除店员',icon:'cuIcon-delete',value:'delete',color:'color-red'},
+						]
+					}
+					this.isShowModel=true;
+				}else{
+					this.isShowModel=false;
+				}
+				
+			}
+		},
 		methods: {
+			hideModel(){
+				this.isShowModel=false;
+			},
+			async setJoin(type){
+				
+				switch(type){
+					case 'agree':
+					if(await AcceptSalesmanApi(this.shopItem.id,this.clerkItem.id,0)){
+						this.$utils.showToast('店员加入成功')
+						this.$utils.goBack()
+					}
+					
+					break;
+					case 'refuse':
+						uni.showModal({
+							content:`确定要拒绝${this.clerkItem.name}加入?`,
+							success: (res) => {
+								if(res.confirm){
+									if(AcceptSalesmanApi(this.shopItem.id,this.clerkItem.id,1)){
+										this.$utils.showToast('拒绝加入')
+										this.$utils.goBack()
+									}
+								}
+							}
+						})
+					break;
+				}
+			},
+			//同意或者拒绝
+			operateClerk(type){
+				this.isShowModel=false;
+				switch(type){
+					case 'agree':
+						this.setJoin(type)
+					break;
+					case 'refuse':
+						this.setJoin(type)
+						
+						
+					break;
+					case 'manager':
+						this.setManager()
+					break;
+					case 'delete':
+						this.deleteClerk()
+						break;
+				}
+			},
+			//设置店长
+			async setManager(){
+				uni.showModal({
+				    content: `确定要将${this.clerkItem.name}设置店长?`,
+				    success:(res)=> {
+				        if (res.confirm) {
+							if( SetShopManagerApi(this.shopItem.id,this.clerkItem.id)){
+								this.$utils.showToast('设置店长成功');
+								this.$utils.goBack();
+							}
+				        }
+				    }
+				});
+			},
+			//删除店员
+			 deleteClerk(){
+				uni.showActionSheet({
+				    itemList: ['从公司彻底删除', '从门店删除'],
+				    success:(res)=> {
+						if(res.tapIndex!=2){
+							let num=res.tapIndex+1;
+							uni.showModal({
+							    content: `确定要将${this.clerkItem.name}从${num==1?'公司':'门店'}删除吗`,
+							    success:(res)=> {
+							        if (res.confirm) {
+										let val={
+											shop:num==1?0:this.shopItem.id,
+											users:this.clerkItem.id,
+											permanent:num==1?1:0
+										}
+										if(RemoveSalesman(val)){
+											this.$utils.showToast('删除店员成功')
+											this.$utils.goBack()
+										}
+							           
+							        } 
+							    }
+							});
+						}
+				    }
+				});
+			},
+			async checkShopDetail(id){
+				this.shopItem = await ChainShopApi(id);
+				this.findClerkItem()
+			
+			},
+			//找到选择的门店或者区域人员
+			async findClerkItem(){
+				let result =[]
+				switch(Number(this.clerkTab)){
+					case 1:
+						result = await ShopSalesmenApi(this.shopItem.id);
+						this.clerkItem=result.find(item=>item.id==this.clerkID)
+					break;
+					case 2:
+						result = await UsersApi(this.shopItem.zone)
+						this.clerkItem=result.find(item=>item.id==this.clerkID)
+					break;
+				}
+				
+			},
+
 			goBack(){
 				uni.navigateBack({
 					delta:1
 				})
-			},
-			//设置店长
-			setManager(){
-				this.modalName='setModel'
-			},
-			//确认设置店长
-			setShoper(){
-				this.$ajax('SetShopManager',{
-					shop:this.shopItem.id,
-					user:this.clerkItem.id
-				},res=>{
-					uni.showToast({
-						title:'设置店长成功',
-						icon:'none'
-					})
-					this.hideModal()
-					this.goBack()
-				})
-			},
-			hideModal(){
-				this.modalName=null;
-			},
-			//删除店员
-			deleteClerk(){
-				// this.modalName='deleteModel'
-				uni.showActionSheet({
-				    itemList: ['从公司彻底删除', '从门店删除', '取消'],
-				    success:(res)=> {
-						this.selectIndex=res.tapIndex+1;
-						switch(res.tapIndex+1){
-							case 1:
-							this.modalName='deleteModel'
-							break;
-							case 2:
-							this.modalName='deleteModel'
-							break;
-						}
-				    },
-				    fail: function (res) {
-				        console.log(res.errMsg);
-				    }
-				});
-			},
-			checkShopDetail(id){
-				this.$ajax('ChainShop',{id:id},res=>{
-					this.shopItem=res;
-					console.log(res.manager)
-				})
-			
-			},
-			// 确认删除店员
-			confirmDelete(){
-				this.$ajax('RemoveSalesman',{
-					shop:this.selectIndex==1?0:this.shopItem.id,
-					users:this.clerkItem.id,
-					permanent:this.selectIndex==1?1:0
-				},res=>{
-					uni.showToast({
-						title:'删除店员成功',
-						icon:'none'
-					})
-					this.hideModal();
-					this.goBack()
-				})
-			},
+			}
 		},
 		onLoad(options){
-			if(options.shopID){
-				this.checkShopDetail(options.shopID)
-			}
-			this.clerkItem=options.clerkItem?JSON.parse(options.clerkItem):{};
-			console.log(this.clerkItem)
+			uni.getSystemInfo({
+				success:(res)=>{
+					this.statusHeight=res.statusBarHeight+uni.upx2px(40);
+					this.screenHeight=res.windowHeight
+				}
+			})
+			this.clerkTab=Number(options.clerkTab);
+			this.clerkID=Number(options.clerkID)
+			this.checkShopDetail(options.shopID);
 		},
 
 	}
 </script>
 
-<style lang="less">
-	
-	.user-info-img{
-		background-color: #fff;
-		width:200upx;
-		height:200upx !important;
-		border-radius: 100%;
-		flex-shrink: 0;
+<style scoped>
+	.mask{
 		position:absolute;
-		top:50%;
-		left:50%;
-		transform: translate(-50%,-50%);
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		height:100%;
+		background:rgba(0,0,0,0.2)
 	}
-	
-	.user-info-container{
-		height:500upx;
-		.arrow-back{
-			left:80upx;
-			top:90upx;
-		}
-		.name{
-			position:absolute;
-			bottom:15px;
-			left:25px;
-			
-		}
-
+	.model-content{
+		background:#FFFFFF;
+		width:300upx;
+		border-radius: 10upx;
+		position:fixed;
+		right:40upx;
+		z-index:10000000000000
+	}
+	.model-content view{
+		height:100upx;
+		font-size:15px;
+		line-height:100upx;
+		padding:0upx 16upx;
+		border-bottom:1px solid #EEEEED;
+	}
+	.model-content>view>text{
+		margin-right:20upx;
+		font-size:18px;
 	}
 	.clerk-info-container{
-		margin-bottom: 60px;
+		margin-bottom: 120upx;
 		
 	}
-	.operate-container{
-		.operate-item{
-			height:53px;
-			line-height:53px;
-			text-align: center;
-		}
+	.operate-item{
+		height:106upx;
+		line-height:106upx;
+		text-align: center;
 	}
 </style>

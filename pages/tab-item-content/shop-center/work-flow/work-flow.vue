@@ -1,11 +1,6 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >流程模板</view></block>
-		</cu-custom>
 		<view class="bg-white work-flow-container borderTop">
-			<!-- -->
 			<block v-for="(item,index) in workFlowList" :key="index" >
 				<checkProgressItem :item="item" :index="index" @chooseItem="selectFlow"></checkProgressItem>
 			</block>
@@ -16,10 +11,9 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
-	import checkProgressItem from '../../../../components/check-progress-item.vue'
+	import checkProgressItem from '../../../../components/check-template/check-progress-item.vue'
+	import {WorkflowsApi} from '../../../../api/common_api.js'
 	export default {
-		computed:mapState(['constants']),
 		components:{checkProgressItem},
 		data() {
 			return {
@@ -29,11 +23,6 @@
 			}
 		},
 		methods: {
-			goBack(){
-				uni.navigateBack({
-					delta: 1
-				});
-			},
 			selectFlow(item){
 				setTimeout(()=>{
 					uni.navigateBack({
@@ -44,14 +33,8 @@
 					})
 				},800)
 			},
-			getWorkFlowList(type){
-				this.$ajax('Workflows',{
-					type:type
-				},res=>{
-					if(res){
-						this.workFlowList=res;
-					}
-				})
+			async getWorkFlowList(type){
+				this.workFlowList = await WorkflowsApi(type)
 			}
 		},
 		onLoad(options){
@@ -61,6 +44,6 @@
 	}
 </script>
 
-<style lang="less">
+<style>
 
 </style>

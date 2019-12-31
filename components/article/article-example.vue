@@ -8,10 +8,13 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
 	export default{
-		computed:mapState(['report']),
 		props:{item:Object,index:Number},
+		computed:{
+			report(){
+				return this.config.report
+			}
+		},
 		methods:{
 			checkItemInfo(){
 				this.$emit('checkItemInfo',this.item)
@@ -34,10 +37,10 @@
 		margin-bottom: 20upx;
 	}
 	.operateImg{
-		width:37px;
-		height:37px;
-		top:22px;
-		right:18px;
+		width:80upx;
+		height:80upx;
+		top:44upx;
+		right:26upx;
 
 	}
 </style>

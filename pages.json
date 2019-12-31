@@ -1,10 +1,13 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/page
+	
 		{
 			"path" : "pages/login-design/login/login",
 			"style": {
 				"navigationStyle":"custom",
 				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none",
 					"titleNView":false
 				}
 
@@ -22,24 +25,44 @@
 		{
 		    "path" : "pages/tab-item-content/work-center/express-center/express-list/express-list",
 		    "style" : {
-				"navigationStyle":"custom",
-				"enablePullDownRefresh": true,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":{
+						"buttons":[
+							{
+								"float":"right",
+								"fontSrc":"static/icon.ttf",
+								"text":"\ue64c",
+								"color":"#42B0ED"
+							}
+						]
+					}
 				}
 			}
 		},
-
-
-
-
- {
+		{
 	          "path" : "pages/tab-item-content/shop-center/repair-item/repair-item",
 	          "style" : {
-				  "navigationStyle":"custom",
+				  
 				  "enablePullDownRefresh": true,
+				  "navigationBarBackgroundColor":"#FFFFFF",
+				  "navigationBarTextStyle":"black",
+				  "navigationBarTitleText":"报修类别",
 				  "app-plus":{
-					  "titleNView":false
+					  "titleNView":{
+						  "buttons":[
+							  {
+								  "text":"确定",
+								  "float":"right",
+								  "fontSize":"14",
+								  "color":"#898888",
+								  "colorPressed":"#42B0ED"
+							  }
+						  ]
+					  }
 				  }
 	          }
 	      },
@@ -57,216 +80,231 @@
 		  {
 		        "path" : "pages/tab-item-content/work-center/express-center/express-index/express-index",
 		        "style" : {
-					"navigationStyle":"custom",
+					"navigationBarTextStyle":"white",
 					"app-plus":{
-						"titleNView":false
+						"bounce":"none",
+						"scrollIndicator":"none",
+						"titleNView":{
+							"buttons":[
+								{
+									"float":"right",
+									"fontSrc":"./static/icon.ttf",
+									"text":"\ue503",
+									"color":"#FFFFFF",
+									"fontSize":"25"
+								}
+							]
+						}
 					}
 				}
 		    },
 
-	{
-	    "path" : "pages/tab-item-content/work-center/express-center/create-express/create-express",
-	    "style" : {
-	   	"navigationStyle":"custom",
-	   	"app-plus":{
-	   		"titleNView":false
-	   	}
-	   }
-	},
-
-
-
-		  {
+	    {
+			"path" : "pages/tab-item-content/work-center/express-center/create-express/create-express",
+			"style" : {
+			"navigationBarBackgroundColor":"#FFFFFF",
+			"navigationBarTextStyle":"black",
+			"app-plus":{
+				"bounce":"none",
+				"scrollIndicator":"none",
+				"titleNView":{
+					
+				}
+			}
+		   }
+		},
+		 {
 		      "path" : "pages/tab-item-content/mine-center/basic-setting/basic-setting",
 		      "style" : {
-		  		"navigationStyle":"custom",
-		  		"app-plus":{
-		  			"titleNView":false
-		  		}
+		  		"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"基本资料",
+				"app-plus":{
+					"titleNView":{
+						"buttons":[
+							{
+								"float":"right",
+								"text":"提交",
+								"color":"#898888",
+								"colorPressed":"#42B0ED",
+								"fontSize":"14",
+								"width":"46px"
+							}
+						]
+					}
+				}
 		  	}
 		  },
-	{
-	    "path" : "pages/tab-item/mine/mine",
-	    "style" : {
-			"navigationBarTitleText": "我的","navigationBarBackgroundColor":"#fff"
-		}
-	},
-
-	{
-	    "path" : "pages/login-design/reset-password/reset-password",
-		 "style": {
-			"app-plus":{
-				"bounce":"none",
-				"scrollIndicator":"none",
-				"titleNView":false
+		{
+			"path" : "pages/tab-item/mine/mine",
+			"style" : {
+				"navigationBarTitleText": "我的","navigationBarBackgroundColor":"#fff"
 			}
-		}
-
-	},
-	{
-	     "path" : "pages/tab-item-content/shop-center/create-order/create-order",
-	     "style" : {
-	 				"navigationStyle":"custom",
-	 				"app-plus":{
-	 					"titleNView":false
-	 				}
-	 		}
-	 },
-
-	   {
-	      "path" : "pages/tab-item-content/work-center/express-center/create-address/create-address",
-	      "style" : {
-	  		"navigationBarTitleText": "新增地址","navigationBarBackgroundColor":"#fff"
-	  	}
-	  },
-
-	{
-	    "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-count-alone/sale-count-alone",
-	    "style" : {
-			"navigationStyle":"custom",
-			"app-plus":{
-				"bounce":"none",
-				"scrollIndicator":"none",
-				"titleNView":false
+		},
+		{
+			"path" : "pages/login-design/reset-password/reset-password",
+			 "style": {
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":false
+				}
 			}
-		}
-	},
 
-	{
-	     "path" : "pages/tab-item-content/mine-center/edit-password/edit-password",
-	     "style" : {
-	 		"navigationStyle":"custom",
-	 		"app-plus":{
-	 			"titleNView":false
-	 		}
-	 	}
-	 } ,
-	{
-	    "path" : "pages/all-item-content/index-more/index-more",
-	    "style" : {
-			"enablePullDownRefresh": true,
-			"navigationStyle":"custom",
-			"app-plus":{
-				"titleNView":false
+		},
+		{
+			 "path" : "pages/tab-item-content/shop-center/create-order/create-order",
+			 "style" : {
+					"navigationBarBackgroundColor":"#FFFFFF",
+					"navigationBarTextStyle":"black",
+					"navigationBarTitleText":"新建保修",
+					"app-plus":{
+						"bounce":"none",
+						"scrollIndicator":"none",
+						"titleNView":{
+							
+						}
+					}	
+				}
+		 },
+
+		{
+			  "path" : "pages/tab-item-content/work-center/express-center/create-address/create-address",
+			  "style" : {
+				"navigationBarTitleText": "新增地址","navigationBarBackgroundColor":"#fff"
 			}
-		}
-	},
-	{
-	    "path" : "pages/tab-item-content/shop-center/shop-list/shop-list",
-	    "style" : {
-			"enablePullDownRefresh": true,
-			"navigationStyle":"custom",
-			"app-plus":{
-				"titleNView":false
+		},
+
+		{
+			"path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-count-alone/sale-count-alone",
+			"style" : {
+				"navigationBarTitleText":"绩效统计"
 			}
-		}
-	},
+		},
 
-	{
-	    "path" : "pages/tab-item-content/shop-center/create-comment/create-comment",
-	    "style" : {
-			"navigationBarTitleText": "发表评价","navigationBarBackgroundColor":"#fff"
-		}
-	},
+		{
+			 "path" : "pages/tab-item-content/mine-center/edit-password/edit-password",
+			 "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"设置登录密码",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				}
+			}
+		 } ,
+		{
+			"path" : "pages/all-item-content/index-more/index-more",
+			"style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":true,
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				}
+			}
+		},
+		{
+			"path" : "pages/tab-item-content/shop-center/shop-list/shop-list",
+			"style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"我的门店",
+				"enablePullDownRefresh":true,
+				"app-plus":{
+					"bounce":"none"
+				}
+			}
+		},
 
-	{
-	 "path" : "pages/tab-item/message/message",
-	 "style" : {
-		"navigationBarTitleText": "","navigationBarBackgroundColor":"#fff"
-	}
-	},
-	{
-	    "path" : "pages/tab-item-content/message-center/chat/chat",
-	    "style" : {
-	    	"navigationStyle":"custom",
-	    	"app-plus":{
-	    		"titleNView":false
-	    	}
-	    }
-	},
+		
 
-	  {
-	       "path" : "pages/login-design/design/design",
-	   	 "style": {
-	   		"navigationStyle":"custom",
-	   		"app-plus":{
-	   			"titleNView":false
-	   		}
-	   	}
-	   },
-
-
-
-
+		{
+		 "path" : "pages/tab-item/message/message",
+		 "style" : {
+			"navigationBarTitleText": "","navigationBarBackgroundColor":"#fff"
+			}
+		},
+		
 		  {
-	          "path" : "pages/tab-item-content/mine-center/input-code/input-code",
-	          "style" : {
-				   "navigationBarTitleText": "输入验证码","navigationBarBackgroundColor":"#fff"
-			  }
-	      },
+			   "path" : "pages/login-design/design/design",
+			 "style": {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		   },
 		   {
 		      "path" : "pages/tab-item-content/mine-center/change-telephone/change-telephone",
 		      "style" : {
-		      		  	"navigationStyle":"custom",
-		      		  	"app-plus":{
-		      		  		"titleNView":false
-		      		  	}
+					"navigationBarBackgroundColor":"#FFFFFF",
+					"navigationBarTextStyle":"black",
+					"navigationBarTitleText":"更换手机号"
 		      }
 		  },
-		  {
-		      "path" : "pages/tab-item-content/mine-center/account-manager/account-manager",
-		      "style" : {
-		  				  "navigationBarTitleText": "更换手机号码","navigationBarBackgroundColor":"#fff"
-		  			  }
-		  },
-
-
-
 		 {
 	          "path" : "pages/tab-item-content/shop-center/near-shop-list/near-shop-list",
 	           "style": {
-				   "enablePullDownRefresh":true,
-					"navigationStyle":"custom",
-					"app-plus":{
-						"titleNView":false
-					}
+				   "navigationBarBackgroundColor":"#FFFFFF",
+				   "navigationBarTextStyle":"black",
+				   "navigationBarTitleText":"选择门店",
+				   "enablePullDownRefresh":true
 	          }
 	      },
 		   {
 		      "path" : "pages/tab-item-content/shop-center/shop-center",
 		      "style": {
 				"enablePullDownRefresh":true,
-		  		"navigationStyle":"custom",
 		  		"app-plus":{
-		  			"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none",
+		  			"titleNView":{
+						
+					}
 		  		}
 		  	}
 		  },
-	{
-	    "path" : "pages/tab-item-content/work-center/create-log/create-log",
-	    "style" : {
+		{
+			"path" : "pages/tab-item-content/work-center/receipte-center/create-log/create-log",
+			"style" : {
 
-			"navigationBarBackgroundColor":"#fff",
-			"navigationBarTitleText": "工作回执"
-		}
-	},
-	{
-	    "path" : "pages/login-design/find-password/find-password",
-		 "style": {
-			"navigationStyle":"custom",
-			"app-plus":{
-				"titleNView":false
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTitleText": "工作回执"
 			}
-		}
-
-	},
-
- {
-            "path" : "pages/tab-item-content/shop-center/clerk-list/clerk-list",
-            "style" : {
+		},
+		{
+			"path" : "pages/login-design/find-password/find-password",
+			 "style": {
 				"navigationStyle":"custom",
 				"app-plus":{
 					"titleNView":false
+				}
+			}
+
+		},
+
+		{
+            "path" : "pages/tab-item-content/shop-center/clerk-list/clerk-list",
+            "style" : {
+				"navigationBarTitleText": "门店详情",
+				"enablePullDownRefresh":true,
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":{
+						"type":"transparent",
+						"buttons":[
+							{
+								"type":"menu",
+								"float":"right",
+								"fontSize":"20"
+							}
+						]
+						
+					}
 				}
 			}
         }
@@ -276,18 +314,34 @@
         ,{
             "path" : "pages/all-item-content/detail-content/detail-content",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"详情内容",
 				"app-plus":{
-					"titleNView":false
+					"titleNView":{
+						"buttons":[
+							{
+								"float":"right",
+								"fontSize":"14",
+								"color":"#42B0ED",
+								"colorPressed":"#898888",
+								"text":"编写回执",
+								"width":"60px"
+							}
+						]
+					}
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/shop-center/repair-order-item/repair-order-item",
            "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"报修详情",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
            }
         }
@@ -295,19 +349,11 @@
 
 
         ,{
-            "path" : "pages/tab-item-content/work-center/log-detail/log-detail",
+            "path" : "pages/tab-item-content/work-center/receipte-center/log-detail/log-detail",
             "style" : {
-				 "app-plus": {
-				        "titleNView": false
-
-				    }
-			}
-        }
-
-        ,{
-            "path" : "pages/tab-item-content/message-center/group-list/group-list",
-            "style" : {
-				"navigationBarTitleText": "群组列表","navigationBarBackgroundColor":"#fff"
+				 "navigationBarBackgroundColor":"#FFFFFF",
+				 "navigationBarTextStyle":"black",
+				 "navigationBarTitleText":"工作汇报详情"
 			}
         }
 
@@ -321,34 +367,40 @@
 			}
         }
         ,{
-            "path" : "pages/tab-item-content/work-center/work-log/work-log",
+            "path" : "pages/tab-item-content/work-center/receipte-center/work-log/work-log",
             "style" : {
 				"enablePullDownRefresh": true,
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"任务回执"
 				
 			}
         }
 
-        ,{
-            "path" : "pages/tab-item-content/mine-center/change-name/change-name",
-             "style" : {
-            	"navigationStyle":"custom",
-            	"app-plus":{
-            		"titleNView":false
-            	}
-            }
-        }
-
+		,{
+		    "path" : "pages/tab-item-content/shop-center/shop-map/shop-map",
+		    "style" : {
+				"navigationBarTitleText":"修改门店地址与定位",
+				"app-plus":{
+					"titleNView":{
+						"type":"transparent"
+					}
+				}
+			}
+		}
 
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/choose-express/choose-express",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"保价",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":{
+						
+					}
 				}
             }
         }
@@ -362,37 +414,67 @@
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/express-item/express-item",
             "style" : {
-				  "navigationBarTitleText": "订单详情","navigationBarBackgroundColor":"#fff"
+				  "navigationBarBackgroundColor":"#FFFFFF",
+				  "navigationBarTextStyle":"black",
+				  "navigationBarTitleText":"快递单详情",
+				  "app-plus":{
+					  "bounce":"none",
+					  "scrollIndicator":"none",
+					  "titleNView":{
+						  "buttons":[
+							  {
+								  "float":"right",
+								  "color":"#42B0ED",
+								  "fontSrc":"static/icon.ttf",
+								  "text":"\ue866"
+								  
+							  }
+						  ]
+						  
+					  }
+				  }
 			}
         }
 
         ,{
             "path" : "pages/tab-item-content/notice-center/notice-item/notice-item",
             "style" : {
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				},
 				 "navigationBarTitleText": "详情内容","navigationBarBackgroundColor":"#fff"
 			}
         }
-
-
-
-
-
-
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/express-shop-man/express-shop-man",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
 				"app-plus":{
-					"titleNView":false
+					"titleNView":{
+						"buttons":[
+							{
+								"float":"right",
+								"text":"确定",
+								"fontSize":"14",
+								"color":"#898888",
+								"colorPressed":"#42B0ED",
+								"width":"46px"
+							}
+						]
+					}
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/distribute-work-list/distribute-work-list",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":true,
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none"
 				}
 			}
         }
@@ -400,11 +482,6 @@
             "path" : "pages/tab-item-content/work-center/express-center/distribute-order-item/distribute-order-item",
             "style" : {"navigationBarTitleText": "调拨单详情","navigationBarBackgroundColor":"#fff"}
         }
-        ,{
-            "path" : "pages/tab-item-content/work-center/express-center/package-tracking/package-tracking",
-            "style" : {"navigationBarTitleText": "物流跟踪","navigationBarBackgroundColor":"#fff"}
-        }
-
         ,{
             "path" : "pages/tab-item/search-company/search-company",
             "style" : {
@@ -415,32 +492,37 @@
         ,{
             "path" : "pages/tab-item/join-shop/join-shop",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"加入门店",
+				"enablePullDownRefresh":true,
 				"app-plus":{
+					"bounce":"none",
 					"scrollIndicator":"none",
-					"titleNView":false
-				},
-				"enablePullDownRefresh":true
-			}
-        }
-
-        ,{
-            "path" : "pages/tab-item-content/work-center/express-center/success-send/success-send",
-            "style" : {
-				"navigationStyle":"custom",
-
-				"app-plus":{
-					"titleNView":false
+					"titleNView":{
+						"buttons":[
+							{
+								"float":"right",
+								"fontSize":"14",
+								"color":"#898888",
+								"colorPressed":"#42B0ED",
+								"text":"筛选",
+								"width":"56px"
+							}
+						]
+					}
 				}
 			}
         }
 
+        
+
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/shop-statistics-item/shop-statistics-item",
             "style" : {
-				"navigationStyle":"custom",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
@@ -448,18 +530,17 @@
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/record-money/record-money",
             "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTitleText":"记一笔",
+				"navigationBarTextStyle":"black"
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/statistics-check/statistics-check",
             "style" : {
-				"navigationStyle":"custom",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none"
+					
 				}
 			}
         }
@@ -479,50 +560,64 @@
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-start/sale-statistics-start",
             "style" : {
-				"navigationStyle":"custom",
-
+				"enablePullDownRefresh":true,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
 				"app-plus":{
-					"titleNView":false
+					"titleNView":{
+						"buttons":[
+							{
+								"float":"right",
+								"text":"筛选",
+								"fontSize":"14",
+								"color":"#898888",
+								"colorPressed":"#42B0ED",
+								"width":"46px"
+							}
+						]
+					}
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-search/sale-statistics-search",
             "style" : {
-
-				"navigationStyle":"custom",
-
-				"app-plus":{
-					"titleNView":false
-				}
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"筛选"
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve",
             "style" : {
-				"navigationStyle":"custom",
-
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/task-center/task-index/task-index",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
 				"enablePullDownRefresh":true,
+				"navigationBarTitleText":"任务管理",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/task-center/task-item-detail/task-item-detail",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"任务详情",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
@@ -534,58 +629,68 @@
 				"navigationBarBackgroundColor":"#fff"
 			}
         }
-
-        ,{
-            "path" : "pages/tab-item-content/work-center/express-center/search-express/search-express",
-            "style" : {
-				"navigationBarTitleText":"查快递",
-				"navigationBarBackgroundColor":"#fff"
-			}
-        }
-        ,{
-            "path" : "pages/tab-item-content/work-center/express-center/shop-list-applier/shop-list-applier",
-            "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
-			}
-        }
         ,{
             "path" : "pages/tab-item-content/work-center/express-center/shop-list-supplier/shop-list-supplier",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":true,
+				"navigationBarTitleText":"收件信息",
 				"app-plus":{
-					"titleNView":false
+					"titleNView":{}
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item/search-shop/search-shop",
             "style" : {
-				"navigationStyle":"custom",
-
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"门店筛选",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item/search-company-next/search-company-next",
             "style" : {
-				"navigationBarTitleText": "搜索公司","navigationBarBackgroundColor":"#fff"
+				"navigationBarTitleText": "搜索公司",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":{
+						"searchInput":{
+							"placeholder":"输入公司EID",
+							"align":"left",
+							"autoFocus":true,
+							"borderRadius":"5"
+						},
+						"buttons":[
+							{
+								"text":"取消",
+								"fontSize":"14",
+								"color":"#2A2A2A",
+								"float":"right"
+							}
+						]
+					}
+				}
 			}
-        }
-        ,{
-            "path" : "pages/tab-item-content/work-center/work-log-item/work-log-item",
-            "style" : {"navigationBarTitleText": "日报详情","navigationBarBackgroundColor":"#fff"}
         }
         ,{
             "path" : "pages/tab-item-content/shop-center/work-flow/work-flow",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"流程模板",
+				"enablePullDownRefresh":true,
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"titleNView":{
+						
+					}
 				}
 			}
         }
@@ -596,7 +701,14 @@
 					"scrollIndicator":"none",
 					"bounce":"none",
 					"titleNView":{
-						"type":"transparent"
+						"type":"transparent",
+						"buttons":[
+							{
+								"type":"menu",
+								"float":"right",
+								"fontSize":"20"
+							}
+						]
 					}
 				}
 			}
@@ -604,90 +716,84 @@
         ,{
             "path" : "pages/tab-item-content/work-center/task-center/check-apply/check-apply",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"申请验收",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-month/sale-statistics-month",
             "style" : {
-				"navigationStyle":"custom",
-				
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/work-apply-center/work-apply-index/work-apply-index",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarTextStyle":"white",
+				"navigationBarBackgroundColor":"#42B0ED",
+				"navigationBarTitleText":"工作申请",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/work-apply-center/work-my-apply/work-my-apply",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"新建申请",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/work-apply-center/apply-item-form/apply-item-form",
             "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"bounce":"none",
-					"titleNView":false
-				}
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black"
 			}
-        }
-        ,{
-            "path" : "pages/tab-item-content/work-center/work-apply-center/work-my-check/work-my-check",
-            "style" : {"navigationBarTitleText": "我的审批","navigationBarBackgroundColor":"#fff"}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/work-apply-center/my-apply-list/my-apply-list",
             "style" :{
-				"navigationStyle":"custom",
-				"app-plus":{
-					"bounce":"none",
-					"titleNView":false
-				}
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":true
 						
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/work-apply-center/apply-detail/apply-detail",
             "style" :{
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"申请详情",
 				"app-plus":{
 					"bounce":"none",
-					"titleNView":false
-				}
-			}
-        }
-        ,{
-            "path" : "pages/tab-item-content/shop-center/edit-shop-address/edit-shop-address",
-            "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
+					"scrollIndicator":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/shop-statistics-month-resolve/shop-statistics-month-resolve",
             "style" : {
-				"navigationStyle":"custom",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none",
+					"scrollIndicator":"none"
 				}
 			}
         }
@@ -695,24 +801,174 @@
             "path" : "pages/tab-item-content/work-center/statistics-center/statistics-check-list/statistics-check-list",
             "style" : {
 				"enablePullDownRefresh":true,
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
 				"app-plus":{
-					"titleNView":false
+					"bounce":"none"
 				}
 			}
         }
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-return-center/sale-return-form/sale-return-form",
             "style" : {
-				"navigationStyle":"custom",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"退货处理",
 				"app-plus":{
 					"bounce":"none",
-					"scrollIndicator":"none",
-					"titleNView":false
+					"scrollIndicator":"none"
 				}
 			}
         }
        
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/express-search/express-search",
+            "style" : {
+				"app-plus":{
+					"titleNView":{
+						"searchInput":{
+							"align":"left",
+							"placeholder":"输入运单号",
+							"autoFocus":true,
+							"borderRadius":"10"
+						},
+						"buttons":[
+							{
+								"float":"right",
+								"color":"#42B0ED",
+								"fontSize":"14",
+								"text":"取消",
+								"width":"50px"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/edit-company-info/edit-company-info",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"app-plus":{
+					"scrollIndicator":"none",
+					"bounce":"none"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/package-track/package-track",
+            "style" : {
+				"navigationBarTitleText":"物流跟踪",
+				"app-plus":{
+					
+					"titleNView":{
+						"type":"transparent"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/complaint/express-complaint/express-complaint",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"物流申诉",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/complaint/complaint-list/complaint-list",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"投诉列表",
+				"enablePullDownRefresh":true,
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/complaint/complaint-list-item/complaint-list-item",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"投诉详情",
+				"enablePullDownRefresh":true,
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/mine-center/company-info/company-info",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"公司详情",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":{
+						"type":"transparent"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-bind/service-bind",
+            "style" : {
+				"app-plus":{
+					"titleNView":{
+						
+						"searchInput":{
+							"align":"left",
+							"autoFocus":false,
+							"backgroundColor":"#F7F7F7",
+							"borderRadius":"10",
+							"placeholder":"设备序列号"
+						},
+						"buttons":[
+							{
+								"float":"right",
+								"fontSize":"20",
+								"fontSrc":"static/icon.ttf",
+								"text":"\ue502"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/shop-operate-form/shop-operate-form",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/shop-map/choose-city/choose-city",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"修改门店地址与定位"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/work-center/express-center/express-protocol/express-protocol",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"《快件服务协议》"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

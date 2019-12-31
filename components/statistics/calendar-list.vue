@@ -9,9 +9,13 @@
 				<view class="day position_relative" @tap="editAim(item)" :class="{'day-active':dayTabID==item.day}">
 					<view class="margin-b-m">{{item.day}}</view>
 					<view 
-						:class="{'noHas-active':item.num==0,'color-blue':item.num!=0,'color-regular':item.num==0}"
+						:class="{'noHas-active':item.num==0,'color-regular':item.num==0}"
 						class="font-size-mini "
-					>{{item.num | numStyle}}</view>
+					>
+					
+					<text v-if="type=='solve'">{{item.num | intStyle}}</text>
+					<text v-else>{{item.num | wanStyle}}</text>
+					</view>
 				</view>
 			</block>
 			<view class="day nm" v-for="(item,index3) in nextMonthDaysList" :key="item.day">{{item.day}}</view>
@@ -26,7 +30,8 @@
 			currentMonthDaysList:Array,
 			nextMonthDaysList:Array,
 			dayTabID:[Number,String],
-			weekList:Array
+			weekList:Array,
+			type:String
 		},
 		methods:{
 			editAim(item){

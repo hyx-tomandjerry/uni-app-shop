@@ -1,27 +1,12 @@
 <template>
 	<view>
-		<cu-custom :isBack="true"  bgColor="bg-white">
-			<block slot="left">
-				<view class="cuIcon-back" style="font-size:20px" @click.stop="goBack()"></view>
-			</block>
-			<block slot="content">
-				<view class="font-size-big font-weight-bold color-normal">基本资料</view>
-			</block>
-			<block slot="right">
-
-				<view class="font-size-small font-weight-normal text-blue" style="margin-right:15px;"  @click="setUserInfo()" >
-					提交
-				</view>
-			</block>
-		</cu-custom>
 		<view class="info-container bg-white">
-
-
 			<view class="user-info-item-log flex justify-between position_relative borderBottom" @click="uploadAvatar()">
 				<view class="font-weight-normal font-size-normal color-normal" style="line-height:47px;">头像</view>
 				<view >
 					<image
-
+					lazy-load="true"
+					mode="aspectFill"
 					class="coverUrl"
 					v-if="userInfo.headurl"
 					:src="userInfo.headurl" ></image>
@@ -29,21 +14,19 @@
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:27px;" ></text>
 			</view>
 
-			<view class="cu-form-group flex justify-between align-center">
+			<view class="cu-form-group flex justify-between align-center borderBottom">
 				<view class=" font-size-normal font-weight-normal color-normal">昵称</view>
 				<view class="flex justify-start align-center">
 					<input placeholder="请输入昵称"  style="text-align:right;" class="font-size-normal font-weight-normal " v-model="userInfo.name"></input>
 					<text class="cuIcon-right  text-gray" style="font-size:18px;" ></text>
 				</view>
 			</view>
-			<view class="cu-form-group flex justify-between align-center" @click="changeTel">
-				<view class=" font-size-normal font-weight-normal color-normal">电话</view>
-				<view>
-					<text class="font-size-normal color-regular">{{userInfo.mobile}}</text>
-					<text class="cuIcon-right text-gray" style="font-size:18px;" ></text>
-				</view>
-
-			</view>
+			<common-flex 
+					:isRed="false"
+					leftContent="电话" 
+					:rightContent="userInfo.mobile" 
+					type="navigate"
+					@operateItem="changeTel"></common-flex>
 		</view>
 		<view class="extra-container bg-white" >
 				<view class="uni-list borderBottom" style="height:51px;line-height:51px;">
@@ -90,6 +73,10 @@
 </template>
 <script>
 	import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue';
+	import commonFlex from '../../../../components/common/common-flex.vue'
+	
+	import {RefreshOnlineUser,FileApi,UploadTokenApi} from '../../../../api/common_api.js'
+	import {SetProfileApi} from '../../../../api/mine_api.js'
 	import {mapState,mapMutations} from 'vuex'
 	export default{
 		computed:mapState(['userInfo']),
@@ -111,7 +98,12 @@
 			}
 		},
 		components:{
-			MxDatePicker,
+			MxDatePicker,commonFlex
+		},
+		onNavigationBarButtonTap(event){
+			if(event.index==0){
+				this.setUserInfo()
+			}
 		},
 		methods:{
 			//修改电话号码
@@ -127,10 +119,7 @@
 				if(event){
 					var reg=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 					if(!reg.test(event)){
-						uni.showToast({
-							title:'身份证号不正确',
-							icon:'none'
-						})
+						this.$utils.showToast('身份证号不正确')
 					}
 				}
 
@@ -140,17 +129,12 @@
 			},
 			checkTelEvent(event){
 				 if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(event))){
-					uni.showToast({
-						title:'电话号码不存在',
-						icon:'none'
-					})
+					this.$utils.showToast('电话号码不存在')
 				}
 			},
 			//获得上传图片的token
-			getUploadToken(){
-				this.$ajax('UploadToken',{},res=>{
-					this.token=res
-				})
+			async getUploadToken(){
+				this.token = await UploadTokenApi()
 			},
 			uploadAvatar(){
 				this.getUploadToken();
@@ -162,7 +146,7 @@
 						const tempFilePaths=res.tempFilePaths;
 						this.coverList = res.tempFilePaths;
 						const uploadTask=uni.uploadFile({
-								url:this.$store.state.uploadHostUrl+this.token,
+								url:this.config.uploadHostUrl+this.token,
 								filePath:tempFilePaths[0],
 								name:'file',
 								formData:{
@@ -173,6 +157,10 @@
 								},
 								success: (uploadFileRes) => {
 									let FileRes=JSON.parse(uploadFileRes.data)
+									this.$utils.showToast('头像上传成功')
+									setTimeout(()=>{
+										uni.hideToast()
+									},900)
 									this.coverID=FileRes.data;
 									this.getAvater(this.coverID)
 								}
@@ -182,10 +170,10 @@
 				})
 			},
 			//获得头像图片
-			getAvater(id){
-				this.$ajax('File',{id:id},res=>{
-					this.userInfo.headurl=res.resurl;
-				})
+			async getAvater(id){
+				let result = await FileApi(id);
+				this.userInfo.headurl = result['resurl']
+
 			},
 			onSelected(e) {//选择
 				this.showPicker = false;
@@ -197,73 +185,55 @@
 				}
 
 			},
-			goBack(){
-				uni.navigateBack({
-					delta:1,
-					success:(res)=>{
-
-					}
-				})
-			},
 			onShowDatePicker(type){//显示
 			  this.type = type;
 			  this.showPicker = true;
 			  this.value = this[type];
 			},
-			setUserInfo(){
-
-				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(this.userInfo.mobile))){
-					uni.showToast({
-						title:'电话号码不存在',
-						icon:'none'
-					})
-				}else if(this.userInfo.idnum && !/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/.test(this.userInfo.idnum)){
-					uni.showToast({
-						title:'身份证号不正确',
-						icon:'none'
-					})
-				}else{
-
-					this.$ajax('SetProfile',{
+			async setUserInfo(){
+				if(this.check()){
+					let val={
 						gender:this.index==0?1:2,
 						mobile:this.userInfo.mobile,
 						name:this.userInfo.name,
-						// birthday:this.birthday?this.birthday:this.format(this.userInfo.birthday,'YMD'),
 						birthday:this.birthday?this.birthday:this.$moment(this.userInfo.birthday || new Date()).format('YYYY-MM-DD'),
 						idnum:this.userInfo.idnum?this.userInfo.idnum:''
-					},res=>{
-						uni.showToast({
-							title:'编辑基本信息成功',
-							icon:'none'
-						})
-						setTimeout(()=>{
-							uni.navigateBack({
-								delta:1
-							})
-						},800)
-					})
+					}
+					if(await SetProfileApi(val)){
+						this.$utils.showToast('编辑基本信息成功')
+						this.$utils.goBack()
+					}
 				}
 
+
 			},
-			...mapMutations(['login']),
-		},
-		onLoad(){
-			console.log(/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/.test('564335665566666'))
-		},
-		onShow(){
-			this.$ajax('RefreshOnlineUser',{},res=>{
-				this.login(res);
+			check(){
+				if(!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(this.userInfo.mobile))){
+					this.$utils.showToast('电话号码不存在')
+					return false;
+				}
+				if(this.userInfo.idnum && !/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/.test(this.userInfo.idnum)){
+					this.$utils.showToast('身份证号不正确')
+					return false;
+				}
+				return true;
+			},
+			async getUserInfo(){
+				let result = await RefreshOnlineUser();
+				this.login(result);
 				this.index=this.userInfo.gender==1?0:1;
-				if(res.idnum && res.idnum.length>10){
-					this.userInfo.idnum=res.idnum;
-					// let index=;
-					this.show_idnum=res.idnum.replace(res.idnum.slice(6,14),'********');
+				if(result.idnum && result.idnum.length>10){
+					this.userInfo.idnum=result.idnum;
+					this.show_idnum=result.idnum.replace(result.idnum.slice(6,14),'********');
 				}else{
 					this.show_idnum='';
 					this.userInfo.idnum=''
 				}
-
-			})
+			},
+			...mapMutations(['login']),
+		},
+		onShow(){
+			this.getUserInfo()
 		}
 	}
 </script>
@@ -287,13 +257,8 @@
 			/*padding:15px 33px 11px 14px;*/
 			.mixPadding(15px;33px;11px;14px);
 			.coverUrl{
-				/*border-radius: 50%;*/
-
-				/*width:47px;*/
-				/*height:47px;*/
-				/*vertical-align: middle*/
 				.mixImg(100upx;100upx);
-				.mixBorderRadius(10%)
+				.mixBorderRadius(50%)
 			}
 		}
 	}

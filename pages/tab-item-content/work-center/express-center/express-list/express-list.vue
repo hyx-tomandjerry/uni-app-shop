@@ -1,278 +1,254 @@
 <template>
 	<view>
-		<cu-custom isBack="true" bgColor="bg-white">
-			<block slot="left">
-				<view class="cuIcon-back" @click="goBack"></view>
-			</block>
-			<block slot="content">
-				<view class="font-size-big color-normal color-normal">查快递</view>
-			</block>
-			<block slot="right">
-				<image src="../../../../../static/icon/icon-yanshou-sousuo1@2x.png"
-					   class="img-search"
-					   @click="searchExpress"
-				></image>
-			</block>
-		</cu-custom>
-		<view  class="bg-white nav">
-			<view class="flex text-center justify-around">
-				<view class="cu-item  font-size-big "
-					  :class="item.id==navTabCur?'color-red borderBottomRed':'color-regular'" v-for="(item,index) in navList" :key="index"
-					  @tap="tabSelect(item)">
-					{{item.name}}
-				</view>
+		<view class="border-top" >
+			<view class="flex justify-between align-center bg-white" style="padding:20upx 40upx 10upx 30upx;">
+				<view>{{timeObj.year}}年</view>
+				<view class="flex align-center">物流费用总计: <strong class="color-blue">{{totalCountInfo.amount || 0}}元</strong> </view>
 			</view>
 		</view>
-		<view class="list-container" v-if="expressList.length">
-			<view class="list-item position_relative" v-for="(item,index) in expressList" :key="index" @click="checkItemDetail(item)">
-				<view class="list-card flex justify-between align-center ">
-					<view class="flex justify-start align-center">
-						<image src="../../../../../static/img/work/express/other/tag-speed.png" class="img-tag" v-if="item.type==expressType.speed"></image>
-						<image src="../../../../../static/img/work/express/other/tag-price.png" class="img-tag" v-if="item.type==expressType.price"></image>
-						<view>运单号 : {{item.seq }}</view>
-					</view>
-					<view>
-						<image src="../../../../../static/img/work/express/other/express-sign.png" class="sign-img" v-if="item.type==expressStatusZn.sign"></image>
-						<view v-else class="font-weight-bold"
-							  :class="{
-							  	'unpick':item.status==expressStatusZn.unSign,
-							  	'pick':item.status==expressStatusZn.pick,
-							  	'travel':item.status==expressStatusZn.travel,
-							  	'arrive':item.status==expressStatusZn.arrive
-							  }"
-						>
-							{{item.status | expressStatusPipe}}
-						</view>
-					</view>
+		<view class=" list-content">
+			<view class="flex justify-between align-center borderBottom bg-white">
+				<view @tap="showModel" data-target="timeModel">
+					{{timeObj.year}}年{{timeObj.month}}月
+					<text class="font-size-big color-regular" :class="{
+						'cuIcon-unfold':down,
+						'cuIcon-fold':!down
+					}"></text>
 				</view>
-				<view class="list-content ">
-					<view class="list-shop flex justify-between borderBottom align-center">
-
-						<view class="flex-1 text-ellipse font-size-normal">
-							<view class="font-size-mini font-weight-bold color-normal" style="margin-bottom:5px;">{{item.depname || ''}}</view>
-							<view class="font-size-mini color-regular">({{item.senderName || ''}}/{{item.senderMobile || ''}})</view>
-						</view>
-						<image src="../../../../../static/img/work/express/other/express-arrow.png" style="width:44px;height:11px;margin:0 5px;"></image>
-						<view class="flex-1 text-ellipse font-size-normal" style="padding-left:10px;">
-							<view v-if="item.destype==expressItem.shop">
-								<view class="font-size-mini font-weight-bold color-normal" style="margin-bottom:5px;">{{item.desname || ''}}</view>
-								<view class="font-size-mini color-regular">({{item.recverName || ''}}/{{item.recverMobile || ''}})</view>
-							</view>
-							<view v-if="item.destype==expressItem.customer">
-								<view class="font-size-mini color-normal" style="margin-bottom:5px;">({{item.recverName || ''}}/{{item.recverMobile || ''}})</view>
-								<view class="font-size-mini color-regular">({{item.desaddr || ''}})</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="list-time color-regular flex justify-between">
-					<view>下单时间：{{item.orderdate | formatTime('YMDHMS')}}</view>
-					<view class="travel-tag text-center" @click.stop="checkTrack(item)" v-if="item.status!=expressStatusZn.unSign">物流跟踪</view>
-				</view>
+				<view class="flex align-center">物流费用: <strong class="color-blue">{{countInfo.amount | numStyle}}元</strong></view>
 			</view>
 		</view>
-		<view v-else>
+		
+		<!-- tab start -->
+		<common-tab-nav 
+			:isShowBorder="false"
+			:tabList="tabList" 
+			:TabCur="TabCur" 
+			@tabSelect="tabSelect"></common-tab-nav>
+		<!-- tab end -->
+		<!-- 快递列表 start -->
+		<template v-if="expressList.length">
+			<view class="list-container">
+				<block v-for="(item,index) in expressList" :key="index">
+					<express-list-item 
+					:TabCur='TabCur'
+					:item="item" :index="index"
+					 @checkTrack="checkTrack"
+					 @checkItemInfo="checkItemInfo"></express-list-item>
+				</block>
+				<uni-load-more :contentText="content"
+							   :showIcon="true"
+							   v-if="expressList.length>=5"
+							   :status="loading"
+							   color="rgb(39, 134, 245)"></uni-load-more>
+			</view>
+		</template>
+		
+		<template v-else>
 			<LxEmpty></LxEmpty>
-		</view>
-		<uni-load-more :contentText="content"
-					   :showIcon="true"
-					   v-if="expressList.length>1"
-					   :status="loading"
-					   color="rgb(39, 134, 245)"></uni-load-more>
+		</template>
+		
+		<!-- 快递列表 end -->
+		<!-- 年月选择框 -->
+		<year-month-model 
+		:isShow="modalName=='timeModel'" 
+		:value="value" 
+		@bindChange="bindChange"
+		@hideModel="hideModel"></year-month-model>
 	</view>
 </template>
 <script>
-	import {mapState} from 'vuex';
-	import uniLoadMore from '../../../../../components/uni-load-more.vue'
+	import yearMonthModel from '../../../../../components/common/year-month-model.vue'
+	import commonTabNav from '../../../../../components/common/common-tab-nav.vue'
+	import uniLoadMore from '../../../../../components/common/uni-load-more.vue'
+	import expressListItem from '../../../../../components/express/express-list-item.vue'
 	import LxEmpty from '../../../../../lx_components/lx-empty.vue'
+	
+	import {mapState} from 'vuex'
+	import {ShopFreightBillApi,ShopWaybillsApi} from '../../../../../api/express_api.js'
+	import {ChainShopApi} from '../../../../../api/shop_api.js'
 	export default{
-		computed:mapState(['expressGive','expressType','expressItem','expressStatusZn']),
+		computed:mapState(['shopCount','shopOnlyObj']),
+		components:{yearMonthModel,commonTabNav,uniLoadMore,LxEmpty,expressListItem},
 		data(){
 			return{
-				navTabCur:1,
-				navTabValue:'send',
-				navList:[
-					{id:1,name:'我的寄件',value:'send'},
-					{id:3,name:'我的收件',value:'receive'},
-					{id:2,name:'我的代发',value:'replace'},
+				down:true,
+				modalName:'',
+				value: [10,0],
+				timeObj:{
+					year:new Date().getFullYear(),
+					month:new Date().getMonth()+1
+				},
+				tabList:[
+					{name:'发件',num:0,id:this.config.expressGive.send},
+					{name:'收件',num:0,id:this.config.expressGive.receive},
 				],
+				TabCur:1,
 				page:1,
 				expressList:[],
 				content:{
-					contentdown: "",
+					contentdown: "下拉加载更多",
 					contentrefresh: "正在加载...",
 					contentnomore: "没有更多数据了"
 				},
 				loading:'more',
+				shopItem:{},
+				countInfo:{},
+				shopID:'',
+				totalCountInfo:{},//一年的物流费用
 			}
 		},
-		components:{
-			LxEmpty,uniLoadMore
+		onNavigationBarButtonTap(event){
+			if(event.index==0){
+				uni.navigateTo({
+					url:"../express-search/express-search"
+				})
+			}
 		},
-		onLoad(){
-			this.getExpressList()
+		onPullDownRefresh(){
+			setTimeout(()=>{
+				this.page=1;
+				this.getCountInfo(true)
+				this.getCountInfo(false)
+				this.getExpressList(this.TabCur)
+				uni.stopPullDownRefresh()
+			},900)
+		},
+		onLoad(options){
+			if(options.id){
+				if(this.shopCount==1){
+					this.shopItem=this.shopOnlyObj;
+					this.shopID=this.shopOnlyObj.id;
+					uni.setNavigationBarTitle({
+						title:this.shopItem.name
+					})
+					this.getCountInfo(true)
+					this.getCountInfo(false)
+					this.getExpressList(this.TabCur)
+				}else{
+					this.shopID=options.id;
+					this.getShopItem(options.id);
+				}
+				
+			}
 		},
 		methods:{
-			/*跟踪物流*/
+			//查看物流信息
 			checkTrack(item){
-				uni.navigateTo({
-					url:"../package-tracking/package-tracking?id="+item.id
-				})
+				
 			},
-			/*返回上一级*/
-			goBack(){
-				uni.navigateBack({
-					delta:1
-				})
+			//获得费用数据
+			async getCountInfo(flag){
+				if(flag){
+					//传月份
+					this.totalCountInfo= await ShopFreightBillApi(this.shopID,this.timeObj.year,this.timeObj.month,1)
+				}else{
+					//不传月份
+					this.countInfo = await ShopFreightBillApi(this.shopID,this.timeObj.year,'',0);
+					this.tabList[0].num=this.countInfo.sents;
+					this.tabList[1].num=this.countInfo.recvs;
+				}
+				
+				
 			},
-			/*nav选择*/
-			tabSelect(item){
-				this.navTabCur=item.id;
-				this.navTabValue=item.value;
-				this.page=1;
-				this.getExpressList();
-			},
-			/*获得快递列表*/
-			getExpressList(){
-				this.$ajax('ShopWaybills',{
-					type:this.navTabCur,
-					offset:this.$utils.getOffset(this.page)
-				},res=>{
-					res.forEach(item=>{
-						if(item.destype==this.expressItem.customer){
-							
-							if(item.desaddr){
-								let val=item.desaddr.split('市');
-								item.desaddr=`${val[0]}市`
-							}
-						}
-					})
-					this.expressList=res;
+			// 获得快递列表
+			async getExpressList(status){
+				this.expressList = await ShopWaybillsApi(this.shopID,status,this.page)
 
-				})
 			},
-			/*查找快递*/
-			searchExpress(){
-				uni.navigateTo({
-					url:"../search-express/search-express"
+			async getShopItem(id){
+				this.shopItem = await ChainShopApi(id);
+				uni.setNavigationBarTitle({
+					title:this.shopItem.name
 				})
+				this.getCountInfo(true)
+				this.getCountInfo(false)
+				this.getExpressList(this.TabCur)
+
 			},
-			/*查看单个快递内容*/
-			checkItemDetail(item){
+			checkItemInfo(event){
 				uni.navigateTo({
-					url:"../express-item/express-item?id="+item.id+'&status='+item.status+"&type="+this.navTabValue
+					url:"../express-item/express-item?id="+event.id
 				})
+				
+			},
+			tabSelect(item){
+				this.TabCur=item.id;
+				this.page=1;
+				this.getExpressList(this.TabCur)
+			},
+			bindChange(event){
+				if(event){
+					this.timeObj=event;
+					this.getCountInfo(true);
+					this.getExpressList(this.TabCur)
+				}
+			},
+			hideModel(){
+				this.down=!this.down;
+				this.modalName=null
+			},
+			showModel(event){
+				this.down=!this.down;
+				if(event){this.modalName=event.currentTarget.dataset.target}
 			}
 		},
 		onReachBottom(){
-			this.page++;
-			this.$ajax('ShopWaybills',{
-				type:this.navTabCur,
-				offset:this.$utils.getOffset(this.page)
-			},res=>{
-				if(res==''){
-					setTimeout(()=>{
-						this.loading='noMore'
-					},900)
-
-				}else{
-					res.forEach(item=>{
-						this.expressList.concat(item);
-					})
-					this.loading='loading'
-					setTimeout(()=>{
-						this.loading='noMore'
-					},900)
-
-
-				}
-			})
+			
 		},
 		onShow(){
-			this.page=1;
-			this.getExpressList();
+			this.getCountInfo(true)
+			this.getCountInfo(false)
+			this.getExpressList(this.TabCur)
 		},
 		onPullDownRefresh(){
 			//下拉刷新
+			this.page=1;
+			this.getExpressList(this.TabCur)
+			this.getCountInfo(true)
+			this.getCountInfo(false)
 			setTimeout(()=>{
 				uni.stopPullDownRefresh();
-				this.page=1;
-				this.getExpressList();
 			},800)
-
+		
 		}
 	}
 </script>
-<style lang="less">
+<style scoped>
 	page{
-		background:rgba(247,247,247,1)
+		background: #fff;
 	}
-	.img-search{
-		width:17px;height:17px;margin-right:15px;
+
+	.list-content>view:first-child{
+		padding:20upx 40upx 20upx 30upx;
+	}
+	.list-content>view:first-child>view:first-child{
+		border:1upx solid #EEEEED;
+		padding:10upx;
+		border-radius: 10upx;
 	}
 	.list-container{
 		margin-top:11px;
 		padding-right: 12px;
 		padding-left: 13px;
 		background-color: rgba(247,247,247,1);
-		.list-item{
-			padding:13px 16px 0 14px;
-			background-color: #fff;
-			margin-bottom: 13px;
-			border-radius:4px;
-			.list-card{
-				height:43px;
-				line-height:43px;
-				border-bottom:1px solid #EEEEED;
-				.img-tag{
-					width: 20px;
-					height: 20px;
-					vertical-align: middle;
-					margin-right: 5px;
-				}
-				.sign-img{
-					width:69upx;height:84upx;position: absolute;right:0;top:0
-				}
-			}
-			.list-time{
-				padding-bottom: 11px;
-				padding-top: 13px;
-				.travel-tag{
-					width:63px;
-					height:23px;
-					line-height: 23px;
-					border-radius:12px;
-					border:1px solid rgba(66,176,237,1);
-					font-size:12px;
-					color:#42B0ED;
-
-				}
-			}
-			.list-content{
-				padding-top:12px;
-
-
-				.list-shop{
-					padding-bottom: 10px;
-				}
-
-			}
-
-		}
 	}
-	//待取件
-	.unpick{
-		color:#FF5C4D;
+	
+	
+	
+	
+	
+	.travel-tag{
+		width:63px;
+		height:23px;
+		line-height: 23px;
+		border-radius:12px;
+		border:1px solid rgba(66,176,237,1);
+		font-size:12px;
+		color:#42B0ED;	
 	}
-	//已取件
-	.pick{
-		color:#FE992B;
-	}
-	//已发运
-	.travel{
-		color:#188FFF
-	}
-	.arrive{
-		color:#B82BFE
-	}
+	
+	
+	
+	
 </style>

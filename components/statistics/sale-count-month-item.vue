@@ -12,7 +12,7 @@
 			</template>
 		</view>
 		<view class="u-f-ajc flex-1 " v-if="type!='sale'">{{month.aim | numStyle }}</view>
-		<view class="u-f-ajc flex-1 color-red ">{{month.num | numStyle}}</view>
+		<view class="u-f-ajc flex-1 color-blue font-weight-bold ">{{month.num | numStyle}}</view>
 		<view class="u-f-ajc flex-1">{{month.pre}}%</view>
 	</view>
 </template>

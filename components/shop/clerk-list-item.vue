@@ -1,69 +1,55 @@
 <template>
 	<view class="member-list borderBottom flex justify-start align-center position_relative animated slideInLeft fast"   @tap="checkItemInfo">
 		<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  mode="widthFix" lazy-load class="user_avatar"></image>
-		<view style="width:100px;" class="text-ellipse font-size-mini">
-			{{item.name}}
-		</view>
-		<view>
-			<template v-if="shopItem.manager==item.id && item.status==userStatus.normal">
-				<view class="cu-tag round shoper" >店长</view>
-			</template>
-			<template v-else-if="shopItem.manager!=item.id && item.motto=='manager'">
-				<view class="cu-tag round manager">{{shopItem.zoneName || ''}}负责人</view>
-			</template>
-			<template v-else-if="shopItem.manager!=item.id ">
-				<template v-if="item.status==userStatus.normal">
-					<view class="cu-tag bg-green round normal">在职</view>
+		<template v-if="TabCur==1">
+			<view>
+				<text>{{item.name}}</text><text class="color-regular font-size-litter">({{item.account}})</text>
+			</view>
+			<view>
+				<template v-if="shopItem.manager==item.id && item.status==userStatus.normal">
+					<view class="cu-tag round shoper" >店长</view>
 				</template>
-				<template v-else-if="item.status==userStatus.applying ">
-					<view class="flex justify-start align-center">
-						<view class="cu-tag bg-purple round normal">申请中</view>
-						<view v-if="shopItem.manager == userInfo.id" class="margin-l">
-
-						 <text class="color-blue" @tap.stop="acceptMan('agree')">同意</text>
-						 <text style="margin:0 5px;" class="color-regular">|</text>
-						 <text class="color-red" @tap.stop="acceptMan('refuse')">拒绝</text></view>
-					</view>
+				<template v-else-if="shopItem.manager!=item.id && item.motto=='manager'">
+					<view class="cu-tag round manager">{{shopItem.zoneName || ''}}负责人</view>
 				</template>
-			</template>
-
-		</view>
+				<template v-else-if="shopItem.manager!=item.id ">
+					<template v-if="item.status==userStatus.normal">
+						<view class="cu-tag bg-green round normal">在职</view>
+					</template>
+					<template v-else-if="item.status==userStatus.applying ">
+						<view class="flex justify-start align-center">
+							<view class="cu-tag bg-purple round normal">申请中</view>
+						</view>
+					</template>
+				</template>
+			
+			</view>
+		</template>
+		<template v-else-if="TabCur==2">
+			<text style="margin-left:20upx;">{{item.name}}</text><text class="color-regular font-size-litter">({{item.mobile}})</text>
+			<view class="cu-tag round manager" v-if="item.departmentName">{{item.departmentName || ''}}{{item.job || ''}}</view>
+		</template>
+		
+		
 	</view>
 </template>
 
 <script>
-	import {mapState} from 'vuex'
 	export default{
-		computed:mapState(['userStatus','userInfo']),
+		computed:{
+			userStatus(){return this.config.userStatus}
+		},
 		props:{
 			item:Object,
 			shopItem:Object,
-			index:Number
+			index:Number,
+			TabCur:Number
 		},
 		methods:{
 			checkItemInfo(){
 				this.$emit('checkItemInfo',this.item)
 			},
-			acceptMan(type){
-				switch(type){
-					case 'agree':
-					this.$ajax('AcceptSalesman',{
-						shop:this.shopItem.id,
-						user:this.item.id,
-						reject:0
-					},res=>{
-						uni.showToast({
-							title:'店员加入成功',
-							icon:'none'
-						})
-						this.$emit('joinSuccess')
-					})
-					break;
-					case 'refuse':
-					this.$emit('joinrefuse',this.item)
-					break;
-				}
-			}
+			
 		}
 	}
 </script>

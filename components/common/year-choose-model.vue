@@ -24,13 +24,13 @@
 		 data(){
 			 const date = new Date()
 			 const years = []
-			 for (let i = 1990; i <= date.getFullYear()+10; i++) {
+			 for (let i = date.getFullYear()-10; i <= date.getFullYear()+10; i++) {
 			 	years.push(i)
 			 }
 			 return{
 				 	indicatorStyle: `height: ${Math.round(uni.getSystemInfoSync().screenWidth/(750/100))}px;`,
 					//日历选择
-					value:[],
+					value:[10],
 					years
 			 }
 		 },

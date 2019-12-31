@@ -1,8 +1,12 @@
 <template>
 	<view>
 		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><view class="cuIcon-back"  @click.stop="goBack()"></view></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >{{shop.name}}绩效统计</view></block>
+			<block slot="left">
+				<view @tap="goBack">
+					<image src="../../../../../../static/img/fanhui.png" mode="widthFix" class="backImg"></image>
+				</view>
+			</block>
+			<block slot="content"><view class="font-size-big font-weight-bold color-normal text-ellipse">{{shop.name}}绩效统计</view></block>
 			<block slot="right">
 				<view class="choose-year" @click="chooseYear">
 					<text>{{timeObj.year}}年</text>
@@ -10,13 +14,6 @@
 				</view>
 			</block>
 		</cu-custom>
-		<!-- <sale-count-year-title 
-			:shopPerformPre="shopPerformPre"
-			:timeObj="timeObj"
-			:shopfactPerform="shopfactPerform"
-			:shopAimPerform="shopAimPerform"
-			type="year"
-		></sale-count-year-title> -->
 		<view class="sale-count-content borderTop margin-bottom-normal flex justify-center align-center">
 			<view class="chart-container flex justify-center align-center position_relative">
 				<canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
@@ -25,12 +22,12 @@
 				<view class="flex-1 text-center ">
 					<view>{{timeObj.year}}年</view>
 					<view class="margin-mini">门店销售总额(元)</view>
-					<view class="font-weight-bold font-size-num color-normal">{{shopfactPerform}}</view>
+					<view class="font-weight-bold font-size-num color-normal">{{shopfactPerform | wanStyle}}</view>
 				</view>
 				<view class="flex-1 text-center ">
 					<view>{{timeObj.year}}年</view>
 					<view class="margin-mini">门店销售目标(元)</view>
-					<view class="font-weight-bold font-size-num color-normal">{{shopAimPerform}}</view>
+					<view class="font-weight-bold font-size-num color-normal">{{shopAimPerform | wanStyle}}</view>
 				</view>
 			</view>
 		</view>
@@ -41,7 +38,7 @@
 					:tabCurVal="trendTab"
 					 @selectTabCur="dateTabChoose"
 					>
-				<block slot="content">{{timeObj.year}}年销售额详情</block>
+				<block slot="content"><view style="line-height:70upx;">{{timeObj.year}}年销售额详情</view></block>
 				</sale-count-title-tab>
 			<view>
 				<view class="month-title flex align-center">
@@ -53,9 +50,9 @@
 							姓名
 						</template>
 					</view>
-					<view class="u-f-ajc flex-1 font-weight-bold" v-if="trendTab=='sale'">销售目标<text class="font-size-mini">(元)</text></view>
-					<view class="u-f-ajc flex-1 font-weight-bold">销售总额<text class="font-size-mini">(元)</text></view>
-					<view class="u-f-ajc flex-1 font-weight-bold">完成比例</view>
+					<view class="u-f-ajc flex-1 font-weight-bold" v-if="trendTab=='sale'">月目标<text class="font-size-mini">(元)</text></view>
+					<view class="u-f-ajc flex-1 font-weight-bold">{{trendTab=='sale'?'月总金额':'年销售总额'}}<text class="font-size-mini">(元)</text></view>
+					<view class="u-f-ajc flex-1 font-weight-bold">{{trendTab=='sale'?'完成比例':'个人占比'}}</view>
 				</view>
 				<template v-if="trendTab=='sale'" class="month-list">
 					<block v-for="(month,index) in monthList" :key="index">
@@ -81,13 +78,16 @@
 	import yearChooseModel from '../../../../../../components/common/year-choose-model.vue'
 	import saleCountTitleTab from '../../../../../../components/statistics/sale-count-title-tab.vue'
 	import saleCountYearTitle from '../../../../../../components/statistics/sale-count/sale-count-year-title.vue'
+	
 	import uCharts from '../../../../../../components/u-charts/u-charts.js'
+	import {ChainShopApi} from '../../../../../../api/shop_api.js'
+	import {ShopYearlySalesPlanApi,SalesmenSalesAmountApi} from '../../../../../../api/statistics_api.js'
 	var canvaArcbar1;
 	export default{
 		data(){
 			const date = new Date()
 			const years = []
-			for (let i = 1990; i <= date.getFullYear()+10; i++) {
+			for (let i = date.getFullYear()-10; i <= date.getFullYear()+10; i++) {
 				years.push(i)
 			}
 			return{
@@ -115,14 +115,7 @@
 				cWidth3:'',//圆弧进度图
 				cHeight3:'',//圆弧进度图
 				arcbarWidth:'',//圆弧进度图，进度条宽度,此设置可使各端宽度一致
-				pixelRatio:1,
-				chartData: {
-					series: [{
-						name: '正确率',
-						data: 0.29,
-						color: '#2fc25b'
-					}]
-				}				
+				pixelRatio:1				
 			}
 		},
 		components:{
@@ -136,11 +129,6 @@
 				this.cWidth3=uni.upx2px(250);//这里要与样式的宽高对应
 				this.cHeight3=uni.upx2px(250);//这里要与样式的宽高对应
 				this.arcbarWidth=uni.upx2px(24);
-				// this.showArcbar('canvasArcbar1',this.chartData)
-			},
-			//查看店员每月的绩效
-			checkSalemanItem(item){
-				console.log(item)
 			},
 			//查看单月详情
 			checkMonthItem(item){
@@ -169,11 +157,9 @@
 			/*
 				获得门店信息
 			 */
-			getShopInfo(id){
-				this.$ajax('ChainShop',{id:id},res=>{
-					this.shop=res;
+			async getShopInfo(id){
+				this.shop = await ChainShopApi(id)
 
-				})
 			},
 			/*
 			返回上一级
@@ -188,57 +174,48 @@
 				this.trendTab=item.value;
 			},
 			//获得数据根据年月日
-			getPerformByYear(year){
-				this.$ajax('ShopYearlySalesPlan',{
-					year:year,
-					shop:this.shopID,
-					withActual:1
-				},res=>{
-					if(res){
-						this.shopfactPerform=res['actual']?res['actual']:0;
-						this.shopAimPerform=res['expect']?res['expect']:0;
-						this.shopPerformPre=res['expect']?Number(res['actual']/res['expect']).toFixed(2):0
-						let Arcbar1={series:[]};
-						Arcbar1.series=[{
-							name: '完成率',
-							data: this.shopPerformPre,
-							color: '#42B0ED'
-						}]
-						this.showArcbar("canvasArcbar1",Arcbar1);
-						//12个月列表
-						let arr=[]
-						for(var index=1;index<=12;index++){
-							arr.push({
-								id:index,
-								num:res[`amonth${index}`]?Number(res[`amonth${index}`]).toFixed(2):0,
-								aim:res[`month${index}`]?Number(res[`month${index}`]).toFixed(2):0,
-								pre:res[`month${index}`]?Number(res[`amonth${index}`]/res[`month${index}`]*100).toFixed(2):0
-							})
-						}
-						this.monthList=arr;
-					}
-				})
+			async getPerformByYear(year){
+				let result =  await ShopYearlySalesPlanApi(this.shopID,year);
+				this.shopfactPerform=result['actual']?result['actual']:0;
+				this.shopAimPerform=result['expect']?result['expect']:0;
+				this.shopPerformPre=result['expect']?Number(result['actual']/result['expect']).toFixed(2):0
+				let Arcbar1={series:[]};
+				Arcbar1.series=[{
+					name: '完成率',
+					data: this.shopPerformPre,
+					color: '#42B0ED'
+				}]
+				this.showArcbar("canvasArcbar1",Arcbar1);
+				//12个月列表
+				let arr=[]
+				for(var index=1;index<=12;index++){
+					arr.push({
+						id:index,
+						num:result[`amonth${index}`]?Number(result[`amonth${index}`]).toFixed(2):0,
+						aim:result[`month${index}`]?Number(result[`month${index}`]).toFixed(2):0,
+						pre:result[`month${index}`]?Number(result[`amonth${index}`]/result[`month${index}`]*100).toFixed(2):0
+					})
+				}
+				this.monthList=arr;
+
 			},
 			//获得店员年的绩效
-			getSalemanPerform(){
-				this.$ajax('SalesmenSalesAmount',{
-					shop:this.shopID,
-					year:this.timeObj.year,
-				},res=>{
-					if(res.salesmen){
-						let arr=[];
-						res.salesmen.forEach(item=>{
-							arr.push({
-								name:item.name,
-								num:item.value?item.value:0,
-								aim:this.shopfactPerform?this.shopfactPerform:0,
-								pre:this.shopfactPerform?Number(item.value/this.shopfactPerform*100).toFixed(0):0
-								
-							})
+			async getSalemanPerform(){
+				let result = await SalesmenSalesAmountApi(this.shopID,this.timeObj);
+				if(result.salesmen){
+					let arr=[]
+					result.salesmen.forEach(item=>{
+						arr.push({
+							name:item.name,
+							num:item.fvalue?item.fvalue:0,
+							aim:this.shopfactPerform?this.shopfactPerform:0,
+							pre:this.shopfactPerform?Number(item.fvalue/this.shopfactPerform*100).toFixed(2):0
 						})
-						this.salemanList=arr;
-					}
-				})
+						
+					})
+					this.salemanList=arr;
+				}
+
 			},
 			showArcbar(canvasId,chartData){
 				canvaArcbar1=new uCharts({
@@ -284,29 +261,28 @@
 			}
 
 		},
+		onShow(){
+			this.getShopInfo(this.shopID)
+			this.getPerformByYear(this.timeObj.year)
+			this.getSalemanPerform()
+		}
 	}
 </script>
 <style lang="less" scoped>
 	.sale-trend-container{
-		background-color: #fff;
-		.sale-man-list{
-			padding-top: 20px;
-
-		}
-		.month-title{
-			height:80upx;
-			line-height:80upx;
-			background:rgba(66,176,237,1);
-			color:#fff;
-		}
-		
+		background-color: #fff;	
 	}
-	
+	.month-title{
+		height:80upx;
+		line-height:80upx;
+		background:rgba(66,176,237,1);
+		color:#fff;
+	}
 	.font-size-num{
 		font-size:26px;
 	}
 	.choose-year{
-		margin-right:15px;
+		margin-right:10upx;
 		border:1px solid #EEEEED;
 		border-radius:5px;
 		padding:2px 5px;

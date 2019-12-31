@@ -1,6 +1,6 @@
 <template>
 	<view class="flex justify-start align-center borderBottom position_relative more-content"   @tap="checkItemInfo" >
-		<view style="flex:1">
+		<view class="left-container">
 			<view class="font-size-big font-weight-bold more-content-name">{{item.name}} </view>
 			<view class="font-size-litter  color-regular">{{item.applyDate | formatTime('YMDHMS')}}</view>
 		</view>
@@ -12,13 +12,17 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
+
 
 	export default{
-		computed:mapState(['report']),
 		props:{
 			item:Object,
 			index:Number
+		},
+		computed:{
+			report(){
+				return this.config.report
+			}
 		},
 		methods:{
 			checkItemInfo(){
@@ -29,22 +33,31 @@
 </script>
 
 <style scoped>
+	.left-container{
+		width:68%;
+		
+	}
+	.left-container>view:first-child{
+		word-break: break-all;
+	}
 	.more-content{
 		padding: 10upx 20upx ;
 	}
 	.more-content-name{
+		width:100%;
 		margin-bottom: 20upx;
+		padding-right: 30upx;
 	}
 	.more-content-cover{
-		height:160upx;
+		height:160upx !important;
 		flex-shrink: 0;
 		border-radius: 20upx;
 	}
 	.operateImg{
 		width:37px;
 		height:37px;
-		top:22px;
-		right:18px;
+		top:10upx;
+		right:40upx;
 
 	}
 </style>

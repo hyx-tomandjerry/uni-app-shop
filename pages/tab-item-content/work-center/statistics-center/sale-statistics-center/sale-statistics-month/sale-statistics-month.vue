@@ -1,9 +1,5 @@
 <template>
 	<view>
-		<cu-custom :is-back="true" bg-color="bg-white">
-			<block slot="left"><view class="cuIcon-back"  @click="goBack()"></view></block>
-			<block slot="content"><view class="font-size-big font-weight-bold">{{shopItem.name}}{{timeObj.month}}月绩效统计</view></block>
-		</cu-custom>
 		<sale-count-year-title 
 			:shopPerformPre="shopPerformPre"
 			:timeObj="timeObj"
@@ -28,9 +24,9 @@
 							姓名
 						</template>
 					</view>
-					<view class="u-f-ajc flex-1 font-weight-bold" v-if="tabCurVal=='sale'">销售目标<text class="font-size-mini">(元)</text></view>
-					<view class="u-f-ajc flex-1 font-weight-bold">销售总额<text class="font-size-mini">(元)</text></view>
-					<view class="u-f-ajc flex-1 font-weight-bold">完成比例</view>
+					<view class="u-f-ajc flex-1 font-weight-bold" v-if="tabCurVal=='sale'">日目标<text class="font-size-mini">(元)</text></view>
+					<view class="u-f-ajc flex-1 font-weight-bold">{{tabCurVal=='sale'?'日销售总额':'月销售总额'}}<text class="font-size-mini">(元)</text></view>
+					<view class="u-f-ajc flex-1 font-weight-bold">{{tabCurVal=='sale'?'销售比例':'个人占比'}}</view>
 				</view>
 				<view  v-if="tabCurVal=='sale'">
 					
@@ -52,6 +48,9 @@
 	import saleCountTitleTab from '../../../../../../components/statistics/sale-count-title-tab.vue'
 	import saleCountYearTitle from '../../../../../../components/statistics/sale-count/sale-count-year-title.vue'
 	import saleCountMonthItem from '../../../../../../components/statistics/sale-count-month-item.vue'
+	
+	import {ChainShopApi} from '../../../../../../api/shop_api.js'
+	import {ShopMonthlySalesPlanApi,SalesmenSalesAmountApi} from '../../../../../../api/statistics_api.js'
 	export default {
 		components:{saleCountTitleTab,saleCountYearTitle,saleCountMonthItem},
 		data() {
@@ -77,9 +76,8 @@
 		methods: {
 			// 查看单个店员绩效
 			checkAloneItem(item){
-				console.log('80',item)
 				uni.navigateTo({
-					url:"../sale-count-alone/sale-count-alone?id="+this.shopID+"&item="+JSON.stringify(item)+"&timeObj="+JSON.stringify(this.timeObj)
+					url:"../sale-count-alone/sale-count-alone?id="+this.shopID+"&manID="+item.id+"&year="+this.timeObj.year+"&month="+this.timeObj.month
 				})
 			},
 			goBack(){
@@ -88,11 +86,9 @@
 				})
 			},
 			//查看门店详情
-			getShopInfo(id){
-				this.$ajax('ChainShop',{id:id},res=>{
-					this.shopItem=res;
+			async getShopInfo(id){
+				this.shopItem = await ChainShopApi(id)
 
-				})
 			},
 			//	选择销售额还是店员
 			selectTabCur(item){
@@ -105,50 +101,46 @@
 			},
 			
 			//获得天的绩效
-			getShopDayilyPerformance(id,timeObj){
-				this.$ajax('ShopMonthlySalesPlan',{
-					shop:id,
-					date:`${timeObj.year}-${timeObj.month>9?timeObj.month:'0'+timeObj.month}-01`
-				},res=>{
-					this.shopfactPerform=res['actual']?res['actual']:0;
-					this.shopAimPerform=res['expect']?res['expect']:0;
-					this.shopPerformPre=res['expect']?Number(res['actual']/res['expect']*100).toFixed(2):0;
-					let arr=[];
-					let days=this.getDay(this.timeObj.month);
-					for(var i=1;i<=days;i++){
-						arr.push({
-							
-							num:res[`aday${i}`]?res[`aday${i}`]:0,
-							aim:res[`day${i}`]?res[`day${i}`]:0,
-							pre:res[`day${i}`]?Number(res[`aday${i}`]/res[`day${i}`]*100).toFixed(2):0
-						})
-					}
-					this.daysList=arr;
-				})
+			async getShopDayilyPerformance(id,timeObj){
+				let result =await ShopMonthlySalesPlanApi(id,`${timeObj.year}-${timeObj.month>9?timeObj.month:'0'+timeObj.month}-01`);
+				this.shopfactPerform=result['actual']?result['actual']:0;
+				this.shopAimPerform=result['expect']?result['expect']:0;
+				this.shopPerformPre=result['expect']?Number(result['actual']/result['expect']*100).toFixed(2):0;
+				let days=this.getDay(this.timeObj.month);
+				let arr=[]
+				for(var i=1;i<=days;i++){
+					arr.push({
+						num:result[`aday${i}`]?result[`aday${i}`]:0,
+						aim:result[`day${i}`]?result[`day${i}`]:0,
+						pre:result[`day${i}`]?Number(result[`aday${i}`]/result[`day${i}`]*100).toFixed(2):0
+					})
+				}
+				this.daysList=arr;
+
 			},
-			getSalemanPerform(){
-				this.$ajax('SalesmenSalesAmount',{
-					shop:this.shopID,
-					year:this.timeObj.year,
-					month:this.timeObj.month
-				},res=>{
-					if(res.salesmen){
-						let arr=[];
-						console.log(this.shopfactPerform)
-						res.salesmen.forEach(item=>{
-							arr.push({
-								id:item.id,
-								name:item.name,
-								num:item.value?item.value:0,
-								aim:this.shopfactPerform?this.shopfactPerform:0,
-								pre:this.shopfactPerform?Number(item.value/this.shopfactPerform*100).toFixed(0):0
-								
-							})
+			async getSalemanPerform(){
+				let result = await SalesmenSalesAmountApi(this.shopID,this.timeObj)
+				if(result.salesmen){
+					let arr=[]
+					result.salesmen.forEach(item=>{
+						arr.push({
+							id:item.id,
+							name:item.name,
+							num:item.fvalue?item.fvalue:0,
+							aim:this.shopfactPerform?this.shopfactPerform:0,
+							pre:this.shopfactPerform?Number(item.fvalue/this.shopfactPerform*100).toFixed(2):0
 						})
-						this.salemanList=arr;
-					}
-				})
+						
+					})
+					this.salemanList=arr;
+				}
+
 			}
+		},
+		onShow(){
+			this.getShopInfo(this.shopID);
+			this.getSalemanPerform()
+			this.getShopDayilyPerformance(this.shopID,this.timeObj)
 		},
 		onLoad(options){
 			if(options){
@@ -157,6 +149,9 @@
 					year:options.year,
 					month:options.month
 				}
+				uni.setNavigationBarTitle({
+					title:`${this.timeObj.month}月绩效统计`
+				})
 				this.getShopInfo(options.shopID);
 				this.getSalemanPerform()
 				this.getShopDayilyPerformance(options.shopID,this.timeObj)

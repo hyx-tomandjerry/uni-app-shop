@@ -24,7 +24,7 @@
 					<view>{{timeObj.month}}月</view>
 				</template>
 				<view class="margin-mini">门店销售总额(元)</view>
-				<view class="font-weight-bold font-size-num color-normal">{{shopfactPerform}}</view>
+				<view class="font-weight-bold font-size-num color-normal">{{shopfactPerform | wanStyle}}</view>
 			</view>
 			<view class="flex-1 text-center ">
 				<template v-if="type=='year'">
@@ -34,7 +34,7 @@
 					<view>{{timeObj.month}}月</view>
 				</template>
 				<view class="margin-mini">门店销售目标(元)</view>
-				<view class="font-weight-bold font-size-num color-normal">{{shopAimPerform}}</view>
+				<view class="font-weight-bold font-size-num color-normal">{{shopAimPerform | wanStyle}}</view>
 			</view>
 		</view>
 	</view>

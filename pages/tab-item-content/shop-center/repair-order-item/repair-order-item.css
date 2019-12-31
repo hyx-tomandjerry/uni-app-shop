@@ -34,3 +34,12 @@
 	.workflow-list{
 		padding:25px 14px 25px;
 	}
+	.uni-collapse-cell{
+		border:none;
+	}
+	.uni-collapse-cell__title{
+		padding:0 24upx !important;
+	}
+	.uni-collapse-cell__title-text{
+		color:#898888 !important;
+	}

@@ -1,0 +1,15 @@
+[
+	{
+		"id":0,
+		"name":null,
+		"waybillCode":"QWD00012018557",
+		"opeTitle":"快递签收",
+		"opeName":"京东快递",
+		"opeTime":"2019/11/19 11:14:29",
+		"courier":null,
+		"courierTel":null,
+		"opeRemark":""},
+		{"id":0,"name":null,"waybillCode":"QWD00012018557","opeTitle":"取件单下发","opeName":"京东快递","opeTime":"2019/11/19 11:14:29","courier":null,"courierTel":null,"opeRemark":"取件单下发"},{"id":0,"name":null,"waybillCode":"QWD00012018557","opeTitle":"取件单预分拣","opeName":"京东快递","opeTime":"2019/11/19 11:14:38","courier":null,"courierTel":null,"opeRemark":"取件单预分拣"}
+		,{"id":0,"name":null,"waybillCode":"QWD00012018557","opeTitle":"取件单预分配","opeName":"京东快递","opeTime":"2019/11/19 11:14:38","courier":null,"courierTel":null,"opeRemark":"快递员：吴昌叁已出发，手机号：15202118610或021-62526107，请您准备好全套商品、发票及包装，感谢您的配合！"},
+		{"id":0,"name":null,"waybillCode":"QWD00012018557","opeTitle":"取件终止","opeName":"京东快递","opeTime":"2019/11/19 11:15:57","courier":null,"courierTel":null,"opeRemark":"您要求取消取件，原因：客户要求取消取件。如有需求，请您重新提交返修申请，感谢您的配合!"}
+		,{"id":0,"name":null,"waybillCode":"QWD00012018557","opeTitle":"取件终止","opeName":"京东快递","opeTime":"2019/11/21 20:26:44","courier":null,"courierTel":null,"opeRemark":"您要求取消取件，原因：客户取消服务单，终止取件。如有需求，请您重新提交返修申请，感谢您的配合!"}]

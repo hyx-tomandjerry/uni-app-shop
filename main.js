@@ -17,17 +17,20 @@ import onfire from 'onfire.js';
 Vue.prototype.$fire = new onfire();
 
 import webim from './static/js/webim.js'
-import {ajax} from './common/http.js'
-Vue.prototype.$ajax = ajax;
 
-import utils from './common/utils'
+import {config} from './common/config.js'
+Vue.prototype.config = config;
+ 
+import utils from './common/js/utils'
 Vue.prototype.$utils = utils;
+
+import timer from './common/js/timer.js'
+Vue.prototype.$timer = timer;
 
 import moment from 'moment';//时间日期格式化
 Vue.prototype.$moment=moment;
-
 //管道
-import "./common/filter.js" 
+import "./filters/filter.js"
 //数组递减
 Vue.prototype.my_reduce=function(max,arr){
 	arr.forEach(item=>{

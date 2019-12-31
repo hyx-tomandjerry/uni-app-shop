@@ -1,8 +1,9 @@
 <template>
 	<view>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
-			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
-				<view class="action" style="padding-right:80upx">
+			<view class="cu-bar fixed" 
+				:style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
+				<view class="action">
 					<slot name="left"></slot>
 				</view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]">
@@ -62,6 +63,8 @@
 	}
 </script>
 
-<style lang="less">
-
+<style scoped>
+.cu-bar .action:first-child{
+	padding-right:50px;
+}
 </style>

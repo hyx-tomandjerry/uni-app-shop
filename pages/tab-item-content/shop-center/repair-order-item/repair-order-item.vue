@@ -1,9 +1,5 @@
 <template>
 	<view class="borderTop">
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back font-size-back font-weight-bold"  @click="goBack()"></text></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >报修详情</view></block>
-		</cu-custom>
 		<view class="user-info-container margin-bottom-normal flex justify-start align-center">
 			<image :src="userInfo.headurl?userInfo.headurl:'../../../../static/img/default.png'" mode="" class="user-img"></image>
 			<view class="user-info">
@@ -11,22 +7,58 @@
 				<view class="font-size-small color-regular">{{repaitItem.applierMobile || ''}}</view>
 			</view>
 		</view>
-		<normal-title content="报修详情" :isTag="true"></normal-title>
+		<normal-detail-title title="报修详情"></normal-detail-title>
 		<view class="order_content">
 				<view class="repair-detail">
 					<view class="repair-detail-list">
-						<common-item :content="repaitItem.name" intro="门店名称"></common-item>
-						<common-item :content="repaitItem.brandName" intro="品牌名称"></common-item>
-						<common-item
-						:content="`${repaitItem.provinceName || ''}${repaitItem.districtName || ''}${repaitItem.cityName || ''}${repaitItem.address || ''}`"
-						intro="门店地址"></common-item>
-						<common-item :content="repaitItem.type|repairTypePipe" intro="维修类别"></common-item>
-						<common-item :content="repaitItem.appointdate | formatTime('YMD')" intro="维修日期"></common-item>
-						<common-item :content="repaitItem.summary" intro="报修描述"></common-item>
+						<normal-detail-item :leftPadding="true" leftIntro="门店名称"
+							:marginBottom="true"
+							:rightContent="repaitItem.name"></normal-detail-item>
+		
+						<normal-detail-item :leftPadding="true" leftIntro="品牌名称"
+							:marginBottom="true"
+							:rightContent="repaitItem.brandName"></normal-detail-item>
+						
+						<normal-detail-item 
+							:marginBottom="true" :leftPadding="true"
+							leftIntro="门店地址" 
+							:rightContent="`${repaitItem.provinceName || ''}${repaitItem.districtName || ''}${repaitItem.cityName || ''}${repaitItem.address || ''}`"></normal-detail-item>
+						
+						
+						<normal-detail-item :leftPadding="true" leftIntro="维修类别"
+							:marginBottom="!repaitItem.categoryName"
+							
+							:rightContent="repaitItem.type|repairTypePipe"></normal-detail-item>
+							<template v-if="repaitItem.categoryName && repaitItem.category">
+								<uni-collapse accordion="true">
+								    <uni-collapse-item title="维修子类别" :content="repaitItem.categoryName">
+								        <normal-detail-item leftIntro="子类别名称" :rightContent="subItem.name" width="30%"
+								        	:marginBMini="true"
+								        	:leftPadding="false" :marginBottom="false"></normal-detail-item>
+											<normal-detail-item :marginBMini="true" leftIntro="子类别规格" :rightContent="subItem.size || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
+											<normal-detail-item :marginBMini="true" leftIntro="子类别品牌" :rightContent="subItem.type || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
+											<normal-detail-item :marginBMini="true" leftIntro="子类别型号" :rightContent="subItem.model || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
+											<normal-detail-item :marginBMini="true" leftIntro="子类别备注" :rightContent="subItem.summary || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
+											<view  class="color-regular  reapir-intro" >子类别附件:</view>
+												<files-content :files="subItemImg" 
+												:isWhite='false'
+												:isShowTitle="false" v-if="subItemImg.length"></files-content>
+								    </uni-collapse-item>
+								</uni-collapse>
+							</template>
+						
+						<normal-detail-item :leftPadding="true" leftIntro="维修日期" 
+							:marginBottom="true"
+							:rightContent="repaitItem.appointdate | formatTime('YMD')"></normal-detail-item>
+						<normal-detail-item 
+							:leftPadding="true"
+							leftIntro="报修描述" :rightContent="repaitItem.summary || ''">
+							
+						</normal-detail-item>
 					</view>
 				</view>
 
-				<normal-title content="服务状态" :isTag="true"></normal-title>
+				<normal-detail-title title="服务状态"></normal-detail-title>
 				<view class="repair-detail">
 
 					<view class="repair-detail-item flex justify-between borderBottom font-size-big" style="padding:24px 18upx;">
@@ -51,21 +83,29 @@
 								'rejected':repaitItem.status==repairStatus.finished,
 								'bg-color-purple':repaitItem.status==repairStatus.commented}"
 
-							>{{repaitItem.status | repairStatus}}</view>
+							>{{repaitItem.status | repairStatusZnPipe}}</view>
 						</view>
 					</view>
 
 					<view style="padding-top:22px;">
-						<common-item :content="repaitItem.applyDate | formatTime('YMDHMS')" intro="申请时间"></common-item>
-						<common-item :content="repaitItem.shopSeq" intro="门店编号"></common-item>
-						<common-item :content="repaitItem.seq" intro="订单编号"></common-item>
+						<normal-detail-item :leftPadding="true" leftIntro="申请时间"
+							:marginBottom="true"
+							:rightContent="repaitItem.applyDate | formatTime('YMDHMS')"></normal-detail-item>
+						
+						<normal-detail-item :leftPadding="true" leftIntro="门店编号"
+							:marginBottom="true"
+							:rightContent="repaitItem.shopSeq"></normal-detail-item>	
+					
+						<normal-detail-item :leftPadding="true" leftIntro="订单编号"
+							:marginBottom="true"
+							:rightContent="repaitItem.seq"></normal-detail-item>
 					</view>
 				</view>
 				<!-- 报修进度 -->
 				<filesContent :files="files"></filesContent>
 
 				<!-- 审批流程 -->
-				<normal-title content="审批流程" :isTag="true"></normal-title>
+				<normal-detail-title title="审批流程"></normal-detail-title>
 				<view class=" workflow-container bg-white">
 					<view class="workflow-list" v-if="repaitItem.steps">
 						<block v-for="(workflow,index) in repaitItem.steps" :key="index">
@@ -79,11 +119,22 @@
 		<view style="height:100px;"></view>
 		<template v-if="orderType=='repair' && repaitItem.applier == userInfo.id">
 			<!-- 删除订单 -->
-			<bottomBtnOne dataTarget="deleteModel" content='删除订单' @showModal="showModal" v-if="repaitItem.approval==approvalStatus.applied"></bottomBtnOne>
-			<!-- 已驳回可以修改-->
-			<bottomBtnOne dataTarget="repairModel" content='修改订单' @showModal="showModal"
-
-			 v-if="repaitItem.approval==approvalStatus.rejected"></bottomBtnOne>
+			<common-btn-one
+				content="删除订单"
+				dataTarget="deleteModel"
+				type="primary"
+				v-if="( repaitItem.curnode==1 && repaitItem.approval==approvalStatus.applied)"
+				@operateBtn="delOrder" :isPos="true"></common-btn-one>
+			<!-- 已驳回可以修改或者删除-->
+			 <BottomBtnTwo
+			 refuse_btn_con="删除订单"
+			 refuse_data_target="deleteModel"
+			 agree_data_target="repairModel"
+			 agree_btn_con="重新提交"
+			 @refuseBtn="delOrder"
+			 @agressBtn="createOrder"
+			  v-if="repaitItem.approval==approvalStatus.rejected"
+			 ></BottomBtnTwo>
 		</template>
 		<template v-if="orderType=='notice'">
 			<BottomBtnTwo
@@ -94,34 +145,32 @@
 			@agressBtn="operateOrder('agree')"
 			></BottomBtnTwo>
 		</template>
-
-		<showModel :isShow="modalName=='repairModel'" @hideModel="hideModal"
-					 @confirmDel="operateOrder('edit')" v-if="modalName=='repairModel'">
-			<block slot="content">确定要修改保修单?</block>
-		</showModel>
-		<showModel :isShow="modalName=='deleteModel'" @hideModel="hideModal"
-					 @confirmDel="operateOrder('delete')" v-if="modalName=='deleteModel'">
-			<block slot="content">确定要删除报修单?</block>
-		</showModel>
-
 		<!--拒绝弹出框 -->
-		<showModelRefuse :isShow="modalName=='refuseModel'" @hideModal="hideModal" @refuse="refuse"></showModelRefuse>
+		<showModelRefuse 
+		content="拒绝理由"
+		:isShow="modalName=='refuseModel'"
+		 @hideModal="hideModal" @refuse="refuse"></showModelRefuse>
 </view>
 </template>
 
 <script>
-	import bottomBtnOne from '../../../../components/common/bottom-btn-one.vue'
+	import normalDetailItem from '../../../../components/common/normal-detail-item.vue'
+	import normalDetailTitle from '../../../../components/common/normal-detail-title.vue'
+	import commonBtnOne from '../../../../components/common/common-btn-one.vue'
 	import BottomBtnTwo from '../../../../components/common/bottom-btn-two.vue'
-	import {mapState} from 'vuex';
-	import showModel from '../../../../components/show-model.vue'
 	import downloader from '../../../../common/img-downloader.js'
-	import workflowItem from '../../../../components/workflow-item.vue'
-	import filesContent from '../../../../components/files-content.vue'
-	import commonItem from '../../../../components/common-item.vue'
+	import workflowItem from '../../../../components/common/workflow-item.vue'
+	import filesContent from '../../../../components/common/files-content.vue'
 	import showModelRefuse from '../../../../components/common/show-model-refuse.vue'
-	import normalTitle from '../../../../components/common/normal-title.vue'
+	import uniCollapse  from '../../../../components/uni/collapse/uni-collapse/uni-collapse.vue'
+	import uniCollapseItem  from '../../../../components/uni/collapse/uni-collapse-item/uni-collapse-item.vue'
+	
+	import {mapState} from 'vuex';
+	import {ServiceOrderApi,ServiceCatalogApi} from '../../../../api/shop_api.js'
+	import {ApproveWorkflowApi} from '../../../../api/apply_api.js'
+	import {getNoticeList} from '../../../../api/notice_api.js'
+	import {RemoveServiceOrderApi} from '../../../../api/shop_api.js'
 	export default{
-		computed:mapState(['repairStatus','userInfo','approvalStatus']),
 		data(){
 			return{
 				avatar:[],
@@ -132,27 +181,43 @@
 				workflowItem:"",
 				repairID:'',
 				files:[],
-				address:'',//拼接的地址
+				subItem:{},
+				subItemImg:[]
 
 			};
 		},
+		computed:{
+			...mapState(['userInfo']),
+			repairStatus(){return this.config.repairStatus},
+			approvalStatus(){return this.config.approvalStatus}
+		},
 		components:{
-			showModel,
 			workflowItem,
-			bottomBtnOne,
 			BottomBtnTwo,
 			filesContent,
-			commonItem,
-			showModelRefuse,normalTitle},
+			commonBtnOne,uniCollapse,uniCollapseItem,
+			showModelRefuse,normalDetailItem,normalDetailTitle},
 		methods: {
-			goBack(){
-				uni.navigateBack({
-					delta: 1
+			delOrder(){
+				uni.showModal({
+				    content: '确定要删除报修单?',
+				    success:(res)=>{
+				        if (res.confirm) {
+				            this.operateOrder('delete')
+				        }
+				    }
 				});
 			},
-			//删除订单
-			deleteOrder(){
-				this.modalName='deleteModel';
+			//重新提交保修单
+			createOrder(){
+				uni.showModal({
+				    content: '确定要重新提交报修单?',
+				    success:(res)=>{
+				        if (res.confirm) {
+				            this.operateOrder('edit')
+				        }
+				    }
+				});
 			},
 			/*
 				操作订单
@@ -161,7 +226,7 @@
 			   this.reason=event;
 			   this.operateOrder('refuse')
 		   },
-		   operateOrder(type){
+		  async operateOrder(type){
 			   switch(type){
 				   case 'edit':
 				   uni.navigateTo({
@@ -172,68 +237,30 @@
 				   })
 				   break;
 				   case 'agree':
-				   this.$ajax('ApproveWorkflow',{
-					   form:this.workflowItem.target,
-					   type:this.workflowItem.formType,
-					   event:this.workflowItem.id,
-				   	reject:0,//reject = 1,表示拒绝，审批不通过； = 0表示审批通过
-				   	comment:'',//审批意见，字符串
-				   },res=>{
-				    	uni.showToast({
-				    		title:'同意报修成功',
-							icon:'none'
-				    	})
-						setTimeout(()=>{
-							uni.navigateBack({
-								delta:1
-							})
-						},900)
-				   })
+						if(await ApproveWorkflowApi(this.workflowItem.target,this.workflowItem.formType,0,'',this.workflowItem.id)){
+							this.$utils.showToast('审批通过')
+							this.$utils.goBack()
+						}
+
 				   break;
 				   case 'refuse':
-				   this.$ajax('ApproveWorkflow',{
-				   	form:this.workflowItem.target,
-				   	type:this.workflowItem.formType,
-				   	event:this.workflowItem.id,
-				   	reject:1,//reject = 1,表示拒绝，审批不通过； = 0表示审批通过
-				   	comment:this.reason,//审批意见，字符串
-				   },res=>{
-				   	uni.showToast({
-				   		title: '拒绝审批成功',
-				   		icon:'none'
-				   	});
-				   	setTimeout(()=>{
-				   		this.hideModal();
-				   		uni.navigateBack({
-				   			delta:1
-				   		})
-				   		},900)
-				   })
+					   if(await ApproveWorkflowApi(this.workflowItem.target,this.workflowItem.formType,1,this.reason,this.workflowItem.id)){
+						   this.$utils.showToast('审批拒绝')
+						   this.hideModal()
+						   this.$utils.goBack()
+					   }
+
 				   break;
 				   case 'delete':
-				   this.$ajax('RemoveServiceOrder',{
-					   id:this.repaitItem.id
-				   },res=>{
-					   uni.showToast({
-					   	title:'删除报修单成功!',
-					   	icon:'none',
-					   	success:()=>{
-					   		uni.navigateBack({
-					   			delta:1
-					   		})
-					   	}
-					   })
-				   })
+						if(await RemoveServiceOrderApi(this.repaitItem.id)){
+							this.$utils.showToast('删除报修单成功');
+							this.$utils.goBack()
+						}
+
 				   break;
 			   }
 
 		   },
-
-
-			tabSelect(e) {
-				this.TabCur = e.currentTarget.dataset.id;
-				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-			},
 			//显示模态框
 			showModal(e){
 				this.modalName=e;
@@ -241,80 +268,39 @@
 			hideModal(){
 				this.modalName=null
 			},
-			viewImg(index){
-				let imgList=[];
-				this.repaitItem.files.forEach(item=>{
-					if(item.postfix){
-						imgList.push(item.url)
-					}
-				})
-
-				uni.previewImage({
-					urls: imgList,
-					current:index,
-					indicator:'number',
-					longPressActions: {
-						itemList: [ '保存图片'],
-						success: function(data) {
-							if(data.tapIndex + 1==1){
-								uni.getImageInfo({
-									src:imgList[data.tapIndex + 1],
-									success:(res)=>{
-										let promise=downloader.load(res.path,res.path);
-										promise.then(([err, res])=>{
-											if(res){
-												uni.showToast({
-													title:'保存图片到相册',
-													icon:'none'
-												})
-											}
-										});
-								 }
-							})
-						}
-					},
-					fail: function(err) {
-							console.log(err.errMsg);
-					}
-            }
-				})
+			//获得详情
+			async getRepairItem(id){
+				this.repaitItem = await ServiceOrderApi(id);
+				if(this.repaitItem.files && this.repaitItem.files.length){
+					this.files = this.repaitItem.files.map(item=>item.url);
+				}
+				if(this.repaitItem.category){
+					this.getSubRepairInfo(this.repaitItem.category)
+				}
 
 			},
-			//获得详情
-			getRepairItem(id){
-				this.$ajax('ServiceOrder',{
-					id:id,
-					step:1
-				},res=>{
+			//获得子类别
+			async getSubRepairInfo(id){
+				this.subItem= await ServiceCatalogApi(id);
+				if(this.subItem.files){
+					this.subItemImg = this.subItem.files.map(item=>item.url)
+				}
+				
 
-
-					this.files=[]
-					if(res.files && res.files.length){
-						res.files.forEach(item=>{
-							this.files.push(item.url)
-						})
-					}
-					this.address=`${res.provinceName}${res.cityName}${res.districtName}${res.address}`;
-					console.log(this.address)
-					this.repaitItem=res;
-
-				})
 			},
 			//获得流程
-			getWorkflowItem(target){
-				this.$ajax('EventFlows',{
+			async getWorkflowItem(target){
+				let val={
 					account:this.userInfo.id,
 					owner:0,
 					contract:0,
 					status:0,
-					catalog:this.$store.state.notice.todo,
+					catalog:this.config.notice.todo,
 					offset:this.$utils.getOffset(this.page)
-				},res=>{
-					if(res){
-						this.workflowItem=res.find(item=>item.target==target)
+				}
+				let result = await getNoticeList(val)
+				this.workflowItem = result.find(item=>item.target==target)
 
-					}
-				})
 			}
 		},
 		onShow(){
@@ -337,12 +323,8 @@
 		}
 	}
 </script>
-
-
-
-
-
 <style lang="less" scoped>
 	@import url('./repair-order-item.css');
-	@import "../../../../static/css/check_index.css";
+	@import "../../../../common/css/check_index.css";
+	
 </style>

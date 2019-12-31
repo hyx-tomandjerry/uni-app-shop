@@ -3,12 +3,11 @@
 		<cu-custom :isBack="true" bgColor="bg-white">
 			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >消息</view></block>
 		</cu-custom>
-		<view class="flex text-center bg-white borderBottom  justify-around" >
-			<block  v-for="(item,index) in titleList" :key="index">
-				<tabNav :item="item" :index="index" :TabCur="TabCur" @tabSelect="tabSelect"></tabNav>
-			</block>
-		</view>
-
+		<common-tab-nav 
+					:isShowBorder="false"
+					:tabList="titleList" 
+					:TabCur="TabCur" 
+					@tabSelect="tabSelect"></common-tab-nav>
 		<view class="notice-container">
 			<view>
 				<view v-if="todoList.length">
@@ -16,7 +15,7 @@
 						<noticeItem :item="item" :index="index" :TabCur="TabCur" @checkItem="checkMessageItem"></noticeItem>
 					</block>
 					<uni-load-more :contentText="content"
-								   v-if="todoList.length"
+								   v-if="todoList.length>=5"
 								   :showIcon="true" :status="loading" ></uni-load-more>
 				</view>
 				<view v-else>
@@ -27,13 +26,15 @@
 	</view>
 </template>
 <script>
-	import tabNav from '../../../../components/common/tab-nav.vue'
 	import LxEmpty from "../../../../lx_components/lx-empty.vue";
-	import uniLoadMore from "../../../../components/uni-load-more.vue"
+	import uniLoadMore from "../../../../components/common/uni-load-more.vue"
 	import noticeItem from '../../../../components/notice/notice-item.vue'
+	import commonTabNav from '../../../../components/common/common-tab-nav.vue'
 	import {mapState,mapMutations} from 'vuex'
+	import {getNoticeList,getMsgList} from '../../../../api/notice_api.js'
+	import {getTodoList} from '../../../../api/common_api.js'
 	export default{
-	    computed:mapState(['userInfo','approvalMode']),
+	    computed:mapState(['userInfo']),
 		data(){
 			return{
 				TabCur: 0,
@@ -41,7 +42,7 @@
 				todoList:[],
 				page:1,
 				content:{
-					contentdown: "",
+					contentdown: "下拉加载更多",
 					contentrefresh: "正在加载...",
 					contentnomore: "没有更多数据了"
 				},
@@ -52,121 +53,113 @@
 			LxEmpty,
 			uniLoadMore,
 			noticeItem,
-			tabNav,
+			commonTabNav
 		},
 		onLoad(){
+			this.page=1;
 			this.switchTabCur(this.TabCur);
 			this.getTodoList()
 		},
 		onShow(){
+			this.page=1;
 			this.switchTabCur(this.TabCur);
 			this.getTodoList()
 		},
 		onPullDownRefresh(){
 			//下拉刷新
+			this.page=1;
 			this.switchTabCur(this.TabCur);
+			this.getTodoList()
 			setTimeout(()=>{
 				uni.stopPullDownRefresh()
 			},800)
 
 		},
-		onReachBottom(){
+		async onReachBottom(){
+			let obj={};
+			let result=[];
 			this.page++;
 			switch(Number(this.TabCur)){
 				case 0:
 				//我的通知
-						this.$ajax('EventFlows',{
-							owner:0,
-							contract:0,
-							status:0,
-							account:this.userInfo.id,
-							catalog:this.$store.state.notice.todo,
-							offset:this.$utils.getOffset(this.page)
-						},res=>{
-							if(res==''){
-								this.loading='noMore'
-							}else{
-								res.forEach(item=>{
-									this.todoList.concat(item);
-								})
-								this.loading='loading'
-								setTimeout(()=>{
-									this.loading='noMore'
-								},900)
-							}
-						})
+				obj={
+					owner:0,
+					contract:0,
+					status:0,
+					account:this.userInfo.id,
+					catalog:this.config.notice.todo,
+					offset:this.$utils.getOffset(this.page)	
+				}
+				 result =await getNoticeList(obj)
 				break;
 				case 1:
 				//我的待办
-						this.$ajax('EventFlows',{
-							account:this.userInfo.id,
-							owner:0,
-							contract:0,
-							status:0,
-							catalog:this.$store.state.notice.info,
-							offset:this.$utils.getOffset(this.page)
-						},res=>{
-							if(res==''){
-								setTimeout(()=>{
-									this.loading='noMore'
-								},900)
-							}else{
-								setTimeout(()=>{
-									res.forEach(item=>{
-										this.todoList.concat(item);
-									})
-									this.loading='loading'
-								},900)
-							}
-						})
+				obj={
+					account:this.userInfo.id,
+					owner:0,
+					contract:0,
+					status:0,
+					catalog:this.config.notice.info,
+					offset:this.$utils.getOffset(this.page)
+				}
+				result =await getNoticeList(obj)
 				break;
 				case 2:
-				this.$ajax('Messages',{offset:this.$utils.getOffset(this.page)},res=>{
-					if(res==''){
-						setTimeout(()=>{
-							this.loading='noMore'
-						},900)
-					}else {
-						setTimeout(()=>{
-							res.forEach(item=>{
-								this.todoList.concat(item);
-							})
-							this.loading='loading'
-						},900)
-
-					}
+				obj={offset:this.$utils.getOffset(this.page)};
+				result=await getMsgList(obj)
+			}
+			if(result==''){
+				this.loading='noMore'
+			}else{
+				result.forEach(item=>{
+					this.todoList.concat(item);
 				})
+				this.loading='loading'
+				setTimeout(()=>{
+					this.loading='noMore'
+				},900)
 			}
 		},
 		methods:{
 			/*获得代办数量*/
-			getTodoList(){
-				this.$ajax('MyEventNumbers',{},res=>{
-					if(res>0){
-						uni.setTabBarBadge({
-						  index: 1,
-						  text:res.toString()
-						
-						})
-					}
-				})
+			async getTodoList(){
+				let result=await getTodoList();
+				if(result>0){
+					uni.setTabBarBadge({
+					  index: 1,
+					  text:result.toString()
+					})
+				}else{
+					uni.hideTabBarRedDot({
+						index:1
+					})
+				}
 			},
 			checkMessageItem(item){
 				switch(this.TabCur){
 					case 0:
-					switch(item.formType){
-						//请假申请
-						case this.approvalMode.repair_service:
+					//1-15都是任务
+					if(item.type<=this.config.notifyType.modified && item.type>=this.config.notifyType.assigned){
 						uni.navigateTo({
-							url:"../../shop-center/repair-order-item/repair-order-item?id="+item.target+"&type=notice"
+							url:"../../work-center/task-center/task-item-detail/task-item-detail?id="+item.target+"&type=notice"
 						})
-						break;
-						default:
-						 uni.navigateTo({
-						 	url: '../../work-center/work-apply-center/apply-detail/apply-detail?id='+item.target+'&formType='+item.formType+"&cat=notice"+"&noticeID="+item.id
-						 });
-						 break;
-					}
+					}else if(item.type>=this.config.notifyType.e_wf_approval && item.type<=this.config.notifyType.e_wf_finished){
+						//16-20是保修或者工作申请
+						switch(item.formType){
+							//请假申请
+							case this.config.approvalMode.repair_service:
+							uni.navigateTo({
+								url:"../../shop-center/repair-order-item/repair-order-item?id="+item.target+"&type=notice"
+							})
+							break;
+							default:
+							 uni.navigateTo({
+							 	url: '../../work-center/work-apply-center/apply-detail/apply-detail?id='+item.target+'&formType='+item.formType+"&cat=notice"+"&noticeID="+item.id
+							 });
+							 break;
+						}
+					}					
+					
 
 					break;
 					case 1:
@@ -183,56 +176,52 @@
 				this.TabCur = e.id;
 				this.switchTabCur(this.TabCur)
 			},
-			switchTabCur(index){
-
+			 async switchTabCur(index){
+				let  obj={};
 				switch(Number(index)){
 					case 0:
-						this.$ajax('EventFlows',{
+						obj={
 							account:this.userInfo.id,
 							owner:0,
 							contract:0,
 							status:0,
-							catalog:this.$store.state.notice.todo,
+							catalog:this.config.notice.todo,
 							offset:this.$utils.getOffset(this.page)
-						},res=>{
-							this.todoList=res
-						})
+						}
+						this.todoList=await getNoticeList(obj);
 					break;
 					case 1:
-						this.$ajax('EventFlows',{
+						obj={
 							account:this.userInfo.id,
 							owner:0,
 							contract:0,
 							status:0,
-							catalog:this.$store.state.notice.info,
+							catalog:this.config.notice.info,
 							offset:this.$utils.getOffset(this.page)
-						},res=>{
-							this.todoList=res
-						})
+						}
+						this.todoList=await getNoticeList(obj);
 					break;
 					case 2:
-
-					this.$ajax('Messages',{offset:0},res=>{
-						this.todoList=res;
-					})
+					this.todoList=await getMsgList(obj);
 					break;
 				}
-
+				
 			}
 		}
 	}
 </script>
-<style lang="less">
-	@import "../../../../static/css/demo";
+<style scoped>
+
 	page{
-		background: @bg_color;
+		background:rgba(247,247,247,1);
 	}
 	.notice-container{
-		.mixPadding(20px;17px;0;40upx;);
-		.notice-desc{
-			background:@white_color;
-			.mixBorderRadius(4px);
-			.mixPadding(10px;13px;15px;12px);
-		}
+		padding:40upx 20upx 10upx;
+		
+	}
+	.notice-desc{
+		background:#FFFFFF;
+		border-radius: 8upx;
+		padding:20upx 26upx 30upx 24upx;
 	}
 </style>

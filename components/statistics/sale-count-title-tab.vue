@@ -38,11 +38,12 @@
 	.clerk-container-tab{
 		border:1upx solid #EEEEED;
 		border-radius:20upx;
-		width:240upx;
+		width:260upx;
+		height:70upx;
+		line-height:70upx;
 	}
 	.clerk-container-tab>view{
 		flex:1;
-		padding:10upx 4upx;
 	}
 	.clerk-container-tab>view:first-child{
 		border-right: 1upx solid #EEEEED;

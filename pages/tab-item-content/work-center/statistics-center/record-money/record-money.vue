@@ -1,107 +1,102 @@
 <template>
-	<view class="borderTop position_relative" :style="{height:windowHeight+'px'}">
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="left"><text class="cuIcon-back"  @click="goBack()"></text></block>
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >记一笔</view></block>
-		</cu-custom>
+	<view class="borderTop position_relative">
 		<view class="container position_relative">
-			<!-- <input type="number" placeholder="请输入金额" class=" input-style"  v-model="num" :class="{'input-active':num}"> -->
-
 			<textarea   class="textarea-input" type="number"
 					    placeholder="请输入金额" v-model="num" :class="{'input-active':num}"></textarea>
 		</view>
-
-		<view class="btn-container bg-white position_absolute" style="width:100%;bottom:0px;">
-			<view class="btn-tag" @click="recordMoney('edit')" v-if="paramItem.type=='edit'">修改</view>
-			<view class="btn-tag" @click="recordMoney('save')" v-else>保存</view>
-
-		</view>
+			<common-btn-one v-if="paramItem.type=='edit'"
+				:type="btnType" 
+				:disabled="disabled" 
+				content="修改"
+				@operateBtn="recordMoney('edit')" :isPos="true"></common-btn-one>
+			<common-btn-one v-else
+				:type="btnType" 
+				:disabled="disabled" 
+				content="保存"
+				@operateBtn="recordMoney('save')" :isPos="true"></common-btn-one>
 	</view>
 </template>
 
 <script>
+
+	import commonBtnOne from '../../../../../components/common/common-btn-one.vue'
+	
 	import {mapState} from 'vuex';
+	import {ChangeSalesmanAmountApi,RecordMySalesAmountApi} from '../../../../../api/statistics_api.js'
 	export default {
 		computed:mapState(['userInfo']),
+		components:{commonBtnOne},
 		data() {
 			return {
 				num:"",
 				summary:'',
 				shopID:'',
 				saleID:'',
-				windowHeight:'',
-				paramItem:{}
+				paramItem:{},
+				btnType:'default',
+				disabled:false,
 			}
 		},
+		watch:{
+			num(){this.change()}
+		},
 		methods: {
-			goBack(){
-				uni.navigateBack({
-					delta: 1
-				});
+			change(){
+				if(this.num && this.num >=0){
+					this.btnType='primary';
+					this.disabled=false;
+					return;
+				}
+				this.btnType='default';
+				this.disabled=true;
 			},
 			check(){
 				if(isNaN(this.num)){
-					uni.showToast({
-						title:'你输入的不是数字，请重新输入',
-						icon:'none',
-						success: () => {
-							this.num=''
-						}
-					})
+					this.$utils.showToast('你输入的不是数字，请重新输入')
 					return false;
 				}	
 				if(this.num<0){
-					uni.showToast({
-						title:'你输入的负数请重新输入',
-						icon:'none',
-						success: () => {
-							this.num=''
-						}
-					})
+					this.$utils.showToast('你输入的负数请重新输入')
+					this.num=''
 					return false;
 				}
 				return true;
 			},
-			recordMoney(type){
+			async recordMoney(type){
 				if(this.check()){
+					this.disabled=true;
+					let val={}
 					switch(type){
 						case 'edit':
-						//SetSalesmanDailyPerformance-> ChangeSalesmanAmount
-						this.$ajax('ChangeSalesmanAmount',{
+						 val={
 							shop:this.paramItem.shopID,
 							date:`${this.paramItem.year}-${this.paramItem.month>9?this.paramItem.month:'0'+this.paramItem.month}-${this.paramItem.day>9?this.paramItem.day:'0'+this.paramItem.day}`,
 							amount:this.num,
 							account:this.paramItem.saleID,
-						},res=>{
-							uni.showToast({
-								title:'修改员工绩效成功',
-								icon:'none'
-							})
-							setTimeout(()=>{
-								uni.navigateBack({
-									delta:1
-								})
-							},600)
-						})
+						}
+						if(await ChangeSalesmanAmountApi(val)){
+							this.$utils.showToast('修改员工绩效成功')
+							this.$utils.goBack()
+							this.$utils.hide()
+						}else{
+							this.disabled=false;
+						}
 						break;
 						case 'save':
-						// NewPersonalPerformance->RecordMySalesAmount
-						this.$ajax('RecordMySalesAmount',{
+						 val={
 							shop:this.paramItem.shopID,
 							date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`,
 							amount:this.num,
 							account:this.userInfo.id
-						},res=>{
-							uni.showToast({
-								title:'成功记录一笔',
-								icon:'none'
-							})
-							setTimeout(()=>{
-								uni.navigateBack({
-									delta:1
-								})
-							},600)
-						})
+						}
+						if(await RecordMySalesAmountApi(val)){
+							this.$utils.showToast('成功记录一笔')
+							this.$utils.goBack()
+							this.$utils.hide()
+							
+						}else{
+							this.disabled=false;
+						}
 						break;
 					}
 				}
@@ -115,24 +110,8 @@
 				this.paramItem.shopID=params.shopID;
 			}else if(JSON.parse(params.obj)){
 				this.paramItem=JSON.parse(params.obj)
-				this.num=this.paramItem.money;
+				this.num=JSON.parse(params.obj).money;
 			}
-			console.log(this.paramItem)
-			// if(params.id){
-			// 	this.shopID=params.id;
-			// }
-			// if(params.saleID){
-			// 	this.saleID=params.saleID;
-			// }
-			// if(params.money){
-			// 	this.num=params.money;
-			// }
-			uni.getSystemInfo({
-				success:(res)=>{
-					console.log(res.windowHeight)
-					this.windowHeight=res.windowHeight
-				}
-			})
 		}
 	}
 </script>
@@ -156,27 +135,14 @@
 		}
 
 	}
-	.btn-container{
-		padding:10px 13px 10px 14px;
-		width:100%;
-		background:#fff;
-		text-align: center;
-		.btn-tag{
-			width:100%;
-			height:40px;
-			background:rgba(66,176,237,1);
-			border-radius:5px;
-			line-height:40px;
-			color:#fff;
-		}
-	}
+
 	.uni-input-input{
 		font-family: DINAlternate-Bold;
-		color:#FF4867;
+		color:#42B0ED;
 	}
 	.input-active{
 		font-weight: bold !important;
 		font-size:30px;
-		color:#FF4867
+		color:#42B0ED
 	}
 </style>

@@ -1,18 +1,5 @@
 <template>
 	<view class="bg-white">
-		<cu-custom :isBack="true" bg-color="bg-white">
-			<block slot="left">
-				<view class="cuIcon-back" @click="goBack"></view>
-			</block>
-			<block slot="content">
-				<view class="font-weight-bold font-size-big color-normal">
-					<text class="color-blue">{{timeObj.year}}年<text class="color-blue">{{timeObj.month}}月</text></text>门店销售榜
-				</view>
-			</block>
-			<block slot="right" >
-				<view @click="searchEvent" style="margin-right:20px;" class="color-normal">筛选</view>
-			</block>
-		</cu-custom>
 		<view class="shop-rank-container borderTop bg-white">
 			<view class="rank-tab-container flex justify-between">
 				<view class="rank-tab-l">
@@ -32,50 +19,51 @@
 				</view>
 			</view>
 			<template v-if="desc">
-				<view v-if="threeList[0]&&threeList[0].name">
-					<view class="rank-three-container flex justify-start " >
-						<view class=" second-rank flex-litter bg-white">
-							<image src="../../../../../../static/img/work/statistics/rank/two.png" mode="" class="rank-second-img"></image>
-							<!-- 头像-->
-							 <image :src="threeList[1]&&threeList[1].field?threeList[1].field:'../../../../../../static/img/default.png'" mode="widthFix" class="rank-avatar"></image>
-							<!--tag-->
-							 <image src="../../../../../../static/img/work/statistics/rank/two_tag.png" class="rank-tag"></image>
-					
-							<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal" style="bottom:-40upx;">
-								<view>{{threeList[1]?threeList[1].name : ''}}</view>
-								<view class="color-red font-weight-bold">￥{{threeList[1]&&threeList[1].actual || 0}}</view>
-							</view>
+				<template v-if="threeList[0]&&threeList[0].name">
+					<view class="three-rank-container flex ">
+						<view class="flex-1 text-center">
+							<image 
+							:src="threeList[1]&&threeList[1].field?threeList[1].field:'../../../../../../static/img/default.png'"
+							 mode="widthFix" class="second-shop-img"></image>
+							 <image 
+							 src="../../../../../../static/img/work/statistics/rank/two_tag.png" 
+							 class="second-tag-img"></image>
 						</view>
-						<view class=" first-rank flex-1">
-							<image src="../../../../../../static/img/work/statistics/rank/one.png" mode="" class="rank-one-img"></image>
-							<image :src="threeList[0]&&threeList[0].field?threeList[0].field:'../../../../../../static/img/default.png'" mode="" class="rank-one-avatar"></image>
-							<image src="../../../../../../static/img/work/statistics/rank/one_tag.png" class="one-tag"></image>
-					
-							<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal" style="bottom:-30upx;">
-								<view>{{threeList[0]?threeList[0].name : ''}}</view>
-								<view class="color-red font-weight-bold">￥{{threeList[0]&&threeList[0].actual || 0}}</view>
-							</view>
+						<view class="flex-sm text-center">
+							<image src="../../../../../../static/img/work/statistics/rank/one.png" mode="widthFix" class="first-bg-img"></image>
+							<image :src="threeList[0]&&threeList[0].field?threeList[0].field:'../../../../../../static/img/default.png'" mode="widthFix" class="first-shop-img"></image>
+							<image src="../../../../../../static/img/work/statistics/rank/one_tag.png" mode="widthFix" class="first-tag-img"></image>
 						</view>
-						<view class=" three-rank flex-litter">
-							<image src="../../../../../../static/img/work/statistics/rank/three.png" mode="" class="rank-three-img"></image>
-							<!--&lt;!&ndash; 头像&ndash;&gt;-->
-							<image :src="threeList[2]&&threeList[2].field?threeList[2].field:'../../../../../../static/img/default.png'" mode="" class="rank-avatar"></image>
-					
-							<image src="../../../../../../static/img/work/statistics/rank/three_tag.png" class="rank-tag"></image>
-							<view class="tank-intro position_absolute font-size-litter font-weight-bold color-normal" style="bottom:-40upx;">
-								<view>{{threeList[2]?threeList[2].name : ''}}</view>
-								<view class="color-red font-weight-bold">￥{{threeList[2]&&threeList[2].actual || 0}}</view>
-							</view>
+						<view class="flex-1 text-center">
+							<image
+							:src="threeList[2]&&threeList[2].field?threeList[2].field:'../../../../../../static/img/default.png'"
+							 mode="widthFix" class="second-shop-img"></image>
+							 <image 
+							 src="../../../../../../static/img/work/statistics/rank/three_tag.png" 
+							 class="second-tag-img"></image>
 						</view>
 					</view>
-					
-				</view>
+					<view class="flex three-count">
+						<view class="flex-1 text-center">
+							<view>{{threeList[1]?threeList[1].name : ''}}</view>
+							<view class="color-blue font-weight-bold">￥{{threeList[1]&&threeList[1].actual || 0}}</view>
+						</view>
+						<view class="flex-sm text-center">
+							<view>{{threeList[0]?threeList[0].name : ''}}</view>
+							<view class="color-blue font-weight-bold">￥{{threeList[0]&&threeList[0].actual || 0}}</view>
+						</view>
+						<view class="flex-1 text-center">
+							<view>{{threeList[2]?threeList[2].name : ''}}</view>
+							<view class="color-blue font-weight-bold">￥{{threeList[2]&&threeList[2].actual || 0}}</view>
+						</view>
+					</view>
+				</template>
 			</template>
 			<template v-if="otherList.length">
 				<view class="rank-list-container">
 					<view class="rank-list-item borderBottom" v-for="(item,index) in otherList" :key="index">
 						<view class="flex justify-start align-center">
-							<view class="margin-right">{{desc?index+3:index+1}}</view>
+							<view class="margin-right">{{desc?index+4:index+1}}</view>
 							<view>
 								<image :src="item.field?item.field:'../../../../../../static/img/default.png'" class="sale-avatar"></image>
 								<text>{{item?item.name :''}}</text>
@@ -83,12 +71,12 @@
 						</view>
 						<view>
 							<image src="../../../../../../static/img/work/statistics/rank/gold.png" mode="" class="gold-img"></image>
-							<text class="font-weight-bold color-red">{{item.actual}}</text>
+							<text class="font-weight-bold color-blue">{{item.actual}}</text>
 						</view>
 					</view>
 				</view>
 			</template>
-			<view v-else>
+			<view v-else-if="!threeList[0]">
 				<LxEmpty></LxEmpty>
 			</view>
 		</view>
@@ -96,6 +84,8 @@
 </template>
 <script>
 	import LxEmpty from '../../../../../../lx_components/lx-empty.vue'
+	
+	import {ShopRankingApi} from '../../../../../../api/statistics_api.js'
 	export default{
 		data(){
 			return{
@@ -107,7 +97,6 @@
 				timeObj:{
 					year:new Date().getFullYear(),
 					month:new Date().getMonth()+1,
-					// day:new Date().getDate()
 				},
 				shopZone:'',
 				threeList:[],
@@ -118,6 +107,19 @@
 		},
 		components:{
 			LxEmpty
+		},
+		onPullDownRefresh(){
+			this.getShopRank()
+			setTimeout(()=>{
+				uni.stopPullDownRefresh()
+			},800)
+		},
+		onNavigationBarButtonTap(event){
+			if(event.index==0){
+				uni.navigateTo({
+					url:"../sale-statistics-search/sale-statistics-search"
+				})
+			}
 		},
 		methods:{
 			//升序还是降序
@@ -136,61 +138,128 @@
 					delta:1
 				})
 			},
-			//筛选
-			searchEvent(){
-				uni.navigateTo({
-					url:"../sale-statistics-search/sale-statistics-search"
-				})
-			},
+			
 			//获得门店列表
-			getShopRank(){
-				this.$ajax('ShopRanking',{
+			async getShopRank(){
+				uni.showLoading({
+				    title: '加载中...'
+				});
+				let val={
 					year:this.timeObj.year,
 					month:this.tabCur=='month'?this.timeObj.month:'',
 					zone:this.shopZone,//门店区域
 					brand:this.brandID,//门店品牌
-					desc:this.desc,
-					
-				},res=>{
-					if(res){
-						if(this.desc){
-							//降序
-							let arr=[];
-							arr[0]=res[0]?res[0]:{};
-							arr[1]=res[1]?res[1]:{};
-							arr[2]=res[2]?res[2]:{};
-							this.threeList=arr;
-							this.otherList=res.splice(3);
-						}else{
-							//升序
-							
-							this.otherList=res
-						}
-						
-					}
-				})
+					desc:this.desc?1:0,
+				}
+				let result = await ShopRankingApi(val);
+				if(this.desc){
+					//降序
+					let arr=[];
+					arr[0]=result[0]?result[0]:{};
+					arr[1]=result[1]?result[1]:{};
+					arr[2]=result[2]?result[2]:{};
+					this.threeList=arr;
+					this.otherList=result.splice(3);
+				}else{
+					//升序
+					this.otherList=result
+				}
+				setTimeout(()=>{
+					uni.hideLoading()
+				},900)
+
 			}
+		},
+		onPullDownRefresh(){
+			setTimeout(()=>{
+				this.shopZone="";
+				this.brandID=""
+				this.getShopRank();
+				uni.stopPullDownRefresh()
+			},800)
 		},
 		onLoad(options){
 			if(options){
-				this.shopZone=options.zone;
+				this.getShopRank()
 			}
-			this.$fire.on('search',result=>{
-				if(result){
-					this.tabCur='year'
-					this.timeObj.year=result.year;
-					this.timeObj.month=result.month;
-					this.shopZone=result.target;
-					this.brandID=result.brand;
-					this.getShopRank()
-				}
-				
+			
+			uni.setNavigationBarTitle({
+				title:`${this.timeObj.year}/${this.timeObj.month}门店销售榜`
 			})
-			this.getShopRank()
+		
+			
 		},
+		onShow(){
+			this.$fire.on('search',result=>{
+				this.shopZone="";
+				this.brandID="";
+				this.tabCur='year'
+				this.timeObj.year=result.year;
+				this.timeObj.month=result.month;
+				this.shopZone=result.areaID?result.areaID:this.shopZone;
+				this.brandID=result.brandID?result.brandID:"";
+				let str=`${this.timeObj.year}/${this.timeObj.month}门店销售榜`;
+				uni.setNavigationBarTitle({
+					title:str
+				})
+				this.getShopRank()
+			})
+			uni.setNavigationBarTitle({
+				title:`${this.timeObj.year}/${this.timeObj.month}门店销售榜`
+			})
+		}
 	}
 </script>
 <style lang="less">
+	.three-rank-container{
+		padding:20upx 10upx;
+	}
+	.three-rank-container>view{
+		position:relative
+	}
+	.first-shop-img{
+		position: absolute;
+		top:50%;
+		left:50%;
+		border-radius: 100%;
+		transform: translate(-50%,-50%);
+		width:100upx;
+		height:100upx !important;
+	}
+	.first-bg-img{
+		height:300upx !important;
+		width:300upx;
+	}
+	.first-tag-img{
+		width:160upx;
+		height:60upx !important;
+		position:absolute;
+		bottom:54upx;
+		left:50%;
+		transform: translateX(-50%);
+	}
+	.second-tag-img{
+		width:160upx;
+		height:60upx !important;
+		position:absolute;
+		bottom:30upx;
+		left:50%;
+		transform: translateX(-50%);
+	}
+	.three-rank-container>view:nth-child(1),.three-rank-container>view:nth-child(3){
+		margin-top:80upx;
+		background:url("../../../../../../static/img/work/statistics/rank/two.png") no-repeat center center;
+		background-size: cover;
+	}
+	.three-rank-container>view:nth-child(1) .second-shop-img,.three-rank-container>view:nth-child(3) .second-shop-img{
+		position: absolute;		
+		top:50%;		
+		left:49%;		
+		border-radius: 100%;		
+		transform: translate(-50%,-50%);		
+		width:80upx;		
+		height:80upx !important;
+	}
 	.rank-tab-container{
 		padding:20upx 10upx 20upx 20upx;
 		align-content: center;
@@ -205,6 +274,13 @@
 		display: flex;
 		justify-content: flex-start;
 		align-content: center;
+	}
+	.three-count>view{
+		
+	}
+	.three-count>view:nth-child(1),.three-count>view:nth-child(3){margin-top: -20upx;}
+	.three-count>view:nth-child(2){
+		margin-top: -40upx;
 	}
 	.rank-tab-l>view{
 		flex:1
@@ -236,123 +312,29 @@
 	page{
 		background-color: #fff;
 	}
-	.shop-rank-container{
-		.shop-rank-t{
-			margin:15px 12px 10px 14px;
-			height: 34px;
-			line-height:34px;
-			border-radius:6px;
-			border:1px solid rgba(66,176,237,1);
-
-		}
-		.rank-three-container{
-			height:180px;
-			padding: 10px;
-			.second-rank{
-				padding-top:20px;
-				position:relative;
-				/*margin-top: 30px;*/
-
-				/*background:url("../../../../../../static/img/work/statistics/rank/one.png") no-repeat;*/
-				/*background-size:contain;*/
-				.rank-second-img{
-					height: 120px;
-					position:absolute;
-					top:30px;
-					left:0;
-				}
-
-			}
-			.first-rank{
-				position:relative;
-				.rank-one-img{
-					height: 180px !important;
-					position:absolute;
-					top:-20px;
-					left:0;
-				}
-				/*height: 180px;*/
-				/*background:url(../../../../../../static/img/work/statistics/rank/two.png) no-repeat;*/
-				/*background-size:contain;*/
-			}
-			.three-rank{
-				padding-top:20px;
-				position: relative;
-				/*margin-top: 30px;*/
-				/*height: 120px;*/
-				/*background:url(../../../../../../static/img/work/statistics/rank/two.png) no-repeat;*/
-				/*background-size:contain;*/
-				.rank-three-img{
-					height: 120px;
-					position:absolute;
-					top:30px;
-					left:0;
-				}
-			}
-			.rank-avatar{
-				width: 42px;
-				height: 42px;
-				border-radius:50%;
-				position:absolute;
-				left:50%;
-				top:56%;
-				transform:translate(-50%,-50%);
-
-			}
-			.rank-one-avatar{
-				width: 60px;
-				height: 60px;
-				border-radius:50%;
-				position:absolute;
-				left:50%;
-				top:45%;
-				transform:translate(-50%,-50%);
-			}
-			.rank-tag{
-				height:30px;
-				width: 80px;
-				position:absolute;
-				bottom:30px;
-				left:50%;
-				transform:translateX(-50%);
-			}
-			.one-tag{
-				height:30px;
-				width: 110px;
-				position:absolute;
-				bottom:40px;
-				left:50%;
-				transform:translateX(-50%);
-			}
-			.tank-intro{
-				text-align: center;
-				bottom:0;
-				left:50%;
-				transform:translateX(-50%);
-			}
-		}
-		.rank-list-container{
-			padding:17px 15px;
-			.rank-list-item{
-				height:68px;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				.sale-avatar{
-					width: 47px;
-					height: 47px;
-					border-radius:50%;
-					vertical-align: middle;
-					margin-right: 14px;
-				}
-				.gold-img{
-					width: 18px;
-					height: 18px;
-					vertical-align: middle;
-					margin-right: 4px;
-				}
-			}
-		}
+	.rank-list-container{
+		padding:17px 15px;
+		
+	}
+	.rank-list-item{
+		height:68px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		
+	}
+	.sale-avatar{
+		width: 47px;
+		height: 47px;
+		border-radius:50%;
+		vertical-align: middle;
+		margin-right: 14px;
+	}
+	.gold-img{
+		width: 18px;
+		height: 18px;
+		vertical-align: middle;
+		margin-right: 4px;
 	}
 	.tab-active{
 		background:rgba(66,176,237,1);

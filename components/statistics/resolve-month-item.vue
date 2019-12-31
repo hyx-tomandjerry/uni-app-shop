@@ -6,7 +6,7 @@
 			<view class="month-content">
 			    <view class="month-content-t">
 			        <view class="month-top-l flex justify-start font-size-litter">
-			            <view><text class="font-weight-bold ">目标:</text><text class=" font-weight-bold color-red">{{item.mon || 0 | numStyle}}元</text></view>
+			            <view><text class="font-weight-bold ">目标:</text><text class=" font-weight-bold color-blue">{{item.mon || 0 | numStyle}}元</text></view>
 			            <view><text>比例:</text><text>{{item.pre}}%</text></view>
 			        </view>
 			        <view class="month-top-r">
@@ -14,7 +14,7 @@
 			        </view>
 			    </view>
 			    <view class="cu-progress round  striped active xs" >
-			        <view class="bg-color-red" :style="[{'width':`${item.pre}%`}]" ></view>
+			        <view class="bg-color-green" :style="[{'width':`${item.pre}%`}]" ></view>
 			    </view>
 			</view>
 		</template>
@@ -23,7 +23,7 @@
 			<view class="month-content">
 			    <view class="month-content-t">
 			        <view class="month-top-l flex justify-start font-size-litter">
-			            <view><text class="font-weight-bold ">目标:</text><text class=" font-weight-bold color-red">{{item.mon | numStyle}}元</text></view>
+			            <view><text class="font-weight-bold ">目标:</text><text class=" font-weight-bold color-blue">{{item.mon | numStyle}}元</text></view>
 			            <view><text>比例:</text><text>{{item.pre}}%</text></view>
 			        </view>
 			        <view class="month-top-r" v-show="item.id>=new Date().getMonth()+1" @tap.stop="editAim">
@@ -31,7 +31,7 @@
 			        </view>
 			    </view>
 			    <view class="cu-progress round  striped active xs" >
-			        <view class="bg-color-red" :style="[{'width':`${item.pre}%`}]" ></view>
+			        <view class="bg-color-green" :style="[{'width':`${item.pre}%`}]" ></view>
 			    </view>
 			</view>
 		</template>
@@ -51,10 +51,8 @@
 					return
 				}
 				if(this.item.id<new Date().getMonth()+1){
-					uni.showToast({
-						title:'门店还未开业或在当日之前，无绩效可修改',
-						icon:'none'
-					})
+					this.$utils.showToast('门店还未开业或在当日之前，无绩效可修改')
+
 					
 				}else{
 					this.$emit('editAim',this.item)
@@ -62,10 +60,7 @@
 			},
 			checkItem(){
 				if(this.item.id<new Date().getMonth()+1){
-					uni.showToast({
-						title:'月份在门店未开业之前或在当日之前，不可设置',
-						icon:'none'
-					})
+					this.$utils.showToast('月份在门店未开业之前或在当日之前，不可设置')
 				}else{
 					this.$emit('checkItem',this.item)
 				}

@@ -2,7 +2,7 @@
 	<view class="cu-modal" :class="isShow?'show':''">
 		<view class="cu-dialog">
 			<view class="cu-bar bg-white justify-end borderBottom">
-				<view class="content ">说明事由</view>
+				<view class="content ">{{content}}</view>
 				<view class="action" @tap="hideModal">
 					<text class="cuIcon-close text-red"></text>
 				</view>
@@ -19,7 +19,11 @@
 <script>
 	export default{
 		props:{
-			isShow:Boolean
+			isShow:Boolean,
+			content:{
+				type:String,
+				default:'拒绝理由'
+			}
 		},
 		data(){
 			return{
@@ -28,15 +32,11 @@
 		},
 		methods:{
 			hideModal(){
-				console.log('kkkk')
 				this.$emit('hideModal')
 			},
 			operateOrder(){
 				if(!this.reason){
-					uni.showToast({
-						title:'请输入拒绝理由',
-						icon:'none'
-					})
+					this.$utils.showToast('请输入拒绝理由')
 					return;
 				}
 				this.$emit('refuse',this.reason)

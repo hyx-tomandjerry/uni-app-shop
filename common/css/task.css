@@ -1,36 +1,29 @@
-/* //任务颜色 */
-	/*已接受*/
-	.received{
-		background-color: #B4E2FE;
-		color:#0A5B9D
-	}
-	/*已超期*/
-	.overdue{
-		background-color: #FFD2A4;
-		color:#B66A1C
-	}
-	/*验收通过*/
-	.checkpass{
-		background-color: #A9ECF2;
-		color:#066D7D
-	}
-	/*验收不通过*/
-	.checknopass{
-		background-color:#FFDFF5;
-		color:#FF1A3D
-	}
-	/*未接受*/
-	.noReceive{
-		background-color:#E4D3FF;
-		color:#5918BA
-	}
-	/*已拒绝*/
-	.rejected{
-		background-color:#FFE6E6;
-		color:#D42E12
-	}
-	// 未验收
-	.waiting{
-		background-color:#FFDBA0;
-		color:#E54E16
-	}
+/* 未分配 */
+.created{background:#fe6f61;}
+.assigned{
+    background:#009498
+}
+.refused{
+    background:#d48806
+}
+.accepted{
+    background:#195090
+}
+.delayed{
+    background:#ffda29
+}
+.finished{
+    background:#fe6f61
+}
+.rejected{
+    background:#fe6f61
+}
+.receipted{
+    background:#538234
+}
+.aborted{
+    background:#009498
+}
+.canceled{
+    background:#f5222d
+}

@@ -1,14 +1,6 @@
 <template>
 	<view>
 		<!-- 头部 -->
-		<cu-custom :isBack="true" bgColor="bg-color-perform">
-			<block slot="left">
-				<view class="cuIcon-back text-white" @click="goBack"></view>
-			</block>
-			<block slot="content">
-				<view class="font-size-normal  text-white ">{{shopMonthAim.name || ''}}{{monthItem.name}}绩效分解</view>
-			</block>
-		</cu-custom>
 		<!-- 标题 -->
 		<view class="shop-aim-container">
 			<resolve-title type="month"
@@ -40,6 +32,7 @@
 		:dayTabID="dayTabID"
 		:weekList="weekList"
 		@editAim="editAim"
+		type="solve"
 		:lastMonthDaysList="lastMonthDaysList"></calendar-list>
 		
 		<statistics-edit-model 
@@ -52,19 +45,6 @@
 			
 		</statistics-edit-model>
 		<!-- 显示修改框 -->
-		<!-- <view class="bg-white edit-day-content animated bounceInUp" >
-			<view class="color-normal font-size-big ">
-				{{new Date().getFullYear()}}-{{monthItem.id>=10?monthItem.id:'0'+monthItem.id}}-{{editDayItem.day>=10?editDayItem.day:'0'+editDayItem.day}}
-			</view>
-			<view class="flex  align-center ">
-				<image src="../../../../../static/icon/icon-bianji.png"></image>
-				<input type="text" 
-				
-				placeholder="请输入要修改的金额" v-model="num" >
-				<view  @click="setShopAim">确定</view>
-			</view>
-			
-		</view> -->
 		<simpleModel :isShow="isShow" @hideSimpleModel="hideSecondModal()" v-if="isShow">
 			<block slot="content">
 				<view>12月份绩效目标为负值，请重新修改</view>
@@ -79,7 +59,8 @@
 	import solveWayModel from '../../../../../components/statistics/solve-way-model.vue'
 	import calendarList from '../../../../../components/statistics/calendar-list.vue'
 	import statisticsEditModel from '../../../../../components/statistics/statistics-edit-model.vue'
-	import simpleModel from '../../../../../components/simple-model.vue'
+	import simpleModel from '../../../../../components/common/simple-model.vue'
+	import {ShopYearlySalesPlanApi,ShopMonthlySalesPlanApi,BreakDownMonthlySalesPlanApi,ChangeShopDailySalesPlanApi} from '../../../../../api/statistics_api.js'
 	export default {
 		components:{resolveTitle,solveWay,solveWayModel,calendarList,statisticsEditModel,simpleModel},
 		data() {
@@ -129,20 +110,20 @@
 				}))
 				this.confirmShopAim(num)
 			},
-			confirmShopAim(num){
-				this.$ajax('ChangeShopDailySalesPlan',{
+			async confirmShopAim(num){
+				let val={
 					shop:this.shopID,
 					date:`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-${this.dayTabCur.day>=10?this.dayTabCur.day:'0'+this.dayTabCur.day}`,
 					expect:num
-				},res=>{
+				}
+				if(await ChangeShopDailySalesPlanApi(val)){
 					this.isShowEditDay=false;
-					uni.showToast({
-						title:'设置门店绩效成功!',
-						icon:'none'
-					})
-					this.getCalendar(this.year,this.monthItem.id)
+					this.$utils.showToast('设置门店绩效成功')
 					this.getShopAimByMonth(this.shopID)
-				})
+					this.getCalendar(this.year,this.monthItem.id)
+					
+				}
+
 				
 			},
 			//修改一天
@@ -153,17 +134,12 @@
 					sum+=Number(item.num).toFixed(0);
 				})
 				if(sum==0){
-					uni.showToast({
-						title:'绩效目标还未分解,分解之后才可以修改',
-						icon:'none'
-					})
+					this.$utils.showToast('绩效目标还未分解,分解之后才可以修改')
 					this.isShowEditDay=false;
 				}else{
 					if(this.currentMonthDaysList[this.currentMonthDaysList.length-1].day==item.day){
-						uni.showToast({
-							title:'最后一天不可修改',
-							icon:'none'
-						})
+						
+						this.$utils.showToast('最后一天不可修改')
 						this.isShowEditDay=false;
 				
 					}else{
@@ -205,26 +181,24 @@
 			},
 			//周末加备或者平坦选定
 			radioSelect(checked) {
-				
 				this.renderByWay(this.radio,checked);
 				this.isShowRadio=false;
 				this.radio=0;
 			
 			},
 			/*按周末加倍,或者按天平摊渲染数据*/
-			renderByWay(id,flag){
-				this.$ajax('BreakDownMonthlySalesPlan',{
-					// date:`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`,
-					// target:this.shopID,
-					// doubled:id==2?1:''//传1就是加倍 不穿就是均摊
+			async renderByWay(id,flag){
+				let val={
 					shop:this.shopID,
 					date:flag?`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-${new Date().getDate()>9?new Date().getDate():'0'+new Date().getDate()}`:`${this.year}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`,
 					doubled:id==2?1:''//传1就是加倍 不穿就是均摊
-				},res=>{
+				}
+				let result = await BreakDownMonthlySalesPlanApi(val);
+				if(result){
 					this.isShowResolveWay=false;
 					this.getShopAimByMonth(this.shopID)
-			
-				})
+				}
+
 			},
 			
 			/*根据年月获得该月份的天数*/
@@ -285,58 +259,42 @@
 				}
 				let tmonth=month+1;
 			},
-			goBack(){
-				uni.navigateBack({
-					delta: 1
-				});
-			},
-			getShopAimByMonth(shopID){
-				
+
+			async getShopAimByMonth(shopID){
 				//上半部分目标绩效内容
-				this.$ajax('ShopYearlySalesPlan',{
-					shop:shopID,
-					year:new Date().getFullYear()
-					},res=>{
-						res.monthAim=res[`month${this.monthItem.id}`];
-						res.monthPre=res['expect']?Math.floor(res[`month${this.monthItem.id}`]/res['expect']*100):0;
-						this.shopMonthAim=res;			
-					})
-			// 	this.$ajax('ShopMonthlyPerformance',{
-			// 		shop:shopID,
-			// 		year:new Date().getFullYear()
-			// 	},res=>{
-			// 		if(res){
-			// 			res.monthAim=res[`month${this.monthItem.id}`];
-			// 			res.monthPre=res['expect']?Number(res[`month${this.monthItem.id}`]/res['expect']*100).toFixed(0):0;
-			// 			this.shopMonthAim=res;
-			// 		}
-			
-			// 	})
-				this.$ajax('ShopMonthlySalesPlan',{
-					shop:shopID,
-					date:`${new Date().getFullYear()}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`
-				},res=>{
-					if(res){
-						let sum=0;
-						// this.currentMonthDaysList=[];
-						this.currentMonthDaysList.forEach(item=>{
-							for(let k in  res){
-								if(item.id==k){
-									item.num=res[k].toFixed(2);
-									sum+=Number(item.num);
-								}
-							}
-							
-						})
-						if(sum==0){
-							this.isShowResolveWay=true;
+				let result= await ShopYearlySalesPlanApi(shopID);
+				result.monthAim=result[`month${this.monthItem.id}`];
+				result.monthPre=result['expect']?Math.floor(result[`month${this.monthItem.id}`]/result['expect']*100):0;
+				this.shopMonthAim=result;
+				
+
+			   
+			   let res = await ShopMonthlySalesPlanApi(shopID,`${new Date().getFullYear()}-${this.monthItem.id>=10?this.monthItem.id:'0'+this.monthItem.id}-01`)
+			   let sum = 0;
+			   this.currentMonthDaysList.forEach(item=>{
+					for(let k in  res){
+						if(item.id==k){
+							item.num=res[k].toFixed(2);
+							sum+=Number(item.num);
 						}
 					}
-				})
+			   	
+			   })
+			   if(sum==0){
+			   	this.isShowResolveWay=true;
+			   }
+
 			},
 		},
 		onLoad(options){
+			uni.setNavigationBarColor({
+			    frontColor: '#ffffff',
+			    backgroundColor: '#383D5B',
+			})
 			this.monthItem=JSON.parse(options.item)
+			uni.setNavigationBarTitle({
+				title:`${this.monthItem.name}绩效分解`
+			})
 			this.shopID=options.shopID
 			this.getShopAimByMonth(this.shopID);
 			this.getCalendar(this.year,this.monthItem.id);
