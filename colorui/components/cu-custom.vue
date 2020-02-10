@@ -3,7 +3,7 @@
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar fixed" 
 				:style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
-				<view class="action">
+				<view class="action" >
 					<slot name="left"></slot>
 				</view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]">
@@ -51,10 +51,8 @@
 			},
 		},
 		methods: {
-			BackPage() {
-				uni.navigateBack({
-					delta: 1
-				});
+			goBack() {
+				this.$emit('goBack')
 			}
 		},
 		methods:{

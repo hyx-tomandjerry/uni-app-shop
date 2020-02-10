@@ -35,6 +35,16 @@
 				</view>
 			</view>
 		</template>
+		<template v-if="type=='service'">
+			<view class="cu-form-group font-size-normal borderBottom align-center">
+			    <view class=" flex-sm  color-normal align-center" >
+			        <image :src="src" mode="widthFix" class="icon-img"></image>
+			        <text :class="{'color-regular':isLeftCb}">{{leftContent}}</text>
+			    </view>
+			   <view class="flex-1 text-ellipse text-right color-regular" 
+				:class="{'color-blue':isColorBlue ,'color-red':isColorRed}">{{rightContent}}</view>
+			</view>
+		</template>
 	</view>
 </template>
 
@@ -53,7 +63,9 @@
 			clerkItem:Object,
 			isLeftCb:Boolean,
 			dataTarget:String,
-			clerkTab:[Number,String]
+			clerkTab:[Number,String],
+			src:String,
+			isColorRed:Boolean
 		},
 		methods:{
 			operateItem(){
@@ -72,4 +84,10 @@
 </script>
 
 <style scoped>
+	.icon-img{
+		width:36upx;
+		height:36upx;
+		margin-right:30upx;
+		flex-shrink: 0;
+	}
 </style>

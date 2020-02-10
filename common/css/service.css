@@ -1,0 +1,29 @@
+/* 设备状态颜色 */
+/* 入库 */
+.inventory{
+	color:#42B0ED
+}
+/* 发给客户 */
+.delivered{
+	color:#5918BA
+}
+/* 客户签收 */
+.accepted{
+	color:#FE933E
+}
+/* 绑定激活 */
+.activated{
+	color:#13BB83
+}
+/* 停用 */
+.stopped{
+	color:#D40D0D
+}
+/* 欠费 */
+.stpowed{
+	color:#D40D0D
+}
+/* 注销 */
+.canceled{
+	color:#898888
+}

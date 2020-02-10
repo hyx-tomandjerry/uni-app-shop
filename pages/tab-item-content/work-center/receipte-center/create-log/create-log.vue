@@ -24,7 +24,7 @@
             </view>
         </view>
 		<file-upload
-			:isRed="true"
+			:isRed="false"
 			@upload="uploadSuccess"
 			:inImgList="imgList"
 			:inFiles="files"

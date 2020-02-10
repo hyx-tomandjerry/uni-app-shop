@@ -67,6 +67,11 @@ Vue.filter('articleTypeZnPipe',value=>{
 	if(!value) return '';
 	return config.articleTypeZn[value]
 })
+// 设备状态
+Vue.filter('serviceStatusZnPipe',value=>{
+	if(!value) return '';
+	return config.serviceStatusZn[value]
+})
 //时间日期格式化
 Vue.filter('formatTime', function (value, type) {
     var dataTime="";
@@ -120,4 +125,10 @@ Vue.filter('decimalPipe',(value)=>{
 Vue.filter('intStyle',value=>{
 	if(!value) return;
 	return Number(value).toFixed(0)
+})
+
+// 流量
+Vue.filter('trafficStyle',val=>{
+	if(!val) return 0
+	return Number(val/1024).toFixed(2)
 })

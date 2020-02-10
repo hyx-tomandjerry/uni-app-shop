@@ -1,8 +1,8 @@
 
 export  const config = {
 	xiaoxiongUrl:'http://192.168.10.186:8080/services',
-	proUrl:'http://192.168.10.22/services',//测试环境
-	// proUrl:'http://s.oaks.cn/services'
+	// proUrl:'http://192.168.10.22/services',//测试环境
+	proUrl:'http://s.oaks.cn/services',
 	uploadHostUrl:'http://up.qiniup.com?token=',
 	mapKey:"1ff4f1c489532e9aee6fdfbcab87a9b8",
 	// mapKey:'5412b58e59680d3cb8ddab0d7e85c2ad',
@@ -403,4 +403,23 @@ export  const config = {
 		29:'装修付款',
 		30:'其他付款',
 	},
+	// 设备状态
+	serviceStatus:{
+		inventory:1,//入库了,变成库存
+		delivered:2,//发给客户了
+		accepted:3,//客户签收
+		activated:4,//绑定/激活
+		stopped:5,//停用
+		stpowed:6,//达量/欠费停机
+		canceled:7//注销
+	},
+	serviceStatusZn:{
+		1:'设备已入库',
+		2:'已发给客户',
+		3:'客户已签收',
+		4:'设备正常',
+		5:'设备已停用',
+		6:'设备已停机',
+		7:'设备已注销'
+	}
 }

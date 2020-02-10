@@ -3,9 +3,10 @@
 		<view class="mask" @tap="hideModel"></view>
 		<view class="model-content" :style="{top:statusHeight+'px'}" >
 			<block v-for="(item,index) in topRightList" :key="index">
-				<view :class="item.color" @tap="operateItem(item.value)" hover-class="bg-placeholder">
-					<text :class="item.icon" ></text>
-					{{item.name}}
+				<view  @tap="operateItem(item.value)" hover-class="bg-color-normal" class="flex align-center">
+					<!-- <text :class="item.icon" ></text> -->
+					<image :src="item.img" mode="widthFix" class="symbol-img"></image>
+					<view>{{item.name}}</view>
 				</view>
 			</block>
 			
@@ -43,22 +44,30 @@
 		background:rgba(0,0,0,0.2)
 	}
 	.model-content{
-		background:#FFFFFF;
-		width:300upx;
+		color:#FFFFFF;
+		width:360upx;
 		border-radius: 10upx;
 		position:fixed;
 		right:40upx;
-		z-index:10000000000000
+		z-index:10000000000000;
+		background:url('../../static/img/shop/topRight_bg.png') no-repeat;
+		background-size:360upx;
 	}
 	.model-content view{
 		height:100upx;
-		font-size:15px;
 		line-height:100upx;
 		padding:0upx 16upx;
-		border-bottom:1px solid #EEEEED;
+		border-bottom:1upx solid #707070;
 	}
 	.model-content>view>text{
 		margin-right:20upx;
 		font-size:18px;
+	}
+	.symbol-img{
+		width:40upx;
+		height:40upx;
+		flex-shrink: 0;
+		margin-right:10upx;
+		vertical-align: middle;
 	}
 </style>

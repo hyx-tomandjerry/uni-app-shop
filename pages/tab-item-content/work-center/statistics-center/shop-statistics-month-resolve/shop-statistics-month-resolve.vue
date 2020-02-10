@@ -292,6 +292,7 @@
 			    backgroundColor: '#383D5B',
 			})
 			this.monthItem=JSON.parse(options.item)
+			console.log(this.monthItem)
 			uni.setNavigationBarTitle({
 				title:`${this.monthItem.name}绩效分解`
 			})

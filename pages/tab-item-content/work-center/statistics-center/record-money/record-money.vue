@@ -83,9 +83,10 @@
 						}
 						break;
 						case 'save':
+						
 						 val={
 							shop:this.paramItem.shopID,
-							date:`${new Date().getFullYear()}-${new Date().getMonth()+1>=10?new Date().getMonth()+1:'0'+new Date().getMonth()+1}-${new Date().getDate()>=10?new Date().getDate():'0'+new Date().getDate()}`,
+							date:`${new Date().getFullYear()}-${new Date().getMonth()+1>9?new Date().getMonth()+1:'0'+(new Date().getMonth()+1)}-${new Date().getDate()>9?new Date().getDate():'0'+new Date().getDate()}`,
 							amount:this.num,
 							account:this.userInfo.id
 						}

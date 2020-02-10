@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="99191785-f02d-4e9d-b508-f51b9992ff0f" name="默认更改列表" comment="" />
+    <list default="true" id="99191785-f02d-4e9d-b508-f51b9992ff0f" name="默认更改列表" comment="">
+      <change afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/childComponent/choose-bind.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/childComponent/shop-img.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/childComponent/shop-info.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/childComponent/shop-member-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/apply_api.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/apply_api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/shop_api.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/shop_api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/statistics_api.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/statistics_api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/colorui/components/cu-custom.vue" beforeDir="false" afterPath="$PROJECT_DIR$/colorui/components/cu-custom.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/errorText.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/errorText.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/https.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/https.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/js/timer.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/js/timer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/js/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/js/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/common/common-flex.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/common-flex.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/common/file-upload.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/file-upload.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/common/simple-model.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/simple-model.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/login/login-common.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/login/login-common.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/shop/top-right-pupop.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/shop/top-right-pupop.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/filters/filter.js" beforeDir="false" afterPath="$PROJECT_DIR$/filters/filter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-bind/service-bind.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-bind/service-bind.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/receipte-center/create-log/create-log.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/receipte-center/create-log/create-log.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/record-money/record-money.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/record-money/record-money.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shop/camera/CPE.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shop/camera/card.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shop/camera/luyouqi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shop/camera/shexiangtou.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/shop/camera/shexiangtou.png" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -12,12 +43,21 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pages/tab-item/work/work.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="147" column="57" selection-start-line="147" selection-start-column="57" selection-end-line="147" selection-end-column="57" />
+            <state relative-caret-position="54">
+              <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="168" column="27" selection-start-line="168" selection-start-column="27" selection-end-line="168" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -36,8 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>common-btn-one</find>
-      <find>附件</find>
       <find>ViewImage</find>
       <find>fileType</find>
       <find>commonBtnOne</find>
@@ -66,6 +104,8 @@
       <find>mapKey</find>
       <find>this.$ajax(</find>
       <find>$store.state</find>
+      <find>&lt;cu-custom</find>
+      <find>'0'+</find>
     </findStrings>
     <replaceStrings>
       <replace>footer</replace>
@@ -113,8 +153,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pages/tab-item/message/message.vue" />
-        <option value="$PROJECT_DIR$/pages/tab-item/search-shop/search-shop.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item/work/work.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/mine-center/edit-password/edit-password.vue" />
         <option value="$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue" />
@@ -164,12 +202,14 @@
         <option value="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/shop-list-supplier/shop-list-supplier.vue" />
         <option value="$PROJECT_DIR$/components/work-apply/repay-form.vue" />
         <option value="$PROJECT_DIR$/components/statistics/resolve-month-item.vue" />
+        <option value="$PROJECT_DIR$/common/js/timer.js" />
+        <option value="$PROJECT_DIR$/common/errorText.json" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="12" />
-    <option name="y" value="158" />
+    <option name="x" value="105" />
+    <option name="y" value="299" />
     <option name="width" value="1936" />
     <option name="height" value="1021" />
   </component>
@@ -180,13 +220,28 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="text_myapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="text_myapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="text_myapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="text_myapp" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="D:/now_myapps" />
+    <property name="last_opened_file_path" value="D:/shop_apps" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -446,14 +501,20 @@
       <workItem from="1577670343969" duration="112000" />
       <workItem from="1577670531820" duration="661000" />
       <workItem from="1577690994946" duration="1269000" />
+      <workItem from="1577930952752" duration="341000" />
+      <workItem from="1578040673168" duration="645000" />
+      <workItem from="1578299386900" duration="293000" />
+      <workItem from="1578885875526" duration="777000" />
+      <workItem from="1579166055794" duration="655000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="958259000" />
+    <option name="totallyTimeSpent" value="960970000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="12" y="158" width="1936" height="1021" extended-state="1" />
+    <frame x="105" y="299" width="1936" height="1021" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15015806" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -538,28 +599,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-item/express-item.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="89" column="100" selection-start-line="89" selection-start-column="100" selection-end-line="89" selection-end-column="100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics-month/sale-statistics-month.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/statistics/sale-count-title-tab.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="42" column="22" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/files-content.vue" />
     <entry file="file://$PROJECT_DIR$/components/work/work-list-item.vue" />
     <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/work-log/work-log.vue" />
     <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-distribute/create-distribute.vue">
@@ -811,20 +850,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/common/http.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/store/state.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4780">
-          <caret line="239" selection-start-line="239" selection-end-line="239" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/common/http.js" />
+    <entry file="file://$PROJECT_DIR$/store/state.js" />
     <entry file="file://$PROJECT_DIR$/store/mutations.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
@@ -916,10 +943,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/common/errorText.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="70" column="21" selection-start-line="70" selection-start-column="21" selection-end-line="70" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/js/timer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="75" column="51" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pages/tab-item-content/mine-center/basic-setting/basic-setting.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="147" column="57" selection-start-line="147" selection-start-column="57" selection-end-line="147" selection-end-column="57" />
+        <state relative-caret-position="182">
+          <caret line="132" column="17" selection-start-line="132" selection-start-column="17" selection-end-line="132" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item/work/work.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="168" column="27" selection-start-line="168" selection-start-column="27" selection-end-line="168" selection-end-column="27" />
         </state>
       </provider>
     </entry>

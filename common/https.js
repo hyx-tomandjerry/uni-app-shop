@@ -41,6 +41,9 @@ async function ajax(api,param={}){
 			success: (res) => {
 				if(res.statusCode==200){
 					resolve(res.data)
+				}else if(res.statusCode==500){
+					res.code=500;
+					resolve(res)
 				}
 			},
 			fail: (error) => {

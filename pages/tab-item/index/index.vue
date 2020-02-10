@@ -88,7 +88,7 @@
 			},
 			/*刷新*/
 			async refreshInfo(){
-				let result =await RefreshOnlineUser();
+				let result = await RefreshOnlineUser();
 				this.login(result);
 				if(result.status == this.config.userStatus.normal){
 					this.company = {
@@ -117,6 +117,9 @@
 			indexSaleArticle
 		},
 		onShow(){
+			this.refreshInfo();
+		},
+		onLoad(){
 			this.refreshInfo();
 		}
 

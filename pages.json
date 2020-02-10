@@ -1,6 +1,14 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/page
-	
+		{
+			"path" : "pages/tab-item/index/index",
+			"style" : {
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
 		{
 			"path" : "pages/login-design/login/login",
 			"style": {
@@ -10,16 +18,7 @@
 					"scrollIndicator":"none",
 					"titleNView":false
 				}
-
-			}
-		},
-		{
-			"path" : "pages/tab-item/index/index",
-			"style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
+		
 			}
 		},
 		{
@@ -924,6 +923,7 @@
         ,{
             "path" : "pages/tab-item-content/shop-center/service-bind/service-bind",
             "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
 				"app-plus":{
 					"titleNView":{
 						
@@ -967,6 +967,40 @@
 				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black",
 				"navigationBarTitleText":"《快件服务协议》"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-center/service-camera-info/service-camera-info",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-center/service-router-info/service-router-info",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"CPE详情",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none",
+					"titleNView":{
+						"buttons":[
+							{
+								"type":"menu",
+								"float":"right"
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-center/traffic-charge/traffic-charge",
+            "style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"流量充值"
 			}
         }
     ],

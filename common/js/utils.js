@@ -1,4 +1,4 @@
-import store from '../../store/index.js'
+
 import {config} from '../config.js'
 const errorMsg =require('../errorText.json') ;
 export default {
@@ -44,7 +44,7 @@ export default {
 		return obj;
 	},
 	getErrorMsg(val){
-		const errorText = errorMsg.codeMessage[val]
+		const errorText = errorMsg.codeMessage[val] 
 		if(errorText){
 			uni.showToast({
 				title:errorText,

@@ -1,7 +1,6 @@
 /*工作申请api*/
 import {ajax} from '../common/https.js'
 import utils from '../common/js/utils.js'
-import store from '../store/index.js'
 /*请假申请*/
 async function NewRoutineAppApi(val){
 	let result = await ajax('NewRoutineApp',val)

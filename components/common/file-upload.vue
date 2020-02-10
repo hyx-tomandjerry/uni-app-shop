@@ -54,6 +54,7 @@
 					sourceType: ['camera','album'],
 					success: (res) => {
 						const tempFilePaths=res.tempFilePaths;
+						console.log(res.tempFilePaths)
 						if (this.imgList.length != 0) {
 							this.imgList = this.imgList.concat(res.tempFilePaths)
 						} else {

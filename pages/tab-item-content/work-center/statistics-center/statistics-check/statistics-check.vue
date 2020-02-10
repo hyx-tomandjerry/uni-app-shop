@@ -139,10 +139,11 @@
 					shopID:this.shopID,
 					money:item.fvalue,
 					year:this.timeObj.year,
-					month:this.timeObj.month,
-					day:this.timeObj.day,
+					month:Number(this.timeObj.month),
+					day:Number(this.timeObj.day),
 					type:'edit'
 				}
+				console.log(obj)
 				uni.navigateTo({
 					url:"../record-money/record-money?obj="+JSON.stringify(obj)
 				})

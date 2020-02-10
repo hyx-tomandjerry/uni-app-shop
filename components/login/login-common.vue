@@ -28,9 +28,9 @@
 <script>
 	export default{
 		props:{
-			title:'',
+			title:String,
 			tabbar:Boolean,
-			isDesign:false,
+			isDesign:Boolean,
 			isLogin:{
 				type:Boolean,
 				default:true

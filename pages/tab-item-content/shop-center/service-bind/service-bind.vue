@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<template v-if="serviceItem.uuid">
+	<view class="service-container">
+		<template v-if="fromType=='camera'">
 			<view class="service-info">
 				<normal-detail-item
 						leftIntro="uuid"  :leftPadding="true"
@@ -12,12 +12,23 @@
 			</view>
 						
 		</template>
+		<template v-else-if="fromType=='cpe'">
+			<normal-detail-item
+					leftIntro="设备序列号"  :leftPadding="true"
+					:rightContent="serviceItem.seq" :marginBottom="true"></normal-detail-item>	
+					<normal-detail-item
+							leftIntro="SIM卡序列号"  :leftPadding="true"
+							:rightContent="serviceItem.sim" :marginBottom="true"></normal-detail-item>	
+			<normal-detail-item
+					leftIntro="购买时间"  :leftPadding="true"
+					:rightContent="serviceItem.buyDate | formatTime('YMDHMS') " :marginBottom="true"></normal-detail-item>	
+		</template>
 		<template v-else>
 			<LxEmpty></LxEmpty>
 		</template>
-			<common-btn-one v-if="serviceItem.uuid"
+			<common-btn-one 
 				type="primary"
-				content="绑定"
+				:content="fromType=='change'?'更换':'绑定'"
 				@operateBtn="bindService" :isPos="true"></common-btn-one>			
 	</view>
 </template>
@@ -26,7 +37,7 @@
 	import LxEmpty from '../../../../lx_components/lx-empty.vue'
 	import commonBtnOne from '../../../../components/common/common-btn-one.vue'
 	import normalDetailItem from '../../../../components/common/normal-detail-item.vue'
-	import {BindCameraApi,CameraApi} from '../../../../api/shop_api.js'
+	import {BindCameraApi,CameraApi,ActivateRouterApi,RouterApi,ReplaceRouterApi} from '../../../../api/shop_api.js'
 	export default {
 		components:{LxEmpty,commonBtnOne,normalDetailItem},
 		data() {
@@ -34,19 +45,51 @@
 				fromType:'',//设备类型
 				shopID:'',//门店id
 				serviceItem:{},
-				uuid:''
+				uuid:'',
+				seq:''
 			}
 		},
 		onLoad(options){
-			if(options){
+			if(options.type){
 				this.fromType=options.type;
-				this.shopID=options.id;
+			}
+			if(options.id){
+				this.shopID=options.id;	
+			}
+			if(options.seq){
+				this.seq=options.seq
 			}
 		},
 		methods: {
 			//绑定设备
-			async bindService(uuid,shop){
+			 bindService(){
+				switch(this.fromType){
+					case 'camera':
+					this.bindService()
+					break;
+					case 'cpe':
+					this.bindCPE()
+					break;
+					case 'change':
+					break;
+				}
+			},
+			async changeService(){
+				if(await ReplaceRouterApi(this.uuid,this.seq)){
+					this.$utils.showToast('更换CPE成功')
+					this.$utils.goBack()
+					this.$utils.hide()
+				}
+			},
+			async bingCamera(){
 				if(await BindCameraApi(this.uuid,this.shopID)){
+					this.$utils.showToast('绑定设备成功')
+					this.$utils.goBack()
+				}
+			},
+			async bindCPE(){
+				
+				if(await ActivateRouterApi(this.uuid,this.shopID)){
 					this.$utils.showToast('绑定设备成功')
 					this.$utils.goBack()
 				}
@@ -63,7 +106,16 @@
 			},
 			//搜索设备号
 			async searchService(uuid){
-				this.serviceItem = await CameraApi(uuid)
+				switch(this.fromType){
+					case 'camera':
+					this.serviceItem = await CameraApi(uuid)
+					break;
+					case 'cpe':
+					this.serviceItem = await RouterApi(uuid)
+					console.log(this.serviceItem)
+					break;
+				}
+				
 			}
 			
 		},
@@ -80,7 +132,6 @@
 		},
 		onNavigationBarSearchInputConfirmed(event){
 			if(!event.text){
-			
 				this.$utils.showToast('设备序列号为空')
 				return;
 			}
@@ -96,5 +147,8 @@ page{
 }
 .service-info{
 	padding:40upx 30upx;
+}
+.service-container{
+	padding:30upx 0;
 }
 </style>
