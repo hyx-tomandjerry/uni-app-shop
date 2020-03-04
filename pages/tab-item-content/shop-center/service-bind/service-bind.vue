@@ -1,6 +1,6 @@
 <template>
 	<view class="service-container">
-		<template v-if="fromType=='camera'">
+		<template v-if="fromType=='camera' &&serviceItem">
 			<view class="service-info">
 				<normal-detail-item
 						leftIntro="uuid"  :leftPadding="true"
@@ -12,7 +12,7 @@
 			</view>
 						
 		</template>
-		<template v-else-if="fromType=='cpe'">
+		<template v-else-if="fromType=='cpe' && serviceItem">
 			<normal-detail-item
 					leftIntro="设备序列号"  :leftPadding="true"
 					:rightContent="serviceItem.seq" :marginBottom="true"></normal-detail-item>	
@@ -44,7 +44,7 @@
 			return {
 				fromType:'',//设备类型
 				shopID:'',//门店id
-				serviceItem:{},
+				serviceItem:null,
 				uuid:'',
 				seq:''
 			}
@@ -112,7 +112,7 @@
 					break;
 					case 'cpe':
 					this.serviceItem = await RouterApi(uuid)
-					console.log(this.serviceItem)
+				
 					break;
 				}
 				

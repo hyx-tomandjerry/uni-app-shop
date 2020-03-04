@@ -20,13 +20,12 @@
 		<view class="cu-form-group">
 			<view class="color-regular">设备状态</view>
 			<view :class="{
-				'inventory':serviceItem.status == serviceStatus.inventory,
-				'delivered':serviceItem.status == serviceStatus.delivered,
-				'accepted':serviceItem.status == serviceStatus.accepted,
-				'activated':serviceItem.status == serviceStatus.activated,
-				'stopped':serviceItem.status == serviceStatus.stopped,
-				'stpowed':serviceItem.status == serviceStatus.stpowed,
-				'canceled':serviceItem.status == serviceStatus.canceled,
+				'inventory':item.status == serviceStatus.unsign,
+				'delivered':item.status == serviceStatus.unactive,
+				'activated':item.status == serviceStatus.binding,
+				'stopped':item.status == serviceStatus.unbind,
+				'stpowed':item.status == serviceStatus.payment,
+				'canceled':item.status == serviceStatus.wrong
 			}" class="font-weight-bold">{{serviceItem.status | serviceStatusZnPipe}}</view>
 		</view>
 		

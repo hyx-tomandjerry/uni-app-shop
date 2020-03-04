@@ -1,9 +1,11 @@
 import {config} from './config.js'
-const errorText = require('./errorText')
+// const errorText = require('./errorText.js')
 import {xServerApi,proServerApi} from './api.js';
+// import {xServerArr} from '../store/index.js'
  let normalUrl="";
 let xServer="";
 let baseParam={};
+let xapiArr={};//xapi数组
 async function ajax(api,param={}){
 	return new Promise((resolve,reject)=>{
 		uni.getStorage({
@@ -30,6 +32,7 @@ async function ajax(api,param={}){
 		})
 		//路径
 		let url=getUrl(api);
+	
 		//数据
 		uni.request({
 			url:url,
@@ -53,12 +56,26 @@ async function ajax(api,param={}){
 	})
 }
 
+// const getUrl=(api) => {
+// 	if(xServerApi.includes(api)){
+// 		return xServer;
+// 	}else if(proServerApi.includes(api)){
+// 		return config.proUrl;
+// 		// return config.xiaoxiongUrl
+// 	}else{
+// 		return normalUrl;
+// 	}
+	
+// }
 const getUrl=(api) => {
-	if(xServerApi.includes(api)){
+	let result = uni.getStorageSync('xapi');
+	if(result  && result.includes(api)){
 		return xServer;
 	}else if(proServerApi.includes(api)){
 		return config.proUrl;
 		// return config.xiaoxiongUrl
+	}else if(api==='XAPIs'){
+		return xServer;
 	}else{
 		return normalUrl;
 	}

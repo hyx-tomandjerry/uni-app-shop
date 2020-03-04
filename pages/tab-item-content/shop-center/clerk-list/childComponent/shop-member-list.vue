@@ -11,13 +11,12 @@
 					</view>
 					<view >
 					<view :class="{
-						'inventory':item.status == serviceStatus.inventory,
-						'delivered':item.status == serviceStatus.delivered,
-						'accepted':item.status == serviceStatus.accepted,
-						'activated':item.status == serviceStatus.activated,
-						'stopped':item.status == serviceStatus.stopped,
-						'stpowed':item.status == serviceStatus.stpowed,
-						'canceled':item.status == serviceStatus.canceled,
+						'inventory':item.status == serviceStatus.unsign,
+						'delivered':item.status == serviceStatus.unactive,
+						'activated':item.status == serviceStatus.binding,
+						'stopped':item.status == serviceStatus.unbind,
+						'stpowed':item.status == serviceStatus.payment,
+						'canceled':item.status == serviceStatus.wrong
 				}" class="font-weight-bold">{{item.status | serviceStatusZnPipe}}</view>
 						<!-- <template v-if="item.status == serviceStatus.activated">
 							<view class="service-tag"  :class="{'border-green':item.shop>0,'border-red':item.shop==0}">{{item.shop>0?'正常':'停机'}}</view>

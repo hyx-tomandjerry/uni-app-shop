@@ -54,7 +54,6 @@
 					sourceType: ['camera','album'],
 					success: (res) => {
 						const tempFilePaths=res.tempFilePaths;
-						console.log(res.tempFilePaths)
 						if (this.imgList.length != 0) {
 							this.imgList = this.imgList.concat(res.tempFilePaths)
 						} else {
@@ -73,18 +72,27 @@
 									"x:target":this.xTarget?this.xTarget:''
 								},
 								success: (uploadFileRes) => {
-									let res=JSON.parse(uploadFileRes.data);
-									this.files=[...this.files,res.data];
-									uni.showLoading({
-										title:'正在上传...',
-										mask:true
-									})
-									if(this.files.length==length){
-										this.$utils.showToast('上传成功')
+									console.log(uploadFileRes)
+									if(uploadFileRes.statusCode!=200){
+										console.log('llllll')
+										this.$utils.showToast('上传失败')
 										uni.hideLoading()
+									}else{
+										let res=JSON.parse(uploadFileRes.data);
+										this.files=[...this.files,res.data];
+										uni.showLoading({
+											title:'正在上传...',
+											mask:true
+										})
+										if(this.files.length==length){
+											this.$utils.showToast('上传成功')
+											uni.hideLoading()
+										}
+										this.$emit('upload',this.files)
 									}
-									this.$emit('upload',this.files)
-								},
+								
+									
+								}
 						
 							});
 							

@@ -18,8 +18,9 @@
 	import indexDisplayArticle from './index-display-article.vue'
 
 	import {mapState,mapMutations} from 'vuex'
+	// import {getXapis} from '../../../api/common_api.js'
 	import {getArticleList} from '../../../api/index_api.js'
-	import {getShopList,RefreshOnlineUser,getTodoList} from '../../../api/common_api.js'
+	import {getShopList,RefreshOnlineUser,getTodoList,errorApi,getXapis} from '../../../api/common_api.js'
 	export default{
 		computed:mapState(['shopCount','shopOnlyObj']),
 		data(){
@@ -60,7 +61,7 @@
 			/*文章列表*/
 			async showArticles(){
 				let result= await getArticleList({offset:0,type:0});
-				if(result.length>0){
+				if(result && result.length>0){
 					this.noticeList1 = result.filter(item=>item.type==1);
 					this.noticeList2 = result.filter(item=>item.type==2)
 				}
@@ -89,24 +90,26 @@
 			/*刷新*/
 			async refreshInfo(){
 				let result = await RefreshOnlineUser();
-				this.login(result);
-				if(result.status == this.config.userStatus.normal){
+				if(result && result.status == this.config.userStatus.normal){
+                    this.login(result);
+					let res = await getXapis();
+					this.setXserver(res)
+					this.setErrors();
+					let errors = await errorApi()
+					this.setErrors(errors);
 					this.company = {
 						name:result['ownerName'],
 						cover:result['ownerLogoUrl']
 					}
 					this.getTodoList()
-					this.showArticles();
 					this.getShopCount()
-				}else{
-					uni.redirectTo({
-						url:"../../login-design/login/login"
-					})
+					this.showArticles();
+					
 				}
 
 			},
 			
-			...mapMutations(['login','setShopCount','setShopOnlyObj'])
+			...mapMutations(['login','setShopCount','setShopOnlyObj','setXserver','setErrors'])
 
 		},
 		components:{
@@ -117,11 +120,19 @@
 			indexSaleArticle
 		},
 		onShow(){
-			this.refreshInfo();
+			let userInfo = uni.getStorageSync('userInfo');
+			if(userInfo){
+				this.refreshInfo();
+			}else{
+				uni.redirectTo({
+					url: '../../login-design/login/login'
+				});
+			}
+			
 		},
-		onLoad(){
-			this.refreshInfo();
-		}
+		// onLoad(){
+		// 	this.refreshInfo();
+		// }
 
 	}
 </script>

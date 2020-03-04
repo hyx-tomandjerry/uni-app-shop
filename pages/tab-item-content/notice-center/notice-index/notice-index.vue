@@ -1,8 +1,6 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
-			<block slot="content"><view class="font-size-big font-weight-bold color-normal" >消息</view></block>
-		</cu-custom>
+		
 		<common-tab-nav 
 					:isShowBorder="false"
 					:tabList="titleList" 

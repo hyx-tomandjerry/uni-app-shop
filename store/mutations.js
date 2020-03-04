@@ -32,6 +32,19 @@ export default {
 	setTodoNum(state,value){
 		state.todoNum=value
 	},
-	
+	setXserver(state,value){
+		uni.setStorage({
+			key : 'xapi',
+			data:value
+		})
+		state.xServerArr=value;
+	},
+	// 获得所有错误码
+	setErrors(state,value){
+		uni.setStorage({
+			key:'error',
+			data:value
+		})
+	}
 }
 

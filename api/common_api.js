@@ -1,6 +1,17 @@
 import {ajax} from '../common/https.js'
 import utils from '../common/js/utils.js'
 import store from '../store/index.js'
+
+/*获得错误码的api接口*/
+export async function errorApi(){
+	let result = await ajax('Errors');
+	if(result.code==0) return result.data;
+}
+/*获得所有xapi接口*/
+export async function getXapis(){
+	let result = await ajax('XAPIs');
+	if(utils.getErrorMsg(result.code.toString())) return result.data
+}
 /*获得门店列表*/
 async function  getShopList(){
 	let result= await ajax('MyShops',{address:''})
@@ -20,7 +31,7 @@ async function getTodoList(){
 /*从公司删除人*/
 async function RemoveSalesman(val){
 	let result = await ajax('RemoveSalesman',val)
-	if(result.code.toString()==0) return result.data;
+	if(utils.getErrorMsg(result.code.toString())) return true;
 } 
 
 /*获得公司信息*/

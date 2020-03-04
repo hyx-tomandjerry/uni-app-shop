@@ -93,7 +93,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex';
-	import {getTodoList,RefreshOnlineUser,RemoveSalesman} from '../../../api/common_api.js'
+	import {getTodoList,RefreshOnlineUser,RemoveSalesman,getXapis} from '../../../api/common_api.js'
 	export default{
 		computed:{
 			 ...mapState(['userInfo']),
@@ -101,7 +101,7 @@
 		},
 		
 		methods:{
-			...mapMutations(['logout','login']),
+			...mapMutations(['logout','login','setXserver']),
 			async confirmModel(type){
 				switch(type){
 					case 'company':
@@ -111,7 +111,7 @@
 							permanent:1
 						}
 						let result = await RemoveSalesman(val);
-						if(result==0){
+						if(result){
 							this.$utils.showToast('您已成功退出公司')
 							this.logout();
 							setTimeout(()=>{
@@ -146,7 +146,9 @@
 			async refreshInfo(){
 				let result =await RefreshOnlineUser();
 				if(result.status==this.userStatus.normal){
-					this.login(result)			
+					this.login(result)
+					let res = await getXapis();
+					this.setXserver(res)			
 				}
 			},
 			operateItem(type){

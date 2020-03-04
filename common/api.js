@@ -137,7 +137,7 @@ const xServerApi= [
             "ClearWorkflowEvents"
 ]
 const proServerApi=[
-	'Login','Signup','InitPwd'
+	'Login','Signup','InitPwd','RefreshOnlineUser'
 ]
 export {
 	proServerApi,xServerApi

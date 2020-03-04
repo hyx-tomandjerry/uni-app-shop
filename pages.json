@@ -20,6 +20,7 @@
 				}
 		
 			}
+            
 		},
 		{
 		    "path" : "pages/tab-item-content/work-center/express-center/express-list/express-list",
@@ -69,10 +70,14 @@
 		  {
 		              "path" : "pages/tab-item-content/notice-center/notice-index/notice-index",
 		              "style" : {
-		  				"navigationStyle":"custom",
+		  				"navigationBarBackgroundColor":"#FFFFFF",
+                        "navigationBarTextStyle":"black",
+                        "navigationBarTitleText":"消息",
 		  				"enablePullDownRefresh": true,
 		  				"app-plus":{
-		  						"titleNView":false
+		  						"titleNView":{
+		  						    "autoBackButton":false
+		  						}
 		  				}
 		  			}
 		          },
@@ -156,7 +161,7 @@
 			 "style" : {
 					"navigationBarBackgroundColor":"#FFFFFF",
 					"navigationBarTextStyle":"black",
-					"navigationBarTitleText":"新建保修",
+					"navigationBarTitleText":"新建报修",
 					"app-plus":{
 						"bounce":"none",
 						"scrollIndicator":"none",
@@ -220,12 +225,12 @@
 
 		
 
-		{
-		 "path" : "pages/tab-item/message/message",
-		 "style" : {
-			"navigationBarTitleText": "","navigationBarBackgroundColor":"#fff"
-			}
-		},
+		// {
+		//  "path" : "pages/tab-item/message/message",
+		//  "style" : {
+		// 	"navigationBarTitleText": "","navigationBarBackgroundColor":"#fff"
+		// 	}
+		// },
 		
 		  {
 			   "path" : "pages/login-design/design/design",
@@ -355,8 +360,8 @@
 				 "navigationBarTitleText":"工作汇报详情"
 			}
         }
-
-        ,{
+,
+        {
             "path" : "pages/tab-item/work/work",
             "style" : {
 				"navigationStyle":"custom",
@@ -548,12 +553,9 @@
         ,{
             "path" : "pages/tab-item-content/work-center/statistics-center/sale-statistics-center/sale-statistics/sale-statistics",
             "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"scrollIndicator":"none",
-					"bounce":"none",
-					"titleNView":false
-				}
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"绩效统计"
 			}
         }
         ,{
@@ -939,7 +941,8 @@
 								"float":"right",
 								"fontSize":"20",
 								"fontSrc":"static/icon.ttf",
-								"text":"\ue502"
+								"text":"\ue502",
+                                "color":"#000000"
 							}
 						]
 					}

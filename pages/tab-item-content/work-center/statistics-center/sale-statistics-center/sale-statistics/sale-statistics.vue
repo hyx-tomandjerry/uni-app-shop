@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<cu-custom :isBack="true" bgColor="bg-white">
+		<!-- <cu-custom :isBack="true" bgColor="bg-white">
 			<block slot="left">
 				<view @tap="goBack">
 					<image src="../../../../../../static/img/fanhui.png" mode="widthFix" class="backImg"></image>
@@ -10,11 +10,15 @@
 			<block slot="right">
 				<view class="choose-year" @click="chooseYear">
 					<text>{{timeObj.year}}年</text>
-					<text class="cuIcon-unfold font-size-big color-regular" style="padding-left:7px;"></text>
+					<text classos="cuIcon-unfold font-size-big color-regular" style="padding-left:7px;"></text>
 				</view>
 			</block>
-		</cu-custom>
-		<view class="sale-count-content borderTop margin-bottom-normal flex justify-center align-center">
+		</cu-custom> -->
+		<view class="sale-count-content borderTop margin-bottom-normal flex justify-center align-center position_relative">
+            <view class="choose-year bg-white position_absolute" @click="chooseYear">
+            	<text>{{timeObj.year}}年</text>
+            	<text class="cuIcon-unfold font-size-big color-regular" style="padding-left:7px;"></text>
+            </view>
 			<view class="chart-container flex justify-center align-center position_relative">
 				<canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
 			</view>
@@ -158,8 +162,11 @@
 				获得门店信息
 			 */
 			async getShopInfo(id){
-				this.shop = await ChainShopApi(id)
-
+				let result = await ChainShopApi(id);
+                uni.setNavigationBarTitle({
+                    title:`${result.name}绩效统计`
+                })
+                this.shop=result
 			},
 			/*
 			返回上一级
@@ -282,10 +289,12 @@
 		font-size:26px;
 	}
 	.choose-year{
+        top:20upx;
+        left:20upx;
 		margin-right:10upx;
 		border:1px solid #EEEEED;
 		border-radius:5px;
-		padding:2px 5px;
+		padding:4px 13px;
 	}
 	.uni-picker-view-content{
 		padding:50px 0px;

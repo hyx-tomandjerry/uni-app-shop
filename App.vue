@@ -17,9 +17,19 @@
 			
 		},
 		onShow(){
+			// if(uni.getStorageSync('userInfo')){
+			// 	uni.switchTab({
+			// 		url:'pages/tab-item/index/index'
+			// 	})
+			// }else{
+			// 	uni.redirectTo({
+			// 		url: './pages/login-design/login/login'
+			// 	});
+			// }
 			
 		},
 		onLaunch() {
+			
 			this.$utils.onNet()
 			uni.getSystemInfo({
 					success: function(e) {

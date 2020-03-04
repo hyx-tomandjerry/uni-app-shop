@@ -78,6 +78,7 @@
 	import loading from '../../../components/common/xuan-loading.vue'
 	import commonBtnOne from '../../../components/common/common-btn-one.vue'
 	import {mapState,mapMutations} from 'vuex';
+	import {getXapis,errorApi} from '../../../api/common_api.js'
 	import {LoginApi} from '../../../api/login_api.js'
 	export default{
 		components:{loginCommon,commonBtnOne,loading},
@@ -126,7 +127,6 @@
 			uni.getStorage({
 				key:'userInfo',
 				success: (res) => {
-					console.log(res)
 					 if(res.data.status==this.config.userStatus.normal){
 						uni.switchTab({
 							url:"../../tab-item/index/index"
@@ -215,17 +215,23 @@
 				}
 			},
 			async toLogin(account,token){
+				
 				let result = await LoginApi(account,token)
-				if(result){
+				if(result ){
 					this.open();
 					if(result.type==this.config.shoperObj.type){
 						this.login(result);
+						if(result.xserver){
+							let res = await getXapis();
+							this.setXserver(res);	
+						}
 						uni.setStorageSync('userName', account);
 						uni.setStorageSync('userPsw',token);
 						this.close();
 						this.$utils.showToast('登录成功')
+						let errors = await errorApi()
+						this.setErrors(errors);
 						setTimeout(()=>{
-							
 							if(this.userInfo.status==this.config.userStatus.free){
 								uni.redirectTo({
 									url:"../../tab-item/search-company/search-company"
@@ -272,7 +278,7 @@
 				}
 			},
 		
-			 ...mapMutations(['login','setAccount','setRember'])
+			 ...mapMutations(['login','setAccount','setRember','setXserver','setErrors'])
 		},
 	}
 </script>
