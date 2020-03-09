@@ -72,7 +72,7 @@
 				this.type=options.type;
 			}
 			uni.setNavigationBarTitle({
-			    title:this.type=='sale'?'店员信息':'收件人信息'
+			    title:this.type=='express'?'收件人信息':'店员信息'
 			});
 			if(options){
 				this.getShopSalesman(options.id)

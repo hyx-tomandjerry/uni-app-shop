@@ -120,18 +120,54 @@ import utils from '../common/js/utils.js'
  }
  /*单卡流量接口*/
  export async function  SimTrafficApi(sim){
+	 // ajax('SimTraffic',{sim,today:1}).then(res=>{
+		//  console.log(res)
+	 // },error=>{
+		//  console.log(error)
+	 // })
 	 let result = await ajax('SimTraffic',{sim,today:1})
 	 if(utils.getErrorMsg(result.code.toString())) return result.data;
  }
  // 获得url
  export async function CertifyUrlApi(){
 	 let result = await ajax('CertifyUrl');
-	 if(utils.getErrorMsg(result.code.toString())) return result.data
+	
+	 if(result && utils.getErrorMsg(result.code.toString())) return result.data
  }
  // 更换路由器
  export async function ReplaceRouterApi(seq, old){
 	 let result = await ajax('ReplaceRouter',{seq,old});
 	 if(utils.getErrorMsg(result.code.toString())) return true
+ }
+ // cpe恢复出厂设置
+ export async function ResetRouterApi(seq){
+	 let result = await ajax('ResetRouter',{seq});
+	 if(utils.getErrorMsg(result.code.toString())) return true;
+ }
+ // 路由器重启
+ export async function RebootRoutersApi(seqs){
+	 let result = await ajax('RebootRouters',{seqs});
+	 if(utils.getErrorMsg(result.code.toString())) return true;
+ }
+ //设置路由器wifi
+ export async function SetWifiApi(seq,ssid,token,flag=0){
+	 let result = await ajax('SetWifi',{seq,ssid,token,reserved:flag});
+	  if(utils.getErrorMsg(result.code.toString())) return true;
+ }
+ // 流量充值
+ export async function NewOrderApi(shop,details){
+	let result = await ajax('NewOrder',{shop,details});
+	 if(utils.getErrorMsg(result.code.toString())) return true;
+ }
+ //充值记录
+ export async function TrafficRechargesApi(shop,offset=0){
+	 let result = await ajax('TrafficRecharges',{shop,offset});
+	 if(utils.getErrorMsg(result.code.toString())) return result.data;
+ }
+ //设置预警值
+ export async function SetAlertTrafficApi(sim,value,mobile,alerter){
+	 let result = await ajax('SetAlertTraffic',{sim,value,mobile,alerter});
+	  if(utils.getErrorMsg(result.code.toString())) return true;
  }
  export {
 	 ChainShopApi,

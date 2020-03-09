@@ -1,5 +1,4 @@
-
-
+	
 	.font-family-num{
 		font-family:DINAlternate-Bold;
 	}
@@ -132,6 +131,9 @@
 	.bg-color-normal{
 		background:rgba(247,247,247,1) !important
 	}
+	.bg-color-light{
+		background:#42B0ED
+	}
 	.flex-xs{
 		width:20%;
 	}
@@ -152,6 +154,12 @@
 	}
 	.flex-mini{
 		width:15%
+	}
+	.flex-d-column{
+		flex-direction: column;
+	}
+	.flex-d-row{
+		flex-direction: row;
 	}
 	.border-red{
 		border:1px solid rgba(255,72,103,1)

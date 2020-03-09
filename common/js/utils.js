@@ -44,24 +44,14 @@ export default {
 		return obj;
 	},
 	getErrorMsg(val){
-		// const errorText = errorMsg.codeMessage[val] 
-		// if(errorText){
-		// 	uni.showToast({
-		// 		title:errorText,
-		// 		icon:'none'
-		// 	})
-		// 	return  false
-		// }
-		// return true;
 		let errorArr = uni.getStorageSync('error');
 		let errorText = errorArr[val];
-		// console.log(errorArr[val])
 		if(errorText != 'Success'){
 			uni.showToast({
 				title:errorMsg[val] || errorText,
 				icon:'none'
 			})
-				return false;
+			return false;
 		}
 		return true;
 		

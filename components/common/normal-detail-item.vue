@@ -11,7 +11,7 @@
 			<view class="color-regular"
 				:style="{width:width}"
 				:class="{'left-padding':leftPadding}">{{leftIntro}}</view>
-			<view class="flex-1 wordBreak color-normal" >{{rightContent}}</view>
+			<view class="flex-1 wordBreak color-normal" :class="{'text-left':isLeft}">{{rightContent}}</view>
 		</template>
 		<template v-else-if="fromType=='image'">
 			<!-- 报修列表单个那种形式 -->
@@ -42,6 +42,7 @@
 				type:Boolean,
 				default:true
 			},
+			isLeft:Boolean,
 			marginBottom:{
 				type:Boolean,
 				default:true

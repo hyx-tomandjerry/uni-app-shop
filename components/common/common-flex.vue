@@ -2,7 +2,7 @@
 	<view>
 		<template v-if="type=='normal'">
 			<view class="cu-form-group font-size-normal borderBottom" @tap="checkItem">
-			    <view class=" flex-sm  color-normal" >
+			    <view class=" flex-sm  color-regular" >
 			        <text class="text-red" v-show="isRed">*</text>
 			        <text :class="{'color-regular':isLeftCb}">{{leftContent}}</text>
 			    </view>
@@ -12,7 +12,7 @@
 		</template>
 		<template v-if="type=='navigate'" >
 			<view class="cu-form-group borderBottom"  @tap="operateItem" :data-target="dataTarget"> 
-			    <view class="font-size-normal color-normal " >
+			    <view class="font-size-normal color-regular " >
 			        <text class="text-red" v-show="isRed">*</text>
 			        <text :class="{'color-regular':isLeftCb}">{{leftContent}}</text>
 			    </view>
@@ -24,7 +24,7 @@
 		</template>
 		<template v-if="type=='job'">
 			<view class="cu-form-group borderBottom">
-				<view class="font-size-normal color-normal ">职位</view>
+				<view class="font-size-normal color-regular ">职位</view>
 				<view class="font-size-normal">
 					<template v-if="clerkTab==1">
 						{{shopItem.manager==clerkItem.id?'店长':'店员'}}
@@ -37,7 +37,7 @@
 		</template>
 		<template v-if="type=='service'">
 			<view class="cu-form-group font-size-normal borderBottom align-center">
-			    <view class=" flex-sm  color-normal align-center" >
+			    <view class=" flex-sm  color-regular align-center" >
 			        <image :src="src" mode="widthFix" class="icon-img"></image>
 			        <text :class="{'color-regular':isLeftCb}">{{leftContent}}</text>
 			    </view>

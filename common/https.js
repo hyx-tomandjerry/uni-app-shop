@@ -42,15 +42,26 @@ async function ajax(api,param={}){
 				'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
 			},
 			success: (res) => {
+				
 				if(res.statusCode==200){
+					if(res.data==500){
+						uni.showToast({
+							title:`${api}报500`,
+							icon:'none'
+						})
+						return;
+					}
 					resolve(res.data)
-				}else if(res.statusCode==500){
-					res.code=500;
-					resolve(res)
 				}
 			},
 			fail: (error) => {
-				resolve(error)
+				
+				uni.showToast({
+					title:`${api}接口报错`,
+					icon:'none'
+				})
+				return;
+				// resolve(error)
 			}
 		})
 	})

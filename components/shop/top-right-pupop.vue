@@ -51,7 +51,7 @@
 		right:40upx;
 		z-index:10000000000000;
 		background:url('../../static/img/shop/topRight_bg.png') no-repeat;
-		background-size:360upx;
+		background-size:cover;
 	}
 	.model-content view{
 		height:100upx;

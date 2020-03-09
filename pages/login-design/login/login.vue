@@ -216,11 +216,13 @@
 			},
 			async toLogin(account,token){
 				
-				let result = await LoginApi(account,token)
-				if(result ){
+				let result = await LoginApi(account,token);
+				if(result){
 					this.open();
 					if(result.type==this.config.shoperObj.type){
 						this.login(result);
+						let errors = await errorApi()
+						this.setErrors(errors);
 						if(result.xserver){
 							let res = await getXapis();
 							this.setXserver(res);	
@@ -229,8 +231,7 @@
 						uni.setStorageSync('userPsw',token);
 						this.close();
 						this.$utils.showToast('登录成功')
-						let errors = await errorApi()
-						this.setErrors(errors);
+						
 						setTimeout(()=>{
 							if(this.userInfo.status==this.config.userStatus.free){
 								uni.redirectTo({

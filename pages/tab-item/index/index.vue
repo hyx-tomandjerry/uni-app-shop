@@ -92,9 +92,10 @@
 				let result = await RefreshOnlineUser();
 				if(result && result.status == this.config.userStatus.normal){
                     this.login(result);
-					let res = await getXapis();
-					this.setXserver(res)
-					this.setErrors();
+					if(result.xserver){
+						let res = await getXapis();
+						this.setXserver(res);	
+					}
 					let errors = await errorApi()
 					this.setErrors(errors);
 					this.company = {

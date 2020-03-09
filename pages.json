@@ -925,27 +925,19 @@
         ,{
             "path" : "pages/tab-item-content/shop-center/service-bind/service-bind",
             "style" : {
-				"navigationBarBackgroundColor":"#FFFFFF",
 				"app-plus":{
 					"titleNView":{
-						
-						"searchInput":{
-							"align":"left",
-							"autoFocus":false,
-							"backgroundColor":"#F7F7F7",
-							"borderRadius":"10",
-							"placeholder":"设备序列号"
-						},
-						"buttons":[
-							{
-								"float":"right",
-								"fontSize":"20",
-								"fontSrc":"static/icon.ttf",
-								"text":"\ue502",
-                                "color":"#000000"
-							}
-						]
+						// "buttons":[
+						// 	{
+						// 		"float":"right",
+						// 		"fontSize":"20",
+						// 		"fontSrc":"static/icon.ttf",
+						// 		"text":"\ue502",
+						// 		"color":"#000000"
+						// 	}
+						// ]
 					}
+					
 				}
 			}
         }
@@ -1001,15 +993,60 @@
         ,{
             "path" : "pages/tab-item-content/shop-center/service-center/traffic-charge/traffic-charge",
             "style" : {
-				"navigationBarBackgroundColor":"#FFFFFF",
-				"navigationBarTextStyle":"black",
-				"navigationBarTitleText":"流量充值"
+				
+				"navigationBarTitleText":"流量充值",
+				"app-plus":{
+					"titleNView":{
+						"buttons":[
+							{
+								"text":"充值记录",
+								"fontSize":"14",
+								"float":"right",
+								"color":"#2A2A2A",
+								"colorPressed":"#42B0ED"
+							}
+						]
+					}
+				}
+			}
+        }
+        
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-center/cpe-set-warning/cpe-set-warning",
+            "style" : {
+				"navigationBarTitleText":"设置预警",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-center/set-SSID/set-SSID",
+            "style" : {
+				"navigationBarTitleText":"设置SSID",
+				"app-plus":{
+					"bounce":"none",
+					"scrollIndicator":"none"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-center/charge-order-list/charge-order-list",
+            "style" : {
+				"navigationBarTitleText":"充值记录"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/shop-center/service-center/charge-order-item/charge-order-item",
+            "style" : {
+				"navigationBarTitleText":"账单详情"
 			}
         }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar":{
