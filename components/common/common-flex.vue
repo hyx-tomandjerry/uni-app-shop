@@ -6,7 +6,7 @@
 			        <text class="text-red" v-show="isRed">*</text>
 			        <text :class="{'color-regular':isLeftCb}">{{leftContent}}</text>
 			    </view>
-			   <view class="flex-1 text-ellipse text-right" 
+			   <view class="flex-1 text-ellipse text-right color-normal" 
 				:class="{'color-blue':isColorBlue}">{{rightContent}}</view>
 			</view>
 		</template>
@@ -25,7 +25,7 @@
 		<template v-if="type=='job'">
 			<view class="cu-form-group borderBottom">
 				<view class="font-size-normal color-regular ">职位</view>
-				<view class="font-size-normal">
+				<view class="font-size-normal color-normal">
 					<template v-if="clerkTab==1">
 						{{shopItem.manager==clerkItem.id?'店长':'店员'}}
 					</template>

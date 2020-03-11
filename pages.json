@@ -490,14 +490,22 @@
             "path" : "pages/tab-item/search-company/search-company",
             "style" : {
 				"navigationBarTitleText": "加入公司",
-				"navigationBarBackgroundColor":"#fff"
+				"app-plus":{
+					"titleNView":{
+						"buttons":[{
+							"float":"right",
+							"text":"退出",
+							"fontSize":"16",
+							"color":"#898888"
+						}]
+					}
+				}
+				
 			}
         }
         ,{
             "path" : "pages/tab-item/join-shop/join-shop",
             "style" : {
-				"navigationBarBackgroundColor":"#FFFFFF",
-				"navigationBarTextStyle":"black",
 				"navigationBarTitleText":"加入门店",
 				"enablePullDownRefresh":true,
 				"app-plus":{
@@ -910,15 +918,10 @@
         ,{
             "path" : "pages/tab-item-content/mine-center/company-info/company-info",
             "style" : {
-				"navigationBarBackgroundColor":"#FFFFFF",
-				"navigationBarTextStyle":"black",
 				"navigationBarTitleText":"公司详情",
 				"app-plus":{
 					"bounce":"none",
-					"scrollIndicator":"none",
-					"titleNView":{
-						"type":"transparent"
-					}
+					"scrollIndicator":"none"
 				}
 			}
         }
@@ -927,15 +930,15 @@
             "style" : {
 				"app-plus":{
 					"titleNView":{
-						// "buttons":[
-						// 	{
-						// 		"float":"right",
-						// 		"fontSize":"20",
-						// 		"fontSrc":"static/icon.ttf",
-						// 		"text":"\ue502",
-						// 		"color":"#000000"
-						// 	}
-						// ]
+						"buttons":[
+							{
+								"float":"right",
+								"fontSize":"20",
+								"fontSrc":"static/icon.ttf",
+								"text":"\ue502",
+								"color":"#000000"
+							}
+						]
 					}
 					
 				}
@@ -973,8 +976,6 @@
         ,{
             "path" : "pages/tab-item-content/shop-center/service-center/service-router-info/service-router-info",
             "style" : {
-				"navigationBarBackgroundColor":"#FFFFFF",
-				"navigationBarTextStyle":"black",
 				"navigationBarTitleText":"CPE详情",
 				"app-plus":{
 					"bounce":"none",
@@ -983,7 +984,8 @@
 						"buttons":[
 							{
 								"type":"menu",
-								"float":"right"
+								"float":"right",
+								"fontSize":"20"
 							}
 						]
 					}
@@ -1041,6 +1043,12 @@
             "path" : "pages/tab-item-content/shop-center/service-center/charge-order-item/charge-order-item",
             "style" : {
 				"navigationBarTitleText":"账单详情"
+			}
+        }
+        ,{
+            "path" : "pages/tab-item-content/mine-center/edit-idnum/edit-idnum",
+            "style" : {
+				"navigationBarTitleText":"修改身份证号"
 			}
         }
     ],

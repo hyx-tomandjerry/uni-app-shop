@@ -54,7 +54,8 @@
 		methods: {
 			unbindService(){
 				uni.showModal({
-					content:'确定要解绑该设备?',
+					title:'解绑',
+					content:'设备将与门店解除绑定，是否确认解绑？?',
 					success:(res)=>{
 						if(res.confirm){
 							if(UninstallCameraApi(this.serviceItem.id)){

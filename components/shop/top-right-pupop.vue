@@ -4,7 +4,6 @@
 		<view class="model-content" :style="{top:statusHeight+'px'}" >
 			<block v-for="(item,index) in topRightList" :key="index">
 				<view  @tap="operateItem(item.value)" hover-class="bg-color-normal" class="flex align-center">
-					<!-- <text :class="item.icon" ></text> -->
 					<image :src="item.img" mode="widthFix" class="symbol-img"></image>
 					<view>{{item.name}}</view>
 				</view>
@@ -41,6 +40,7 @@
 		left:0;
 		right:0;
 		height:100%;
+		width:100%;
 		background:rgba(0,0,0,0.2)
 	}
 	.model-content{
@@ -49,7 +49,7 @@
 		border-radius: 10upx;
 		position:fixed;
 		right:40upx;
-		z-index:10000000000000;
+		z-index:100000000;
 		background:url('../../static/img/shop/topRight_bg.png') no-repeat;
 		background-size:cover;
 	}

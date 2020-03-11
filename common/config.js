@@ -27,7 +27,7 @@ export  const config = {
 	      3:'邀请中待确认',
 	      4:'申请加入中',
 	      5:'离职',
-			6:'被拒绝',
+		6:'被拒绝',
 	  },
 	//门店状态
 	shopStatusZn:{
@@ -106,7 +106,7 @@ export  const config = {
 	},
 	repairStatusZn:{
 	    1:'未处理',
-	    2:'处理中',
+	    2:'执行中',
 	    3:'被拒绝',
 	    4:'已完成'
 	},

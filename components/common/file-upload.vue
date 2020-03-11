@@ -39,8 +39,14 @@
 			xType:[Number,String],
 			xTarget:[Number,String],
 			fileObj:Object,
-			inImgList:Array,
-			inFiles:Array,
+			inImgList:{
+				type:Array,
+				default(){return []}
+			},
+			inFiles:{
+				type:Array,
+				default(){return []}
+			},
 			isRed:{
 				type:Boolean,
 				default:false
@@ -72,9 +78,7 @@
 									"x:target":this.xTarget?this.xTarget:''
 								},
 								success: (uploadFileRes) => {
-									console.log(uploadFileRes)
 									if(uploadFileRes.statusCode!=200){
-										console.log('llllll')
 										this.$utils.showToast('上传失败')
 										uni.hideLoading()
 									}else{
@@ -133,7 +137,10 @@
 			},
 		},
 		mounted(){
+			console.log('lllll')
+			console.log(this.inImgList)
 			if(this.inImgList && this.inImgList.length){
+				console.log('lllll',this.inImgList)
 				this.imgList=this.inImgList
 			}
 			if(this.inFiles && this.inFiles.length){
@@ -141,7 +148,8 @@
 			}
 		},
 		created(){
-			this.getUploadToken()
+			this.getUploadToken();
+			
 			
 		}
 	}

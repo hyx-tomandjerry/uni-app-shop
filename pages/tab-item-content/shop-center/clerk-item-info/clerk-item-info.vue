@@ -5,28 +5,21 @@
 		<view class="clerk-info-container bg-white">
 			<common-flex leftContent="门店名称" :rightContent="shopItem.name" :isRed="false"></common-flex>
 			<common-flex leftContent="手机号码" :rightContent="clerkItem.account" :isRed="false"></common-flex>
-			<common-flex leftContent="工作状态" :rightContent="clerkItem.status | userStatusZnPipe" :isRed="false"></common-flex>
+			<common-flex leftContent="工作状态" :isColorBlue="true"
+				:rightContent="clerkItem.status | userStatusZnPipe" 
+				:isRed="false"></common-flex>
 			<common-flex  :shopItem="shopItem" :clerkItem="clerkItem"  :isRed="false" type="job" :clerkTab="clerkTab"></common-flex>
-			
 		</view>
-		<view class="mask" v-if="isShowModel" @tap="hideModel"></view>
-		<view class="model-content" :style="{top:statusHeight+'px'}" v-if="isShowModel">
-			<template v-if="shopItem.manager==userInfo.id ">
-				<template v-if="clerkItem.status==userStatus.applying">
-					<!-- 如果店员的状态是申请中 -->
-					<view class="color-blue" @tap="operateClerk('agree')"><text class="cuIcon-friendadd " ></text>同意加入</view>
-					<view class="color-red" @tap="operateClerk('refuse')"><text class="cuIcon-cut " ></text>拒绝加入</view>
-				</template>
-				<template  v-else-if="clerkItem.id!=shopItem.manager && clerkItem.status==userStatus.normal">
-					<!-- 店员状态是在职，并且店员不是店长 -->
-					<view class="color-blue" @tap="operateClerk('manager')"><text class="cuIcon-selection" ></text>设为店长</view>
-					<view class="color-red" @tap="operateClerk('delete')"><text class="cuIcon-delete " ></text>删除店员</view>
-				</template>
-			</template>
-			
-			
-			
-		</view>
+		<view class="flex justify-around" v-if="clerkItem.status == userStatus.applying && shopItem.manager==userInfo.id && clerkTab==1">
+			<view class="text-center" @tap="setJoin('refuse')">
+				<image src="../../../../static/img/shop/clerk/refuse.png" mode="widthFix" class="agree-img"></image>
+				<view>拒绝加入</view>
+			</view>
+			<view class="text-center"  @tap="setJoin('agree')">
+				<image src="../../../../static/img/shop/clerk/agree.png" mode="widthFix" class="agree-img"></image>
+				<view>同意加入</view>
+			</view>
+		</view>		
 		<!-- 右上方弹框 -->
 		<top-right-pupop
 			@operateItem="operateClerk"
@@ -68,20 +61,13 @@
 		onNavigationBarButtonTap(event){
 			if(this.clerkTab==2) return;
 			if(event.index==0){
-				if(this.shopItem.manager==this.userInfo.id){
+				if(this.shopItem.manager==this.userInfo.id && this.clerkItem.status==this.userStatus.normal){
 					//如果是店长
-					if(this.clerkItem.status==this.userStatus.applying){
-						this.topRightList=[
-							{name:'同意加入',icon:'cuIcon-friendadd',value:'agree',color:'color-blue'},
-							{name:'拒绝加入',icon:'cuIcon-cut',value:'refuse',color:'color-red'},
-						]
-					}else if(this.clerkItem.id!=this.shopItem.manager && this.clerkItem.status==this.userStatus.normal){
-						this.topRightList=[
-							{name:'设为店长',icon:'cuIcon-selection',value:'manager',color:'color-blue'},
-							{name:'删除店员',icon:'cuIcon-delete',value:'delete',color:'color-red'},
-						]
-					}
-					this.isShowModel=true;
+					this.topRightList=[
+						{name:'设为店长',img:'../../../../static/img/shop/clerk/clerk.png',value:'manager'},
+						{name:'删除店员',img:'../../../../static/img/shop/clerk/manager.png',value:'delete'},
+					]
+					this.isShowModel=!this.isShowModel;
 				}else{
 					this.isShowModel=false;
 				}
@@ -100,7 +86,6 @@
 						this.$utils.showToast('店员加入成功')
 						this.$utils.goBack()
 					}
-					
 					break;
 					case 'refuse':
 						uni.showModal({
@@ -258,5 +243,9 @@
 		height:106upx;
 		line-height:106upx;
 		text-align: center;
+	}
+	.agree-img{
+		width:58px;
+		height:58px !important;
 	}
 </style>

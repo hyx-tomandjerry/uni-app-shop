@@ -4,7 +4,7 @@
 		<view class="task-detail borderTop margin-bottom-normal">
 			<view class="task-title  flex justify-between">
 				<view class="font-size-big color-blue font-weight-bold flex-1">{{taskItem.name || ''}}</view>
-				<view class="flex-xs">
+				<view >
 					<view
 						class="item-tag"
 						:class="{
@@ -80,7 +80,7 @@
 			@refuseBtn="refuseTask"
 			@agressBtn="operateOrder('agree')"></bottom-btn-two>
 		</template>
-		<template v-if="(taskItem.status==taskStatus.accepted || taskItem.status== taskStatus.delayed || taskItem.status==taskStatus.rejected) && fromType=='list'">
+		<template v-if="(taskItem.status==taskStatus.accepted || taskItem.status== taskStatus.delayed || taskItem.status==taskStatus.rejected)">
 			<common-btn-one
 				type="primary"
 				content="申请验收"

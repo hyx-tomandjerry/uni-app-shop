@@ -400,6 +400,7 @@
 						result = await ExpenseApi(id);
 						if(result.files &&  result.files.length){
 							this.imgList=this.$utils.getFiles(result.files).img;
+							
 							this.files=this.$utils.getFiles(result.files).file;
 						}
 						this.shop={id:result.shop,name:result['shopName']};
@@ -426,6 +427,8 @@
 						if(result.files &&  result.files.length){
 							this.imgList=this.$utils.getFiles(result.files).img;
 							this.files=this.$utils.getFiles(result.files).file;
+							console.log(this.imgList)
+							console.log(this.files)
 						}
 						this.shop={
 							id:result.shop,
@@ -434,8 +437,6 @@
 						this.applyName=result.name;
 						this.reason=result.summary?result.summary:''
 						this.applyItem=result;
-						
-
 						break;
 						//请假
 					case this.approvalMode.absence:

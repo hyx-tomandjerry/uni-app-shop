@@ -80,6 +80,7 @@
 		},
 		onNavigationBarButtonTap(event){
 			if(event.index==0){
+				this.isShowModel = !this.isShowModel;
 				if(this.shopItem.manager==this.userInfo.id){
 					//如果是店长
 					this.topRightList=[
@@ -93,7 +94,7 @@
 						// {name:'绑定设备',value:'equipment',img:'../../../../static/img/shop/clerk/icon-bind.png'}
 					]
 				}
-				this.isShowModel=true;
+				// this.isShowModel=true;
 			}
 		},
 		onPullDownRefresh(){

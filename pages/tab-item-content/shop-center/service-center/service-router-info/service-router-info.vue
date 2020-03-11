@@ -13,12 +13,12 @@
 				
 					<view class="font-size-big font-weight-bold">
 						<view class="flex align-center justify-between trafic-first">
-							<view><text>套餐总量</text>{{trafficCount.Quota | trafficStyle}}GB</view>
-							<view><text>剩余流量</text>{{trafficCount.Alert | trafficStyle}}GB</view>
+							<view><text class="margin-right-mini">套餐总量</text>{{trafficCount.Quota | trafficStyle}}GB</view>
+							<view><text class="margin-right-mini">剩余流量</text>{{trafficCount.Alert | trafficStyle}}GB</view>
 						</view>
 						<view class="flex align-center justify-between trafic-first">
-							<view><text>本月使用</text>{{trafficCount.Month | trafficStyle}}GB</view>
-							<view><text>今日使用</text>{{trafficCount.Today | trafficStyle}}GB</view>
+							<view><text class="margin-right-mini">本月使用</text>{{trafficCount.Month | trafficStyle}}GB</view>
+							<view><text class="margin-right-mini">今日使用</text>{{trafficCount.Today | trafficStyle}}GB</view>
 						</view>
 					</view>
 					<view class="flex align-center" style="flex-direction: column;">
@@ -30,76 +30,29 @@
 						</view>
 					</view>
 				</view>
-			<!-- 	
-				<view class="traffic-bottom-content">
-					<common-flex
-						src="../../../../../static/img/shop/icon/icon-cpe.png"
-						leftContent="CPE名称"  
-						:rightContent="serviceItem.name || ''" type="service"/>
-					<common-flex 
-						src="../../../../../static/img/shop/icon/icon-shop.png"
-						leftContent="绑定门店"  
-						:rightContent="shopItem.name || ''" type="service"/>
-					
-					<common-flex 
-						src="../../../../../static/img/shop/icon/icon-cpe.png" 
-						leftContent="CPE序列号"  :rightContent="serviceItem.seq || ''"  type="service"/>
-					<common-flex
-						src="../../../../../static/img/shop/icon/icon-sim.png" 
-						leftContent="SIM卡序列号"  :rightContent="serviceItem.sim || ''"  type="service"/>
-					<common-flex
-						src="../../../../../static/img/shop/icon/icon-list.png" 
-						leftContent="开通日期"  :rightContent="serviceItem.buyDate |  formatTime('YMDHMS')"  type="service"/>
-						
-						
-					<common-flex
-						src="../../../../../static/img/shop/icon/icon-time.png" 
-						leftContent="累计月数"  :rightContent="getTime"  type="service"/>
-					
-					<common-flex
-							src="../../../../../static/img/shop/icon/icon_warning.png" 
-							leftContent="预警值"  :rightContent="warnCount+'GB'"  type="service"/>
-
-				</view> -->
 			</view>
 			
 			
 		</view>
+		<router-info-cpe :serviceItem="serviceItem"/>
 		
-		<view class="router-info  bg-white margin-bottom-normal">
-			<common-title-intro title="CPE信息" />
-			<normal-detail-item :leftPadding="true" leftIntro="设备名称"
-				:marginBottom="true"
-				:rightContent="serviceItem.name "></normal-detail-item>	
-				
-			<normal-detail-item :leftPadding="true" leftIntro="CPE厂商"
-					:marginBottom="true"
-					:rightContent="serviceItem.vendorName "></normal-detail-item>	
-			<normal-detail-item :leftPadding="true" leftIntro="IMEI"
-				:marginBottom="true"
-				:rightContent="serviceItem.seq "></normal-detail-item>	
-		</view>
-		<view class="router-info  bg-white">
-			<common-title-intro title="SIM卡信息" />
-			<normal-detail-item :leftPadding="true" leftIntro="SIM卡运营商"
-				:marginBottom="true"
-				rightContent="暂无"></normal-detail-item>	
-				
-			<normal-detail-item :leftPadding="true" leftIntro="ICCID"
-					:marginBottom="true"
-					:rightContent="serviceItem.sim "></normal-detail-item>	
-		
-		</view>
-		<!-- 右上方弹框  v-if="shopItem.manager == userInfo.id"-->
-		<top-right-pupop 
-			@operateItem="operateItem"
-			@hideModel="hideModel"
-			:statusHeight="statusHeight"
-			:topRightList="topRightList"
-			:isShowModel="modelName=='topRight'" />
 			
-	
+		<view class="cu-modal drawer-modal justify-end" :class="isShowModel?'show':''" @tap="hideModal">
+			<view class="cu-dialog basis-lg"  :style="[{top:CustomBar+'px',height:'calc(100vh - ' + CustomBar + 'px)'}]">
+				<view class="cu-list menu text-left">
+					<view class="cu-item arrow" v-for="(item,index) in topRightList" :key="index" @tap.stop="operateItem(item.value)">
+						<view class="content flex">
+							<image :src="item.img" mode="widthFix" class="operate-img "></image>
+							<view>{{item.name}}</view>
+						</view>
+					</view>
+					
+				</view>
+			</view>
+		</view>
 		
+		
+	
 	</view>
 </template>
 
@@ -108,7 +61,7 @@
 	import commonFlex from '../../../../../components/common/common-flex.vue'
 	import normalDetailItem from '../../../../../components/common/normal-detail-item.vue'
 	import CommonTitleIntro from '../../../../../components/common/common-title-intro.vue'
-	
+	import RouterInfoCpe from './childComponent/router-info-cpe.vue'
 	import {mapState} from 'vuex'
 	import uCharts from '../../../../../components/u-charts/u-charts.js'
 	let canvaGauge = null;
@@ -121,21 +74,21 @@
 			RebootRoutersApi} from '../../../../../api/shop_api.js'
 	
 	export default {
-		components:{commonFlex,topRightPupop,normalDetailItem,CommonTitleIntro},
+		components:{commonFlex,topRightPupop,normalDetailItem,CommonTitleIntro,RouterInfoCpe},
 		data() {
 			return {
 				topRightList:[
-					{name:'停机',value:'stop',img:'../../../../../static/img/shop/clerk/icon_stop.png'},
+					// {name:'停机',value:'stop',img:'../../../../../static/img/shop/clerk/icon_stop.png'},
 					{name:'解绑',value:'unbind',img:'../../../../../static/img/shop/clerk/icon_unbind.png'},
 					{name:'重启',value:'restart',img:'../../../../../static/img/shop/service/restart.png'},
-					{name:'实名认证',value:'authority',img:'../../../../../static/img/shop/clerk/icon_author.png'},
 					{name:'设置预警',value:'warn',img:'../../../../../static/img/shop/service/warn.png'},
 					{name:'恢复出厂设置',value:'return',img:'../../../../../static/img/shop/service/return.png'},
-					{name:'设置SSID',value:'set',img:'../../../../../static/img/shop/service/set.png'},
+					{name:'设置WIFI',value:'set',img:'../../../../../static/img/shop/service/set.png'},
+					{name:'实名认证',value:'authority',img:'../../../../../static/img/shop/clerk/icon_author.png'},
 					// {name:'更换设备',icon:'cuIcon-repair',value:'change',color:'color-purple'},
 				],
 				url:'http://iotapp.iot.189.cn:9090/uapp/certifhtml/certif_entry.html',
-				modelName:null,
+				isShowModel:false,
 				statusHeight:44,
 				screenHeight:500,
 				serviceItem:{},
@@ -198,8 +151,10 @@
 			}
 		},
 		onNavigationBarButtonTap(event){
-			if(event.index==0){
-				this.modelName='topRight'
+			if(event.index==0 && this.shopItem.manager==this.userInfo.id){
+				this.isShowModel = !this.isShowModel
+			}else{
+				return;
 			}
 		},
 		methods: {
@@ -208,13 +163,11 @@
 					url:"../traffic-charge/traffic-charge?seq="+this.serviceItem.seq+'&shop='+this.shopItem.id
 				})
 			},
-			hideModel(){
-				this.modelName=null
+			hideModal(){
+				this.isShowModel=false;
 			},
 			async operateItem(item){
-				setTimeout(()=>{
-					this.hideModel();
-				},500)
+				this.hideModal();
 				switch(item){
 					case 'authority':
 					let result = await CertifyUrlApi()
@@ -239,7 +192,7 @@
 					case 'unbind':
 					uni.showModal({
 						title:'CPE解绑',
-						content:'确定要将该设备与门店解绑?',
+						content:'设备将与该门店解除绑定，是否确认解绑?',
 						cancelColor:'#42B0ED',
 						success: (res) => {
 							if(res.confirm){
@@ -249,19 +202,19 @@
 					})
 					
 					break;
-					case 'stop':
-					uni.showModal({
-						title:'SIM卡停机保号提示',
-						content:'点击确定后，该CPE将从门店中移除至已停机列表中，同时SIM也将停机,SIM卡流量清零',
-						confirmText:'确定停机',
-						cancelColor:'#42B0ED',
-						success: (res) => {
-							if(res.confirm){
-								this.unbindService(1)
-							}
-						}
-					})
-					break;
+					// case 'stop':
+					// uni.showModal({
+					// 	title:'SIM卡停机保号提示',
+					// 	content:'点击确定后，该CPE将从门店中移除至已停机列表中，同时SIM也将停机,SIM卡流量清零',
+					// 	confirmText:'确定停机',
+					// 	cancelColor:'#42B0ED',
+					// 	success: (res) => {
+					// 		if(res.confirm){
+					// 			this.unbindService(1)
+					// 		}
+					// 	}
+					// })
+					// break;
 					case 'change':
 					uni.navigateTo({
 						url:"../../service-bind/service-bind?type="+item+"&seq="+this.serviceItem.seq
@@ -321,9 +274,8 @@
 			getSystem(){
 				uni.getSystemInfo({
 					success:(res)=>{
-						this.statusHeight=res.statusBarHeight - uni.upx2px(70);
-						// this.statusHeight=res.statusBarHeight +uni.upx2px(40);
-						this.screenHeight=res.windowHeight
+						this.statusHeight=res.statusBarHeight + uni.upx2px(50);
+						this.screenHeight=res.windowHeight;
 					}
 				})
 			},
@@ -331,12 +283,19 @@
 				this.shopItem= await ChainShopApi(id)
 			},
 			async getServiceInfo(seq){
+				/*
+					Quota: 套餐内流量
+					Month: 本月流量
+					Today: 当天流量
+					Alert: 流量预警值
+				*/
 				this.serviceItem = await RouterApi(seq)
 				this.time= this.$timer.timeDiffer(this.formatTime(this.serviceItem.buyDate,'YMDHMS'),this.formatTime(new Date(),'YMDHMS'))
 				this.trafficCount = await SimTrafficApi(this.serviceItem.sim);
 				this.warnCount=this.trafficCount ? Number(this.trafficCount.Alert/1024).toFixed(2):0
-				let used = this.trafficCount  ?Number((this.trafficCount.Quota - this.trafficCount.Alert)/1024).toFixed(2):0;
-				let precent =this.trafficCount ? used / (this.trafficCount.Quota/1024):0
+				// let used = this.trafficCount  ?Number((this.trafficCount.Quota - this.trafficCount.Alert)/1024).toFixed(2):0;
+				// let precent =this.trafficCount ? used / (this.trafficCount.Quota/1024 || 1):0;
+				let precent = this.trafficCount.Quota ? (this.trafficCount.Alert / this.trafficCount.Quota /1024):0;
 				this.chartData.series=[{
 					name: '剩余',
 					data: precent
@@ -407,7 +366,56 @@
 </script>
 
 <style scoped>
-
+	.mask{
+		position:absolute;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		height:100%;
+		width:100%;
+		background:rgba(0,0,0,0.2)
+	}
+	.model-content{
+		color:#FFFFFF;
+		width:360upx;
+		border-radius: 10upx;
+		position:fixed;
+		right:40upx;
+		z-index:100000000;
+		background:url('../../../../../static/img/shop/topRight_bg.png') no-repeat;
+		background-size:cover;
+	}
+	.model-content view{
+		height:100upx;
+		line-height:100upx;
+		padding:0upx 16upx;
+		background:#707070;
+		border-bottom:1upx solid #FFFFFF;
+	}
+	.model-content>view>text{
+		margin-right:20upx;
+		font-size:18px;
+	}
+	.symbol-img{
+		width:40upx;
+		height:40upx;
+		flex-shrink: 0;
+		margin-right:10upx;
+		vertical-align: middle;
+	}
+	/* .top-right-container{
+		background:red;
+		width:180px;
+		position:absolute;
+		height:100px;
+		z-index:10;
+		top:10px;
+		right:10px;
+	} */
+	.operate-img{
+		margin-right:20upx !important;
+	}
 	.qiun-charts {
 		width: 750upx;
 		height: 350upx;
@@ -465,7 +473,5 @@
 	.cpe-container-top>view:first-child{
 		padding:10upx 20upx;
 	}
-	.router-info{
-		padding:0 30upx 24upx;
-	}
+	
 </style>

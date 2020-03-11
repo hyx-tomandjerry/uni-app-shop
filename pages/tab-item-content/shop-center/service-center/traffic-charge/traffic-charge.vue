@@ -68,7 +68,7 @@
 				<view class="modal-content bg-white">
 					
 					<view class="modal-content-top flex flex-d-column position_relative">
-						<text class="cuIcon-close position_absolute"></text>
+						<text class="cuIcon-close position_absolute" @tap="hideModal"></text>
 						<view class="modal-content-title color-normal">{{getTrafficCount}}GB</view>
 						<view class="color-regular">到账后生效，当月有效</view>
 					</view>

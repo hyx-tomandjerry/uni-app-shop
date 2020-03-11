@@ -112,7 +112,7 @@
 			async editSeq(){
 				this.disabled=true;
 				if(await SetShopSeqApi(this.shopItem.id,this.shopItem.seq)){
-					this.$utils.showToast('门店面积修改成功')
+					this.$utils.showToast('门店编号修改成功！')
 					this.$utils.goBack()
 				}else{
 					this.disabled=false;
@@ -121,7 +121,7 @@
 			async editArea(){
 				this.disabled=true;
 				if(await SetShopAreaApi(this.shopItem.id,this.shopItem.area)){
-					this.$utils.showToast('门店面积修改成功')
+					this.$utils.showToast('门店面积修改成功！')
 					this.$utils.goBack()
 				}else{
 					this.disabled=false;

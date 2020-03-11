@@ -1,7 +1,5 @@
 import {config} from './config.js'
-// const errorText = require('./errorText.js')
 import {xServerApi,proServerApi} from './api.js';
-// import {xServerArr} from '../store/index.js'
  let normalUrl="";
 let xServer="";
 let baseParam={};
@@ -61,30 +59,16 @@ async function ajax(api,param={}){
 					icon:'none'
 				})
 				return;
-				// resolve(error)
 			}
 		})
 	})
 }
-
-// const getUrl=(api) => {
-// 	if(xServerApi.includes(api)){
-// 		return xServer;
-// 	}else if(proServerApi.includes(api)){
-// 		return config.proUrl;
-// 		// return config.xiaoxiongUrl
-// 	}else{
-// 		return normalUrl;
-// 	}
-	
-// }
 const getUrl=(api) => {
 	let result = uni.getStorageSync('xapi');
 	if(result  && result.includes(api)){
 		return xServer;
 	}else if(proServerApi.includes(api)){
 		return config.proUrl;
-		// return config.xiaoxiongUrl
 	}else if(api==='XAPIs'){
 		return xServer;
 	}else{

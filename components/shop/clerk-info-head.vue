@@ -5,8 +5,10 @@
 			<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="widthFix" lazy-load></image>
 			<!-- 姓名 -->
 			<view class="flex justify-center align-center  font-weight-bold text-white space font-size-back">{{clerkItem.name || ''}}</view>
-			<!-- 状态 -->
-			<view class="status-tag flex justify-center align-center">{{clerkItem.status | userStatusZnPipe}}</view>
+			<!-- 状�-->
+			<view class="status-tag flex justify-center align-center">
+				{{clerkItem.status | userStatusZnPipe}}
+			</view>
 		</view>
 	</view>
 </template>
@@ -23,7 +25,8 @@
 		},
 		computed:{
 			getImg(){
-				return "../../../../static/bgimg/"+this.bgImage+".jpg"
+				return "../../../../static/bgimg/clerk_bg.png"
+				
 			}
 		},
 		methods:{
@@ -39,12 +42,11 @@
 
 <style scoped>
 	.status-tag{
-		margin-left:20upx;
 		background:rgba(32,208,158,1);
 		border-radius:13px;
 		font-size:22upx;
 		color:#fff;
-		padding:0px 10upx;
+		padding:2upx 12upx;
 	}
 	.clerk-info-header{
 		position:relative;

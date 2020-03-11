@@ -1,66 +1,29 @@
 <template>
 	<view>
-		<view class="img-content position_relative">
-			<image :src="companyInfo.logourl?companyInfo.logourl:'../../../../static/bgimg/1.jpg'" mode="widthFix" lazy-load></image>
-			<view class="company-info position_absolute">
-				<view class="font-size-supper  font-weight-bold text-white">{{companyInfo.name}}</view>
-			</view>
-		</view>
+		<company-info-head :companyInfo="companyInfo" />
+		
+		
 		<view class="company-info-content">
-			<normal-detail-item 
-				:leftPadding="true"
-				width="25%"
-				 leftIntro="公司名称"
-				:marginBottom="true"
-				:rightContent="companyInfo.name || ''"	></normal-detail-item>
-			<normal-detail-item
-				:leftPadding="true"
-				width="25%"
-				 leftIntro="公司简称"
-				:marginBottom="true"
-				:rightContent="companyInfo.alias || ''"></normal-detail-item>
-			<normal-detail-item
-				width="25%"
-				:leftPadding="true"
-				 leftIntro="成立时间"
-				:marginBottom="true"
-				:rightContent="companyInfo.regdate | formatTime('YMD')"></normal-detail-item>	
-				<normal-detail-item
-					width="25%"	
-					:leftPadding="true"
-					 leftIntro="公司EID"
-					:marginBottom="true"
-					:rightContent="companyInfo.eid || ''"	></normal-detail-item>
-				<normal-detail-item
-						width="25%"
-						:leftPadding="true"
-						 leftIntro="联系人"
-						:marginBottom="true"
-						:rightContent="companyInfo.contactor || ''"	></normal-detail-item>
-				<normal-detail-item
-					width="25%"
-					:leftPadding="true"
-					 leftIntro="联系电话"
-					:marginBottom="true"
-					:rightContent="companyInfo.telephone || ''"	></normal-detail-item>	
-				<normal-detail-item
-					width="25%"
-					:leftPadding="true"
-					 leftIntro="公司地址"
-					:marginBottom="true"
-					:rightContent="`${companyInfo.provinceName || '暂无登记'}${companyInfo.cityName || ''}${companyInfo.districtName || ''}${companyInfo.address || ''}`"	></normal-detail-item>	
-				
+			<common-flex  leftContent="公司名称" :isRed="false" :rightContent="companyInfo.name || ''"/>
+			<common-flex  leftContent="公司简称" :isRed="false" :rightContent="companyInfo.alias || ''"/>
+			<common-flex  leftContent="公司EID" :isRed="false" :rightContent="companyInfo.eid || ''"/>
+			<common-flex  leftContent="联系人" :isRed="false" :rightContent="companyInfo.contactor || ''"/>
+			<common-flex  leftContent="联系电话" :isRed="false" :rightContent="companyInfo.telephone || ''"/>
+			<common-flex  leftContent="公司地址" :isRed="false" :rightContent="`${companyInfo.provinceName || '暂无登记'}${companyInfo.cityName || ''}${companyInfo.districtName || ''}${companyInfo.address || ''}`"/>
+			<common-flex  leftContent="成立时间" :isRed="false" :rightContent="companyInfo.license || '暂无'"/>
+			<common-flex  leftContent="工商信息" :isRed="false" :rightContent="companyInfo.regdate | formatTime('YMD')"/>
 		</view>
 	</view>
 </template>
 
 <script>
-	import normalDetailItem from '../../../../components/common/normal-detail-item.vue'
+	import CompanyInfoHead from './childComponent/CompanyInfoHead.vue'
+	import CommonFlex from '../../../../components/common/common-flex.vue'
 	import {mapState} from 'vuex'
 	import {RefreshOnlineUser} from '../../../../api/common_api.js'
 	import {CustomerApi} from '../../../../api/mine_api.js'
 	export default {
-		components:{normalDetailItem},
+		components:{CompanyInfoHead,CommonFlex},
 		computed:mapState(['userInfo']),
 		data() {
 			return {

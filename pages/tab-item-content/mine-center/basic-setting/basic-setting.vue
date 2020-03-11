@@ -45,7 +45,7 @@
 					</view>
 				</view>
 
-			<view class="cu-form-group position_relative borderBottom" @click="inputIDcard()">
+			<!-- <view class="cu-form-group position_relative borderBottom" @click="inputIDcard()">
 				<view class=" font-size-normal font-weight-normal color-normal">身份证号</view>
 				<input placeholder="输入身份证号"  style="text-align:right;margin-right:5px;"
 						v-if="isShowInput"
@@ -54,6 +54,13 @@
 					   class="font-size-normal font-weight-normal color-regular"
 						v-model="userInfo.idnum" @blur="checkIdCard(userInfo.idnum)">
 				<view v-else style="margin-right:15px;" class="color-regular">{{show_idnum}}</view>
+				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:14px;" ></text>
+			</view> -->
+			
+			<view class="cu-form-group position_relative borderBottom">
+				<view class=" font-size-normal font-weight-normal color-normal">身份证号</view>
+				<view v-if="userInfo.idnum" style="margin-right:15px;" @click="changeIdnum">{{show_idnum}}</view>
+				<input type="text" placeholder="请输入身份证号" v-model="idcard" style="text-align:right;margin-right:15px;" v-else>
 				<text class="cuIcon-right position_absolute text-gray" style="font-size:18px;right:10px;top:14px;" ></text>
 			</view>
 			<view class="user-info-item flex justify-between borderBottom position_relative"  @click="onShowDatePicker('date')">
@@ -95,6 +102,7 @@
 				array: [{name:'男'},{name: '女'}],
 				index: 0,
 				isShowInput:false,
+				idcard:'',//身份证号
 			}
 		},
 		components:{
@@ -106,6 +114,12 @@
 			}
 		},
 		methods:{
+			//修改身份证号
+			changeIdnum(){
+				uni.navigateTo({
+					url:"../edit-idnum/edit-idnum"
+				})
+			},
 			//修改电话号码
 			changeTel(){
 				uni.navigateTo({
@@ -197,7 +211,7 @@
 						mobile:this.userInfo.mobile,
 						name:this.userInfo.name,
 						birthday:this.birthday?this.birthday:this.$moment(this.userInfo.birthday || new Date()).format('YYYY-MM-DD'),
-						idnum:this.userInfo.idnum?this.userInfo.idnum:''
+						idnum:this.idcard?this.idcard:''
 					}
 					if(await SetProfileApi(val)){
 						this.$utils.showToast('编辑基本信息成功')

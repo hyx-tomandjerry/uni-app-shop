@@ -1,41 +1,25 @@
 <template>
 	<view class="borderTop">
-		<view class="charge-content-title">
-			<!-- <view @tap="showModel" data-target="timeModel">
-				{{timeObj.year}}年{{timeObj.month}}月
-				<text class="font-size-big color-regular" :class="{
-					'cuIcon-unfold':down,
-					'cuIcon-fold':!down
-				}"></text>
-			</view> -->
-			<view>
-				流量:<text class="color-blue font-weight-bold margin-right">100G</text>
-				支出: <text class="color-blue font-weight-bold">1000元</text>
-			</view>
+		<view class="charge-title flex align-center">
+			<view class="charge-traffic">流量: <strong class="color-blue">100G</strong></view>
+			<view>支出: <strong class="color-blue">1000元</strong></view>
 		</view>
-		
-		<view class="charge-list-content ">
-			<view class="charge-list-item border " @click="checkOrderItem">
-				<view class="charge-list-item-top flex justify-between">
+		<view class="charge-list-content bg-white">
+			<view class="charge-list-item flex justify-between" 
+				@tap="checkOrderItem"
+				v-for="(item,index) in chargeList" :key="index">
+				<view class="flex align-center">
+					<view><image src="../../../../../static/img/shop/service/charge-img.png" mode="widthFix"></image></view>
 					<view>
-						<text>张三  </text>
-						<text>充值 ：2G</text>
+						<view class="color-normal margin-bottom-mini"><text class="charge-use">{{item.name}}</text>充值: <strong>{{item.traffic}}</strong></view>
+						<view class="color-regular font-size-mini">{{item.time}}</view>
 					</view>
-					<view>10元</view>
-					
 				</view>
-				<view class="charge-list-item-bottom">
-					2020年3月9号
+				<view>
+					<strong class="color-blue font-weight-bold font-size-big">¥{{item.count}}</strong>
 				</view>
 			</view>
 		</view>
-		
-		<!-- 年月选择框 -->
-		<year-month-model 
-		:isShow="modalName=='timeModel'" 
-		:value="value" 
-		@bindChange="bindChange"
-		@hideModel="hideModel"></year-month-model>
 	</view>
 </template>
 
@@ -53,7 +37,16 @@
 				down:true,
 				modalName:'',
 				value: [10,0],
-				shopID:''
+				shopID:'',
+				chargeList:[
+					{name:'李刚',traffic:'2G',count:'100',time:'2020年2月20日 15:30'},
+					{name:'李刚',traffic:'2G',count:'100',time:'2020年2月20日 15:30'},
+					{name:'李刚',traffic:'2G',count:'100',time:'2020年2月20日 15:30'},
+					{name:'李刚',traffic:'2G',count:'100',time:'2020年2月20日 15:30'},
+					{name:'李刚',traffic:'2G',count:'100',time:'2020年2月20日 15:30'},
+					{name:'李刚',traffic:'2G',count:'100',time:'2020年2月20日 15:30'},
+					
+				]
 			}
 		},
 		methods: {
@@ -93,22 +86,31 @@
 </script>
 
 <style scoped>
-.charge-content-title{
-	padding:30upx;
-	background: #F7F7F7;
+.charge-title{
+	font-size:15px;
+	color:#2A2A2A;
+	padding:32upx;
+}
+.charge-traffic{
+	margin-right:60upx;
 }
 .charge-list-content{
-	padding:0 16upx;
+	padding-left:32upx;
 }
 .charge-list-item{
-	padding:20upx 30upx;
-	margin:10upx 10upx 0;
-	border:1px solid #EEEEED;
-	background:white;
-	border-radius:10upx;
-	
+	padding:32upx 32upx 32upx 0;
+	border-bottom:1px solid #EEEEED;
 }
-.charge-list-item-top{
-	margin-bottom:20upx;
+.charge-list-item image{
+	margin-right:20upx;
+	width:24px;
+	height:24px !important;
+	vertical-align: middle;
+}
+.charge-use{
+	margin-right:30upx;
+}
+.margin-bottom-mini{
+	margin-bottom:10upx;
 }
 </style>

@@ -265,8 +265,6 @@
 			},
 			//提交报修
 			async createOrder(){
-				// this.iconloading=true;
-				console.log(this.files.length)
 				this.disabled=true;
 				if(this.newOrEdit=='edit'){
 					let val={

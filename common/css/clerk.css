@@ -1,0 +1,25 @@
+/* 门店人员状态样式 */
+/* 正常 */
+.normal{
+	color:#31C074
+}
+/* 未邀请 */
+.free{
+	color:#F2735B
+}
+/* 邀请中待确认 */
+.inviting{
+	color:#9B01D4
+}
+/* 申请加入中 */
+.applying{
+	color:#42B0ED
+}
+/* 离职 */
+.quit{
+	color:#FF2641
+}
+/* 被拒绝 */
+.refuse{
+	color:#FF2641
+}

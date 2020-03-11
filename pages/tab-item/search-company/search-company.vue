@@ -18,6 +18,10 @@
 	</view>
 </template>
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex';
 	export default{
 		data(){
 			return{
@@ -28,7 +32,18 @@
 		onLoad(){
 			this.getSystemInfo()
 		},
+		onNavigationBarButtonTap(event){
+			if(event.index ==0){
+				this.logout();
+				setTimeout(()=>{
+					uni.redirectTo({
+						url:'../../login-design/login/login'
+					})
+				},900)
+			}
+		},
 		methods:{
+			...mapMutations(['logout']),
 			searchCompany(){
 				uni.navigateTo({
 					url:"../search-company-next/search-company-next"

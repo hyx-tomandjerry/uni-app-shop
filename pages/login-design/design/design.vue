@@ -212,6 +212,7 @@
 						},600)
 					}
 					this.disabled=false;
+					this.close()
 				}
 				
 			},
