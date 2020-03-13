@@ -13,7 +13,17 @@
 			</view>
 		</view>
 		<view class="flex justify-start">
-			<image src="../../../../static/img/notice/daiban.png" class="notice-tag" mode="widthFix" lazy-load></image>
+			<!-- #ifdef MP-WEIXIN -->
+			<image
+			 src="/static/img/notice/daiban.png" 
+			 class="notice-tag" mode="widthFix" lazy-load></image>
+			<!-- #endif -->
+			<!-- #ifndef MP-WEIXIN -->
+			<image
+			 src="../../../../static/img/notice/daiban.png" 
+			 class="notice-tag" mode="widthFix" lazy-load></image>
+			<!-- #endif -->
+			
 			<view  class="bg-white notice-detail">
 				<view class="font-size-litter font-weight-normal color-placeholder " >
 					<text>{{TabCur==2?'公告':'通知'}}</text>

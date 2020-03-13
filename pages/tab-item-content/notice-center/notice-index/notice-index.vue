@@ -20,6 +20,7 @@
 					<lx-empty></lx-empty>
 				</view>
 			</view>
+			
 		</view>
 	</view>
 </template>

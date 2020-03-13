@@ -18,10 +18,17 @@
 		<template v-else>
 			<lx-empty></lx-empty>
 		</template>
-
-		<positionImg @createOperate="createRepair"
-		:position_img="true"
-		:src="'../../../static/img/add.png'"></positionImg>
+		
+		<!-- #ifdef MP-WEIXIN -->
+				<positionImg @createOperate="createRepair"
+				:position_img="true"
+				:src="'/static/img/add.png'"></positionImg>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->
+				<positionImg @createOperate="createRepair"
+				:position_img="true"
+				:src="'../../../static/img/add.png'"></positionImg>
+		<!-- #endif -->
 		
 	</view>
 </template>

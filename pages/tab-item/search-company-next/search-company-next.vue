@@ -14,7 +14,7 @@
 				<view>{{companyObj.telephone}}</view>
 			</view>
 			<view class="company-info-item ">
-				<view>公司地址</view>
+				<view>地址</view>
 				<view>
 					<text v-if="companyObj.provinceName || companyObj.cityName ||companyObj.districtName">
 						{{companyObj.provinceName}}{{companyObj.cityName}} {{companyObj.districtName}}{{companyObj.address ||''}}

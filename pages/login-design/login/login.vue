@@ -127,7 +127,7 @@
 			uni.getStorage({
 				key:'userInfo',
 				success: (res) => {
-					 if(res.data.status==this.config.userStatus.normal){
+					 if(res.data && res.data.status==this.config.userStatus.normal){
 						uni.switchTab({
 							url:"../../tab-item/index/index"
 						})

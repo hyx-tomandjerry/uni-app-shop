@@ -1,8 +1,16 @@
 <template>
 	<view>
-		<image
-			:src="shopItem.coverurl?shopItem.coverurl:'../../../../../static/img/default.png'"
-			class="shop-img"  mode="widthFix" lazy-load></image>
+		<!-- #ifdef MP-WEIXIN -->
+			<image
+				:src="shopItem.coverurl?shopItem.coverurl:'/static/img/default.png'"
+				class="shop-img"  mode="widthFix" lazy-load></image>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->
+			<image
+				:src="shopItem.coverurl?shopItem.coverurl:'../../../../../static/img/default.png'"
+				class="shop-img"  mode="widthFix" lazy-load></image>
+		<!-- #endif -->
+		
 	</view>
 </template>
 

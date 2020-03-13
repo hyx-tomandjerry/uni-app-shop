@@ -1,8 +1,19 @@
 <template>
 	<view class="clerk-info-header flex justify-center align-center">
-		<image :src="getImg" mode="widthFix" lazy-load  @tap="changeImg"></image>
+		<!-- #ifdef MP-WEIXIN -->
+			<image src="/static/bgimg/clerk_bg.png" mode="widthFix" lazy-load  ></image>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->
+			<image src="../../../../static/bgimg/clerk_bg.png" mode="widthFix" lazy-load  ></image>
+		<!-- #endif -->
 		<view class="user-info flex justify-center align-center " style="flex-direction: column;">
-			<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="widthFix" lazy-load></image>
+			<!-- #ifdef MP-WEIXIN -->
+				<image :src="clerkItem.headurl?clerkItem.headurl:'static/img/default.png'" mode="widthFix" lazy-load></image>
+			<!-- #endif -->
+			<!-- #ifndef MP-WEIXIN -->
+				<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="widthFix" lazy-load></image>
+				
+			<!-- #endif -->
 			<!-- 姓名 -->
 			<view class="flex justify-center align-center  font-weight-bold text-white space font-size-back">{{clerkItem.name || ''}}</view>
 			<!-- 状�-->
@@ -22,20 +33,6 @@
 			return{
 				bgImage:1
 			}
-		},
-		computed:{
-			getImg(){
-				return "../../../../static/bgimg/clerk_bg.png"
-				
-			}
-		},
-		methods:{
-			changeImg(){
-				
-				let num=Number.parseInt(this.bgImage);
-				this.bgImage=num<4?++num:1;
-				
-			},
 		}
 	}
 </script>

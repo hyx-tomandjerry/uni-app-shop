@@ -6,28 +6,18 @@ let baseParam={};
 let xapiArr={};//xapi数组
 async function ajax(api,param={}){
 	return new Promise((resolve,reject)=>{
-		uni.getStorage({
-			key:'userInfo',
-			success:(res)=>{
-				if(!res.data.session){
-					uni.showToast({
-						title:'没有本地记录，请重新登录',
-						icon:'none'
-					})
-					return;
-				}
-				normalUrl=res.data.server;
-				xServer=res.data.xserver;
-				baseParam={
-					owner:res.data.owner,
-					session:res.data.session,
-					userId:res.data.id
-				}
-			},
-			fail: () => {
-				baseParam={}
+		let userInfo = uni.getStorageSync('userInfo');
+		if(userInfo){
+			normalUrl=userInfo.server;
+			xServer=userInfo.xserver;
+			baseParam={
+				owner:userInfo.owner,
+				session:userInfo.session,
+				userId:userInfo.id
 			}
-		})
+		}else{
+			baseParam={}
+		}
 		//路径
 		let url=getUrl(api);
 	
@@ -55,7 +45,7 @@ async function ajax(api,param={}){
 			fail: (error) => {
 				
 				uni.showToast({
-					title:`${api}接口报错`,
+					title:`${api}请求中....`,
 					icon:'none'
 				})
 				return;

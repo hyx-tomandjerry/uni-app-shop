@@ -1,6 +1,11 @@
 <template>
 	<view class="member-list borderBottom flex justify-start align-center position_relative animated slideInLeft fast"   @tap="checkItemInfo">
-		<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  mode="widthFix" lazy-load class="user_avatar"></image>
+		<!-- #ifdef MP-WEIXIN -->
+			<image :src="item.headurl?item.headurl:'/static/img/default.png'"  mode="widthFix" lazy-load class="user_avatar"></image>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->
+			<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  mode="widthFix" lazy-load class="user_avatar"></image>
+		<!-- #endif -->
 		<template v-if="TabCur==1">
 			<view>
 				<text>{{item.name}}</text><text class="color-regular font-size-litter">({{item.account}})</text>
