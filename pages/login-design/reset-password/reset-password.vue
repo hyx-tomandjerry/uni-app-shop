@@ -153,8 +153,11 @@
 				}
 			},
 			signPro(){
-				uni.redirectTo({
-					url:"../protocol/protocol"
+				// uni.redirectTo({
+				// 	url:"../protocol/protocol?type=serve"
+				// })
+				uni.openDocument({
+					filePath:'../../../static/protocol/serve.docx'
 				})
 			},
 			change(){

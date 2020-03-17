@@ -70,6 +70,26 @@
 				:shadeClick="true"
 				:type="1">
 		</loading>
+		<!-- 弹出框 -->
+			<view class="cu-modal" :class="isShow?'show':''">
+				<view class="cu-dialog">
+					<view class="cu-bar bg-white justify-end">
+						<view class="content">服务协议与隐私政策</view>
+					</view>
+					<view class="padding-xl bg-white text-left">
+						<view>请你务必审慎阅读、充分理解"服务协议"和"隐私政策"各条款，包括但不限于:为了向你提供即时通讯、内容分享等服务，我们需要收集你的设备信息、
+						操作日志等个人信息。你可以在"设置中"查看、变更、删除个人信息并管理你的授权。</view>
+						<view>
+							你可阅读 <text class="color-blue">《服务协议》</text>和<text class="color-blue">《隐私协议》</text>了解详细信息。如你同意，请点击
+							"同意"开始接受我们的服务。
+						</view>
+					</view>
+					<view class="cu-bar bg-white borderTop">
+						<view class="flex-1 text-center borderRight" @tap="operateProtocol('refuse')">暂不使用</view>
+						<view class="flex-1 text-center color-blue" @tap="operateProtocol('agree')">同意</view>
+					</view>
+				</view>
+		    </view>
 	</view>
 </template>
 
@@ -92,7 +112,8 @@
 				isShowPwd:false,//显示密码
 				tabbar:true,//用于键盘隐藏，
 				windowHeight:'',
-				btnType:'default'
+				btnType:'default',
+				isShow:false,//显示协议
 			}
 		},
 		watch:{
@@ -101,6 +122,12 @@
 		},
 		onShow(){
 			this.checked=false;
+			let system =uni.getSystemInfoSync();
+			if(system.platform =='android'){
+				if(!uni.getStorageSync('agree')){
+					this.isShow = true;
+				}
+			}
 			this.$fire.on('login',res=>{
 				this.inInput=false;
 				this.account=res.account;
@@ -138,9 +165,17 @@
 		
 		},
 		onLoad(){
+			
 			this.changeTabbar();
 		},
 		methods:{
+			operateProtocol(type){
+				this.isShow = false;
+				uni.setStorage({
+					key:'agree',
+					data:type==='agree'
+				})
+			},
 			changeTabbar(){
 				uni.getSystemInfo({
 					success: (res) => {
@@ -208,14 +243,33 @@
 					})
 					break;
 					case 'pro':
-					uni.navigateTo({
-						url:"../protocol/protocol"
+					// uni.navigateTo({
+					// 	url:"../protocol/protocol?type=serve"
+					// })
+					uni.openDocument({
+						filePath:'../../../static/protocol/serve.docx'
 					})
 					break;
 				}
 			},
 			async toLogin(account,token){
-				
+				let system = uni.getSystemInfoSync();
+				if(system.platform =='android'){
+					if(!uni.getStorageSync('agree')){
+						uni.showToast({
+							title:'你还未同意服务协议与隐私政策!',
+							icon:'none',
+							success: () => {
+								setTimeout(()=>{
+									this.isShow = true;
+								},1000)
+							}
+						})
+						this.disabled=false;
+						return;
+					}
+					
+				}
 				let result = await LoginApi(account,token);
 				if(result){
 					this.open();
@@ -252,6 +306,60 @@
 					}
 				}
 				this.disabled=false;
+				
+			},
+			async toLogin123(account,token){
+				if(!uni.getStorageSync('agree')){
+					uni.showToast({
+						title:'你还未同意服务协议与隐私政策!',
+						icon:'none',
+						success: () => {
+							setTimeout(()=>{
+								this.isShow = true;
+							},1000)
+						}
+					})
+					this.disabled=false;
+					
+				}else{
+					let result = await LoginApi(account,token);
+					if(result){
+						this.open();
+						if(result.type==this.config.shoperObj.type){
+							this.login(result);
+							let errors = await errorApi()
+							this.setErrors(errors);
+							if(result.xserver){
+								let res = await getXapis();
+								this.setXserver(res);	
+							}
+							uni.setStorageSync('userName', account);
+							uni.setStorageSync('userPsw',token);
+							this.close();
+							this.$utils.showToast('登录成功')
+							
+							setTimeout(()=>{
+								if(this.userInfo.status==this.config.userStatus.free){
+									uni.redirectTo({
+										url:"../../tab-item/search-company/search-company"
+									})
+								}else if(this.userInfo.status==this.config.userStatus.normal){
+									uni.switchTab({
+										url:"../../tab-item/index/index"
+									})	
+								}
+							},1000)
+						}else{
+							setTimeout(()=>{
+								this.$utils.showToast('您的账号无法在“门店助手”登录')
+								this.disabled=false;
+								this.close()
+							},800)
+						}
+					}
+					this.disabled=false;
+				}
+				
 			},
 			
 			check(){
@@ -281,6 +389,14 @@
 		
 			 ...mapMutations(['login','setAccount','setRember','setXserver','setErrors'])
 		},
+		beforeCreate() {
+			
+			if(uni.getStorageSync('userInfo')){
+				uni.switchTab({
+					url:'../../tab-item/index/index'
+				})
+			}
+		}
 	}
 </script>
 <style scoped>

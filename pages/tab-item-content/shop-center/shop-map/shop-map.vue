@@ -13,7 +13,7 @@
 					<input type="text" v-model="shopItem.address" class="input-style"/>
 				</view>
 			</view>
-			<view class="flex justify-between align-center" >
+			<view class="flex justify-between align-center margin-top font-size-mini" >
 				<button class="cu-btn round line-blue"  @tap="init_address"
 					>标注门店定位</button>
 				<button class="cu-btn round line-green"  @tap="saveAddress"
@@ -256,5 +256,10 @@
 		background:#F7F7F7;
 		height:90upx;
 		line-height:90upx;
+	}
+	.intro{
+		font-size:12px;
+		margin-top:20upx;
+		color:#898888;
 	}
 </style>

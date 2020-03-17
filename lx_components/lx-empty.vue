@@ -34,24 +34,30 @@
 	page{
 		background:#fff;
 	}
-	.lx-empty{
-		display: block;
-		padding: 0 8px;
-		font-size: 14px;
-		line-height: 22px;
-		&-image{
-			/*height: 100px;*/
-			margin-bottom: 8px;
-			width: 100%;
-			text-align: center;
-			image{
-				width: 100%%;
-			}
-		}
-		&-description{
-			width: 100%;
-			text-align: center;
-			margin: 0;
-		}
+	.lx-empty-image{
+		margin-bottom: 8px;
+		width: 100%;
+		text-align: center;
 	}
+	.lx-empty-image image{
+		width: 100%%;
+	}
+	.lx-empty-description{
+		width: 100%;
+		text-align: center;
+		margin: 0;
+	}
+	// .lx-empty{
+	// 	display: block;
+	// 	padding: 0 8px;
+	// 	font-size: 14px;
+	// 	line-height: 22px;
+	// 	&-image{
+			
+			
+	// 	}
+	// 	&-description{
+			
+	// 	}
+	// }
 </style>

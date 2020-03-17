@@ -29,18 +29,7 @@
 							<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
 						</view>
 					</view>
-					<view class="flex justify-between  align-center list-content-item"
 					
-						@click="operateItem('company')">
-						<view class="flex justify-start align-center">
-							<image src="../../../static/img/mine/company.png"
-							class="img-user"></image>
-							<view class="font-size-normal">公司详情</view>
-						</view>
-						<view>
-							<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
-						</view>
-					</view>
 					<view class="flex justify-between  align-center list-content-item"
 
 						@click="operateItem('password')">
@@ -54,20 +43,50 @@
 							<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
 						</view>
 					</view>
-					<view class="flex justify-between  align-center list-content-item  flex-all"
-
-						@click="operateItem('quitCompany')">
-						<view class="flex justify-start align-center">
-							<image src="../../../static/img/mine/quit_company.png"
-							class="img-user"></image>
-							<view class="font-size-normal">退出公司</view>
-						</view>
-						<view>
-							<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
-						</view>
+					
+					
+				</view>
+			<view class="list-content margin-top-13">
+				<view class="flex justify-between  align-center list-content-item"
+				
+					@click="operateItem('company')">
+					<view class="flex justify-start align-center">
+						<image src="../../../static/img/mine/company.png"
+						class="img-user"></image>
+						<view class="font-size-normal">公司详情</view>
+					</view>
+					<view>
+						<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
 					</view>
 				</view>
-
+				<view class="flex justify-between  align-center list-content-item  flex-all"
+				
+					@click="operateItem('quitCompany')">
+					<view class="flex justify-start align-center">
+						<image src="../../../static/img/mine/quit_company.png"
+						class="img-user"></image>
+						<view class="font-size-normal">退出公司</view>
+					</view>
+					<view>
+						<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
+					</view>
+				</view>
+			</view>
+			<view class="list-content margin-top-13" >
+				<view class="flex justify-between  align-center quit-item"
+			
+					@click="operateItem('protocol')">
+					<view class="flex justify-start align-center">
+						<image src="../../../static/img/mine/mine_protocol.png" class="img-quit"></image>
+						<view class="font-size-normal">软件协议</view>
+					</view>
+					<view>
+						<image src="../../../static/icon/icon-mine-right.png" class="arrow-right"></image>
+					</view>
+				</view>
+			
+			</view>
+			
 			<view class="list-content margin-top-13">
 				<view class="flex justify-between  align-center quit-item"
 
@@ -99,7 +118,11 @@
 			 ...mapState(['userInfo']),
 			 userStatus(){return this.config.userStatus}
 		},
-		
+		data(){
+			return{
+				system:''
+			}
+		},
 		methods:{
 			...mapMutations(['logout','login','setXserver']),
 			async confirmModel(type){
@@ -192,6 +215,11 @@
 							}
 						})
 						break;
+						case 'protocol':
+						uni.navigateTo({
+							url:'../../tab-item-content/mine-center/secret-protocol/secret-protocol'
+						})
+						break;
 					}
 				}
 
@@ -202,6 +230,7 @@
 			this.refreshInfo()
 		},
 		onShow(){
+			this.system = uni.getSystemInfoSync();
 			this.getTodoList();
 			this.refreshInfo()
 		}

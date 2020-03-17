@@ -1,19 +1,8 @@
 <template>
 	<view class="clerk-info-header flex justify-center align-center">
-		<!-- #ifdef MP-WEIXIN -->
-			<image src="/static/bgimg/clerk_bg.png" mode="widthFix" lazy-load  ></image>
-		<!-- #endif -->
-		<!-- #ifndef MP-WEIXIN -->
-			<image src="../../../../static/bgimg/clerk_bg.png" mode="widthFix" lazy-load  ></image>
-		<!-- #endif -->
+		<image src="../../../../static/bgimg/clerk_bg.png" mode="widthFix" lazy-load  ></image>
 		<view class="user-info flex justify-center align-center " style="flex-direction: column;">
-			<!-- #ifdef MP-WEIXIN -->
-				<image :src="clerkItem.headurl?clerkItem.headurl:'static/img/default.png'" mode="widthFix" lazy-load></image>
-			<!-- #endif -->
-			<!-- #ifndef MP-WEIXIN -->
-				<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="widthFix" lazy-load></image>
-				
-			<!-- #endif -->
+			<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="widthFix" lazy-load></image>
 			<!-- 姓名 -->
 			<view class="flex justify-center align-center  font-weight-bold text-white space font-size-back">{{clerkItem.name || ''}}</view>
 			<!-- 状�-->

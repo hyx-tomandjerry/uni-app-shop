@@ -13,16 +13,9 @@
 			</view>
 		</view>
 		<view class="flex justify-start">
-			<!-- #ifdef MP-WEIXIN -->
 			<image
-			 src="/static/img/notice/daiban.png" 
-			 class="notice-tag" mode="widthFix" lazy-load></image>
-			<!-- #endif -->
-			<!-- #ifndef MP-WEIXIN -->
-			<image
-			 src="../../../../static/img/notice/daiban.png" 
-			 class="notice-tag" mode="widthFix" lazy-load></image>
-			<!-- #endif -->
+					src="../../../../static/img/notice/daiban.png"
+					class="notice-tag" mode="widthFix" lazy-load></image>
 			
 			<view  class="bg-white notice-detail">
 				<view class="font-size-litter font-weight-normal color-placeholder " >

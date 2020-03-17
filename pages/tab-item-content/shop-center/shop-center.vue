@@ -19,16 +19,9 @@
 			<lx-empty></lx-empty>
 		</template>
 		
-		<!-- #ifdef MP-WEIXIN -->
-				<positionImg @createOperate="createRepair"
-				:position_img="true"
-				:src="'/static/img/add.png'"></positionImg>
-		<!-- #endif -->
-		<!-- #ifndef MP-WEIXIN -->
-				<positionImg @createOperate="createRepair"
-				:position_img="true"
-				:src="'../../../static/img/add.png'"></positionImg>
-		<!-- #endif -->
+		<positionImg @createOperate="createRepair"
+		:position_img="true"
+		:src="'../../../static/img/add.png'"></positionImg>
 		
 	</view>
 </template>

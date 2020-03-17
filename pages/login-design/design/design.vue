@@ -198,14 +198,14 @@
 							uni.redirectTo({
 								url:"../login/login",
 								success: () => {
-									this.$fire.fire('login',{
-										account:this.mobile,
-										token:this.token
-									})
-									uni.setStorage({
-									    key: 'remeber',
-									    data:false,
-									});
+									// this.$fire.fire('login',{
+									// 	account:this.mobile,
+									// 	token:this.token
+									// })
+									// uni.setStorage({
+									//     key: 'remeber',
+									//     data:false,
+									// });
 									this.close()
 								}
 							})
@@ -248,8 +248,11 @@
 						})
 						break;
 					case 'pro':
-						uni.navigateTo({
-							url:"../protocol/protocol"
+						// uni.navigateTo({
+						// 	url:"../protocol/protocol?type=serve"
+						// })
+						uni.openDocument({
+							filePath:'../../../static/protocol/serve.docx'
 						})
 						break;
 				}

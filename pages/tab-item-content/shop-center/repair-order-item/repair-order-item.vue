@@ -47,9 +47,7 @@
 								</uni-collapse>
 							</template>
 						
-						<normal-detail-item :leftPadding="true" leftIntro="维修日期" 
-							:marginBottom="true"
-							:rightContent="repaitItem.appointdate | formatTime('YMD')"></normal-detail-item>
+						
 						<normal-detail-item 
 							:leftPadding="true"
 							leftIntro="报修描述" :rightContent="repaitItem.summary || ''">
@@ -91,7 +89,9 @@
 						<normal-detail-item :leftPadding="true" leftIntro="申请时间"
 							:marginBottom="true"
 							:rightContent="repaitItem.applyDate | formatTime('YMDHMS')"></normal-detail-item>
-						
+						<normal-detail-item :leftPadding="true" leftIntro="预约时间"
+							:marginBottom="true"
+							:rightContent="repaitItem.appointTime | formatTime('YMDHMS')"></normal-detail-item>
 						<normal-detail-item :leftPadding="true" leftIntro="门店编号"
 							:marginBottom="true"
 							:rightContent="repaitItem.shopSeq"></normal-detail-item>	

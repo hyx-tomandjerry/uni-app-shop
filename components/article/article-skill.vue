@@ -2,7 +2,7 @@
 	<view class="flex justify-start align-center borderBottom position_relative more-content"   @tap="checkItemInfo" >
 		<view class="left-container">
 			<view class="font-size-big font-weight-bold more-content-name">{{item.name}} </view>
-			<view class="font-size-litter  color-regular">{{item.applyDate | formatTime('YMDHMS')}}</view>
+			<view class="font-size-litter  color-regular left-container-time">{{item.applyDate | formatTime('YMDHMS')}}</view>
 		</view>
 		<view style="width:29%;">
 			<image :src="item.coverurl" mode="widthFix"  class="more-content-cover"></image>
@@ -37,7 +37,10 @@
 		width:68%;
 		
 	}
-	.left-container>view:first-child{
+	/* .left-container>view:first-child{
+		word-break: break-all;
+	} */
+	.left-container-time{
 		word-break: break-all;
 	}
 	.more-content{

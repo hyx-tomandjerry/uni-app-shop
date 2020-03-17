@@ -22,8 +22,8 @@
 						<view v-show="date.bgStyle.type" :class="'picker-calendar-view-'+date.bgStyle.type" :style="{background: date.bgStyle.background}"></view>
 						<!-- 正常和选中样式 -->
 						<view class="picker-calendar-view-item" :style="{opacity: date.statusStyle.opacity, color: date.statusStyle.color, background: date.statusStyle.background}" :class="{
-							'bg-color-normal':new Date(date.dateObj).getTime()-new Date().getTime()>0 && isBegin,
-							'color-regular':new Date(date.dateObj).getTime()-new Date().getTime()>0 && isBegin
+							'bg-color-normal':(new Date(date.dateObj).getTime()-new Date().getTime()>0 && isBegin) || (new Date(date.dateObj).getTime()-new Date().getTime()<-86400 && isLimited),
+							'color-regular':(new Date(date.dateObj).getTime()-new Date().getTime()>0 && isBegin) || (new Date(date.dateObj).getTime()-new Date().getTime()<-86400 && isLimited)
 						}">
 							<text>{{date.title}}</text>
 						</view>
@@ -289,7 +289,14 @@
 				type: String,
 				default: '结束'
 			},
-			isBegin:Boolean
+			isBegin:{
+				type:Boolean,
+				default:false,
+			},
+			isLimited:{
+				type:Boolean,
+				default:false
+			},//今天以前的日期不可以选择
 		},
 		data() {
 			return {
@@ -467,7 +474,7 @@
 			},
 			//选中日期
 			onSelectDate(date) {
-				if(this.isBegin && new Date(date.dateObj).getTime()-new Date().getTime()>0) return;
+				if((this.isBegin && new Date(date.dateObj).getTime()-new Date().getTime()>0) || (this.isLimited && new Date(date.dateObj).getTime()-new Date().getTime()<-86400)) return;
 				if (~this.type.indexOf('range') && this.checkeds.length == 2) this.checkeds = [];
 				else if (!(~this.type.indexOf('range')) && this.checkeds.length) this.checkeds = [];
 				this.checkeds.push(new Date(date.dateObj));

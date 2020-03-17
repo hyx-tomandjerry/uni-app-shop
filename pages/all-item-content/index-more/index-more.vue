@@ -117,11 +117,11 @@
 		onLoad(option){
 
 			if(option.value=='skill'){
-				this.title='销售技巧';
+				this.title='销售公告';
 				this.value=option.value;
 
 			}else if(option.value=='example'){
-				this.title='陈述案例';
+				this.title='陈列公告';
 				this.value=option.value;
 
 			}

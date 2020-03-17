@@ -34,7 +34,9 @@
 				
 			}
 		},
-
+		onPullDownRefresh() {
+			this.refreshInfo()
+		},
 		methods:{
 			//获得门店数量
 			async getShopCount(){
@@ -121,8 +123,8 @@
 			indexSaleArticle
 		},
 		onShow(){
-			let userInfo = uni.getStorageSync('userInfo');
-			if(userInfo){
+			
+			if(uni.getStorageSync('userInfo')){
 				this.refreshInfo();
 			}else{
 				uni.redirectTo({
@@ -131,10 +133,6 @@
 			}
 			
 		},
-		// onLoad(){
-		// 	this.refreshInfo();
-		// }
-
 	}
 </script>
 <style scoped>

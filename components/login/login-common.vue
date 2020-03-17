@@ -19,7 +19,7 @@
 			@tap="toPro"
 			class="bottom-content text-center font-size-mini color-regular position_absolute"
 			v-show="tabbar">
-			登录/注册即表示同意<text class="color-blue">《乐象工程管家服务协议》</text>
+			登录/注册即表示同意<text class="color-blue">《乐象门店助手服务协议》</text>
 		</view>
 		<!-- proto end -->
 	</view>

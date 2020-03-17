@@ -9,29 +9,31 @@
 				<template v-else>
 					<image :src="item.coverurl?item.coverurl:'../../../../static/img/default.png'" mode="widthFix" class="shop-img"></image>
 				</template>
+
 			</view>
 			<view class="shop-info-area flex-1 " >
 				<view class="flex justify-start font-weight-bold align-center" style="margin-bottom:10upx;">
 					<view class=" text-ellipse " style="width:200upx">{{item.name || ''}}</view>
 					<view v-if="item.brandName" class="font-size-mini font-weight-normal">({{item.brandName }})</view>
 					<image 	:src="type=='join'?'../../../static/img/shop/businessing.png':'../../../../static/img/shop/businessing.png'"
-							class="shop-tag"
-					v-if="item.status==shopStatus.businessing"></image>
+							  class="shop-tag"
+							  v-if="item.status==shopStatus.businessing"></image>
 					<image
-					:src="type=='join'?'../../../static/img/shop/ready.png':'../../../../static/img/shop/ready.png'"
-					class="shop-tag" v-if="item.status==shopStatus.ready"></image>
+							:src="type=='join'?'../../../static/img/shop/ready.png':'../../../../static/img/shop/ready.png'"
+							class="shop-tag" v-if="item.status==shopStatus.ready"></image>
 					<image
-						:src="type=='join'?'../../../static/img/shop/processing.png':'../../../../static/img/shop/processing.png'"
-					class="shop-tag" v-if="item.status==shopStatus.processing"></image>
+							:src="type=='join'?'../../../static/img/shop/processing.png':'../../../../static/img/shop/processing.png'"
+							class="shop-tag" v-if="item.status==shopStatus.processing"></image>
 					<image
-					:src="type=='join'?'../../../static/img/shop/canceled.png':'../../../../static/img/shop/canceled.png'"
-					 v-if="item.status==shopStatus.canceled"></image>
+							:src="type=='join'?'../../../static/img/shop/canceled.png':'../../../../static/img/shop/canceled.png'"
+							v-if="item.status==shopStatus.canceled"></image>
 					<image
-					 :src="type=='join'?'../../../static/img/shop/renovated.png':'../../../../static/img/shop/renovated.png'"
-					v-if="item.status==shopStatus.renovated"></image>
+							:src="type=='join'?'../../../static/img/shop/renovated.png':'../../../../static/img/shop/renovated.png'"
+							v-if="item.status==shopStatus.renovated"></image>
 					<image
-					 :src="type=='join'?'../../../static/img/shop/moved.png':'../../../../static/img/shop/moved.png'"
-					 class="shop-tag-canceled" v-if="item.status==shopStatus.moved"></image>
+							:src="type=='join'?'../../../static/img/shop/moved.png':'../../../../static/img/shop/moved.png'"
+							class="shop-tag-canceled" v-if="item.status==shopStatus.moved"></image>
+					
 				</view>
 
 				<view class="shop-name flex align-center" style="margin:20upx 0;" v-show="showManager">

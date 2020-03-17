@@ -145,8 +145,11 @@
 					})
 					break;
 					case 'pro':
-					uni.navigateTo({
-						url:"../protocol/protocol"
+					// uni.navigateTo({
+					// 	url:"../protocol/protocol?type=serve"
+					// })
+					uni.openDocument({
+						filePath:'../../../static/protocol/serve.docx'
 					})
 					break;
 				}

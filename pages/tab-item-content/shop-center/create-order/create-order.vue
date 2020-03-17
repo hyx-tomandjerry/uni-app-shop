@@ -1,10 +1,24 @@
 <template>
 	<view class="borderTop">
-		<view >
+		<view class="form-container">
 			<common-flex leftContent="门店名称" :rightContent="shop.name"></common-flex>
 			<common-flex leftContent="报修人" :rightContent="userInfo.name"></common-flex>
 			<common-flex leftContent="联系方式" :rightContent="userInfo.account"></common-flex>
+			<!-- 预约维修时间 -->
+			
 			<view class="repair-item"></view>
+			<view class="cu-form-group borderBottom">
+				<view class="color-regular "><text class="color-red">*</text>预约维修时间</view>
+				<view class="flex justify-start align-center">
+					<dyDateTime @getData="getDataStart"
+								:class="{
+									'color-normal':this.appointTime,
+									'color-regular':!this.appointTime
+								}"
+								 :placeholder="appointTime?appointTime:'预约维修时间'"></dyDateTime>
+					<text class="cuIcon-right font-size-big color-regular"></text>
+				</view>
+			</view>
 			<view class="repair-info">
 				<common-flex 
 					leftContent="维修类别" 
@@ -66,14 +80,13 @@
 				</view>
 			</view>
 		</view>
-		<view style="height:200upx"></view>
+		
 		<common-btn-one
 			:type="btnType" 
 			:disabled="disabled" 
 			:content="repaitItem.status==repairStatus.submit && repaitItem.approval==applyStatus.rejected?'重新提交':'提交订单'"
 			@operateBtn="createOrder" :isPos="true"></common-btn-one>
-
-		</view>
+		
 	</view>
 </template>
 <script>
@@ -84,7 +97,8 @@
 	import commonFlex from '../../../../components/common/common-flex.vue'
 	import filesContent from '../../../../components/common/files-content.vue'
 	import fileUpload from '../../../../components/common/file-upload.vue'
-	
+	// import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
+	import dyDateTime from '../../../../components/lanxiujuan-dyDateTime/lanxiujuan-dyDateTime.vue'
 	import {NewServiceOrderApi,ChainShopApi,ServiceCatalogApi,ServiceOrderApi,SetServiceOrderApi} from '../../../../api/shop_api.js'
 	export default{
 	    computed:{
@@ -95,6 +109,7 @@
 		},
 		data(){
 			return{
+				appointTime:'',
 				shop:{
 					id:'',
 					name:''
@@ -118,7 +133,9 @@
 				disabled:false,
 				// iconloading:false,
 				newOrEdit:'create',
-				btnType:'default'
+				btnType:'default',
+				repariTime:'',
+				modalName:''
 			}
 		},
 		watch:{
@@ -133,7 +150,8 @@
 			normalDetailItem,
 			commonFlex,
 			filesContent,
-			fileUpload
+			fileUpload,
+			dyDateTime
 		},
 		onLoad(options){
 			this.newOrEdit=options.newOrEdit;
@@ -182,6 +200,11 @@
 			})
 		},
 		methods:{
+			getDataStart(event){
+				if(event){
+					this.appointTime=event;
+				}
+			},
 			//获得子类别详情
 			async getSubCatagoryItem(id){
 				let result = await ServiceCatalogApi(id)
@@ -195,7 +218,7 @@
 			},
 			change(){
 				if(this.newOrEdit=='create'){
-					if(this.shop.id && this.repairObj.bigID && this.files.length!=0 && this.workFlowItem.id && this.repairObj.summary){
+					if(this.shop.id && this.repairObj.bigID && this.files.length!=0 && this.workFlowItem.id && this.repairObj.summary && this.appointTime){
 						this.disabled=false;
 						this.btnType='primary'
 						return;
@@ -233,6 +256,7 @@
 					subID:this.repaitItem.catalog,
 					summary:this.repaitItem.summary?this.repaitItem.summary:''
 				};
+				this.appointTime = this.$moment(this.repaitItem.appointTime).format('YYYY/MM/DD hh:mm')
 				if(this.repaitItem.files){
 					this.imgList = this.repaitItem.files.map(item=>item.url);
 					this.files = this.repaitItem.files.map(item=>item.id);
@@ -240,6 +264,7 @@
 				}
 			},
 			check(){
+				
 				if(!this.shop.name){
 					this.$utils.showToast('请选择门店进行报修')
 					return false;
@@ -261,6 +286,10 @@
 					this.$utils.showToast('请选择审批流程')
 					return false;
 				}
+				if(!this.appointTime){
+					this.$utils.showToast('请选择预约维修时间')
+					return false;
+				}
 				return true;
 			},
 			//提交报修
@@ -268,6 +297,7 @@
 				this.disabled=true;
 				if(this.newOrEdit=='edit'){
 					let val={
+						appointTime:this.appointTime,
 						id:this.repaitItem.id,
 						category:this.repairObj.subID?this.repairObj.subID:'',
 						type:this.repairObj.bigID?this.repairObj.bigID:'',
@@ -285,6 +315,7 @@
 
 				}else if(this.newOrEdit=='create' && this.check()){
 					let obj={
+						appointTime:this.appointTime,
 						category:this.repairObj.subID?this.repairObj.subID:'',
 						type:this.repairObj.bigID?this.repairObj.bigID:'',
 						creator:this.userInfo.id,
@@ -328,6 +359,9 @@
 	}
 </script>
 <style lang="less">
+	.form-container{
+		padding-bottom:200upx;
+	}
 	.dateStyle{
 		font-size:15px;
 		font-weight: 400;
@@ -381,5 +415,9 @@
 		border-right: 6upx;
 		background-color: #42B0EF;
 		margin-right:20upx;
+	}
+	.cu-btn.lg{
+		padding:0;
+		font-size:14px;
 	}
 </style>

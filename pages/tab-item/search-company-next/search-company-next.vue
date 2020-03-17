@@ -1,5 +1,9 @@
 <template>
 	<view class="borderTop">
+		<view class="search-input flex justify-between align-center">
+			<view class="eid-input"><input type="number" placeholder="请输入公司EID" v-model="eid"></view>
+			<view class="color-regular search-btn" @click="searchCompany">搜索</view>
+		</view>
 		<view class="company-container borderTop bg-white"  v-if="companyObj">
 			<view class="company-info-item borderBottom">
 				<view>客户名称</view>
@@ -56,13 +60,15 @@
 				})
 			},
 			clearInput(){
-				// #ifdef APP-PLUS
-				 let webView=this.$mp.page.$getAppWebview();
-				 webView.setTitleNViewSearchInputText("")
-				// #endif
+				// // #ifdef APP-PLUS
+				//  let webView=this.$mp.page.$getAppWebview();
+				//  webView.setTitleNViewSearchInputText("")
+				// // #endif
+				this.eid=''
 			},
 			async searchCompany(){
-				let result =await getCompanyInfoApi(this.eid)
+				let result =await getCompanyInfoApi(this.eid);
+				console.log(result)
 				if(!result){
 					this.clearInput()
 					this.companyObj=''
@@ -114,6 +120,9 @@
 	page{
 		background-color: rgba(247,247,247,1);
 	}
+	.company-container{
+		border-top:26upx solid #EEEEED;
+	}
 	.company-info-item{
 		height:106upx;
 		line-height:106upx;
@@ -128,7 +137,27 @@
 		background:url("../../../static/img/kongzhuangtai@2x.png") no-repeat center center;
 		background-size:165px 113px;
 	}
-	
+	.search-input{
+		padding:6upx 0 6upx 20upx;
+		background:#FFFFFF;
+		border-bottom:1px solid #EEEEED;
+	}
+	.eid-input{
+		width:100%;
+		/* padding-bottom:20upx;
+		border-bottom:1px solid #EEEEED; */
+	}
+	.eid-input>input{
+		background:rgba(247,247,247,1);
+		border-radius:17px;
+		height:68upx;
+		padding-left:20upx;
+		color:#898888
+	}
+	.search-btn{
+		width:60px;
+		text-align: center;
+	}
 </style>
 
 

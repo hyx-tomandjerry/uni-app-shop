@@ -1,11 +1,6 @@
 <template>
 	<view class="member-list borderBottom flex justify-start align-center position_relative animated slideInLeft fast"   @tap="checkItemInfo">
-		<!-- #ifdef MP-WEIXIN -->
-			<image :src="item.headurl?item.headurl:'/static/img/default.png'"  mode="widthFix" lazy-load class="user_avatar"></image>
-		<!-- #endif -->
-		<!-- #ifndef MP-WEIXIN -->
-			<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  mode="widthFix" lazy-load class="user_avatar"></image>
-		<!-- #endif -->
+		<image :src="item.headurl?item.headurl:'../../../../static/img/default.png'"  mode="widthFix" lazy-load class="user_avatar"></image>
 		<template v-if="TabCur==1">
 			<view>
 				<text>{{item.name}}</text><text class="color-regular font-size-litter">({{item.account}})</text>
@@ -24,6 +19,11 @@
 					<template v-else-if="item.status==userStatus.applying ">
 						<view class="flex justify-start align-center">
 							<view class="cu-tag bg-purple round normal">申请中</view>
+						</view>
+					</template>
+					<template v-else>
+						<view class="flex justify-start align-center">
+							<view class="cu-tag bg-red round normal">{{item.status | userStatusZnPipe}}</view>
 						</view>
 					</template>
 				</template>

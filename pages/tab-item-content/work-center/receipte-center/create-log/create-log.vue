@@ -133,7 +133,7 @@
 					}
 					console.log(val)
 					if(await NewWorkReportByShopApi(val)){
-						this.$utils.showToast('新建工作回执成功')
+						this.$utils.showToast('新建回执成功')
 						this.$utils.goBack()
 						this.$utils.hide()
 					}

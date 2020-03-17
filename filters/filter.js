@@ -86,7 +86,7 @@ Vue.filter('formatTime', function (value, type) {
             dataTime = moment(value).format('HH:mm:ss');
             break;
         case 'YM':
-            dataTime = moment(value).format('YYY-MM')
+            dataTime = moment(value).format('YYYY-MM')
             break;
         case 'MD':
             dataTime = moment(value).format('MM-DD')
