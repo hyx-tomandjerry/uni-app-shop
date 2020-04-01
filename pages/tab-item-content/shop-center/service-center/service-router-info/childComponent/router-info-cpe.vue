@@ -11,10 +11,7 @@
 				:rightContent="serviceItem.targetName "></normal-detail-item>		
 			<normal-detail-item :leftPadding="true" leftIntro="CPE厂商"
 					:marginBottom="true"
-					:rightContent="serviceItem.vendorName "></normal-detail-item>
-			<normal-detail-item :leftPadding="true" leftIntro="SIM"
-					:marginBottom="true"
-					:rightContent="serviceItem.sim "></normal-detail-item>				
+					:rightContent="serviceItem.vendorName "></normal-detail-item>			
 			<normal-detail-item :leftPadding="true" leftIntro="IMEI"
 				:marginBottom="true"
 				:rightContent="serviceItem.seq"></normal-detail-item>

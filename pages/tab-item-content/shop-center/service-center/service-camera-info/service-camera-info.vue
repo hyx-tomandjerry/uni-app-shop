@@ -1,6 +1,6 @@
 <template>
 	<view class="borderTop">
-		<cu-custom :isBack="true" bgColor="bg-white">
+		<!-- <cu-custom :isBack="true" bgColor="bg-white">
 			<block slot="left">
 				<view @tap="goBack" class="cuIcon-back font-size-back"></view>
 			</block>
@@ -10,7 +10,7 @@
 					解绑
 				</view>
 			</block>
-		</cu-custom>
+		</cu-custom> -->
 		<common-flex leftContent="设备名称"  :isLeftCb="true" :rightContent="serviceItem.name || ''" :isRed="false"/>
 		<common-flex leftContent="绑定门店"  :isLeftCb="true"  :rightContent="serviceItem.targetName || ''" :isRed="false"/>
 		<common-flex leftContent="设备序列号"  :isLeftCb="true"  :rightContent="serviceItem.uuid || ''" :isRed="false"/>
@@ -20,25 +20,26 @@
 		<view class="cu-form-group">
 			<view class="color-regular">设备状态</view>
 			<view :class="{
-				'inventory':item.status == serviceStatus.unsign,
-				'delivered':item.status == serviceStatus.unactive,
-				'activated':item.status == serviceStatus.binding,
-				'stopped':item.status == serviceStatus.unbind,
-				'stpowed':item.status == serviceStatus.payment,
-				'canceled':item.status == serviceStatus.wrong
+				'inventory':serviceItem.status == serviceStatus.unsign,
+				'delivered':serviceItem.status == serviceStatus.unactive,
+				'activated':serviceItem.status == serviceStatus.binding,
+				'stopped':serviceItem.status == serviceStatus.unbind,
+				'stpowed':serviceItem.status == serviceStatus.payment,
+				'canceled':serviceItem.status == serviceStatus.wrong
 			}" class="font-weight-bold">{{serviceItem.status | serviceStatusZnPipe}}</view>
 		</view>
-		
+		<common-btn-one :isPos="true" type="primary" content="解绑" @operateBtn="unbindService" v-if="shopItem.manager == userInfo.id"></common-btn-one>
 	</view>
 </template>
 
 <script>
 	import commonFlex from '../../../../../components/common/common-flex.vue'
+	import CommonBtnOne from '../../../../../components/common/common-btn-one.vue'
 	import {mapState} from 'vuex'
 	import {CameraApi,UninstallCameraApi,ChainShopApi} from '../../../../../api/shop_api.js'
 	export default {
 		
-		components:{commonFlex},
+		components:{commonFlex,CommonBtnOne},
 		computed:{
 			...mapState(['userInfo']),
 			serviceStatus(){

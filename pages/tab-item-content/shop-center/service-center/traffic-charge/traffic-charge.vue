@@ -43,7 +43,7 @@
 		<common-flex
 			:isRed="true"
 			leftContent="单价"
-			rightContent="4元/GB"
+			:rightContent="`${price}元/GB`"
 		/>
 		<common-form-group :showRequired="true" intro="流量">
 			<view class="flex align-center" slot="right">
@@ -117,13 +117,14 @@
 				num:10,
 				btnType:'primary',
 				shopID:'',
-				modalName:''
+				modalName:'',
+				price:0
 				// 第二版本end
 			}
 		},
 		computed:{
 			getTrafficCount(){
-				return this.num * 4;
+				return this.num * this.price;
 			}
 		},
 		methods: {
@@ -190,6 +191,7 @@
 			
 			this.routerInfo(options.seq);
 			this.shopID=options.shop;
+			this.price = options.price
 			
 		}
 	}

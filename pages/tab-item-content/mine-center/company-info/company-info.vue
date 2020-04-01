@@ -10,8 +10,8 @@
 			<common-flex  leftContent="联系人" :isRed="false" :rightContent="companyInfo.contactor || ''"/>
 			<common-flex  leftContent="联系电话" :isRed="false" :rightContent="companyInfo.telephone || ''"/>
 			<common-flex  leftContent="公司地址" :isRed="false" :rightContent="`${companyInfo.provinceName || '暂无登记'}${companyInfo.cityName || ''}${companyInfo.districtName || ''}${companyInfo.address || ''}`"/>
-			<common-flex  leftContent="成立时间" :isRed="false" :rightContent="companyInfo.license || '暂无'"/>
-			<common-flex  leftContent="工商信息" :isRed="false" :rightContent="companyInfo.regdate | formatTime('YMD')"/>
+			<common-flex  leftContent="工商信息" :isRed="false" :rightContent="companyInfo.license || '暂无'"/>
+			<common-flex  leftContent="成立时间" :isRed="false" :rightContent="companyInfo.regdate | formatTime('YMD')"/>
 		</view>
 	</view>
 </template>

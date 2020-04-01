@@ -1,9 +1,6 @@
 <template>
 
 	<view class="position_relative">
-		<cu-custom :isBack="true" bgColor="bg-white">
-
-		</cu-custom>
 		<view class="tab-container">
 			<view class="tab-title">
 				工作

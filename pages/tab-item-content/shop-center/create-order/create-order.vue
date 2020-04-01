@@ -16,7 +16,7 @@
 									'color-regular':!this.appointTime
 								}"
 								 :placeholder="appointTime?appointTime:'预约维修时间'"></dyDateTime>
-					<text class="cuIcon-right font-size-big color-regular"></text>
+					<!-- <text class="cuIcon-right font-size-big color-regular"></text> -->
 				</view>
 			</view>
 			<view class="repair-info">
@@ -25,20 +25,9 @@
 					:rightContent="repairObj.bigName" 
 					type="navigate" 
 					@operateItem="toRepairItem"></common-flex>
+				<repair-catalog v-if="subItem.name" :subItem="subItem" fileImg="../../../../static/img/article/ppt.png"/>
 					
-				<view class=" bg-white font-size-normal margin-bottom-normal" v-show="subItem.name" 
-				style="padding:10px 15px;">
-				<normal-detail-item leftIntro="子类别名称" :rightContent="subItem.name" width="30%" 
-					:marginBMini="true"
-					:leftPadding="false" :marginBottom="false"></normal-detail-item>
-				<normal-detail-item :marginBMini="true" leftIntro="子类别规格" :rightContent="subItem.size || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-				<normal-detail-item :marginBMini="true" leftIntro="子类别品牌" :rightContent="subItem.type || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-				<normal-detail-item :marginBMini="true" leftIntro="子类别型号" :rightContent="subItem.model || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-				<normal-detail-item :marginBMini="true" leftIntro="子类别备注" :rightContent="subItem.summary || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-					<view  class="color-regular  reapir-intro" v-if="subItemImg.length">附件:</view>
-					<files-content :files="subItemImg" :isShowTitle="false"></files-content>
-				</view>
-
+				</repair-catalog>
 				<view>
 					<view class=" font-size-normal font-weight-normal bg-white reapir-detail-container" ><text class="text-red" style="margin-right:4rpx;">*</text>报修描述</view>
 					<view>
@@ -98,7 +87,8 @@
 	import filesContent from '../../../../components/common/files-content.vue'
 	import fileUpload from '../../../../components/common/file-upload.vue'
 	// import MxDatePicker from '../../../../components/uni/mx-datepicker/mx-datepicker.vue'
-	import dyDateTime from '../../../../components/lanxiujuan-dyDateTime/lanxiujuan-dyDateTime.vue'
+	import dyDateTime from '../../../../components/lanxiujuan-dyDateTime/lanxiujuan-dyDateTime.vue';
+	import RepairCatalog from '../../../../components/shop/repair/repair-catalog.vue'
 	import {NewServiceOrderApi,ChainShopApi,ServiceCatalogApi,ServiceOrderApi,SetServiceOrderApi} from '../../../../api/shop_api.js'
 	export default{
 	    computed:{
@@ -151,7 +141,8 @@
 			commonFlex,
 			filesContent,
 			fileUpload,
-			dyDateTime
+			dyDateTime,
+			RepairCatalog
 		},
 		onLoad(options){
 			this.newOrEdit=options.newOrEdit;

@@ -98,10 +98,7 @@
 			async resetPassword(){
 				this.showTabbar()
 				if(this.check()){
-					this.loading=true;
-					this.disabled=true;
 					if(await InitPwdApi(this.designer.vcode,this.confirmPwd,this.designer.mobile)){
-						uni.setStorageSync('userPsw',this.confirmPwd);
 						this.$utils.showToast('设置密码成功')
 						setTimeout(()=>{
 							uni.redirectTo({
@@ -109,7 +106,7 @@
 							})
 						},800)
 					}
-
+				
 				}
 			},
 			//验证密码

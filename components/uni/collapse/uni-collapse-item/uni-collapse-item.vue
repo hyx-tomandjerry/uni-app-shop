@@ -207,7 +207,7 @@
 		display: flex;
 		/* #endif */
 		flex-direction: column;
-		padding:20upx 40upx;
+		padding:2upx 4upx;
 	}
 
 	.uni-collapse-cell__content--hide {

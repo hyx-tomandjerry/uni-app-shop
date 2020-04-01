@@ -169,6 +169,11 @@ import utils from '../common/js/utils.js'
 	 let result = await ajax('SetAlertTraffic',{sim,value,mobile,alerter});
 	  if(utils.getErrorMsg(result.code.toString())) return true;
  }
+ // 获得流量的单价
+ export async function ServiceSubscriptionApi(){
+	 let result = await ajax('ServiceSubscription');
+	 if(utils.getErrorMsg(result.code.toString())) return result.data;
+ }
  export {
 	 ChainShopApi,
 	 ShopSalesmenApi,

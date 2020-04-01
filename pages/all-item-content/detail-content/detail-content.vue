@@ -1,7 +1,8 @@
 <template>
 	<view >
+		
 		<view >
-			<commonTitle :itemInfo='itemInfo' :type="'article'">
+			<commonTitle :itemInfo='itemInfo' :type="'article'" fineImg="../../../static/img/article/ppt.png">
 				<block slot="title">
 					<view class="title-name">{{itemInfo.name}}</view>
 				</block>

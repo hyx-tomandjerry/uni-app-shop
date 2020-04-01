@@ -62,6 +62,8 @@
 
 			/*文章列表*/
 			async showArticles(){
+				this.noticeList1 =[];
+				this.noticeList2=[];
 				let result= await getArticleList({offset:0,type:0});
 				if(result && result.length>0){
 					this.noticeList1 = result.filter(item=>item.type==1);
@@ -108,6 +110,10 @@
 					this.getShopCount()
 					this.showArticles();
 					
+				}else{
+					uni.redirectTo({
+						url: '../../login-design/login/login'
+					});
 				}
 
 			},
@@ -123,14 +129,7 @@
 			indexSaleArticle
 		},
 		onShow(){
-			
-			if(uni.getStorageSync('userInfo')){
-				this.refreshInfo();
-			}else{
-				uni.redirectTo({
-					url: '../../login-design/login/login'
-				});
-			}
+			this.refreshInfo();
 			
 		},
 	}

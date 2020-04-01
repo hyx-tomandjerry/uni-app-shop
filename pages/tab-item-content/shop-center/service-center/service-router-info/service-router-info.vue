@@ -13,12 +13,12 @@
 				
 					<view class="font-size-big font-weight-bold">
 						<view class="flex align-center justify-between trafic-first">
-							<view><text class="margin-right-mini">套餐总量</text>{{trafficCount.Quota | trafficStyle}}GB</view>
-							<view><text class="margin-right-mini">剩余流量</text>{{trafficCount.Alert | trafficStyle}}GB</view>
+							<view><text class="margin-right-mini">套餐总量</text>{{trafficCount.Quota }}GB</view>
+							<view><text class="margin-right-mini">剩余流量</text>{{trafficCount.Alert }}GB</view>
 						</view>
 						<view class="flex align-center justify-between trafic-first">
-							<view><text class="margin-right-mini">本月使用</text>{{trafficCount.Month | trafficStyle}}GB</view>
-							<view><text class="margin-right-mini">今日使用</text>{{trafficCount.Today | trafficStyle}}GB</view>
+							<view><text class="margin-right-mini">本月使用</text>{{trafficCount.Month}}GB</view>
+							<view><text class="margin-right-mini">今日使用</text>{{trafficCount.Today}}GB</view>
 						</view>
 					</view>
 					<view class="flex align-center" style="flex-direction: column;">
@@ -71,7 +71,7 @@
 			SimTrafficApi,
 			CertifyUrlApi,
 			ResetRouterApi,
-			RebootRoutersApi} from '../../../../../api/shop_api.js'
+			RebootRoutersApi,ServiceSubscriptionApi} from '../../../../../api/shop_api.js'
 	
 	export default {
 		components:{commonFlex,topRightPupop,normalDetailItem,CommonTitleIntro,RouterInfoCpe},
@@ -158,10 +158,23 @@
 			}
 		},
 		methods: {
-			trafficChange(){
-				uni.navigateTo({
-					url:"../traffic-charge/traffic-charge?seq="+this.serviceItem.seq+'&shop='+this.shopItem.id
-				})
+			//获得公司流量的单价
+			async getPriceInfo(){
+				
+			},
+			async trafficChange(){
+				let result =await ServiceSubscriptionApi();
+				if(result.uprice!=0){
+					uni.navigateTo({
+						url:"../traffic-charge/traffic-charge?seq="+this.serviceItem.seq+'&shop='+this.shopItem.id+'&price='+result.uprice
+					})
+				}else{
+					uni.showToast({
+						title:'您还未开通数据服务，不能进行充值操作!',
+						icon:'none'
+					})
+				}
+				
 			},
 			hideModal(){
 				this.isShowModel=false;
@@ -292,10 +305,10 @@
 				this.serviceItem = await RouterApi(seq)
 				this.time= this.$timer.timeDiffer(this.formatTime(this.serviceItem.buyDate,'YMDHMS'),this.formatTime(new Date(),'YMDHMS'))
 				this.trafficCount = await SimTrafficApi(this.serviceItem.sim);
-				this.warnCount=this.trafficCount ? Number(this.trafficCount.Alert/1024).toFixed(2):0
+				this.warnCount=this.trafficCount ? Number(this.trafficCount.Alert).toFixed(2):0
 				// let used = this.trafficCount  ?Number((this.trafficCount.Quota - this.trafficCount.Alert)/1024).toFixed(2):0;
 				// let precent =this.trafficCount ? used / (this.trafficCount.Quota/1024 || 1):0;
-				let precent = this.trafficCount.Quota ? (this.trafficCount.Alert / this.trafficCount.Quota /1024):0;
+				let precent = this.trafficCount.Quota ? (this.trafficCount.Alert / this.trafficCount.Quota):0;
 				this.chartData.series=[{
 					name: '剩余',
 					data: precent
@@ -358,6 +371,7 @@
 			this.getSystem();
 			this.getShopInfo(options.shopID)
 			this.getServiceInfo(options.seq)
+			
 			this.cWidth=uni.upx2px(750);
 			this.cHeight=uni.upx2px(350);
 			

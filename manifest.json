@@ -58,7 +58,8 @@
                         "appkey_android" : "4c523fb1857f99ba7f2d683d9e88ec1e"
                     }
                 },
-                "oauth" : {}
+                "oauth" : {},
+                "ad" : {}
             },
             "icons" : {
                 "android" : {

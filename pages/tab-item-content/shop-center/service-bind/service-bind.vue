@@ -44,13 +44,13 @@
 							:leftPadding="true"
 							:rightContent="serviceItem.seq || ''"
 							:marginBottom="true"></normal-detail-item>	
-					<normal-detail-item
+					<!-- <normal-detail-item
 							width="40%"
 							v-if="fromType=='cpe'"
 							leftIntro="SIM : "  
 							:leftPadding="true"
 							:rightContent="serviceItem.sim || ''"
-							:marginBottom="true"></normal-detail-item>	
+							:marginBottom="true"></normal-detail-item>	 -->
 					<normal-detail-item
 							width="40%"
 							leftIntro="购买时间 : "  

@@ -29,20 +29,14 @@
 							:marginBottom="!repaitItem.categoryName"
 							
 							:rightContent="repaitItem.type|repairTypePipe"></normal-detail-item>
+							
 							<template v-if="repaitItem.categoryName && repaitItem.category">
 								<uni-collapse accordion="true">
 								    <uni-collapse-item title="维修子类别" :content="repaitItem.categoryName">
-								        <normal-detail-item leftIntro="子类别名称" :rightContent="subItem.name" width="30%"
-								        	:marginBMini="true"
-								        	:leftPadding="false" :marginBottom="false"></normal-detail-item>
-											<normal-detail-item :marginBMini="true" leftIntro="子类别规格" :rightContent="subItem.size || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-											<normal-detail-item :marginBMini="true" leftIntro="子类别品牌" :rightContent="subItem.type || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-											<normal-detail-item :marginBMini="true" leftIntro="子类别型号" :rightContent="subItem.model || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-											<normal-detail-item :marginBMini="true" leftIntro="子类别备注" :rightContent="subItem.summary || ''" width="30%" :leftPadding="false" :marginBottom="false"></normal-detail-item>
-											<view  class="color-regular  reapir-intro" >子类别附件:</view>
-												<files-content :files="subItemImg" 
-												:isWhite='false'
-												:isShowTitle="false" v-if="subItemImg.length"></files-content>
+										<repair-catalog  :subItem="subItem" fileImg="../../../../static/img/article/ppt.png"/>
+											
+										</repair-catalog>
+								        
 								    </uni-collapse-item>
 								</uni-collapse>
 							</template>
@@ -53,6 +47,8 @@
 							leftIntro="报修描述" :rightContent="repaitItem.summary || ''">
 							
 						</normal-detail-item>
+						
+						<filesContent :files="files" :borderBottom="false"></filesContent>
 					</view>
 				</view>
 
@@ -102,7 +98,7 @@
 					</view>
 				</view>
 				<!-- 报修进度 -->
-				<filesContent :files="files"></filesContent>
+				<!-- <filesContent :files="files"></filesContent> -->
 
 				<!-- 审批流程 -->
 				<normal-detail-title title="审批流程"></normal-detail-title>
@@ -164,7 +160,7 @@
 	import showModelRefuse from '../../../../components/common/show-model-refuse.vue'
 	import uniCollapse  from '../../../../components/uni/collapse/uni-collapse/uni-collapse.vue'
 	import uniCollapseItem  from '../../../../components/uni/collapse/uni-collapse-item/uni-collapse-item.vue'
-	
+	import RepairCatalog from '../../../../components/shop/repair/repair-catalog.vue'
 	import {mapState} from 'vuex';
 	import {ServiceOrderApi,ServiceCatalogApi} from '../../../../api/shop_api.js'
 	import {ApproveWorkflowApi} from '../../../../api/apply_api.js'
@@ -195,7 +191,7 @@
 			workflowItem,
 			BottomBtnTwo,
 			filesContent,
-			commonBtnOne,uniCollapse,uniCollapseItem,
+			commonBtnOne,uniCollapse,uniCollapseItem,RepairCatalog,
 			showModelRefuse,normalDetailItem,normalDetailTitle},
 		methods: {
 			delOrder(){
@@ -326,5 +322,4 @@
 <style lang="less" scoped>
 	@import url('./repair-order-item.css');
 	@import "../../../../common/css/check_index.css";
-	
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<normal-detail-title :title="title" v-if="isShowTitle" :isTag="isTag"></normal-detail-title>
+		<normal-detail-title :title="title" v-if="isShowTitle" :isTag="isTag" :borderBottom="borderBottom"></normal-detail-title>
 		<view class="  margin-bottom-normal " >
 			<view class="file-container" :class="{'bg-white':isWhite}">
 				<view class="grid col-4 grid-square">
@@ -39,7 +39,8 @@
 			title:{
 				type:String,
 				default:'上传附件'
-			}
+			},
+			borderBottom:Boolean
 		},
 		methods:{
 			checkImg(index){

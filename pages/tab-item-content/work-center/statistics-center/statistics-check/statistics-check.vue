@@ -1,29 +1,47 @@
 <template>
 	<view>
-		<uChartModel  :todayNum="today.todayFact" :aimNum="today.todayAim" >
+		<!-- <uChartModel  :todayNum="today.todayFact" :aimNum="today.todayAim" >
 			<block slot="canvas">
 				<view class="qiun-charts3">
 					 <canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
 				</view>
 			</block>
-		</uChartModel>
-		<view class="rank-container bg-white">
-			<view class="nav flex justify-around borderBottom">
-				<view class="flex-1 text-center">姓名</view>
-				<view class="flex-1 text-center">销售额</view>
-				<view class="flex-1 text-center">占比</view>
-				<view class="flex-1 text-center" v-if="userInfo.id==managerID">编辑</view>
+		</uChartModel> -->
+		<view class="chart-container" >
+			<view class="chart-content">
+				<image src="../../../../../static/img/work/statistics/count-bg.png"></image>
+				<canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
+				<view class="canvas-count">{{today.todayPre*100}}%</view>
 			</view>
-			<scroll-view class="rank-list" scroll-y="true" :style="{height:contentHeight+'px'}" scroll-top="10" show-scrollbar="true">
-				<block v-for="(item,index) in salemanList" :key="index">
-					<sale-check-item
-					:managerID="managerID"
-					:item="item"
-					 :index="index" @checkItem="checkItem"></sale-check-item>
-				</block>
-			</scroll-view>
-
+		
+			<view class="count-number-area" style="padding:10px 40px;">
+				<view class="num-area flex justify-start flex-all align-center">
+					<view class="num-area-left num flex-1">{{today.todayFact || 0}}</view>
+					<view class="num-area-right num flex-sm">{{today.todayAim || 0}}</view>
+				</view>
+				<view class="intro-container font-size-mini">
+					<view class="intro-area flex justify-start flex-all align-center" >
+						<view class="intro-area-left  flex-1">
+							<view class="num-intro">门店销售额</view>
+						</view>
+						<view class="intro-area-right  flex-sm">
+							<view class="num-intro" >门店销售目标</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
+		
+		
+		
+		
+		
+		
+		
+		<sale-bottom :managerID="managerID" 
+		:contentHeight="contentHeight" 
+		@checkItem="checkItem"
+		:salemanList="salemanList"/></sale-bottom>
 	
 		<common-btn-one
 				 	content="提交当天绩效"
@@ -35,7 +53,8 @@
 <script>
 	import uCharts from '../../../../../components/u-charts/u-charts.js'
 	import uChartModel from '../../../../../components/statistics/sale-check/uchart-model.vue'
-	import saleCheckItem from '../../../../../components/statistics/sale-check-item.vue'
+	import saleCheckItem from '../../../../../components/statistics/sale-check-item.vue';
+	import SaleBottom from './childComponent/sale-bottom.vue'
 	import commonBtnOne from '../../../../../components/common/common-btn-one.vue'
 	
 	import {mapState} from 'vuex'
@@ -52,14 +71,15 @@
 
 				saleList:[],
 				//圆弧
-				cWidth: '',//圆弧进度图
-				cHeight: '',//圆弧进度图
-				arcbarWidth:'',//进度条宽度
+				cWidth3:'',//圆弧进度图
+				cHeight3:'',//圆弧进度图
+				arcbarWidth:'',//圆弧进度图，进度条宽度,此设置可使各端宽度一致
 				pixelRatio:1,
 				salemanPerform:'',
 				chartData:{
 					series:[]
 				},
+				
 				shopID:'',
 				salemanList:[],
 				managerID:'',//店长的ID
@@ -74,7 +94,8 @@
 		components: {
 			uChartModel,
 			saleCheckItem,
-			commonBtnOne
+			commonBtnOne,
+			SaleBottom
 		},
 		methods: {
 			getSystem(){
@@ -121,14 +142,15 @@
 					todayAim:result['expect']?Number(result['expect']).toFixed(2):0,
 					todayPre:result['expect']?Number(num/result['expect']).toFixed(2):0
 				}
+				
 				this.chartData.series=[
 					{
 						name:'门店日占比',
-						data:this.today.todayPre,
-						color: '#2fc25b'
-										
+						data:this.today.todayPre>=1?1:this.today.todayPre,
+						color: '#42B0ED'				
 					}
-				]
+				];
+				this._initChart()
 				this.showArcbar('canvasArcbar1',this.chartData);		
 
 			},
@@ -143,7 +165,6 @@
 					day:Number(this.timeObj.day),
 					type:'edit'
 				}
-				console.log(obj)
 				uni.navigateTo({
 					url:"../record-money/record-money?obj="+JSON.stringify(obj)
 				})
@@ -169,7 +190,7 @@
 					height:this.cHeight*this.pixelRatio,
 					dataLabel:true,
 					title:{
-						name:Math.round(chartData.series[0].data*100)+'%',
+						// name:Math.round(chartData.series[0].data*100)+'%',
 						color:chartData.series[0].color,
 						fontSize:14*this.pixelRatio
 					},
@@ -180,7 +201,7 @@
 					},
 					extra:{
 						arcbar:{
-							type:'default',
+							type:'circle',
 							width:this.arcbarWidth*this.pixelRatio,
 							startAngle:0.5
 						}
@@ -195,7 +216,6 @@
 			this.getShopPerformByDay(this.shopID,this.timeObj)
 		},
 		onLoad(param){
-			this._initChart()
 			this.getSystem();
 			if(param){
 				this.shopID=param.shopID;
@@ -235,13 +255,7 @@
 		top:24px;
 		left:27px;
 	}
-	.rank-container{
-		.nav{
-			height:37px;
-			line-height:37px;
-
-		}	
-	}
+	
 	.btn-container{
 		z-index:100;
 		position:fixed;
@@ -256,4 +270,60 @@
 		color:#fff;
 		text-align: center;
 	}
+	.chart-container{
+		height:460upx;
+		background:url(../../../../../static/img/work/statistics/bg.png) no-repeat center center;
+		background-size:cover;
+	}
+		.chart-content{
+			width: 300upx;
+			height: 300upx;
+			position:relative;
+			margin: 0 auto;
+			
+		}
+		.chart-content>image{
+			width: 100%;
+			height: 100%;
+			position:absolute;
+			top:0;
+			left:0
+		}
+		.num{
+			font-size:26px;
+			font-family:DINAlternate-Bold;
+			font-weight:bold;
+			color:rgba(255,255,255,1);
+		}
+		.num-area-left{
+			border-right:1px solid #525A85;
+			background:url(../../../../../static/img/work/statistics/count-money.png) no-repeat 0 center;
+			background-size: 32upx 32upx;
+			padding-left:50upx;
+		}
+		.num-area-right{
+			margin-left:24px;
+			background:url(../../../../../static/img/work/statistics/aim-money.png) no-repeat 0 center;
+			background-size: 32upx 32upx;
+			padding-left:50upx;
+		}
+		.intro-container{
+			color:#7C81A3;
+			
+		}
+		.intro-area-left{
+			padding-left:50upx;
+		}
+		.intro-area-right{
+			padding-left:48upx;
+		}
+		.canvas-count{
+			color:#42B0ED;
+			font-size:16px;
+			font-weight: bold;
+			position: absolute;
+			top: 60px;
+			left: 55px;
+			
+		}
 </style>

@@ -11,7 +11,9 @@
 			<view class="color-regular"
 				:style="{width:width}"
 				:class="{'left-padding':leftPadding}">{{leftIntro}}</view>
-			<view class="flex-1 wordBreak color-normal" :class="{'text-left':isLeft}">{{rightContent}}</view>
+			<view class="flex-1 wordBreak color-normal" :class="{'text-left':isLeft}">
+				<text selectable="true">{{rightContent}}</text>
+			</view>
 		</template>
 		<template v-else-if="fromType=='image'">
 			<!-- 报修列表单个那种形式 -->
@@ -19,7 +21,9 @@
 				<image :src="src" mode="widthFix" lazy-load class="shopImg"></image>
 				<view>{{leftIntro}} : </view>
 			</view>
-			<view class="flex-1 wordBreak color-normal">{{rightContent}}</view>
+			<view class="flex-1 wordBreak color-normal">
+				<text selectable="true">{{rightContent}}</text>
+			</view>
 		</template>
 	</view>
 </template>

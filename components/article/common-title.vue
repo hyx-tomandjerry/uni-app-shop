@@ -30,7 +30,18 @@
 					<view style="padding:5px 15px;" class="font-weight-bold color-normal">附件</view>
 				</view>
 				<view v-if="type=='article'">
-					<view  v-for="(item,index) in itemInfo.files" :key="index" @click="downFiles(item)" v-if="itemInfo.files">
+					<view v-for="(item,index) in itemInfo.files" :key="index" class='file-item' @click="downFiles(item)" v-if="itemInfo.files">
+						<div>
+							<image :src="item.url" mode="widthFix" class="file-img" 
+							v-if="item.postfix == 'jpeg' || item.postfix =='jpg' || item.postfix =='png' || item.postfix=='bmp' || item.postfix=='gif'"></image>
+							<image :src="fineImg" mode="widthFix" class="file-img" v-else></image>
+						</div>
+						<div >
+							<text v-if="item.postfix == 'jpeg' || item.postfix =='jpg' || item.postfix =='png' || item.postfix=='bmp' || item.postfix=='gif'">{{index+1}}.{{item.postfix}}</text>
+							<text v-else>{{item.name}}</text>
+						</div>
+					</view>
+					<!-- <view  v-for="(item,index) in itemInfo.files" :key="index" @click="downFiles(item)" v-if="itemInfo.files">
 						<view v-if="item.postfix && (item.postfix.toLowerCase()=='jpg' || item.postfix.toLowerCase()=='png' || item.postfix.toLowerCase()=='jpeg')"
 							  style="padding:10px 15px;height:76px;" class="position_relative  flex justify-start align-center align-center borderBottom">
 							<view style="width:10%;margin-right:10px;">
@@ -57,7 +68,7 @@
 								<view style="margin-bottom:6px;border-bottom:1px solid #00BFFF;" class="font-size-mini  color-blue text-ellipse">{{item.name}}</view>
 							</view>
 						</view>
-					</view>
+					</view> -->
 				</view>
 				<view v-if="type=='notice'">
 					<files-content :files="itemInfo.files" :isShowTitle="false"></files-content>
@@ -78,7 +89,9 @@
 
 <script>
 	import downloader from '../../common/img-downloader.js'
-	import filesContent from '../common/files-content.vue'
+	import filesContent from '../common/files-content.vue';
+	import uniGrid from "../uni/uni-grid/uni-grid.vue"
+	import uniGridItem from "../uni/uni-grid-item/uni-grid-item.vue"
 	export default{
 		name:'commone-title',
 		props:{
@@ -89,10 +102,11 @@
 			type:{
 				type:String,
 				default:''
-			}
+			},
+			fineImg:String
 
 		},
-		components:{filesContent},
+		components:{filesContent,uniGrid,uniGridItem},
 		data(){
 			return{
 				modalName:'',
@@ -102,6 +116,7 @@
 		},
 		methods: {
 			downFiles(item){
+				console.log(item)
 				if(item.postfix){
 					if(item.postfix.toLowerCase()=='jpg' || item.postfix.toLowerCase()=='png'){
 						uni.getImageInfo({
@@ -150,9 +165,6 @@
 												count=0;
 											}
 										});
-
-
-
 									}else{
 										this.loading=count+'%'
 									}
@@ -161,7 +173,36 @@
 							}
 						});
 					}
-				}
+				}else{
+						uni.downloadFile({
+							url: item.url,
+							success: (res) => {
+								let count=0;
+					
+								this.modalName='download';
+								var timeout =setInterval(()=>{
+									count+=20;
+									if(count>=100){
+										this.hideModal();
+										uni.openDocument({
+											filePath: res.tempFilePath,
+											success: (res)=> {
+												clearInterval(timeout)
+												this.loading=0;
+												count=0;
+											}
+										});
+					
+					
+					
+									}else{
+										this.loading=count+'%'
+									}
+								},500)
+					
+							}
+						});
+					}
 
 
 
@@ -227,5 +268,24 @@
 		width:100%;
 		height:300upx !important;
 		border-radius: 20upx;;
+	}
+	.file-item{
+		display: flex;
+		align-items: center;
+		padding:20upx 0;
+		border-bottom:1px solid #EEEEED;
+	}
+	.file-item image{
+		vertical-align: middle;
+	}
+	.file-img{
+		width:100upx;
+		height:100upx !important;
+		margin-right:20upx;
+	}
+	.file-img{
+		width:40px;
+		height:50px !important;
+		margin-right:20upx;
 	}
 </style>

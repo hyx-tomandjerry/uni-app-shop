@@ -200,7 +200,7 @@
 						    content: '确定要退出该账号?',
 						    success:(res)=> {
 						        if (res.confirm) {
-						            this.confirmModel('account')
+						            this.confirmModel('account');
 						        }
 						    }
 						});
@@ -210,7 +210,7 @@
 							content:`确定要退出${this.userInfo.ownerName}吗?`,
 							success: (res) => {
 								if(res.confirm){
-									this.confirmModel('company')
+									this.confirmModel('company');
 								}
 							}
 						})

@@ -27,24 +27,26 @@
 					<view class="title "><text class="color-red">*</text> 开始时间</view>
 					<view class="flex justify-start align-center">
 						<dyDateTime @getData="getDataStart"
+									:minDate="startMinDate"
 									:class="{
 										'color-normal':this.start,
 										'color-regular':!this.start
 									}"
-									 :placeholder="start?start:'选择开始时间'"></dyDateTime>
-						<text class="cuIcon-right font-size-big color-regular"></text>
+									 :placeholder="start?start:'开始时间'"></dyDateTime>
+						<!-- <text class="cuIcon-right font-size-big color-regular"></text> -->
 					</view>
 				</view>
 				<view class="cu-form-group">
 					<view class="title "><text class="color-red">*</text> 结束时间</view>
 					<view class="flex justify-start align-center">
 						<dyDateTime @getData="getDataEnd"
+									:minDate="start?new Date(start).getTime():new Date().getTime()"
 									:class="{
 										'color-normal':this.end,
 										'color-regular':!this.end
 									}"
-									:placeholder="end?end:'选择结束时间'"></dyDateTime>
-						<text class="cuIcon-right font-size-big color-regular"></text>
+									:placeholder="end?end:'结束时间'"></dyDateTime>
+						<!-- <text class="cuIcon-right font-size-big color-regular"></text> -->
 					</view>
 				</view>
 				<view class="cu-form-group borderBottom">
@@ -88,7 +90,6 @@
 				</view>
 			</template>
 			<file-upload
-				:isRed="true"
 				@upload="uploadSuccess"
 				:inImgList="imgList"
 				:inFiles="files"
@@ -122,7 +123,6 @@
 		<!-- form区域结束 -->
 		<common-btn-one
 			type="primary" 
-			:disabled="disabled" 
 			content="提交申请"
 			@operateBtn="submitApply" :isPos="true"></common-btn-one>
 	</view>
@@ -197,13 +197,23 @@
 					applyName:'',//申请名称
 					newOrEdit:'',//判断是新建还是修改
 					applyItem:'',//要修改的内容
-					disabled:false,
 					imgList:[],
 					files:[],//附件
-					token:''
+					token:'',
+					startMinDate:new Date().getTime()
 			}
 		},
-		methods: {			
+		watch:{
+			start(){
+				this.change();
+			},
+			end(){this.change()}
+		},
+		methods: {	
+			change(){
+				this.time=this.$timer.getTimeInfo(this.start,this.end);
+				console.log(this.time)
+			},
 			uploadSuccess(event){
 				this.files=event;
 			},
@@ -214,6 +224,7 @@
 			getDataStart(event){
 				if(event){
 					this.start=event;
+					console.log(this.start)
 					if(this.newOrEdit=='edit'){
 						this.time=this.$timer.getTimeInfo(this.start,this.end)
 					}
@@ -223,7 +234,6 @@
 			},
 			getDataEnd(event){
 				if(!this.start){
-					
 					this.$utils.showToast('请选择开始时间')
 				}else if(event){
 					this.time=this.$timer.getTimeInfo(this.start,event);
@@ -250,14 +260,13 @@
 						}else if(!this.end){
 							
 							this.$utils.showToast('请选择结束时间')
-						}else if(!this.reason){
-							
-							this.$utils.showToast('请选择请假类型')
+						}else if(new Date(this.end).getTime()-new Date(this.start).getTime()<0){
+							this.$utils.showToast('结束时间不能小于开始时间')
 						}else if(this.newOrEdit=='create'&&!this.workflow.id){
 							
 							this.$utils.showToast('请选择审批流程')
 						}else{
-							this.disabled=true;
+							
 							let value={
 								shop:this.shop.id,//门店ID
 								xtype:this.xType,//请假类型
@@ -285,7 +294,7 @@
 						if(!this.shop.id){
 							
 							this.$utils.showToast('请选择门店')
-							this.disabled=false;
+							
 						}else{
 							
 							let arr=[];
@@ -304,11 +313,11 @@
 							if(flag){
 								
 								this.$utils.showToast('请添加报销明细')
-								this.disabled=false;
+								
 							}else if(this.newOrEdit=='create'&&!this.workflow.id){
 								
 								this.$utils.showToast('请选择审批流程')
-								this.disabled=false;
+								
 							}else{
 								let value1={
 									shop:this.shop.id,
@@ -332,7 +341,7 @@
 
 						break;
 					case this.approvalMode.common:
-						this.disabled=true;
+				
 						let value2={
 							shop:this.shop.id,//门店名称
 							name:this.applyName,//申请名称

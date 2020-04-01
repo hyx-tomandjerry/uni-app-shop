@@ -31,7 +31,8 @@
 			return{
 				imgList: [],
 				files: [],
-				token:''
+				token:'',
+				length:0,
 			}
 		},
 		props:{
@@ -59,13 +60,13 @@
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['camera','album'],
 					success: (res) => {
+						
 						const tempFilePaths=res.tempFilePaths;
 						if (this.imgList.length != 0) {
 							this.imgList = this.imgList.concat(res.tempFilePaths)
 						} else {
 							this.imgList = res.tempFilePaths
 						}
-						let length=res.tempFilePaths.length;
 						for(var i=0;i<res.tempFilePaths.length;i++){
 							let  uploadTask=uni.uploadFile({
 								url:this.config.uploadHostUrl+this.token,
@@ -78,17 +79,20 @@
 									"x:target":this.xTarget?this.xTarget:''
 								},
 								success: (uploadFileRes) => {
+									
 									if(uploadFileRes.statusCode!=200){
 										this.$utils.showToast('上传失败')
 										uni.hideLoading()
 									}else{
 										let res=JSON.parse(uploadFileRes.data);
 										this.files=[...this.files,res.data];
+										
 										uni.showLoading({
 											title:'正在上传...',
 											mask:true
 										})
-										if(this.files.length==length){
+										
+										if(this.files.length==this.imgList.length){
 											this.$utils.showToast('上传成功')
 											uni.hideLoading()
 										}
@@ -123,6 +127,7 @@
 					success: res => {
 						if (res.confirm) {
 							this.imgList.splice(event, 1);
+						
 							let result =  RemoveFilesApi(this.files[event]);
 							if(result){
 								this.files.splice(event,1)
@@ -137,7 +142,6 @@
 			},
 		},
 		mounted(){
-			console.log('lllll')
 			console.log(this.inImgList)
 			if(this.inImgList && this.inImgList.length){
 				console.log('lllll',this.inImgList)

@@ -1,5 +1,5 @@
 <template>
-	<view class="list-item bg-white flex justify-between align-center" hover-class="bg-color-normal" @tap='checkItem'>
+	<view class="list-item bg-white flex justify-between align-center"  @click='checkItem'>
 		<view class="list-item-l">
 			<view class="font-size-big font-weight-bold color-normal">{{item.name  || ''}}</view>
 			<view class="color-regular">{{item.bgndate | formatTime('YMD')}}</view>

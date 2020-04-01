@@ -972,7 +972,7 @@
         ,{
             "path" : "pages/tab-item-content/shop-center/service-center/service-camera-info/service-camera-info",
             "style" : {
-				"navigationStyle":"custom"
+				"navigationBarTitleText":"摄像头详情"
 			}
         }
         ,{
@@ -1056,9 +1056,13 @@
         ,{
             "path" : "pages/tab-item-content/mine-center/secret-protocol/secret-protocol",
             "style" : {
-				"navigationBarTitleText":"软件协议"
+				"navigationBarTitleText":"软件协议",
+				"app-plus":{
+					"scrollIndicator":"none"
+				}
 			}
         }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
