@@ -66,7 +66,7 @@
 <style scoped>
 	
 	page{
-		background:rgba(247,247,247,1)
+		background:rgba(247,247,247,1);
 	}
 	.complaint-list-container{
 		padding:26upx 30upx;

@@ -219,7 +219,7 @@
 
 <style scoped>
 	page{
-			background:rgba(247,247,247,1);
+		background:rgba(247,247,247,1);
 
 		font-size:15px;
 		font-weight: 500;

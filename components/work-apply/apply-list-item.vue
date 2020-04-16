@@ -22,44 +22,44 @@
 				<view>
 					<template v-if="item.formType==approvalMode.repair_service">
 						<template v-if="item.approval==applyStatus.accepted">
-							<image src="../../../../../static/img/work/apply/my-apply/pass_tag.png"
+							<image src="../../static/img/work/apply/my-apply/pass_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>
 						<template v-if="item.approval==applyStatus.applied">
-							<image src="../../../../../static/img/work/apply/my-apply/pending_tag.png"
+							<image src="../../static/img/work/apply/my-apply/pending_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>
 						<template v-if="item.approval==applyStatus.wait">
-							<image src="../../../../../static/img/work/apply/my-apply/waiting_tag.png"
+							<image src="../../static/img/work/apply/my-apply/waiting_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>
 						<template v-if="item.approval==applyStatus.rejected">
-							<image src="../../../../../static/img/work/apply/my-apply/refuse_tag.png"
+							<image src="../../static/img/work/apply/my-apply/refuse_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>
 					</template>
 					<template v-else>
 						<template v-if="item.approval==applyStatus.accepted">
-							<image src="../../../../../static/img/work/apply/my-apply/pass_tag.png"
+							<image src="../../static/img/work/apply/my-apply/pass_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>
 						<template v-if="item.approval==applyStatus.applied">
-							<image src="../../../../../static/img/work/apply/my-apply/pending_tag.png"
+							<image src="../../static/img/work/apply/my-apply/pending_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>
 						<template v-if="item.approval==applyStatus.wait">
-							<image src="../../../../../static/img/work/apply/my-apply/waiting_tag.png"
+							<image src="../../static/img/work/apply/my-apply/waiting_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>
 						<template v-if="item.approval==applyStatus.rejected">
-							<image src="../../../../../static/img/work/apply/my-apply/refuse_tag.png"
+							<image src="../../static/img/work/apply/my-apply/refuse_tag.png"
 								mode="widthFix" lazy-load class="status-tag">
 							</image>
 						</template>

@@ -16,7 +16,7 @@
 									'color-regular':!this.appointTime
 								}"
 								 :placeholder="appointTime?appointTime:'预约维修时间'"></dyDateTime>
-					<!-- <text class="cuIcon-right font-size-big color-regular"></text> -->
+					<text class="cuIcon-right font-size-big color-regular"></text>
 				</view>
 			</view>
 			<view class="repair-info">

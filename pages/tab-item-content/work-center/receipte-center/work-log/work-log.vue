@@ -1,5 +1,5 @@
 <template>
-	<view >
+	<view class="borderTop">
 		<view v-if="list.length" class="borderTop">
 			<block v-for="(item,index) in list" :key="index">
 				<work-receipt-item :item="item" :index="index" @itemDetail="itemDetail"></work-receipt-item>
@@ -7,7 +7,8 @@
 			<uni-load-more :contentText="content" :status="loading" :showIcon="true" v-if="list.length>4" ></uni-load-more>
 		</view>
 		<view v-else>
-			<LxEmpty></LxEmpty>
+			
+			<LxEmpty srcImg="../../../../../static/img/noticeNo.png"></LxEmpty>
 		</view>
 		
 

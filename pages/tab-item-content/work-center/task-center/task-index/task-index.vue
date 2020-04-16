@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="borderTop">
 		<view class="task-container">
 			<template v-if="taskList.length">
 				<view class="task-list">
@@ -10,7 +10,8 @@
 				</view>
 			</template>
 			<template v-else>
-				<lx-empty />
+				
+				<lx-empty srcImg="../../../../../static/img/noticeNo.png"/>
 			</template>
 		</view>
 	</view>
@@ -89,7 +90,7 @@
 
 <style scoped>
 	page{
-		background-color: #F7F7F7;
+		background:rgba(247,247,247,1);
 	}
 	.task-list{
 		margin-top: 30upx;

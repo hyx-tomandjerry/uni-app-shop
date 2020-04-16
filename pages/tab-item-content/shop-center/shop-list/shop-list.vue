@@ -6,7 +6,8 @@
 			</block>
 		</view>
 		<view v-else>
-			<LxEmpty></LxEmpty>
+			
+			<LxEmpty srcImg="../../../../static/img/noticeNo.png"></LxEmpty>
 		</view>
 	</view>
 </template>

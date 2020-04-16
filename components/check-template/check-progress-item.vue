@@ -2,16 +2,16 @@
 	<!-- 模板列表详情 -->
 	<view class="work-flow-item flex justify-start align-center animated slideInLeft" @tap="chooseItem" hover-class="bg-color-normal">
 		<template v-if="item.formType==approvalMode.common">
-			<image src="../../../../static/img/work/apply/my-apply/common_icon.png" mode="widthFix" lazy-load></image>
+			<image src="../../static/img/work/apply/my-apply/common_icon.png" mode="widthFix" lazy-load></image>
 		</template>
 		<template v-if="item.formType==approvalMode.repair_service">
-			<image src="../../../../static/img/work/apply/my-apply/repair_icon.png" mode="widthFix" lazy-load></image>
+			<image src="../../static/img/work/apply/my-apply/repair_icon.png" mode="widthFix" lazy-load></image>
 		</template>
 		<template v-if="item.formType==approvalMode.expense">
-			<image src="../../../../static/img/work/apply/my-apply/baoxiao_icon.png" mode="widthFix" lazy-load></image>
+			<image src="../../static/img/work/apply/my-apply/baoxiao_icon.png" mode="widthFix" lazy-load></image>
 		</template>
 		<template v-if="item.formType==approvalMode.absence">
-			<image src="../../../../static/img/work/apply/my-apply/qingjia_icon.png" mode="widthFix" lazy-load></image>
+			<image src="../../static/img/work/apply/my-apply/qingjia_icon.png" mode="widthFix" lazy-load></image>
 		</template>
 		<view>
 			<view class="font-weight-bold color-normal">{{item.formTypeName}}</view>

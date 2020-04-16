@@ -7,7 +7,8 @@
 			<uni-load-more :contentText="content" :showIcon="true" v-if="shopList.length>5" :status="loading"></uni-load-more>
 		</view>
 		<view v-else>
-			<lx-empty></lx-empty>
+		
+			<lx-empty srcImg="../../../../static/img/noticeNo.png"</lx-empty>
 		</view>
  	</view>
  </template>

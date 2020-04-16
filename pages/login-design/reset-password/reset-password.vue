@@ -99,12 +99,14 @@
 				this.showTabbar()
 				if(this.check()){
 					if(await InitPwdApi(this.designer.vcode,this.confirmPwd,this.designer.mobile)){
-						this.$utils.showToast('设置密码成功')
+						this.$utils.showToast('设置密码成功!')
 						setTimeout(()=>{
 							uni.redirectTo({
 								url:'../../login-design/login/login'
 							})
 						},800)
+					}else{
+						this.$utils.showToast('设置密码失败!')
 					}
 				
 				}

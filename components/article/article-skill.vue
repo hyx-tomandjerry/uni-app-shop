@@ -7,7 +7,7 @@
 		<view style="width:29%;">
 			<image :src="item.coverurl" mode="widthFix"  class="more-content-cover"></image>
 		</view>
-		<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
+		<image src="../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
 	</view>
 </template>
 

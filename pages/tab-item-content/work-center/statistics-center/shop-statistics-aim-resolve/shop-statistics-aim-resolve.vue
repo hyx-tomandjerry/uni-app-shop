@@ -6,7 +6,9 @@
 			<resolve-title
 			:shopSaleResolve="shopSaleResolve"
 			type="year"
+			src="../../../../../static/icon/icon-time@2x.png"
 			></resolve-title>
+			
 		</view>
 		<!--门店目标 end-->
 		<!--月份列表 start-->

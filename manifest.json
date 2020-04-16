@@ -2,10 +2,66 @@
     "name" : "门店助手",
     "appid" : "__UNI__1BFC9A0",
     "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "1.0.1",
+    "versionCode" : 1,
     "transformPx" : false,
     "app-plus" : {
+        "locales" : {
+            "en" : {
+                // 英文  
+                "name" : "门店助手", // 应用名称  
+                "android" : {
+                    "strings" : {
+                        //Android平台自定义字符串  
+                        "CustomKey" : "CustomValue"
+                    }
+                },
+                //...  
+                "ios" : {
+                    "privacyDescription" : {
+                        //iOS平台隐私访问描述信息  
+                        "NSPhotoLibraryUsageDescription" : "门店助手需要读取相册以便使用图片或视频",
+                        "NSPhotoLibraryAddUsageDescription" : "门店助手需要读取相册以便使用图片或视频",
+                        "NSCameraUsageDescription" : "门店助手需要使用摄像头扫描二维码，拍照和录视频"
+                    },
+                    //...  
+                    "infoPlist" : {
+                        //iOS平台自定义InfoPlist.strings  
+                        "CustomKey" : "CustomValue"
+                    }
+                }
+            },
+            //...  
+            "zh" : {
+                // 中文（简体）  
+                "name" : "门店助手", // 应用名称
+                "android" : {
+                    "strings" : {
+                        //Android平台自定义字符串  
+                        "CustomKey" : "CustomValue"
+                    }
+                },
+                //...  
+                "ios" : {
+                    "privacyDescription" : {
+                        //iOS平台隐私访问描述信息  
+                        "NSPhotoLibraryAddUsageDescription" : "门店助手需要读取相册以便使用图片或视频",
+                        "NSCameraUsageDescription" : "门店助手需要使用摄像头扫描二维码，拍照和录视频",
+                        "NSPhotoLibraryUsageDescription" : "门店助手将使用相册权限用于上传图片。"
+                    },
+                    //...  
+                    "infoPlist" : {
+                        //iOS平台自定义InfoPlist.strings  
+                        "CustomKey" : "CustomValue"
+                    }
+                }
+            },
+            //...  
+            "zh-TW" : {},
+            // 繁体中文（台湾）  
+            "zh-HK" : {}
+        },
+        // 繁体中文（香港）  
         /* 5+App特有相关 */
         "usingComponents" : true,
         "splashscreen" : {
@@ -15,7 +71,8 @@
             "delay" : 0
         },
         "modules" : {
-            "Maps" : {}
+            "Maps" : {},
+            "Speech" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -49,7 +106,14 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            "ios" : {},
+            "ios" : {
+                "idfa" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "门店助手需要读取相册以便使用图片或视频",
+                    "NSPhotoLibraryAddUsageDescription" : "门店助手需要读取相册以便使用图片或视频",
+                    "NSCameraUsageDescription" : "门店助手需要使用摄像头扫描二维码，拍照和录视频"
+                }
+            },
             /* ios打包配置 */
             "sdkConfigs" : {
                 "maps" : {
@@ -59,7 +123,10 @@
                     }
                 },
                 "oauth" : {},
-                "ad" : {}
+                "ad" : {},
+                "speech" : {
+                    "ifly" : {}
+                }
             },
             "icons" : {
                 "android" : {
@@ -138,3 +205,8 @@
         "appid" : ""
     }
 }
+//...  
+// 中文（简体）  
+// 繁体中文（台湾）  
+// 繁体中文（香港）  
+

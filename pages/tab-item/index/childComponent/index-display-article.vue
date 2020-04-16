@@ -2,7 +2,7 @@
 	<view class="bg-white" style="margin-top:13px;padding-right:14px;padding-left:18px;padding-bottom:50px;">
 		<view class="cu-bar bg-white " >
 			<view class="action">
-				<text class="card-title">陈列公告</text>
+				<text class="card-title">店铺公告</text>
 			</view>
 			<view class="action" @click="showMoreInfo">
 				<text  >更多<text class="cuIcon-right" ></text></text>
@@ -15,7 +15,7 @@
 		</template>
 		<template v-else>
 			<view  style="text-align: center;padding:42px 0 68px;">
-				<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
+				<image :src="srcimg" style="width:125px;height:92px;"></image>
 				<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 			</view>
 		</template>
@@ -23,13 +23,14 @@
 </template>
 
 <script>
-	import articleExample from '../../../components/article/article-example.vue'
+	import articleExample from '../../../../components/article/article-example.vue'
 	export default{
 		props:{
 			list:{
 				type:Array,
 				default(){return []}
-			}
+			},
+			srcimg:String
 		},
 		components:{articleExample},
 		methods:{

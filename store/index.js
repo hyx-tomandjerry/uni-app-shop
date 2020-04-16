@@ -10,6 +10,7 @@ const store=new Vuex.Store({
 		shopOnlyObj:{},//如果门店数量仅有一家
 		userInfo:{},//用户信息
 		xServerArr:[],//xserverapi数组
+		authorArr:[],//权限数组
 	},
 	mutations
 })

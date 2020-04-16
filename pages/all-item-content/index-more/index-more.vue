@@ -21,7 +21,8 @@
 
 
 			<view v-else>
-				<LxEmpty></LxEmpty>
+				
+				<LxEmpty srcImg="../../../static/img/noticeNo.png"></LxEmpty>
 			</view>
 		</view>
 
@@ -121,7 +122,7 @@
 				this.value=option.value;
 
 			}else if(option.value=='example'){
-				this.title='陈列公告';
+				this.title='店铺公告';
 				this.value=option.value;
 
 			}
@@ -137,7 +138,7 @@
 <style lang="less">
 	@import url('../../../static/css/demo.less');
 	page{
-		background:#FFF;
+		background:rgba(247,247,247,1);
 	}
 	.cu-card>.cu-item{
 		.mixMargin(0,0,0,0);

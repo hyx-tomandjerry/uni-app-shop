@@ -18,7 +18,7 @@
 				</template>
 				<template v-else>
 					<view  style="text-align: center;padding:42px 0 68px;">
-						<image src="../../../static/img/noticeNo.png" style="width:125px;height:92px;"></image>
+						<image :src="srcimg" style="width:125px;height:92px;"></image>
 						<view class="font-size-small font-weight-normal " style="color:rgba(137,136,136,1);">暂无数据哦~</view>
 					</view>
 				</template>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-	import {getArticleList} from '../../../api/index_api.js'
-	import articleSkill from '../../../components/article/article-skill.vue'
+	import {getArticleList} from '../../../../api/index_api.js'
+	import articleSkill from '../../../../components/article/article-skill.vue'
 	export default{
 		props:{
 			list:{
@@ -37,7 +37,8 @@
 				default(){
 					return []
 				}
-			}
+			},
+			srcimg:String
 		},
 		data(){
 			return{

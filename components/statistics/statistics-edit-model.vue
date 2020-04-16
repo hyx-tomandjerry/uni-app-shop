@@ -18,7 +18,7 @@
 							   	'font-weight-bold':num
 							   	}" v-model="num">
 					</view>
-					<image src="../../../../../static/icon/icon-bianji.png" style="width:16px;height:19px;"></image>
+					<image src="../../static/icon/icon-bianji.png" style="width:16px;height:19px;"></image>
 				</view>
 			</view>
 			<view class="cu-bar bg-white justify-end">

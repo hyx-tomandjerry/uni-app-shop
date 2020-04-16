@@ -2,14 +2,14 @@
 	<view class="list-item position_relative" @tap="checkItemInfo">
 		<view class="list-card flex justify-between align-center ">
 			<view class="flex justify-start align-center">
-				<image src="../../../../../static/img/work/express/other/tag-speed.png" 
+				<image src="../../static/img/work/express/other/tag-speed.png" 
 				class="img-tag" 
 				v-if="item.type==expressType.speed"></image>
-				<image src="../../../../../static/img/work/express/other/tag-price.png" class="img-tag" v-if="item.type==expressType.price"></image>
+				<image src="../../static/img/work/express/other/tag-price.png" class="img-tag" v-if="item.type==expressType.price"></image>
 				<view>运单号 : {{item.seq || ''}}</view>
 			</view>
 			<view>
-				<image src="../../../../../static/img/work/express/other/express-sign.png" class="sign-img" v-if="item.type==expressStatus.sign"></image>
+				<image src="../../static/img/work/express/other/express-sign.png" class="sign-img" v-if="item.type==expressStatus.sign"></image>
 				<view v-else class="status-tag" 
 					  :class="{
 					  	'unpick':item.status==expressStatus.unSign,
@@ -29,7 +29,7 @@
 					<view class="font-size-mini font-weight-bold color-normal text-ellipse width-all" >{{item.depname || ''}}</view>
 					<view class="font-size-mini color-regular  text-ellipse width-all">({{item.senderName || ''}}/{{item.senderMobile || ''}})</view>
 				</view>
-				<image src="../../../../../static/img/work/express/other/express-arrow.png"></image>
+				<image src="../../static/img/work/express/other/express-arrow.png"></image>
 				<view class="flex-1  font-size-normal">
 					<template v-if="item.destype==expressItem.shop">
 						<view class="font-size-mini font-weight-bold color-normal  text-ellipse width-all" style="margin-bottom:5px;">{{item.desname || ''}}</view>

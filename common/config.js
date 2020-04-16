@@ -226,7 +226,7 @@ export  const config = {
 	expressStatusZn:{
 	    1:'待取件',
 	    2:'已取件',
-	    3:'已发运',
+	    3:'已发件',
 	    4:'已到达',
 	    5:'已签收',
 	},
@@ -437,5 +437,21 @@ export  const config = {
 		5:'已解绑',
 		6:'已欠费',
 		7:'已报废'
+	},
+	//签约
+	authorZn:{
+		'decorate':1,//装修
+		'sale':2,//销售
+		'express':3,//物流
+		'device':4,//摄像头
+		'display':5,//陈列公告
+	},
+	//试用
+	tryZn:{
+		'decorate':-1,//装修
+		'sale':-2,//销售
+		'express':-3,//物流
+		'device':-4,//摄像头
+		'display':-5,//陈列公告
 	}
 }

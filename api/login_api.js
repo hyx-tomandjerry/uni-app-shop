@@ -2,7 +2,8 @@ import {ajax} from '../common/https.js'
 import utils from '../common/js/utils.js'
 async function SignupApi(val){
 	let result= await ajax('Signup',val);
-	if(utils.getErrorMsg(result.code.toString())) return true
+	if(result.code === 0) return true
+	// if(utils.getErrorMsg(result.code.toString())) return true
 }
 /*发送短信*/
 async function SendVerCodeApi(mobile){
@@ -11,8 +12,13 @@ async function SendVerCodeApi(mobile){
 }
 /*设置密码*/
 async function InitPwdApi(vcode,token,mobile){
-	let result = await ajax('InitPwd',{vcode,token,mobile})
-	if(utils.getErrorMsg(result.code.toString())) return true
+	let result = await ajax('InitPwd',{vcode,token,mobile});
+	if(result.code == 0){
+		return true
+	}else{
+		return false;
+	}
+	// if(utils.getErrorMsg(result.code.toString())) return true
 }
 /*登录*/
 async function LoginApi(user,token){

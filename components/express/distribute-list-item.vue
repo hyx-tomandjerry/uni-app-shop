@@ -3,8 +3,8 @@
 		<view class="list-item position_relative">
 			<view class="list-card flex justify-between align-center ">
 				<view class="flex justify-start align-center">
-					<image src="../../../../../static/img/work/express/other/tag-replace.png" class="img-tag" v-if="item.recverMobile && item.recverName"></image>
-					<image src="../../../../../static/img/work/express/other/tag-shop.png" class="img-tag" v-else></image>
+					<image src="../../static/img/work/express/other/tag-replace.png" class="img-tag" v-if="item.recverMobile && item.recverName"></image>
+					<image src="../../static/img/work/express/other/tag-shop.png" class="img-tag" v-else></image>
 					<view>调拨单号 : {{item.seq}}</view>
 				</view>
 				<view>
@@ -31,7 +31,7 @@
 						
 					</view>
 				</view>
-				<view><image src="../../../../../static/img/work/express/other/express-arrow.png" class="arrowimg" mode="widthFix" lazy-load></image></view>
+				<view><image src="../../static/img/work/express/other/express-arrow.png" class="arrowimg" mode="widthFix" lazy-load></image></view>
 				<view class="flex-1 text-ellipse " style="padding-left:10px;">
 					<view class=" color-normal text-ellipse marginBottomMini" style="width:100px;">
 						

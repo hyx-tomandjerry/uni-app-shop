@@ -16,7 +16,8 @@
 		</template>
 
 		<template v-else>
-			<lx-empty></lx-empty>
+			
+			<lx-empty srcImg="../../../static/img/noticeNo.png"></lx-empty>
 		</template>
 		
 		<positionImg @createOperate="createRepair"

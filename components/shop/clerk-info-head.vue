@@ -1,6 +1,6 @@
 <template>
 	<view class="clerk-info-header flex justify-center align-center">
-		<image src="../../../../static/bgimg/clerk_bg.png" mode="widthFix" lazy-load  ></image>
+		<image src="../../static/bgimg/clerk_bg.png" mode="widthFix" lazy-load  ></image>
 		<view class="user-info flex justify-center align-center " style="flex-direction: column;">
 			<image :src="clerkItem.headurl?clerkItem.headurl:'../../../../static/img/default.png'" mode="widthFix" lazy-load></image>
 			<!-- 姓名 -->

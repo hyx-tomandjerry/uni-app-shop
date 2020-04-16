@@ -45,7 +45,8 @@
 		</template>
 		
 		<template v-else>
-			<LxEmpty></LxEmpty>
+			
+			<LxEmpty srcImg="../../../../../static/img/noticeNo.png"></LxEmpty>
 		</template>
 		
 		<!-- 快递列表 end -->
@@ -216,7 +217,7 @@
 </script>
 <style scoped>
 	page{
-		background: #fff;
+		background:rgba(247,247,247,1);
 	}
 
 	.list-content>view:first-child{

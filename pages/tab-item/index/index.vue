@@ -5,24 +5,25 @@
 			<index-swiper></index-swiper>
 			<index-operate></index-operate>
 		</view>
-		<index-sale-article :list="noticeList1" @showMoreInfo="showMoreInfo" @detailContent="detailContent" />
-		<index-display-article :list="noticeList2" @showMoreInfo="showMoreInfo" @detailContent="detailContent" />
+	
+		<!-- <index-sale-article :list="noticeList1" @showMoreInfo="showMoreInfo" @detailContent="detailContent" srcimg="../../../static/img/noticeNo.png"/> -->
+		<index-display-article :list="noticeList2" @showMoreInfo="showMoreInfo" @detailContent="detailContent" srcimg="../../../static/img/noticeNo.png"/>
 		
     </view>
 </template>
 <script>
-	import indexHead from './index-head.vue'
-	import indexSwiper from './index-swiper.vue'
-	import indexOperate from './index-operate.vue'
-	import indexSaleArticle from './index-sale-article.vue'
-	import indexDisplayArticle from './index-display-article.vue'
+	import indexHead from './childComponent/index-head.vue'
+	import indexSwiper from './childComponent/index-swiper.vue'
+	import indexOperate from './childComponent/index-operate.vue'
+	import indexSaleArticle from './childComponent/index-sale-article.vue'
+	import indexDisplayArticle from './childComponent/index-display-article.vue'
 
 	import {mapState,mapMutations} from 'vuex'
 	// import {getXapis} from '../../../api/common_api.js'
 	import {getArticleList} from '../../../api/index_api.js'
 	import {getShopList,RefreshOnlineUser,getTodoList,errorApi,getXapis} from '../../../api/common_api.js'
 	export default{
-		computed:mapState(['shopCount','shopOnlyObj']),
+		computed:mapState(['shopCount','shopOnlyObj','authorArr']),
 		data(){
 			return{
 				company:{
@@ -96,12 +97,20 @@
 				let result = await RefreshOnlineUser();
 				if(result && result.status == this.config.userStatus.normal){
                     this.login(result);
+					
+					//xserver
 					if(result.xserver){
 						let res = await getXapis();
 						this.setXserver(res);	
 					}
+					//错误码
 					let errors = await errorApi()
 					this.setErrors(errors);
+					
+					//试用
+					let value = result.modules?result.modules.split(',').map(item => Number(item)):[];
+					this.setAuthor(value)
+					
 					this.company = {
 						name:result['ownerName'],
 						cover:result['ownerLogoUrl']
@@ -118,7 +127,7 @@
 
 			},
 			
-			...mapMutations(['login','setShopCount','setShopOnlyObj','setXserver','setErrors'])
+			...mapMutations(['login','setShopCount','setShopOnlyObj','setXserver','setErrors','setAuthor'])
 
 		},
 		components:{
@@ -131,7 +140,7 @@
 		onShow(){
 			this.refreshInfo();
 			
-		},
+		}
 	}
 </script>
 <style scoped>

@@ -118,7 +118,7 @@
 
 <style scoped>
 	page{
-		background-color: rgba(247,247,247,1);
+		background:rgba(247,247,247,1);
 	}
 	.company-container{
 		border-top:26upx solid #EEEEED;

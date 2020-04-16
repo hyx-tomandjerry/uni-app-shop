@@ -45,7 +45,13 @@ export default {
 	},
 	getErrorMsg(val){
 		let errorArr = uni.getStorageSync('error');
-		let errorText = errorArr[val];
+		let errorText=''
+		if(errorArr){
+			 errorText = errorArr[val];
+		}else{
+			
+			errorText=errorMsg[val]
+		}
 		if(errorText != 'Success'){
 			uni.showToast({
 				title:errorMsg[val] || errorText,

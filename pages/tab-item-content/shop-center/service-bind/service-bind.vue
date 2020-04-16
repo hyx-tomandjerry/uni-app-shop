@@ -155,7 +155,7 @@
 				 this.hideModal()
 				switch(this.fromType){
 					case 'camera':
-					this.bindService()
+					this.bindCamera()
 					break;
 					case 'cpe':
 					this.bindCPE()
@@ -168,20 +168,28 @@
 				if(await ReplaceRouterApi(this.uuid,this.seq)){
 					this.$utils.showToast('更换CPE成功')
 					this.$utils.goBack()
-					this.$utils.hide()
+					setTimeout(()=>{
+						this.$utils.hide()
+					},2000)
 				}
 			},
-			async bingCamera(){
+			async bindCamera(){
 				if(await BindCameraApi(this.uuid,this.shopID)){
 					this.$utils.showToast('绑定设备成功')
 					this.$utils.goBack()
+					setTimeout(()=>{
+						this.$utils.hide()
+					},2000)
 				}
 			},
 			async bindCPE(){
 				
 				if(await ActivateRouterApi(this.uuid,this.shopID)){
 					this.$utils.showToast('绑定设备成功')
-					this.$utils.goBack()
+					this.$utils.goBack();
+					setTimeout(()=>{
+						this.$utils.hide()
+					},2000)
 				}
 			},
 			// 设置input输入框中内容
@@ -205,7 +213,6 @@
 			searchService(uuid){
 				if(this.check()){
 					this.open()
-					
 					switch(this.fromType){
 						case 'camera':
 						this.open()
@@ -214,12 +221,10 @@
 							setTimeout(()=>{
 								this.close();
 								this.modalName='infoModal'
-								console.log('bbbbb')
 							},2000)
 						})
 						break;
 						case 'cpe':
-						
 						RouterApi(this.uuid).then(res=>{
 							this.serviceItem=res;
 							setTimeout(()=>{
@@ -252,7 +257,7 @@
 
 <style>
 page{
-	background:#FFFFFF
+	background:rgba(247,247,247,1);
 }
 .service-info{
 	padding:40upx 30upx;

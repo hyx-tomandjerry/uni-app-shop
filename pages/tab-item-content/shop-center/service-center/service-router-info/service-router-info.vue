@@ -22,7 +22,6 @@
 						</view>
 					</view>
 					<view class="flex align-center" style="flex-direction: column;">
-						
 						<view class="bg-blue flex align-center charge-button" @tap="trafficChange">
 							<image src="../../../../../static/img/shop/service/charge.png" mode="widthFix" class="charge-img"></image>
 							<text>流量充值</text>

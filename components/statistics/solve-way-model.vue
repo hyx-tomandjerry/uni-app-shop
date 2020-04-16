@@ -1,8 +1,8 @@
 <template>
 	<view class="data-choose-container"  v-if="isShowRadio">
 		<view class="choose-content font-size-normal">
-			<image src=../../../../../static/icon/close.png mode="widthFix" class="close_img" lazy-load @tap="cancelRadio"></image>
-			<image src="../../../../../static/img/work/statistics/resolve-day.png" mode="widthFix" class="choose-way-img" lazy-load></image>
+			<image src="../../static/icon/close.png" mode="widthFix" class="close_img" lazy-load @tap="cancelRadio"></image>
+			<image src="../../static/img/work/statistics/resolve-day.png" mode="widthFix" class="choose-way-img" lazy-load></image>
 			<view class="way-desc font-weight-bold font-size-normal">
 				<view class="font-size-big color-normal" style="margin-bottom:10px;">{{year}}年{{month}}月</view>
 				<view class="margin-bottom-mini">月目标 :	<text  class="resolve-content-text">{{shopMonthAim.monthAim || 0}}元</text></view>

@@ -143,7 +143,7 @@
 		{
 			"path" : "pages/tab-item/mine/mine",
 			"style" : {
-				"navigationBarTitleText": "我的","navigationBarBackgroundColor":"#fff"
+				"navigationBarTitleText": "","navigationBarBackgroundColor":"#fff"
 			}
 		},
 		{
@@ -365,10 +365,7 @@
         {
             "path" : "pages/tab-item/work/work",
             "style" : {
-				"navigationStyle":"custom",
-				"app-plus":{
-					"titleNView":false
-				}
+				"navigationBarTitleText": "","navigationBarBackgroundColor":"#fff"
 			}
         }
         ,{
@@ -377,7 +374,7 @@
 				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor":"#FFFFFF",
 				"navigationBarTextStyle":"black",
-				"navigationBarTitleText":"任务回执"
+				"navigationBarTitleText":"公告回执"
 				
 			}
         }

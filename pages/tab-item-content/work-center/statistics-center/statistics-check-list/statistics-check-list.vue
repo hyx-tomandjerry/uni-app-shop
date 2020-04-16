@@ -9,7 +9,8 @@
 				<uni-load-more :contentText="content" :showIcon="true" v-if="checkList.length>9" :status="loading"></uni-load-more>
 			</template>
 			<template v-else>
-				<lx-empty></lx-empty>
+				
+				<lx-empty srcImg="../../../../../static/img/noticeNo.png"></lx-empty>
 			</template>
 		</view>
 	</view>
@@ -76,7 +77,7 @@
 
 <style scoped>
 	page{
-		background:#F7F7F7;
+		background:rgba(247,247,247,1);
 	}
 	.list-container{
 		padding:30upx;

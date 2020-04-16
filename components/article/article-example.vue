@@ -3,7 +3,7 @@
 		<image :src="item.coverurl" mode="widthFix" class="example-content-cover"></image>
 		<view class="font-size-big font-weight-bold example-content-name" >{{item.name}}</view>
 		<view class="font-size-litter font-weight-normal color-placeholder">{{item.applyDate | formatTime('YMDHMS')}}</view>
-		<image src="../../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
+		<image src="../../static/img/huizhi1.png"  class="position_absolute operateImg" v-if="item.report==report"></image>
 	</view>
 </template>
 

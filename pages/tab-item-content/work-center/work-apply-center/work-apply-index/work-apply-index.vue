@@ -1,14 +1,32 @@
 <template>
 	<view>
 		<view class="sale-container">
+			<view class="sale-top"></view>
+			<!-- <view class="operate-item flex justify-between align-center border-Left-red operate-item-one"
+				 hover-class="bg-color-normal" @click="operate('apply')">
+				<view class="font-size-big font-weight-bold color-normal">
+					我的申请
+				</view>
+				<image src="../../../../../static/img/work/apply/shenqing.png"
+				 mode="widthFix" lazy-load class="apply_img"></image>
+			</view>
+			<view class="operate-item flex justify-between align-center border-left-p"
+				 hover-class="bg-color-normal" @click="operate('check')">
+				<view class="font-size-big font-weight-bold color-normal">
+					我的审批
+				</view>
+				<image src="../../../../../static/img/work/apply/shenpi.png"
+				 mode="widthFix" lazy-load class="sale_check_img"></image>
+			</view> -->
 			
 			<operateTabItem 
 			name="我的申请"
 			value="apply"
+			class="operate-item-one"
 			@goToItem="operate"
 			:apply_img="true"
 			:border_left_y="true"
-			:src="'../../../../../static/img/work/apply/shenqing.png'"></operateTabItem>
+			:src="'../../../../../static/img/work/apply/shenqing.png'" ></operateTabItem>
 			<operateTabItem
 			name="我的审批"
 			value="check"
@@ -49,13 +67,20 @@
 
 <style scoped>
 	.sale-container{
-		padding-top:40upx;
 		display: flex;
-		height:200upx;
 		flex-direction: column;
 		align-items: center;
-		background:url(../../../../../static/img/sale_bg.png) no-repeat ;
+		
+	}
+	.sale-top{
+		height:200upx;
+		width:100%;
+		background:url("../../../../../static/img/sale_bg.png") no-repeat ;
 		background-size:cover;
 	}
-	
+		
+		.operate-item-one{
+			margin-top:-100upx !important;
+		}
+		
 </style>

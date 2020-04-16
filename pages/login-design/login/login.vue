@@ -247,9 +247,6 @@
 					uni.navigateTo({
 						url:"../protocol/protocol?type=serve"
 					})
-					// uni.openDocument({
-					// 	filePath:'../../../static/html/serve.docx'
-					// })
 					break;
 					case 'secret':
 					uni.navigateTo({
@@ -281,9 +278,14 @@
 				if(result){
 					this.open();
 					if(result.type==this.config.shoperObj.type){
-						this.login(result);
+						this.login(result)
+						//使用权限
+						let authorArr = result.modules?result.modules.split(','):[];
+						this.setAuthor(authorArr);
+						//错误码
 						let errors = await errorApi()
 						this.setErrors(errors);
+						//xserver
 						if(result.xserver){
 							let res = await getXapis();
 							this.setXserver(res);	
@@ -314,61 +316,7 @@
 				}
 				this.disabled=false;
 				
-			},
-			async toLogin123(account,token){
-				if(!uni.getStorageSync('agree')){
-					uni.showToast({
-						title:'你还未同意服务协议与隐私政策!',
-						icon:'none',
-						success: () => {
-							setTimeout(()=>{
-								this.isShow = true;
-							},1000)
-						}
-					})
-					this.disabled=false;
-					
-				}else{
-					let result = await LoginApi(account,token);
-					if(result){
-						this.open();
-						if(result.type==this.config.shoperObj.type){
-							this.login(result);
-							let errors = await errorApi()
-							this.setErrors(errors);
-							if(result.xserver){
-								let res = await getXapis();
-								this.setXserver(res);	
-							}
-							uni.setStorageSync('userName', account);
-							uni.setStorageSync('userPsw',token);
-							this.close();
-							this.$utils.showToast('登录成功')
-							
-							setTimeout(()=>{
-								if(this.userInfo.status==this.config.userStatus.free){
-									uni.redirectTo({
-										url:"../../tab-item/search-company/search-company"
-									})
-								}else if(this.userInfo.status==this.config.userStatus.normal){
-									uni.switchTab({
-										url:"../../tab-item/index/index"
-									})	
-								}
-							},1000)
-						}else{
-							setTimeout(()=>{
-								this.$utils.showToast('您的账号无法在“门店助手”登录')
-								this.disabled=false;
-								this.close()
-							},800)
-						}
-					}
-					this.disabled=false;
-				}
-				
-			},
-			
+			},	
 			check(){
 				if(!this.account){
 					this.$utils.showToast('请输入账号')
@@ -394,7 +342,7 @@
 				}
 			},
 		
-			 ...mapMutations(['login','setAccount','setRember','setXserver','setErrors'])
+			 ...mapMutations(['login','setAccount','setRember','setXserver','setErrors','setAuthor'])
 		},
 		beforeCreate() {
 			

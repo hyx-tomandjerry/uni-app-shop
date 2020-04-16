@@ -46,7 +46,7 @@
 	import {ChainShopApi,ShopSalesmenApi,UsersApi,ShopDevicesApi} from '../../../../api/shop_api.js'
 	export default{
 	    computed:{
-			...mapState(['userInfo']),
+			...mapState(['userInfo','authorArr']),
 			shopStatus(){return this.config.shopStatus},
 		},
 		data(){
@@ -85,12 +85,12 @@
 					//如果是店长
 					this.topRightList=[
 						{name:'录入店员',value:'record',img:'../../../../static/img/shop/clerk/icon_add.png'},
-						{name:'记一笔',value:'count',img:'../../../../static/img/shop/clerk/icon_record.png'},
+						// {name:'记一笔',value:'count',img:'../../../../static/img/shop/clerk/icon_record.png'},
 						{name:'绑定设备',value:'equipment',img:'../../../../static/img/shop/clerk/icon-bind.png'}
 					]
 				}else{
 					this.topRightList=[
-						{name:'记一笔',value:'count',img:'../../../../static/img/shop/clerk/icon_record.png'},
+						// {name:'记一笔',value:'count',img:'../../../../static/img/shop/clerk/icon_record.png'},
 						// {name:'绑定设备',value:'equipment',img:'../../../../static/img/shop/clerk/icon-bind.png'}
 					]
 				}
@@ -145,16 +145,32 @@
 					break;
 					case 'count':
 					//记一笔
+					console.log(this.authorArr)
+					if(this.authorArr.includes(this.config.authorZn.sale) || this.authorArr.includes(this.config.tryZn.sale)){
+						uni.navigateTo({
+							url:"../../work-center/statistics-center/record-money/record-money?type=save&shopID="+this.shopID
+						})
+					}else{
+						uni.showModal({
+							content:'尚未购买该功能!'
+						})
+					}
 					this.isShowModel=false;
-					uni.navigateTo({
-						url:"../../work-center/statistics-center/record-money/record-money?type=save&shopID="+this.shopID
-					})
+					
 					break;
 					
 					case 'equipment':
+					if(this.authorArr.includes(this.config.authorZn.device) || this.authorArr.includes(this.config.tryZn.device)){
+						this.modalName="RadioModal"
+						this.cameraTab=null;
+					}else{
+						uni.showModal({
+							content:'尚未购买该功能!'
+						})
+					}
 					this.isShowModel=false;
-					this.modalName="RadioModal"
-					this.cameraTab=null;
+					
+					
 					//设备
 					break;
 					

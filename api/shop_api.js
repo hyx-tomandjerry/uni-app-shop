@@ -89,6 +89,7 @@ import utils from '../common/js/utils.js'
  }
  /*绑定设备*/
  async function BindCameraApi(uuid,shop){
+	console.log(uuid,shop)
 	 let result = await ajax('BindCamera',{uuid,shop})
 	 if(utils.getErrorMsg(result.code.toString())) return true;
  }

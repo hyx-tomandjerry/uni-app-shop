@@ -45,6 +45,10 @@ export default {
 			key:'error',
 			data:value
 		})
+	},
+	//设置权限数组
+	setAuthor(state,value){
+		state.authorArr = value;
 	}
 }
 

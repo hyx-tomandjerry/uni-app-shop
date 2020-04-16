@@ -119,7 +119,7 @@
 
 <style lang="less">
 	page{
-		background:rgba(247,247,247,1)
+		background:rgba(247,247,247,1);
 	}
 	.container{
 		min-height:500px;

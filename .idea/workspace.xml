@@ -3,19 +3,53 @@
   <component name="ChangeListManager">
     <list default="true" id="99191785-f02d-4e9d-b508-f51b9992ff0f" name="默认更改列表" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/shop_api.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/shop_api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/common/normal-detail-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/normal-detail-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/login_api.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/login_api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/js/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/js/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/article/article-example.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/article/article-example.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/article/article-skill.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/article/article-skill.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/check-template/check-progress-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/check-template/check-progress-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/common/normal-detail-title.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/normal-detail-title.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/express/distribute-list-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/express/distribute-list-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/express/express-list-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/express/express-list-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/notice/notice-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/notice/notice-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/shop/clerk-info-head.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/shop/clerk-info-head.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/statistics/resolve-month-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/statistics/resolve-month-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/statistics/resolve-title.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/statistics/resolve-title.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/statistics/sale-check-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/statistics/sale-check-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/statistics/solve-way-model.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/statistics/solve-way-model.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/statistics/statistics-edit-model.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/statistics/statistics-edit-model.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/work-apply/apply-list-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/work-apply/apply-list-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lx_components/lx-empty.vue" beforeDir="false" afterPath="$PROJECT_DIR$/lx_components/lx-empty.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/all-item-content/index-more/index-more.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/all-item-content/index-more/index-more.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/login-design/login/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login-design/login/login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/login-design/protocol/protocol.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login-design/protocol/protocol.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login-design/reset-password/reset-password.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/mine-center/secret-protocol/secret-protocol.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/mine-center/secret-protocol/secret-protocol.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-bind/service-bind.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-bind/service-bind.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-center/service-router-info/childComponent/router-info-cpe.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-center/service-router-info/childComponent/router-info-cpe.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/notice-center/notice-index/notice-index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/notice-center/notice-index/notice-index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/clerk-list/clerk-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/create-order/create-order.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/near-shop-list/near-shop-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/near-shop-list/near-shop-list.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-center/service-router-info/service-router-info.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-center/service-router-info/service-router-info.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-center/traffic-charge/traffic-charge.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/service-center/traffic-charge/traffic-charge.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/shop-center/shop-center.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-express/create-express.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/create-express/create-express.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/distribute-work-list/distribute-work-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/distribute-work-list/distribute-work-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-list/express-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/express-center/express-list/express-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/receipte-center/work-log/work-log.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/receipte-center/work-log/work-log.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/shop-statistics-aim-resolve/shop-statistics-aim-resolve.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check-list/statistics-check-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/statistics-center/statistics-check-list/statistics-check-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-index/task-index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/task-center/task-index/task-index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-apply-center/my-apply-list/my-apply-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item-content/work-center/work-apply-center/my-apply-list/my-apply-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item/index/index-display-article.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item/index/index-head.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item/index/index-operate.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item/index/index-sale-article.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item/index/index-swiper.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/tab-item/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item/index/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/tab-item/mine/mine.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item/mine/mine.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item/work/work.css" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item/work/work.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/tab-item/work/work.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/tab-item/work/work.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/mutations.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/mutations.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -27,7 +61,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -41,8 +75,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>brandList</find>
-      <find>&lt;common-flex</find>
       <find>shopItem</find>
       <find>this.$fire.on(</find>
       <find>&lt;image</find>
@@ -71,6 +103,8 @@
       <find>ifdef</find>
       <find>#if</find>
       <find>weixin</find>
+      <find>hbuilder</find>
+      <find>&lt;lx-empty</find>
     </findStrings>
     <replaceStrings>
       <replace>footer</replace>
@@ -80,7 +114,6 @@
       <replace>this</replace>
     </replaceStrings>
     <dirStrings>
-      <dir>D:\now_myapps\pages</dir>
       <dir>D:\now_myapps</dir>
       <dir>C:\Users\Administrator\Desktop\text_myapp\pages\all-item-content\detail-content</dir>
       <dir>C:\Users\Administrator\Desktop\text_myapp\pages\all-item-content\index-more</dir>
@@ -110,6 +143,7 @@
       <dir>C:\Users\Administrator\Desktop\text_myapp\components</dir>
       <dir>C:\Users\Administrator\Desktop\text_myapp</dir>
       <dir>G:\门店助手版本\text_myapp</dir>
+      <dir>G:\门店助手版本\text_myapp\pages</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -173,8 +207,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="128" />
-    <option name="y" value="86" />
+    <option name="x" value="250" />
+    <option name="y" value="94" />
     <option name="width" value="1936" />
     <option name="height" value="1021" />
   </component>
@@ -184,7 +218,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -196,12 +229,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../shop_apps" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -472,16 +506,20 @@
       <workItem from="1584434641070" duration="332000" />
       <workItem from="1584437259015" duration="88000" />
       <workItem from="1584687734468" duration="1532000" />
+      <workItem from="1585796004412" duration="596000" />
+      <workItem from="1586397356947" duration="617000" />
+      <workItem from="1586400411087" duration="103000" />
+      <workItem from="1586402791683" duration="14000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="964028000" />
+    <option name="totallyTimeSpent" value="965358000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="128" y="86" width="1936" height="1021" extended-state="0" />
+    <frame x="250" y="94" width="1936" height="1021" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15015806" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15015806" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="npm" order="3" side_tool="true" />
@@ -494,7 +532,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.40561798" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.40561798" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="调试" order="11" />
       <window_info anchor="bottom" id="GraphQL" order="12" />
@@ -557,7 +595,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/pages/tab-item-content/work-center/work-apply-center/apply-item-form/apply-item-form.vue</url>
-          <line>209</line>
+          <line>219</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>

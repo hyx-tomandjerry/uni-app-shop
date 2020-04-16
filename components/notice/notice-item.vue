@@ -14,7 +14,8 @@
 		</view>
 		<view class="flex justify-start">
 			<image
-					src="../../../../static/img/notice/daiban.png"
+					
+					:src="src"
 					class="notice-tag" mode="widthFix" lazy-load></image>
 			
 			<view  class="bg-white notice-detail">
@@ -35,7 +36,8 @@
 		props:{
 			item:Object,
 			index:Number,
-			TabCur:[Number,String]
+			TabCur:[Number,String],
+			src:String,
 		},
 		methods:{
 			checkMessageItem(){
@@ -69,6 +71,7 @@
 	.notice-detail{
 		flex:1;
 		padding:20upx;
+		margin:10upx 20px;
 		border-radius: 18upx;
 	}
 </style>

@@ -15,7 +15,8 @@
 				:showIcon="true" :status="loading" color="rgb(39, 134, 245)"></uni-load-more>
 		</view>
 		<view v-else>
-			<LxEmpty></LxEmpty>
+			
+			<LxEmpty srcImg="../../../../../static/img/noticeNo.png"></LxEmpty>
 		</view>
 		<positionImg 
 		@createOperate="createDistributeWork" 
@@ -173,7 +174,7 @@
 
 <style lang="less">
 	page{
-		background:rgba(247,247,247,1)
+		background:rgba(247,247,247,1);
 	}
 
 	.distribute-work-container{

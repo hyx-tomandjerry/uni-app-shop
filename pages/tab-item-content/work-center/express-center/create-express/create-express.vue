@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<scroll-view scroll-y="true" :style="{height:screenHeight+'px'}">
+		<view>
 			<view class="express-container borderTop bg-white">
 				<view class="user-info border-top">
 					<view class="flex justify-start position_relative send-info borderBottom align-center" >
@@ -102,7 +102,7 @@
 					</view>
 				</view>
 			</view>
-		</scroll-view>
+		</view>
 		<view class="submit-container">
 			<view>
 				<image :src="isAccept?'../../../../../static/icon/icon-xuanzhong.png':'../../../../../static/icon/icon-weixuanzhong.png'"  @click="changeAccpet()"
@@ -596,7 +596,12 @@
 	}
 </script>
 <style lang="less" >
-	
+	.submit-container{
+		position:fixed;
+		bottom:0;
+		right:0;
+		left:0;
+	}
 	.submit-container>view:first-child{
 		padding:20upx 0 20upx 30upx;
 		background:rgba(247,247,247,1);

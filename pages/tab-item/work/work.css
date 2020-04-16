@@ -1,5 +1,5 @@
 page{
-		background:#FFFFFF;
+	background:#FFFFFF;
 
 	}
 	.img-tag{
@@ -24,7 +24,7 @@ page{
 	}
 	.tab-container{
 
-		padding-top:90px;
+		/* padding-top:90px; */
 		padding-left:30px;
 		
 
@@ -33,4 +33,11 @@ page{
 	.tab-list{
 
 		text-align: center;
+	}
+	.try-img{
+		width:20px;
+		height:20px !important;
+		position:absolute;
+		top:-8upx;
+		right:34upx;
 	}

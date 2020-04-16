@@ -6,7 +6,7 @@
 				<view class="shop-aim">¥{{shopSaleResolve.expect | numStyle}}</view>
 				<view class="shop-intro flex justify-start">
 					<view class="intro-l flex justify-start flex-1">
-						<image src="../../../../../static/icon/icon-time@2x.png" class="intro-i"></image>
+						<image :src="src" class="intro-i"></image>
 						<view>
 							<view class="shop-date" v-if="shopSaleResolve.bgndate">{{shopSaleResolve.bgndate | formatTime('YMD')}}</view>
 							<view class="shop-date" v-else>时间未知</view>
@@ -14,7 +14,7 @@
 						</view>
 					</view>
 					<view class="intro-r flex justify-start flex-1">
-						<image src="../../../../../static/icon/icon-time@2x.png" class="intro-i"></image>
+						<image :src="src" class="intro-i"></image>
 						<view>
 							<view class="shop-date" >{{new Date().getFullYear()}}-12-31</view>
 							<view class="font-size-mini" style="color:#7C81A3">截止日期</view>
@@ -46,6 +46,7 @@
 			shopSaleResolve:Object,
 			month:String,
 			monthPre:Number,
+			src:String
 			
 
 		}

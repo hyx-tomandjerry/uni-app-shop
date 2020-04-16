@@ -10,7 +10,7 @@
 			            <view><text>比例:</text><text>{{item.pre}}%</text></view>
 			        </view>
 			        <view class="month-top-r">
-			            <image src="../../../../../static/img/work/statistics/noedit.png" mode="widthFix" lazy-load></image>
+			            <image src="../../static/img/work/statistics/noedit.png" mode="widthFix" lazy-load></image>
 			        </view>
 			    </view>
 			    <view class="cu-progress round  striped active xs" >
@@ -27,7 +27,7 @@
 			            <view><text>比例:</text><text>{{item.pre}}%</text></view>
 			        </view>
 			        <view class="month-top-r" v-show="item.id>=new Date().getMonth()+1" @tap.stop="editAim">
-			            <image src="../../../../../static/img/work/statistics/edit.png" mode="widthFix" lazy-load></image>
+			            <image src="../../static/img/work/statistics/edit.png" mode="widthFix" lazy-load></image>
 			        </view>
 			    </view>
 			    <view class="cu-progress round  striped active xs" >

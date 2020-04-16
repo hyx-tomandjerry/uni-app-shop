@@ -131,7 +131,7 @@
 </script>
 <style lang="less">
 	page{
-		background-color: rgba(247,247,247,1)
+		background:rgba(247,247,247,1);
 	}
 	.sale-container{
 		padding-top:40upx;

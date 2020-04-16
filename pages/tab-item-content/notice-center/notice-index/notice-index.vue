@@ -10,14 +10,17 @@
 			<view>
 				<view v-if="todoList.length">
 					<block v-for="(item,index) in todoList" :key="index">
-						<noticeItem :item="item" :index="index" :TabCur="TabCur" @checkItem="checkMessageItem"></noticeItem>
+						<noticeItem :item="item" 
+							src="../../../../static/img/notice/daiban.png"
+						:index="index" :TabCur="TabCur" @checkItem="checkMessageItem"></noticeItem>
 					</block>
 					<uni-load-more :contentText="content"
 								   v-if="todoList.length>=5"
 								   :showIcon="true" :status="loading" ></uni-load-more>
 				</view>
 				<view v-else>
-					<lx-empty></lx-empty>
+					
+					<lx-empty srcImg="../../../../static/img/noticeNo.png"></lx-empty>
 				</view>
 			</view>
 			

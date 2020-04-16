@@ -1,6 +1,6 @@
 <template>
 	<!-- 标题 -->
-	<view class="title bg-white font-size-big font-weight-bold" :class="{'border-bottom':borderBottom}">
+	<view class="title bg-white font-size-big font-weight-bold" :class="{'border-bottom':borderBottom,'title-padding':paddingLeft}">
 		<view class="title-tag" v-show="isTag"></view>
 		{{title}}
 	</view>
@@ -19,6 +19,10 @@
 			isTag:{
 				type:Boolean,
 				default:true
+			},
+			paddingLeft:{
+				type:Boolean,
+				default:true,
 			}
 		}
 	}
@@ -34,9 +38,12 @@
 	}
 	.title{
 		position:relative;
-		padding:30upx 40upx;
+		padding:30upx 40upx 30upx 0;
 	}
 	.border-bottom{
 		border-bottom: 1px solid #EEEEED;
+	}
+	.title-padding{
+		padding-left:10px;
 	}
 </style>

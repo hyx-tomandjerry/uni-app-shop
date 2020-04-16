@@ -59,9 +59,9 @@
 .operate-item{
 	min-width:650upx;
 	border-radius: 12upx;
-	padding:0 34upx 0 80upx;
-	height:180upx;
-	line-height:180upx;
+	padding:0 34upx 0 80upx !important;
+	height:180upx !important;
+	line-height:180upx ;
 	box-sizing: border-box;
 	background-color: #fff;
 	margin-bottom:20upx;

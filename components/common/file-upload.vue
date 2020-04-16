@@ -60,7 +60,6 @@
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['camera','album'],
 					success: (res) => {
-						
 						const tempFilePaths=res.tempFilePaths;
 						if (this.imgList.length != 0) {
 							this.imgList = this.imgList.concat(res.tempFilePaths)

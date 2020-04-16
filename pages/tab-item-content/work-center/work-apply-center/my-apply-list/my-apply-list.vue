@@ -9,7 +9,8 @@
 				<uni-load-more :contentText="content" :showIcon="true" :status="loading" v-if="list.length>8"></uni-load-more>
 			</template>
 			<template v-else>
-				<LxEmpty></LxEmpty>
+				
+				<LxEmpty srcImg="../../../../../static/img/noticeNo.png"></LxEmpty>
 			</template>
 
 		</view>
@@ -182,6 +183,8 @@
 </script>
 
 <style scoped>
-
+page{
+	background-color:rgba(247,247,247,1);
+}
 
 </style>
